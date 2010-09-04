@@ -1,0 +1,31 @@
+﻿using System;
+using Snes.Memory;
+
+namespace Snes.Chip.SDD1
+{
+    partial class SDD1 : Memory.Memory, IMMIO
+    {
+        public void init() { throw new NotImplementedException(); }
+        public void enable() { throw new NotImplementedException(); }
+        public void power() { throw new NotImplementedException(); }
+        public void reset() { throw new NotImplementedException(); }
+
+        public byte mmio_read(uint addr) { throw new NotImplementedException(); }
+        public void mmio_write(uint addr, byte data) { throw new NotImplementedException(); }
+
+        public override byte read(uint addr) { throw new NotImplementedException(); }
+        public override void write(uint addr, byte data) { throw new NotImplementedException(); }
+
+        public SDD1() { throw new NotImplementedException(); }
+
+        private IMMIO[] cpu_mmio = new IMMIO[0x80];  //bus spying hooks to glean information for struct dma[]
+
+        private byte sdd1_enable;     //channel bit-mask
+        private byte xfer_enable;     //channel bit-mask
+        private uint[] mmc = new uint[4];       //memory map controller ROM indices
+
+        private DMA[] dma = new DMA[8];
+        private SDD1Emu sdd1emu;
+        private Buffer buffer;
+    }
+}

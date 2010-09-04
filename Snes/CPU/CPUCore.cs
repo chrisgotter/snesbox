@@ -1,0 +1,270 @@
+﻿using System;
+
+namespace Snes.CPU
+{
+    public delegate void CPUCoreOp();
+
+    abstract partial class CPUCore
+    {
+        public byte op_readpc() { throw new NotImplementedException(); }
+        public byte op_readstack() { throw new NotImplementedException(); }
+        public byte op_readstackn() { throw new NotImplementedException(); }
+        public byte op_readaddr(uint addr) { throw new NotImplementedException(); }
+        public byte op_readlong(uint addr) { throw new NotImplementedException(); }
+        public byte op_readdbr(uint addr) { throw new NotImplementedException(); }
+        public byte op_readpbr(uint addr) { throw new NotImplementedException(); }
+        public byte op_readdp(uint addr) { throw new NotImplementedException(); }
+        public byte op_readsp(uint addr) { throw new NotImplementedException(); }
+        public void op_writestack(byte data) { throw new NotImplementedException(); }
+        public void op_writestackn(byte data) { throw new NotImplementedException(); }
+        public void op_writeaddr(uint addr, byte data) { throw new NotImplementedException(); }
+        public void op_writelong(uint addr, byte data) { throw new NotImplementedException(); }
+        public void op_writedbr(uint addr, byte data) { throw new NotImplementedException(); }
+        public void op_writepbr(uint addr, byte data) { throw new NotImplementedException(); }
+        public void op_writedp(uint addr, byte data) { throw new NotImplementedException(); }
+        public void op_writesp(uint addr, byte data) { throw new NotImplementedException(); }
+
+        public enum OPTYPE
+        {
+            OPTYPE_DP = 0, //dp
+            OPTYPE_DPX, //dp,x
+            OPTYPE_DPY, //dp,y
+            OPTYPE_IDP, //(dp)
+            OPTYPE_IDPX, //(dp,x)
+            OPTYPE_IDPY, //(dp),y
+            OPTYPE_ILDP, //[dp]
+            OPTYPE_ILDPY, //[dp],y
+            OPTYPE_ADDR, //addr
+            OPTYPE_ADDRX, //addr,x
+            OPTYPE_ADDRY, //addr,y
+            OPTYPE_IADDRX, //(addr,x)
+            OPTYPE_ILADDR, //[addr]
+            OPTYPE_LONG, //long
+            OPTYPE_LONGX, //long, x
+            OPTYPE_SR, //sr,s
+            OPTYPE_ISRY, //(sr,s),y
+            OPTYPE_ADDR_PC, //pbr:addr
+            OPTYPE_IADDR_PC, //pbr:(addr)
+            OPTYPE_RELB, //relb
+            OPTYPE_RELW, //relw
+        }
+
+        public void disassemble_opcode(string output, uint addr) { throw new NotImplementedException(); }
+        public byte dreadb(uint addr) { throw new NotImplementedException(); }
+        public ushort dreadw(uint addr) { throw new NotImplementedException(); }
+        public uint dreadl(uint addr) { throw new NotImplementedException(); }
+        public uint decode(byte offset_type, uint addr) { throw new NotImplementedException(); }
+        public byte opcode_length() { throw new NotImplementedException(); }
+
+        public regs_t regs;
+        public reg24_t aa, rd;
+        public byte sp, dp;
+
+        public abstract void op_io();
+        public abstract byte op_read(uint addr);
+        public abstract void op_write(uint addr, byte data);
+        public abstract void last_cycle();
+        public abstract bool interrupt_pending();
+
+        public void op_io_irq() { throw new NotImplementedException(); }
+        public void op_io_cond2() { throw new NotImplementedException(); }
+        public void op_io_cond4(ushort x, ushort y) { throw new NotImplementedException(); }
+        public void op_io_cond6(ushort addr) { throw new NotImplementedException(); }
+
+        public void op_adc_b() { throw new NotImplementedException(); }
+        public void op_adc_w() { throw new NotImplementedException(); }
+        public void op_and_b() { throw new NotImplementedException(); }
+        public void op_and_w() { throw new NotImplementedException(); }
+        public void op_bit_b() { throw new NotImplementedException(); }
+        public void op_bit_w() { throw new NotImplementedException(); }
+        public void op_cmp_b() { throw new NotImplementedException(); }
+        public void op_cmp_w() { throw new NotImplementedException(); }
+        public void op_cpx_b() { throw new NotImplementedException(); }
+        public void op_cpx_w() { throw new NotImplementedException(); }
+        public void op_cpy_b() { throw new NotImplementedException(); }
+        public void op_cpy_w() { throw new NotImplementedException(); }
+        public void op_eor_b() { throw new NotImplementedException(); }
+        public void op_eor_w() { throw new NotImplementedException(); }
+        public void op_lda_b() { throw new NotImplementedException(); }
+        public void op_lda_w() { throw new NotImplementedException(); }
+        public void op_ldx_b() { throw new NotImplementedException(); }
+        public void op_ldx_w() { throw new NotImplementedException(); }
+        public void op_ldy_b() { throw new NotImplementedException(); }
+        public void op_ldy_w() { throw new NotImplementedException(); }
+        public void op_ora_b() { throw new NotImplementedException(); }
+        public void op_ora_w() { throw new NotImplementedException(); }
+        public void op_sbc_b() { throw new NotImplementedException(); }
+        public void op_sbc_w() { throw new NotImplementedException(); }
+
+        public void op_inc_b() { throw new NotImplementedException(); }
+        public void op_inc_w() { throw new NotImplementedException(); }
+        public void op_dec_b() { throw new NotImplementedException(); }
+        public void op_dec_w() { throw new NotImplementedException(); }
+        public void op_asl_b() { throw new NotImplementedException(); }
+        public void op_asl_w() { throw new NotImplementedException(); }
+        public void op_lsr_b() { throw new NotImplementedException(); }
+        public void op_lsr_w() { throw new NotImplementedException(); }
+        public void op_rol_b() { throw new NotImplementedException(); }
+        public void op_rol_w() { throw new NotImplementedException(); }
+        public void op_ror_b() { throw new NotImplementedException(); }
+        public void op_ror_w() { throw new NotImplementedException(); }
+        public void op_trb_b() { throw new NotImplementedException(); }
+        public void op_trb_w() { throw new NotImplementedException(); }
+        public void op_tsb_b() { throw new NotImplementedException(); }
+        public void op_tsb_w() { throw new NotImplementedException(); }
+
+        public void op_read_const_b(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_const_w(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_bit_const_b() { throw new NotImplementedException(); }
+        public void op_read_bit_const_w() { throw new NotImplementedException(); }
+        public void op_read_addr_b(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_addr_w(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_addrx_b(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_addrx_w(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_addry_b(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_addry_w(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_long_b(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_long_w(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_longx_b(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_longx_w(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_dp_b(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_dp_w(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_dpr_b(CPUCoreOp op, int n) { throw new NotImplementedException(); }
+        public void op_read_dpr_w(CPUCoreOp op, int n) { throw new NotImplementedException(); }
+        public void op_read_idp_b(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_idp_w(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_idpx_b(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_idpx_w(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_idpy_b(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_idpy_w(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_ildp_b(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_ildp_w(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_ildpy_b(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_ildpy_w(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_sr_b(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_sr_w(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_isry_b(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_read_isry_w(CPUCoreOp op) { throw new NotImplementedException(); }
+
+        public void op_write_addr_b(int n) { throw new NotImplementedException(); }
+        public void op_write_addr_w(int n) { throw new NotImplementedException(); }
+        public void op_write_addrr_b(int n, int i) { throw new NotImplementedException(); }
+        public void op_write_addrr_w(int n, int i) { throw new NotImplementedException(); }
+        public void op_write_longr_b(int i) { throw new NotImplementedException(); }
+        public void op_write_longr_w(int n) { throw new NotImplementedException(); }
+        public void op_write_dp_b(int n) { throw new NotImplementedException(); }
+        public void op_write_dp_w(int n) { throw new NotImplementedException(); }
+        public void op_write_dpr_b(int n, int i) { throw new NotImplementedException(); }
+        public void op_write_dpr_w(int n, int i) { throw new NotImplementedException(); }
+        public void op_sta_idp_b() { throw new NotImplementedException(); }
+        public void op_sta_idp_w() { throw new NotImplementedException(); }
+        public void op_sta_ildp_b() { throw new NotImplementedException(); }
+        public void op_sta_ildp_w() { throw new NotImplementedException(); }
+        public void op_sta_idpx_b() { throw new NotImplementedException(); }
+        public void op_sta_idpx_w() { throw new NotImplementedException(); }
+        public void op_sta_idpy_b() { throw new NotImplementedException(); }
+        public void op_sta_idpy_w() { throw new NotImplementedException(); }
+        public void op_sta_ildpy_b() { throw new NotImplementedException(); }
+        public void op_sta_ildpy_w() { throw new NotImplementedException(); }
+        public void op_sta_sr_b() { throw new NotImplementedException(); }
+        public void op_sta_sr_w() { throw new NotImplementedException(); }
+        public void op_sta_isry_b() { throw new NotImplementedException(); }
+        public void op_sta_isry_w() { throw new NotImplementedException(); }
+
+        public void op_adjust_imm_b(int n, int adjust) { throw new NotImplementedException(); }
+        public void op_adjust_imm_w(int n, int adjust) { throw new NotImplementedException(); }
+        public void op_asl_imm_b() { throw new NotImplementedException(); }
+        public void op_asl_imm_w() { throw new NotImplementedException(); }
+        public void op_lsr_imm_b() { throw new NotImplementedException(); }
+        public void op_lsr_imm_w() { throw new NotImplementedException(); }
+        public void op_rol_imm_b() { throw new NotImplementedException(); }
+        public void op_rol_imm_w() { throw new NotImplementedException(); }
+        public void op_ror_imm_b() { throw new NotImplementedException(); }
+        public void op_ror_imm_w() { throw new NotImplementedException(); }
+        public void op_adjust_addr_b(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_adjust_addr_w(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_adjust_addrx_b(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_adjust_addrx_w(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_adjust_dp_b(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_adjust_dp_w(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_adjust_dpx_b(CPUCoreOp op) { throw new NotImplementedException(); }
+        public void op_adjust_dpx_w(CPUCoreOp op) { throw new NotImplementedException(); }
+
+        public void op_branch(int bit, int val) { throw new NotImplementedException(); }
+        public void op_bra() { throw new NotImplementedException(); }
+        public void op_brl() { throw new NotImplementedException(); }
+        public void op_jmp_addr() { throw new NotImplementedException(); }
+        public void op_jmp_long() { throw new NotImplementedException(); }
+        public void op_jmp_iaddr() { throw new NotImplementedException(); }
+        public void op_jmp_iaddrx() { throw new NotImplementedException(); }
+        public void op_jmp_iladdr() { throw new NotImplementedException(); }
+        public void op_jsr_addr() { throw new NotImplementedException(); }
+        public void op_jsr_long_e() { throw new NotImplementedException(); }
+        public void op_jsr_long_n() { throw new NotImplementedException(); }
+        public void op_jsr_iaddrx_e() { throw new NotImplementedException(); }
+        public void op_jsr_iaddrx_n() { throw new NotImplementedException(); }
+        public void op_rti_e() { throw new NotImplementedException(); }
+        public void op_rti_n() { throw new NotImplementedException(); }
+        public void op_rts() { throw new NotImplementedException(); }
+        public void op_rtl_e() { throw new NotImplementedException(); }
+        public void op_rtl_n() { throw new NotImplementedException(); }
+
+        public void op_nop() { throw new NotImplementedException(); }
+        public void op_wdm() { throw new NotImplementedException(); }
+        public void op_xba() { throw new NotImplementedException(); }
+        public void op_move_b(int adjust) { throw new NotImplementedException(); }
+        public void op_move_w(int adjust) { throw new NotImplementedException(); }
+        public void op_interrupt_e(int vectorE, int vectorN) { throw new NotImplementedException(); }
+        public void op_interrupt_n(int vectorE, int vectorN) { throw new NotImplementedException(); }
+        public void op_stp() { throw new NotImplementedException(); }
+        public void op_wai() { throw new NotImplementedException(); }
+        public void op_xce() { throw new NotImplementedException(); }
+        public void op_flag(int mask, int value) { throw new NotImplementedException(); }
+        public void op_pflag_e(int mode) { throw new NotImplementedException(); }
+        public void op_pflag_n(int mode) { throw new NotImplementedException(); }
+        public void op_transfer_b(int from, int to) { throw new NotImplementedException(); }
+        public void op_transfer_w(int from, int to) { throw new NotImplementedException(); }
+        public void op_tcs_e() { throw new NotImplementedException(); }
+        public void op_tcs_n() { throw new NotImplementedException(); }
+        public void op_tsx_b() { throw new NotImplementedException(); }
+        public void op_tsx_w() { throw new NotImplementedException(); }
+        public void op_txs_e() { throw new NotImplementedException(); }
+        public void op_txs_n() { throw new NotImplementedException(); }
+        public void op_push_b(int n) { throw new NotImplementedException(); }
+        public void op_push_w(int n) { throw new NotImplementedException(); }
+        public void op_phd_e() { throw new NotImplementedException(); }
+        public void op_phd_n() { throw new NotImplementedException(); }
+        public void op_phb() { throw new NotImplementedException(); }
+        public void op_phk() { throw new NotImplementedException(); }
+        public void op_php() { throw new NotImplementedException(); }
+        public void op_pull_b(int n) { throw new NotImplementedException(); }
+        public void op_pull_w(int n) { throw new NotImplementedException(); }
+        public void op_pld_e() { throw new NotImplementedException(); }
+        public void op_pld_n() { throw new NotImplementedException(); }
+        public void op_plb() { throw new NotImplementedException(); }
+        public void op_plp_e() { throw new NotImplementedException(); }
+        public void op_plp_n() { throw new NotImplementedException(); }
+        public void op_pea_e() { throw new NotImplementedException(); }
+        public void op_pea_n() { throw new NotImplementedException(); }
+        public void op_pei_e() { throw new NotImplementedException(); }
+        public void op_pei_n() { throw new NotImplementedException(); }
+        public void op_per_e() { throw new NotImplementedException(); }
+        public void op_per_n() { throw new NotImplementedException(); }
+
+        public CPUCoreOp[] opcode_table;
+        public CPUCoreOp[] op_table = new CPUCoreOp[256 * 5];
+        public void initialize_opcode_table() { throw new NotImplementedException(); }
+        public void update_table() { throw new NotImplementedException(); }
+
+        public enum Table
+        {
+            table_EM = 0, // 8-bit accumulator,  8-bit index (emulation mode)
+            table_MX = 256, // 8-bit accumulator,  8-bit index
+            table_Mx = 512, // 8-bit accumulator, 16-bit index
+            table_mX = 768, //16-bit accumulator,  8-bit index
+            table_mx = 1024, //16-bit accumulator, 16-bit index
+        }
+
+        public CPUCore() { throw new NotImplementedException(); }
+    }
+}
