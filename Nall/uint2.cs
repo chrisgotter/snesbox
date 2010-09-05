@@ -7,8 +7,8 @@ namespace Nall
         private uint data;
 
         public static explicit operator uint(uint2 number) { throw new NotImplementedException(); }
-        public static uint2 operator ++(uint2 i) { throw new NotImplementedException(); }
-        public static uint2 operator --(uint2 i) { throw new NotImplementedException(); }
+        public static uint2 operator ++(uint2 number) { throw new NotImplementedException(); }
+        public static uint2 operator --(uint2 number) { throw new NotImplementedException(); }
         public static uint Assign(uint i) { throw new NotImplementedException(); }
         public static uint operator |(uint2 number, uint i) { throw new NotImplementedException(); }
         public static uint operator ^(uint2 number, uint i) { throw new NotImplementedException(); }

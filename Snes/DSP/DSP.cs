@@ -47,14 +47,14 @@ namespace Snes.DSP
         private static readonly int brr_buf_size = 12;
         private static readonly int brr_block_size = 9;
 
-        private state_t state;
+        private State state;
 
         //voice state
-        private voice_t[] voice = new voice_t[8];
+        private Voice[] voice = new Voice[8];
 
         //gaussian
         private static readonly short[] gaussian_table = new short[512];
-        private int gaussian_interpolate(voice_t v) { throw new NotImplementedException(); }
+        private int gaussian_interpolate(Voice v) { throw new NotImplementedException(); }
 
         //counter
         private static readonly int counter_range = 2048 * 5 * 3; //30720 (0x7800)
@@ -64,10 +64,10 @@ namespace Snes.DSP
         private bool counter_poll(uint rate) { throw new NotImplementedException(); }
 
         //envelope
-        private void envelope_run(voice_t v) { throw new NotImplementedException(); }
+        private void envelope_run(Voice v) { throw new NotImplementedException(); }
 
         //brr
-        private void brr_decode(voice_t v) { throw new NotImplementedException(); }
+        private void brr_decode(Voice v) { throw new NotImplementedException(); }
 
         //misc
         private void misc_27() { throw new NotImplementedException(); }
@@ -76,19 +76,19 @@ namespace Snes.DSP
         private void misc_30() { throw new NotImplementedException(); }
 
         //voice
-        private void voice_output(voice_t v, bool channel) { throw new NotImplementedException(); }
-        private void voice_1(voice_t v) { throw new NotImplementedException(); }
-        private void voice_2(voice_t v) { throw new NotImplementedException(); }
-        private void voice_3(voice_t v) { throw new NotImplementedException(); }
-        private void voice_3a(voice_t v) { throw new NotImplementedException(); }
-        private void voice_3b(voice_t v) { throw new NotImplementedException(); }
-        private void voice_3c(voice_t v) { throw new NotImplementedException(); }
-        private void voice_4(voice_t v) { throw new NotImplementedException(); }
-        private void voice_5(voice_t v) { throw new NotImplementedException(); }
-        private void voice_6(voice_t v) { throw new NotImplementedException(); }
-        private void voice_7(voice_t v) { throw new NotImplementedException(); }
-        private void voice_8(voice_t v) { throw new NotImplementedException(); }
-        private void voice_9(voice_t v) { throw new NotImplementedException(); }
+        private void voice_output(Voice v, bool channel) { throw new NotImplementedException(); }
+        private void voice_1(Voice v) { throw new NotImplementedException(); }
+        private void voice_2(Voice v) { throw new NotImplementedException(); }
+        private void voice_3(Voice v) { throw new NotImplementedException(); }
+        private void voice_3a(Voice v) { throw new NotImplementedException(); }
+        private void voice_3b(Voice v) { throw new NotImplementedException(); }
+        private void voice_3c(Voice v) { throw new NotImplementedException(); }
+        private void voice_4(Voice v) { throw new NotImplementedException(); }
+        private void voice_5(Voice v) { throw new NotImplementedException(); }
+        private void voice_6(Voice v) { throw new NotImplementedException(); }
+        private void voice_7(Voice v) { throw new NotImplementedException(); }
+        private void voice_8(Voice v) { throw new NotImplementedException(); }
+        private void voice_9(Voice v) { throw new NotImplementedException(); }
 
         //echo
         private int calc_fir(int i, bool channel) { throw new NotImplementedException(); }

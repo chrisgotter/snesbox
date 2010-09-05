@@ -3,7 +3,7 @@ namespace Snes.Chip.SuperFX
 {
     partial class SuperFX
     {
-        public class pixelcache_t
+        public class PixelCache
         {
             public ushort offset;
             public byte bitpend;

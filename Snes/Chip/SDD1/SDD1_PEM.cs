@@ -8,7 +8,7 @@ namespace Snes.Chip.SDD1
         public void prepareDecomp() { throw new NotImplementedException(); }
         public byte getBit(byte context) { throw new NotImplementedException(); }
 
-        private static readonly state[] evolution_table;
+        private static readonly State[] evolution_table;
         private SDD1_ContextInfo[] contextInfo = new SDD1_ContextInfo[32];
         private SDD1_BG[] BG = new SDD1_BG[8];
     }

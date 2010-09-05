@@ -4,11 +4,11 @@ namespace Snes.DSP
 {
     partial class DSP
     {
-        class state_t
+        class State
         {
             byte[] regs = new byte[128];
 
-            modulo_array<int>[] echo_hist = new modulo_array<int>[2];  //echo history keeps most recent 8 samples
+            ModuloArray<int>[] echo_hist = new ModuloArray<int>[2];  //echo history keeps most recent 8 samples
             int echo_hist_pos;
 
             bool every_other_sample;  //toggles every sample
@@ -54,11 +54,11 @@ namespace Snes.DSP
             int[] t_echo_out = new int[2];
             int[] t_echo_in = new int[2];
 
-            public state_t()
+            public State()
             {
                 for (int i = 0; i < echo_hist.Length; i++)
                 {
-                    echo_hist[i] = new modulo_array<int>(echo_hist_size);
+                    echo_hist[i] = new ModuloArray<int>(echo_hist_size);
                 }
             }
         }

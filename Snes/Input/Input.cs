@@ -54,6 +54,6 @@ namespace Snes.Input
         private bool iobit;
         private short latchx, latchy;
 
-        private port_t[] port = new port_t[2];
+        private Port[] port = new Port[2];
     }
 }

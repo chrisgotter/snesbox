@@ -54,8 +54,8 @@ namespace Snes.CPU
         public uint decode(byte offset_type, uint addr) { throw new NotImplementedException(); }
         public byte opcode_length() { throw new NotImplementedException(); }
 
-        public regs_t regs;
-        public reg24_t aa, rd;
+        public Regs regs;
+        public Reg24 aa, rd;
         public byte sp, dp;
 
         public abstract void op_io();

@@ -4,7 +4,7 @@ namespace Snes.Chip.SuperFX
 {
     partial class SuperFX
     {
-        public class sfr_t
+        public class Sfr
         {
             public byte irq;   //interrupt flag
             public byte b;     //WITH flag
@@ -19,9 +19,9 @@ namespace Snes.Chip.SuperFX
             public byte cy;    //carry flag
             public byte z;     //zero flag
 
-            public static explicit operator uint(sfr_t flag) { throw new NotImplementedException(); }
+            public static explicit operator uint(Sfr sfr) { throw new NotImplementedException(); }
 
-            public sfr_t Assign(ushort data) { throw new NotImplementedException(); }
+            public Sfr Assign(ushort data) { throw new NotImplementedException(); }
         }
     }
 }

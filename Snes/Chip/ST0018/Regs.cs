@@ -3,7 +3,7 @@ namespace Snes.Chip.ST0018
 {
     partial class ST0018
     {
-        public class regs_t
+        public class Regs
         {
             mode_t mode;
 

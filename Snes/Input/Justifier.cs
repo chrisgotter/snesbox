@@ -3,9 +3,9 @@ namespace Snes.Input
 {
     partial class Input
     {
-        partial class port_t
+        partial class Port
         {
-            public class justifier_t
+            public class Justifier
             {
                 public bool active;
 

@@ -5,14 +5,14 @@ namespace Snes.Chip.SuperFX
 {
     partial class SuperFX : Coprocessor, IMMIO
     {
-        public regs_t regs;
-        public cache_t cache;
-        public pixelcache_t[] pixelcache = new pixelcache_t[2];
+        public Regs regs;
+        public Cache cache;
+        public PixelCache[] pixelcache = new PixelCache[2];
 
         public byte color(byte source) { throw new NotImplementedException(); }
         public void plot(byte x, byte y) { throw new NotImplementedException(); }
         public byte rpix(byte x, byte y) { throw new NotImplementedException(); }
-        public void pixelcache_flush(pixelcache_t cache) { throw new NotImplementedException(); }
+        public void pixelcache_flush(PixelCache cache) { throw new NotImplementedException(); }
 
         public Operation[] opcode_table = new Operation[1024];
         public void initialize_opcode_table() { throw new NotImplementedException(); }

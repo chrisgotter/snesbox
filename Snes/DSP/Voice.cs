@@ -4,9 +4,9 @@ namespace Snes.DSP
 {
     partial class DSP
     {
-        class voice_t
+        class Voice
         {
-            modulo_array<int> buffer = new modulo_array<int>(brr_buf_size);  //decoded samples
+            ModuloArray<int> buffer = new ModuloArray<int>(brr_buf_size);  //decoded samples
             int buf_pos;     //place in buffer where next samples will be decoded
             int interp_pos;  //relative fractional position in sample (0x1000 = 1.0)
             int brr_addr;    //address of current BRR block

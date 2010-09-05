@@ -4,12 +4,12 @@ namespace Snes.CPU
 {
     partial class CPUCore
     {
-        public class regs_t
+        public class Regs
         {
-            public reg24_t pc;
-            public reg16_t[] r = new reg16_t[6];
-            public reg16_t a, x, y, z, s, d;
-            public flag_t p;
+            public Reg24 pc;
+            public Reg16[] r = new Reg16[6];
+            public Reg16 a, x, y, z, s, d;
+            public Flag p;
             public byte db;
             public bool e;
 
@@ -17,7 +17,7 @@ namespace Snes.CPU
             public bool wai; //raised during wai, cleared after interrupt triggered
             public byte mdr; //memory data register
 
-            public regs_t() { throw new NotImplementedException(); }
+            public Regs() { throw new NotImplementedException(); }
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Snes.Chip.SuperFX
 {
     partial class SuperFX
     {
-        public class por_t
+        public class Por
         {
             public bool obj;
             public bool freezehigh;
@@ -12,9 +12,9 @@ namespace Snes.Chip.SuperFX
             public bool dither;
             public bool transparent;
 
-            public static explicit operator uint(por_t flag) { throw new NotImplementedException(); }
+            public static explicit operator uint(Por por) { throw new NotImplementedException(); }
 
-            public por_t Assign(byte data) { throw new NotImplementedException(); }
+            public Por Assign(byte data) { throw new NotImplementedException(); }
         }
     }
 }

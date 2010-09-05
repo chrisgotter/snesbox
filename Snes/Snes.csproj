@@ -138,7 +138,7 @@
     <Compile Include="Chip\SDD1\SDD1_IM.cs" />
     <Compile Include="Chip\SDD1\SDD1_OL.cs" />
     <Compile Include="Chip\SDD1\SDD1_PEM.cs" />
-    <Compile Include="Chip\SDD1\state.cs" />
+    <Compile Include="Chip\SDD1\State.cs" />
     <Compile Include="Chip\SPC7110\ContextState.cs" />
     <Compile Include="Chip\SPC7110\SCP7110RAM.cs" />
     <Compile Include="Chip\SPC7110\SPC7110.cs" />
@@ -148,16 +148,16 @@
     <Compile Include="Chip\SRTC\SRTC.cs" />
     <Compile Include="Chip\ST0010\ST0010.cs" />
     <Compile Include="Chip\ST0011\ST0011.cs" />
-    <Compile Include="Chip\ST0018\regs_t.cs" />
+    <Compile Include="Chip\ST0018\Regs.cs" />
     <Compile Include="Chip\ST0018\ST0018.cs" />
-    <Compile Include="Chip\SuperFX\cache_t.cs" />
-    <Compile Include="Chip\SuperFX\cfgr_t.cs" />
-    <Compile Include="Chip\SuperFX\pixelcache_t.cs" />
-    <Compile Include="Chip\SuperFX\por_t.cs" />
-    <Compile Include="Chip\SuperFX\reg16_t.cs" />
-    <Compile Include="Chip\SuperFX\regs_t.cs" />
-    <Compile Include="Chip\SuperFX\scmr_t.cs" />
-    <Compile Include="Chip\SuperFX\sfr_t.cs" />
+    <Compile Include="Chip\SuperFX\Cache.cs" />
+    <Compile Include="Chip\SuperFX\Cfgr.cs" />
+    <Compile Include="Chip\SuperFX\PixelCache.cs" />
+    <Compile Include="Chip\SuperFX\Por.cs" />
+    <Compile Include="Chip\SuperFX\Reg16.cs" />
+    <Compile Include="Chip\SuperFX\Regs.cs" />
+    <Compile Include="Chip\SuperFX\Scmr.cs" />
+    <Compile Include="Chip\SuperFX\Sfr.cs" />
     <Compile Include="Chip\SuperFX\SuperFX.cs" />
     <Compile Include="Chip\SuperFX\SuperFXBus.cs" />
     <Compile Include="Chip\SuperFX\SuperFXCPURAM.cs" />
@@ -173,18 +173,18 @@
     <Compile Include="CPU\Channel.cs" />
     <Compile Include="CPU\CPU.cs" />
     <Compile Include="CPU\CPUCore.cs" />
-    <Compile Include="CPU\flag_t.cs" />
+    <Compile Include="CPU\Flag.cs" />
     <Compile Include="CPU\Pipe.cs" />
-    <Compile Include="CPU\reg16_t.cs" />
-    <Compile Include="CPU\reg24_t.cs" />
-    <Compile Include="CPU\regs_t.cs" />
+    <Compile Include="CPU\Reg16.cs" />
+    <Compile Include="CPU\Reg24.cs" />
+    <Compile Include="CPU\Regs.cs" />
     <Compile Include="CPU\Status.cs" />
     <Compile Include="DSP\DSP.cs" />
-    <Compile Include="DSP\state_t.cs" />
-    <Compile Include="DSP\voice_t.cs" />
-    <Compile Include="Input\justifier_t.cs" />
-    <Compile Include="Input\port_t.cs" />
-    <Compile Include="Input\superscope_t.cs" />
+    <Compile Include="DSP\State.cs" />
+    <Compile Include="DSP\Voice.cs" />
+    <Compile Include="Input\Justifier.cs" />
+    <Compile Include="Input\Port.cs" />
+    <Compile Include="Input\Superscope.cs" />
     <Compile Include="Interface\Interface.cs" />
     <Compile Include="IProcessor.cs" />
     <Compile Include="Memory\Page.cs" />
@@ -218,14 +218,17 @@
     <Compile Include="Memory\UnmappedMMIO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scheduler\Scheduler.cs" />
+    <Compile Include="SMP\Flag.cs" />
+    <Compile Include="SMP\Regs.cs" />
+    <Compile Include="SMP\RegYA.cs" />
+    <Compile Include="SMP\SMP.cs" />
+    <Compile Include="SMP\SMPCore.cs" />
+    <Compile Include="SMP\sSMPTimer.cs" />
+    <Compile Include="SMP\Status.cs" />
     <Compile Include="System\System.cs" />
     <Compile Include="Video\Video.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Chip\SuperGameBoy\" />
-    <Folder Include="Fast\" />
-    <Folder Include="SMP\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Nall\Nall.csproj">
       <Project>{F426E103-C770-4F1C-AEBE-99D46B3DDFEE}</Project>

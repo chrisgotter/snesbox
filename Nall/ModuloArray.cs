@@ -2,7 +2,7 @@
 
 namespace Nall
 {
-    public class modulo_array<T>
+    public class ModuloArray<T>
     {
         public T this[int index] { get { throw new NotImplementedException(); } }
 
@@ -10,7 +10,7 @@ namespace Nall
 
         public void write(uint index, T value) { throw new NotImplementedException(); }
 
-        public modulo_array(int size) { throw new NotImplementedException(); }
+        public ModuloArray(int size) { throw new NotImplementedException(); }
 
         private T[] buffer;
     }

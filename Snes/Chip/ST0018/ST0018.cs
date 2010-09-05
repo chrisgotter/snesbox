@@ -13,7 +13,7 @@ namespace Snes.Chip.ST0018
         public void mmio_write(uint addr, byte data) { throw new NotImplementedException(); }
 
         public enum mode_t { Waiting, BoardUpload }
-        public regs_t regs;
+        public Regs regs;
 
         public enum PieceID
         {

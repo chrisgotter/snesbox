@@ -3,7 +3,7 @@ namespace Snes.Chip.SDD1
 {
     partial class SDD1_PEM
     {
-        private class state
+        private class State
         {
             byte code_num;
             byte nextIfMPS;

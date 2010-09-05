@@ -4,24 +4,24 @@ namespace Snes.Chip.SuperFX
 {
     partial class SuperFX
     {
-        public class regs_t
+        public class Regs
         {
             public byte pipeline;
             public ushort ramaddr;
 
-            public reg16_t[] r = new reg16_t[16];    //general purpose registers
-            public sfr_t sfr;        //status flag register
+            public Reg16[] r = new Reg16[16];    //general purpose registers
+            public Sfr sfr;        //status flag register
             public byte pbr;        //program bank register
             public byte rombr;      //game pack ROM bank register
             public bool rambr;       //game pack RAM bank register
             public ushort cbr;       //cache base register
             public byte scbr;       //screen base register
-            public scmr_t scmr;      //screen mode register
+            public Scmr scmr;      //screen mode register
             public byte colr;       //color register
-            public por_t por;        //plot option register
+            public Por por;        //plot option register
             public bool bramr;       //back-up RAM register
             public byte vcr;        //version code register
-            public cfgr_t cfgr;      //config register
+            public Cfgr cfgr;      //config register
             public bool clsr;        //clock select register
 
             public uint romcl;   //clock ticks until romdr is valid
@@ -32,8 +32,8 @@ namespace Snes.Chip.SuperFX
             public byte ramdr;      //RAM buffer data register
 
             public uint sreg, dreg;
-            public reg16_t sr() { throw new NotImplementedException(); }  //source register (from)
-            public reg16_t dr() { throw new NotImplementedException(); }  //destination register (to)
+            public Reg16 sr() { throw new NotImplementedException(); }  //source register (from)
+            public Reg16 dr() { throw new NotImplementedException(); }  //destination register (to)
 
             public void reset() { throw new NotImplementedException(); }
         }

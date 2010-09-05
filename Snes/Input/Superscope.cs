@@ -3,9 +3,9 @@ namespace Snes.Input
 {
     partial class Input
     {
-        partial class port_t
+        partial class Port
         {
-            public class superscope_t
+            public class Superscope
             {
                 public int x, y;
 
