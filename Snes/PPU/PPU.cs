@@ -5,7 +5,7 @@ namespace Snes.PPU
 {
     abstract partial class PPU : PPUCounter, IProcessor, IMMIO
     {
-        public const bool Threaded = true;
+        public static readonly bool Threaded = true;
         public void step(uint clocks) { throw new NotImplementedException(); }
         public void synchronize_cpu() { throw new NotImplementedException(); }
 

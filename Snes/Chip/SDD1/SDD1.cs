@@ -18,7 +18,7 @@ namespace Snes.Chip.SDD1
 
         public SDD1() { throw new NotImplementedException(); }
 
-        private IMMIO[] cpu_mmio = new IMMIO[0x80];  //bus spying hooks to glean information for struct dma[]
+        private IMMIO[] cpu_mmio = new IMMIO[0x80];  //bus spying hooks to glean information for class dma[]
 
         private byte sdd1_enable;     //channel bit-mask
         private byte xfer_enable;     //channel bit-mask

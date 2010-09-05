@@ -139,6 +139,23 @@
     <Compile Include="Chip\SDD1\SDD1_OL.cs" />
     <Compile Include="Chip\SDD1\SDD1_PEM.cs" />
     <Compile Include="Chip\SDD1\state.cs" />
+    <Compile Include="Chip\SPC7110\ContextState.cs" />
+    <Compile Include="Chip\SPC7110\SCP7110RAM.cs" />
+    <Compile Include="Chip\SPC7110\SPC7110.cs" />
+    <Compile Include="Chip\SPC7110\SPC7110DCU.cs" />
+    <Compile Include="Chip\SPC7110\SPC7110Decomp.cs" />
+    <Compile Include="Chip\SPC7110\SPC7110MCU.cs" />
+    <Compile Include="Chip\SRTC\SRTC.cs" />
+    <Compile Include="Chip\ST0010\ST0010.cs" />
+    <Compile Include="Chip\ST0011\ST0011.cs" />
+    <Compile Include="Chip\ST0018\regs_t.cs" />
+    <Compile Include="Chip\ST0018\ST0018.cs" />
+    <Compile Include="Chip\SuperFX\SuperFX.cs" />
+    <Compile Include="Chip\SuperFX\SuperFXBus.cs" />
+    <Compile Include="Chip\SuperFX\SuperFXCPURAM.cs" />
+    <Compile Include="Chip\SuperFX\SuperFXCPUROM.cs" />
+    <Compile Include="Chip\SuperFX\SuperFXGSURAM.cs" />
+    <Compile Include="Chip\SuperFX\SuperFXGSUROM.cs" />
     <Compile Include="Configuration\CPU.cs" />
     <Compile Include="Configuration\PPU1.cs" />
     <Compile Include="Configuration\PPU2.cs" />
@@ -194,13 +211,6 @@
     <Compile Include="Video\Video.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Chip\Serial\" />
-    <Folder Include="Chip\SPC7110\" />
-    <Folder Include="Chip\SRTC\" />
-    <Folder Include="Chip\ST0010\" />
-    <Folder Include="Chip\ST0011\" />
-    <Folder Include="Chip\ST0018\" />
-    <Folder Include="Chip\SuperFX\" />
     <Folder Include="Chip\SuperGameBoy\" />
     <Folder Include="DSP\" />
     <Folder Include="Fast\" />

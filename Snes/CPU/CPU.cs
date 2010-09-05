@@ -7,7 +7,7 @@ namespace Snes.CPU
 {
     abstract partial class CPU : CPUCore, IPPUCounter, IProcessor, IMMIO
     {
-        public const bool Threaded = true;
+        public static readonly bool Threaded = true;
         public Processor[] coprocessors;
         public void step(uint clocks) { throw new NotImplementedException(); }
         public void synchronize_smp() { throw new NotImplementedException(); }
