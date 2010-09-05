@@ -22,30 +22,7 @@ namespace Snes.CPU
         public void op_writedp(uint addr, byte data) { throw new NotImplementedException(); }
         public void op_writesp(uint addr, byte data) { throw new NotImplementedException(); }
 
-        public enum OPTYPE
-        {
-            OPTYPE_DP = 0, //dp
-            OPTYPE_DPX, //dp,x
-            OPTYPE_DPY, //dp,y
-            OPTYPE_IDP, //(dp)
-            OPTYPE_IDPX, //(dp,x)
-            OPTYPE_IDPY, //(dp),y
-            OPTYPE_ILDP, //[dp]
-            OPTYPE_ILDPY, //[dp],y
-            OPTYPE_ADDR, //addr
-            OPTYPE_ADDRX, //addr,x
-            OPTYPE_ADDRY, //addr,y
-            OPTYPE_IADDRX, //(addr,x)
-            OPTYPE_ILADDR, //[addr]
-            OPTYPE_LONG, //long
-            OPTYPE_LONGX, //long, x
-            OPTYPE_SR, //sr,s
-            OPTYPE_ISRY, //(sr,s),y
-            OPTYPE_ADDR_PC, //pbr:addr
-            OPTYPE_IADDR_PC, //pbr:(addr)
-            OPTYPE_RELB, //relb
-            OPTYPE_RELW, //relw
-        }
+        public enum OPTYPE { OPTYPE_DP = 0, OPTYPE_DPX, OPTYPE_DPY, OPTYPE_IDP, OPTYPE_IDPX, OPTYPE_IDPY, OPTYPE_ILDP, OPTYPE_ILDPY, OPTYPE_ADDR, OPTYPE_ADDRX, OPTYPE_ADDRY, OPTYPE_IADDRX, OPTYPE_ILADDR, OPTYPE_LONG, OPTYPE_LONGX, OPTYPE_SR, OPTYPE_ISRY, OPTYPE_ADDR_PC, OPTYPE_IADDR_PC, OPTYPE_RELB, OPTYPE_RELW }
 
         public void disassemble_opcode(string output, uint addr) { throw new NotImplementedException(); }
         public byte dreadb(uint addr) { throw new NotImplementedException(); }
@@ -254,14 +231,7 @@ namespace Snes.CPU
         public void initialize_opcode_table() { throw new NotImplementedException(); }
         public void update_table() { throw new NotImplementedException(); }
 
-        public enum Table
-        {
-            table_EM = 0, // 8-bit accumulator,  8-bit index (emulation mode)
-            table_MX = 256, // 8-bit accumulator,  8-bit index
-            table_Mx = 512, // 8-bit accumulator, 16-bit index
-            table_mX = 768, //16-bit accumulator,  8-bit index
-            table_mx = 1024, //16-bit accumulator, 16-bit index
-        }
+        public enum Table { table_EM = 0, table_MX = 256, table_Mx = 512, table_mX = 768, table_mx = 1024 }
 
         public CPUCore() { throw new NotImplementedException(); }
     }

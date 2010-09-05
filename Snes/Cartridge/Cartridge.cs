@@ -1,30 +1,12 @@
 ﻿using System;
-using Snes.Memory;
 
 namespace Snes.Cartridge
 {
     partial class Cartridge
     {
-        public enum Mode : uint
-        {
-            Normal,
-            BsxSlotted,
-            Bsx,
-            SufamiTurbo,
-            SuperGameBoy,
-        }
-
-        public enum Region : uint
-        {
-            NTSC,
-            PAL,
-        }
-
-        public enum SuperGameBoyVersion : uint
-        {
-            Version1,
-            Version2,
-        }
+        public enum Mode : uint { Normal, BsxSlotted, Bsx, SufamiTurbo, SuperGameBoy }
+        public enum Region : uint { NTSC, PAL }
+        public enum SuperGameBoyVersion : uint { Version1, Version2 }
 
         //assigned externally to point to file-system datafiles (msu1 and serial)
         //example: "/path/to/filename.sfc" would set this to "/path/to/filename"

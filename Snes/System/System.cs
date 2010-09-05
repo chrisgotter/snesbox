@@ -6,15 +6,8 @@ namespace Snes
     {
         public static System Default = new System();
 
-        public enum Region : uint
-        {
-            NTSC = 0, PAL = 1, Autodetect = 2
-        }
-
-        public enum ExpansionPortDevice : uint
-        {
-            None = 0, BSX = 1
-        }
+        public enum Region : uint { NTSC = 0, PAL = 1, Autodetect = 2 }
+        public enum ExpansionPortDevice : uint { None = 0, BSX = 1 }
 
         public void run() { throw new NotImplementedException(); }
         public void runtosave() { throw new NotImplementedException(); }

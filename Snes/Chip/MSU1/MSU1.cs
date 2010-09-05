@@ -18,15 +18,7 @@ namespace Snes.Chip.MSU1
         private FileStream datafile;
         private FileStream audiofile;
 
-        private enum Flag
-        {
-            DataBusy = 0x80,
-            AudioBusy = 0x40,
-            AudioRepeating = 0x20,
-            AudioPlaying = 0x10,
-            Revision = 0x01,
-        }
-
+        private enum Flag { DataBusy = 0x80, AudioBusy = 0x40, AudioRepeating = 0x20, AudioPlaying = 0x10, Revision = 0x01 }
         private MMIO mmio;
     }
 }

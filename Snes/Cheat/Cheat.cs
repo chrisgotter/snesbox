@@ -4,10 +4,7 @@ namespace Snes.Cheat
 {
     class Cheat : CheatCode
     {
-        public enum Type : uint
-        {
-            ProActionReplay, GameGenie
-        }
+        public enum Type : uint { ProActionReplay, GameGenie }
 
         public bool enabled() { throw new NotImplementedException(); }
         public void enable(bool state) { throw new NotImplementedException(); }

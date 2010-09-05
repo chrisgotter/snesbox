@@ -5,7 +5,7 @@ namespace Snes.Chip.ST0018
     {
         public class Regs
         {
-            mode_t mode;
+            Mode mode;
 
             byte r3800;
             byte r3800_01;

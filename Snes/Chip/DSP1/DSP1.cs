@@ -15,10 +15,7 @@ namespace Snes.Chip.DSP1
         // the upper 8 bits can be accessed from an external device, so all these
         // positions are referred to the upper byte (bits D8 to D15)
 
-        public enum SrFlags
-        {
-            DRC = 0x04, DRS = 0x10, RQM = 0x80
-        }
+        public enum SrFlags { DRC = 0x04, DRS = 0x10, RQM = 0x80 }
 
         // According to Overload's docs, these are the meanings of the flags:
         // DRC: The Data Register Control (DRC) bit specifies the data transfer length to and from the host CPU.
@@ -36,15 +33,8 @@ namespace Snes.Chip.DSP1
         public byte getDr() { throw new NotImplementedException(); }
         public void setDr(byte iDr) { throw new NotImplementedException(); }
 
-        private enum FsmMajorState
-        {
-            WAIT_COMMAND, READ_DATA, WRITE_DATA
-        }
-
-        private enum MaxDataAccesses
-        {
-            MAX_READS = 7, MAX_WRITES = 1024
-        }
+        private enum FsmMajorState { WAIT_COMMAND, READ_DATA, WRITE_DATA }
+        private enum MaxDataAccesses { MAX_READS = 7, MAX_WRITES = 1024 }
 
         private readonly Command[] mCommandTable;
         private readonly short[] MaxAZS_Exp = new short[16];

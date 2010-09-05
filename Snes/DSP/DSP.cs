@@ -17,30 +17,12 @@ namespace Snes.DSP
 
         public DSP() { throw new NotImplementedException(); }
 
-        private enum global_reg_t
-        {
-            r_mvoll = 0x0c, r_mvolr = 0x1c,
-            r_evoll = 0x2c, r_evolr = 0x3c,
-            r_kon = 0x4c, r_koff = 0x5c,
-            r_flg = 0x6c, r_endx = 0x7c,
-            r_efb = 0x0d, r_pmon = 0x2d,
-            r_non = 0x3d, r_eon = 0x4d,
-            r_dir = 0x5d, r_esa = 0x6d,
-            r_edl = 0x7d, r_fir = 0x0f,  //8 coefficients at 0x0f, 0x1f, ... 0x7f
-        };
-
+        private enum GlobalReg { r_mvoll = 0x0c, r_mvolr = 0x1c, r_evoll = 0x2c, r_evolr = 0x3c, r_kon = 0x4c, r_koff = 0x5c, r_flg = 0x6c, r_endx = 0x7c, r_efb = 0x0d, r_pmon = 0x2d, r_non = 0x3d, r_eon = 0x4d, r_dir = 0x5d, r_esa = 0x6d, r_edl = 0x7d, r_fir = 0x0f }
         //voice registers
-        private enum voice_reg_t
-        {
-            v_voll = 0x00, v_volr = 0x01,
-            v_pitchl = 0x02, v_pitchh = 0x03,
-            v_srcn = 0x04, v_adsr0 = 0x05,
-            v_adsr1 = 0x06, v_gain = 0x07,
-            v_envx = 0x08, v_outx = 0x09,
-        };
+        private enum VoiceReg { v_voll = 0x00, v_volr = 0x01, v_pitchl = 0x02, v_pitchh = 0x03, v_srcn = 0x04, v_adsr0 = 0x05, v_adsr1 = 0x06, v_gain = 0x07, v_envx = 0x08, v_outx = 0x09 }
 
         //internal envelope modes
-        private enum env_mode_t { env_release, env_attack, env_decay, env_sustain };
+        private enum EnvMode { env_release, env_attack, env_decay, env_sustain }
 
         //internal constants
         private static readonly int echo_hist_size = 8;
