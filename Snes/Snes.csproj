@@ -179,6 +179,9 @@
     <Compile Include="CPU\reg24_t.cs" />
     <Compile Include="CPU\regs_t.cs" />
     <Compile Include="CPU\Status.cs" />
+    <Compile Include="DSP\DSP.cs" />
+    <Compile Include="DSP\state_t.cs" />
+    <Compile Include="DSP\voice_t.cs" />
     <Compile Include="Input\justifier_t.cs" />
     <Compile Include="Input\port_t.cs" />
     <Compile Include="Input\superscope_t.cs" />
@@ -220,7 +223,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Chip\SuperGameBoy\" />
-    <Folder Include="DSP\" />
     <Folder Include="Fast\" />
     <Folder Include="SMP\" />
   </ItemGroup>
