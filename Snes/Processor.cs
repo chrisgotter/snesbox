@@ -3,7 +3,8 @@
 namespace Snes
 {
     public delegate void EntryPoint();
-    
+    public delegate void Operation();
+
     class Processor
     {
         public Object thread;

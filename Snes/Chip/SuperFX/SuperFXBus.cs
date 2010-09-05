@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Snes.Memory;
 
 namespace Snes.Chip.SuperFX
 {
-    class SuperFXBus
+    class SuperFXBus : Bus
     {
+        public void init() { throw new NotImplementedException(); }
     }
 }

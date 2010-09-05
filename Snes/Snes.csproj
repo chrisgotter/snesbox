@@ -150,6 +150,14 @@
     <Compile Include="Chip\ST0011\ST0011.cs" />
     <Compile Include="Chip\ST0018\regs_t.cs" />
     <Compile Include="Chip\ST0018\ST0018.cs" />
+    <Compile Include="Chip\SuperFX\cache_t.cs" />
+    <Compile Include="Chip\SuperFX\cfgr_t.cs" />
+    <Compile Include="Chip\SuperFX\pixelcache_t.cs" />
+    <Compile Include="Chip\SuperFX\por_t.cs" />
+    <Compile Include="Chip\SuperFX\reg16_t.cs" />
+    <Compile Include="Chip\SuperFX\regs_t.cs" />
+    <Compile Include="Chip\SuperFX\scmr_t.cs" />
+    <Compile Include="Chip\SuperFX\sfr_t.cs" />
     <Compile Include="Chip\SuperFX\SuperFX.cs" />
     <Compile Include="Chip\SuperFX\SuperFXBus.cs" />
     <Compile Include="Chip\SuperFX\SuperFXCPURAM.cs" />

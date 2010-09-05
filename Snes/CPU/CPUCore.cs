@@ -2,8 +2,6 @@
 
 namespace Snes.CPU
 {
-    public delegate void Operation();
-
     abstract partial class CPUCore
     {
         public byte op_readpc() { throw new NotImplementedException(); }
