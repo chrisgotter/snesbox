@@ -4,11 +4,11 @@ namespace Snes.Cheat
 {
     class CheatCode
     {
-        public bool Enabled { get; set; }
+        public bool enabled;
         public uint[] addr;
         public byte[] data;
 
-        public string CheatString { set { throw new NotImplementedException(); } }
+        public bool Assign(string s) { throw new NotImplementedException(); }
         public CheatCode() { throw new NotImplementedException(); }
     }
 }

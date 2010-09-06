@@ -6,8 +6,8 @@ namespace Snes.Configuration
     {
         public Snes.Input.Input.Device controller_port1;
         public Snes.Input.Input.Device controller_port2;
-        public System.ExpansionPortDevice expansion_port;
-        public System.Region region;
+        public System.System.ExpansionPortDevice expansion_port;
+        public System.System.Region region;
 
         public CPU cpu;
         public SMP smp;

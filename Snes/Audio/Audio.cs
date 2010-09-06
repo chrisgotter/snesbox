@@ -20,7 +20,7 @@ namespace Snes.Audio
         public void coprocessor_frequency(double input_frequency)
         {
             double output_frequency;
-            output_frequency = System.Default.apu_frequency / 768.0;
+            output_frequency = System.System.Default.apu_frequency / 768.0;
             r_step = input_frequency / output_frequency;
             r_frac = 0;
         }
@@ -29,7 +29,7 @@ namespace Snes.Audio
         {
             if (coprocessor == false)
             {
-                System.Default.Interface.audio_sample((ushort)left, (ushort)right);
+                System.System.Default.Interface.audio_sample((ushort)left, (ushort)right);
             }
             else
             {
@@ -99,7 +99,7 @@ namespace Snes.Audio
                 int cop_left = (short)(cop_sample >> 0);
                 int cop_right = (short)(cop_sample >> 16);
 
-                System.Default.Interface.audio_sample((ushort)Bit.sclamp(16, ((dsp_left + cop_left) / 2)), (ushort)Bit.sclamp(16, ((dsp_right + cop_right) / 2)));
+                System.System.Default.Interface.audio_sample((ushort)Bit.sclamp(16, ((dsp_left + cop_left) / 2)), (ushort)Bit.sclamp(16, ((dsp_right + cop_right) / 2)));
             }
         }
     }

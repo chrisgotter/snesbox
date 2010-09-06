@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 
 namespace Snes.Cheat
 {
-    class Cheat : CheatCode
+    class Cheat : Collection<CheatCode>
     {
+        public static Cheat Default = new Cheat();
+
         public enum Type : uint { ProActionReplay, GameGenie }
 
         public bool enabled() { throw new NotImplementedException(); }

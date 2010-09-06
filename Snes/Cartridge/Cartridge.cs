@@ -4,6 +4,8 @@ namespace Snes.Cartridge
 {
     partial class Cartridge
     {
+        public static Cartridge Default = new Cartridge();
+
         public enum Mode : uint { Normal, BsxSlotted, Bsx, SufamiTurbo, SuperGameBoy }
         public enum Region : uint { NTSC, PAL }
         public enum SuperGameBoyVersion : uint { Version1, Version2 }

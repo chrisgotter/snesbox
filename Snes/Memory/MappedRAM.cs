@@ -4,6 +4,20 @@ namespace Snes.Memory
 {
     class MappedRAM : Memory
     {
+        public static MappedRAM cartrom;
+        public static MappedRAM cartram;
+        public static MappedRAM cartrtc;
+        public static MappedRAM bsxflash;
+        public static MappedRAM bsxram;
+        public static MappedRAM bsxpram;
+        public static MappedRAM stArom;
+        public static MappedRAM stAram;
+        public static MappedRAM stBrom;
+        public static MappedRAM stBram;
+        public static MappedRAM gbrom;
+        public static MappedRAM gbram;
+        public static MappedRAM gbrtc;
+
         public void reset() { throw new NotImplementedException(); }
         public void map(byte[] source, uint length) { throw new NotImplementedException(); }
         public void copy(byte[] data, uint size) { throw new NotImplementedException(); }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snes
+namespace Snes.System
 {
     class System
     {
@@ -12,7 +12,7 @@ namespace Snes
         public void run() { throw new NotImplementedException(); }
         public void runtosave() { throw new NotImplementedException(); }
 
-        public void init() { throw new NotImplementedException(); }
+        public void init(Interface.Interface inter) { throw new NotImplementedException(); }
         public void term() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }
         public void reset() { throw new NotImplementedException(); }
