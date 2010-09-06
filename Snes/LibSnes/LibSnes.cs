@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Nall;
+using Snes.Chip.SuperGameBoy;
 using Snes.Memory;
 
 namespace Snes.LibSnes
@@ -248,14 +249,20 @@ namespace Snes.LibSnes
                         break;
                     }
                     return MappedRAM.stBram.data();
-                //case SNES_MEMORY.GAME_BOY_RAM:
-                //        if (Cartridge.Cartridge.Default.mode != Cartridge.Cartridge.Mode.SuperGameBoy) break;
-                //        SNES::supergameboy.save();
-                //        return MappedRAM.gbram.data();
-                //case SNES_MEMORY.GAME_BOY_RTC:
-                //        if (Cartridge.Cartridge.Default.mode != Cartridge.Cartridge.Mode.SuperGameBoy) break;
-                //        SNES::supergameboy.save();
-                //        return MappedRAM.gbrtc.data();
+                case SNES_MEMORY.GAME_BOY_RAM:
+                    if (Cartridge.Cartridge.Default.mode != Cartridge.Cartridge.Mode.SuperGameBoy)
+                    {
+                        break;
+                    }
+                    SuperGameBoy.Default.save();
+                    return MappedRAM.gbram.data();
+                case SNES_MEMORY.GAME_BOY_RTC:
+                    if (Cartridge.Cartridge.Default.mode != Cartridge.Cartridge.Mode.SuperGameBoy)
+                    {
+                        break;
+                    }
+                    SuperGameBoy.Default.save();
+                    return MappedRAM.gbrtc.data();
             }
 
             return null;

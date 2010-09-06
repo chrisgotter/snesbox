@@ -164,6 +164,7 @@
     <Compile Include="Chip\SuperFX\SuperFXCPUROM.cs" />
     <Compile Include="Chip\SuperFX\SuperFXGSURAM.cs" />
     <Compile Include="Chip\SuperFX\SuperFXGSUROM.cs" />
+    <Compile Include="Chip\SuperGameBoy\SuperGameBoy.cs" />
     <Compile Include="Configuration\CPU.cs" />
     <Compile Include="Configuration\PPU1.cs" />
     <Compile Include="Configuration\PPU2.cs" />
