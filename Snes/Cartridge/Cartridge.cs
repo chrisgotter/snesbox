@@ -1,14 +1,20 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Xml.Linq;
 using Nall;
 using Snes.Chip.BSX;
 using Snes.Chip.CX4;
+using Snes.Chip.DSP1;
+using Snes.Chip.DSP2;
+using Snes.Chip.DSP3;
+using Snes.Chip.DSP4;
 using Snes.Chip.MSU1;
 using Snes.Chip.OBC1;
 using Snes.Chip.SA1;
+using Snes.Chip.SDD1;
+using Snes.Chip.SPC7110;
 using Snes.Chip.SRTC;
+using Snes.Chip.ST0010;
 using Snes.Chip.ST0018;
 using Snes.Chip.SuperFX;
 using Snes.Chip.SuperGameBoy;
@@ -628,7 +634,8 @@ namespace Snes.Cartridge
 
             foreach (var node in root.Elements("slot"))
             {
-                int slotid = 0;
+                uint slotid = 0;
+
                 if (node.Attributes("id").Any())
                 {
                     if (node.Attribute("id").Value == "A")
@@ -752,12 +759,127 @@ namespace Snes.Cartridge
 
         private void xml_parse_sdd1(XElement root)
         {
-            throw new NotImplementedException();
+            has_sdd1 = true;
+
+            foreach (var node in root.Elements("mcu"))
+            {
+                foreach (var leaf in node.Elements("map"))
+                {
+                    Mapping m = new Mapping((Memory.Memory)SDD1.sdd1);
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+                    mapping.Add(m);
+                }
+            }
+
+            foreach (var node in root.Elements("mmio"))
+            {
+                foreach (var leaf in node.Elements("map"))
+                {
+                    Mapping m = new Mapping((Memory.Memory)SDD1.sdd1);
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+                    mapping.Add(m);
+                }
+            }
         }
 
         private void xml_parse_spc7110(XElement root)
         {
-            throw new NotImplementedException();
+            has_spc7110 = true;
+
+            foreach (var node in root.Elements("dcu"))
+            {
+                foreach (var leaf in node.Elements("map"))
+                {
+                    Mapping m = new Mapping(SPC7110DCU.spc7110dcu);
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+                    mapping.Add(m);
+                }
+            }
+
+            foreach (var node in root.Elements("mcu"))
+            {
+                foreach (var leaf in node.Elements("map"))
+                {
+                    Mapping m = new Mapping(SPC7110MCU.spc7110mcu);
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+                    if (leaf.Attributes("offset").Any())
+                    {
+                        spc7110_data_rom_offset = uint.Parse(leaf.Attribute("offset").Value);
+                    }
+                    mapping.Add(m);
+                }
+            }
+
+            foreach (var node in root.Elements("mmio"))
+            {
+                foreach (var leaf in node.Elements("map"))
+                {
+                    Mapping m = new Mapping(SPC7110.spc7110);
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+                    mapping.Add(m);
+                }
+            }
+
+            foreach (var node in root.Elements("ram"))
+            {
+                if (node.Attributes("size").Any())
+                {
+                    ram_size = uint.Parse(node.Attribute("size").Value);
+                }
+
+                foreach (var leaf in node.Elements("map"))
+                {
+                    Mapping m = new Mapping(SPC7110RAM.spc7110ram);
+
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+                    if (leaf.Attributes("mode").Any())
+                    {
+                        xml_parse_mode(m, leaf.Attribute("mode").Value);
+                    }
+                    if (leaf.Attributes("offset").Any())
+                    {
+                        m.offset = uint.Parse(leaf.Attribute("offset").Value);
+                    }
+                    if (leaf.Attributes("size").Any())
+                    {
+                        m.size = uint.Parse(leaf.Attribute("size").Value);
+                    }
+                    mapping.Add(m);
+                }
+            }
+
+            foreach (var node in root.Elements("rtc"))
+            {
+                has_spc7110rtc = true;
+
+                foreach (var leaf in node.Elements("map"))
+                {
+                    Mapping m = new Mapping(SPC7110.spc7110);
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+                    mapping.Add(m);
+                }
+            }
         }
 
         private void xml_parse_cx4(XElement root)
@@ -780,7 +902,68 @@ namespace Snes.Cartridge
 
         private void xml_parse_necdsp(XElement root)
         {
-            throw new NotImplementedException();
+            uint program = 0;
+
+            if (root.Attributes("program").Any())
+            {
+                var content = root.Attribute("program").Value;
+                if (content == "DSP-1" || content == "DSP-1A" || content == "DSP-1B")
+                {
+                    program = 1;
+                    has_dsp1 = true;
+                }
+                else if (content == "DSP-2")
+                {
+                    program = 2;
+                    has_dsp2 = true;
+                }
+                else if (content == "DSP-3")
+                {
+                    program = 3;
+                    has_dsp3 = true;
+                }
+                else if (content == "DSP-4")
+                {
+                    program = 4;
+                    has_dsp4 = true;
+                }
+            }
+
+            Memory.Memory[] dr = new Memory.Memory[5] { null, DSP1DR.dsp1dr, DSP2DR.dsp2dr, DSP3.dsp3, DSP4.dsp4 };
+            Memory.Memory[] sr = new Memory.Memory[5] { null, DSP1SR.dsp1sr, DSP2SR.dsp2sr, DSP3.dsp3, DSP4.dsp4 };
+
+            foreach (var node in root.Elements("dr"))
+            {
+                if (!ReferenceEquals(dr[program], null))
+                {
+                    foreach (var leaf in node.Elements("map"))
+                    {
+                        Mapping m = new Mapping(dr[program]);
+                        if (leaf.Attributes("address").Any())
+                        {
+                            xml_parse_address(m, leaf.Attribute("address").Value);
+                        }
+                        mapping.Add(m);
+                    }
+                }
+            }
+
+            foreach (var node in root.Elements("sr"))
+            {
+                if (!ReferenceEquals(sr[program], null))
+                {
+                    foreach (var leaf in node.Elements("map"))
+                    {
+                        Mapping m = new Mapping(sr[program]);
+                        if (leaf.Attributes("address").Any())
+                        {
+                            xml_parse_address(m, leaf.Attribute("address").Value);
+                        }
+                        mapping.Add(m);
+                    }
+
+                }
+            }
         }
 
         private void xml_parse_obc1(XElement root)
@@ -803,7 +986,37 @@ namespace Snes.Cartridge
 
         private void xml_parse_setadsp(XElement root)
         {
-            throw new NotImplementedException();
+            uint program = 0;
+
+            if (root.Attributes("program").Any())
+            {
+                var content = root.Attribute("program").Value;
+                if (content == "ST-0010")
+                {
+                    program = 1;
+                    has_st0010 = true;
+                }
+                else if (content == "ST-0011")
+                {
+                    program = 2;
+                    has_st0011 = true;
+                }
+            }
+
+            Memory.Memory[] map = new Memory.Memory[3] { null, ST0010.st0010, null };
+
+            foreach (var node in root.Elements("mmio"))
+            {
+                foreach (var leaf in node.Elements("map"))
+                {
+                    Mapping m = new Mapping(map[program]);
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+                    mapping.Add(m);
+                }
+            }
         }
 
         private void xml_parse_setarisc(XElement root)

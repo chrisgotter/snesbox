@@ -5,6 +5,8 @@ namespace Snes.Chip.SDD1
 {
     partial class SDD1 : Memory.Memory, IMMIO
     {
+        public static SDD1 sdd1 = new SDD1();
+
         public void init() { throw new NotImplementedException(); }
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }

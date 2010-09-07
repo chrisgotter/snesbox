@@ -4,6 +4,8 @@ namespace Snes.Chip.DSP3
 {
     class DSP3 : Memory.Memory
     {
+        public static DSP3 dsp3 = new DSP3();
+
         public override uint size() { throw new NotImplementedException(); }
         public void init() { throw new NotImplementedException(); }
         public void enable() { throw new NotImplementedException(); }

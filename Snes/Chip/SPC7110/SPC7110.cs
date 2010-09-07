@@ -5,6 +5,8 @@ namespace Snes.Chip.SPC7110
 {
     class SPC7110 : IMMIO
     {
+        public static SPC7110 spc7110 = new SPC7110();
+
         public void init() { throw new NotImplementedException(); }
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }

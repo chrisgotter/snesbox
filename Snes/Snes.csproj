@@ -140,7 +140,7 @@
     <Compile Include="Chip\SDD1\SDD1_PEM.cs" />
     <Compile Include="Chip\SDD1\State.cs" />
     <Compile Include="Chip\SPC7110\ContextState.cs" />
-    <Compile Include="Chip\SPC7110\SCP7110RAM.cs" />
+    <Compile Include="Chip\SPC7110\SPC7110RAM.cs" />
     <Compile Include="Chip\SPC7110\SPC7110.cs" />
     <Compile Include="Chip\SPC7110\SPC7110DCU.cs" />
     <Compile Include="Chip\SPC7110\SPC7110Decomp.cs" />

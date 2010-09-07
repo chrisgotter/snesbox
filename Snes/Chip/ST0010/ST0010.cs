@@ -4,6 +4,8 @@ namespace Snes.Chip.ST0010
 {
     class ST0010 : Snes.Memory.Memory
     {
+        public static ST0010 st0010 = new ST0010();
+
         public void init() { throw new NotImplementedException(); }
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }
