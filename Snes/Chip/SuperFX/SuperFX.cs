@@ -5,6 +5,8 @@ namespace Snes.Chip.SuperFX
 {
     partial class SuperFX : Coprocessor, IMMIO
     {
+        public static SuperFX superfx = new SuperFX();
+
         public Regs regs;
         public Cache cache;
         public PixelCache[] pixelcache = new PixelCache[2];

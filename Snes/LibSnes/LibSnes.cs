@@ -123,7 +123,7 @@ namespace Snes.LibSnes
                 MappedRAM.cartrom.copy(rom_data, rom_size);
             }
             string xmlrom = (!ReferenceEquals(rom_xml, null)) ? ASCIIEncoding.ASCII.GetString(rom_xml) : new SnesInformation(rom_data, rom_size).xml_memory_map;
-            Cartridge.Cartridge.Default.load(Cartridge.Cartridge.Mode.Normal, xmlrom);
+            Cartridge.Cartridge.Default.load(Cartridge.Cartridge.Mode.Normal, new string[] { xmlrom });
             System.System.Default.power();
             return true;
         }
@@ -141,7 +141,7 @@ namespace Snes.LibSnes
                 MappedRAM.bsxflash.copy(bsx_data, bsx_size);
             }
             string xmlbsx = (!ReferenceEquals(bsx_xml, null)) ? ASCIIEncoding.ASCII.GetString(bsx_xml) : new SnesInformation(bsx_data, bsx_size).xml_memory_map;
-            Cartridge.Cartridge.Default.load(Cartridge.Cartridge.Mode.BsxSlotted, xmlrom + xmlbsx);
+            Cartridge.Cartridge.Default.load(Cartridge.Cartridge.Mode.BsxSlotted, new string[] { xmlrom, xmlbsx });
             System.System.Default.power();
             return true;
         }
@@ -159,7 +159,7 @@ namespace Snes.LibSnes
                 MappedRAM.bsxflash.copy(bsx_data, bsx_size);
             }
             string xmlbsx = (!ReferenceEquals(bsx_xml, null)) ? ASCIIEncoding.ASCII.GetString(bsx_xml) : new SnesInformation(bsx_data, bsx_size).xml_memory_map;
-            Cartridge.Cartridge.Default.load(Cartridge.Cartridge.Mode.Bsx, xmlrom + xmlbsx);
+            Cartridge.Cartridge.Default.load(Cartridge.Cartridge.Mode.Bsx, new string[] { xmlrom, xmlbsx });
             System.System.Default.power();
             return true;
         }
@@ -182,7 +182,7 @@ namespace Snes.LibSnes
                 MappedRAM.stBrom.copy(stb_data, stb_size);
             }
             string xmlstb = (!ReferenceEquals(stb_xml, null)) ? ASCIIEncoding.ASCII.GetString(stb_xml) : new SnesInformation(stb_data, stb_size).xml_memory_map;
-            Cartridge.Cartridge.Default.load(Cartridge.Cartridge.Mode.SufamiTurbo, xmlrom + xmlsta + xmlstb);
+            Cartridge.Cartridge.Default.load(Cartridge.Cartridge.Mode.SufamiTurbo, new string[] { xmlrom, xmlsta, xmlstb });
             System.System.Default.power();
             return true;
         }
@@ -200,7 +200,7 @@ namespace Snes.LibSnes
                 MappedRAM.gbrom.copy(dmg_data, dmg_size);
             }
             string xmldmg = (!ReferenceEquals(dmg_xml, null)) ? ASCIIEncoding.ASCII.GetString(dmg_xml) : new SnesInformation(dmg_data, dmg_size).xml_memory_map;
-            Cartridge.Cartridge.Default.load(Cartridge.Cartridge.Mode.SuperGameBoy, xmlrom + xmldmg);
+            Cartridge.Cartridge.Default.load(Cartridge.Cartridge.Mode.SuperGameBoy, new string[] { xmlrom, xmldmg });
             System.System.Default.power();
             return true;
         }

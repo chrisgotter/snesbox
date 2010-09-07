@@ -1,5 +1,4 @@
-﻿using System;
-using Snes.Memory;
+﻿using Snes.Memory;
 
 namespace Snes.Cartridge
 {
@@ -17,9 +16,29 @@ namespace Snes.Cartridge
             public uint offset;
             public uint size;
 
-            public Mapping() { throw new NotImplementedException(); }
-            public Mapping(Snes.Memory.Memory memory) { throw new NotImplementedException(); }
-            public Mapping(IMMIO mmio) { throw new NotImplementedException(); }
+            public Mapping()
+            {
+                memory = null;
+                mmio = null;
+                mode = Bus.MapMode.Direct;
+                banklo = bankhi = addrlo = addrhi = offset = size = 0;
+            }
+
+            public Mapping(Snes.Memory.Memory memory_)
+            {
+                memory = memory_;
+                mmio = null;
+                mode = Bus.MapMode.Direct;
+                banklo = bankhi = addrlo = addrhi = offset = size = 0;
+            }
+
+            public Mapping(IMMIO mmio_)
+            {
+                memory = null;
+                mmio = mmio_;
+                mode = Bus.MapMode.Direct;
+                banklo = bankhi = addrlo = addrhi = offset = size = 0;
+            }
         }
     }
 }

@@ -5,6 +5,8 @@ namespace Snes.Memory
 {
     partial class Bus
     {
+        public static Bus bus = new Bus();
+
         public uint mirror(uint addr, uint size) { throw new NotImplementedException(); }
         public void map(uint addr, Memory access, uint offset) { throw new NotImplementedException(); }
         public enum MapMode : uint { Direct, Linear, Shadow }

@@ -4,6 +4,8 @@ namespace Snes.Chip.SuperFX
 {
     class SuperFXCPURAM : Snes.Memory.Memory
     {
+        public static SuperFXCPURAM fxram = new SuperFXCPURAM();
+
         public override uint size()
         {
             throw new NotImplementedException();
