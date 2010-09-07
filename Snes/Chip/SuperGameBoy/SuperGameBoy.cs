@@ -5,7 +5,7 @@ namespace Snes.Chip.SuperGameBoy
 {
     class SuperGameBoy : Memory.Memory, ICoprocessor, IMMIO
     {
-        public static SuperGameBoy Default = new SuperGameBoy();
+        public static SuperGameBoy supergameboy = new SuperGameBoy();
 
         public static void Enter() { throw new NotImplementedException(); }
         public void enter() { throw new NotImplementedException(); }

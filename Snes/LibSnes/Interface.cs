@@ -3,7 +3,7 @@ namespace Snes.LibSnes
 {
     class Interface : Snes.Interface.Interface
     {
-        public static Interface Default = new Interface();
+        public static Interface inter = new Interface();
 
         public event Snes.LibSnes.LibSnes.SnesVideoRefresh pvideo_refresh = null;
         public event Snes.LibSnes.LibSnes.SnesAudioSample paudio_sample = null;

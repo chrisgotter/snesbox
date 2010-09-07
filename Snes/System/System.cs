@@ -4,7 +4,7 @@ namespace Snes.System
 {
     class System
     {
-        public static System Default = new System();
+        public static System system = new System();
 
         public enum Region : uint { NTSC = 0, PAL = 1, Autodetect = 2 }
         public enum ExpansionPortDevice : uint { None = 0, BSX = 1 }

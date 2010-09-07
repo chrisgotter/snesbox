@@ -5,7 +5,7 @@ namespace Snes.Cheat
 {
     class Cheat : Collection<CheatCode>
     {
-        public static Cheat Default = new Cheat();
+        public static Cheat cheat = new Cheat();
 
         public enum Type : uint { ProActionReplay, GameGenie }
 

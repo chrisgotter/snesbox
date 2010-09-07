@@ -31,10 +31,10 @@ namespace Snes.LibSnes
 
         static LibSnes()
         {
-            Interface.Default.pvideo_refresh += new SnesVideoRefresh(Default_pvideo_refresh);
-            Interface.Default.paudio_sample += new SnesAudioSample(Default_paudio_sample);
-            Interface.Default.pinput_poll += new SnesInputPoll(Default_pinput_poll);
-            Interface.Default.pinput_state += new SnesInputState(Default_pinput_state);
+            Interface.inter.pvideo_refresh += new SnesVideoRefresh(Default_pvideo_refresh);
+            Interface.inter.paudio_sample += new SnesAudioSample(Default_paudio_sample);
+            Interface.inter.pinput_poll += new SnesInputPoll(Default_pinput_poll);
+            Interface.inter.pinput_state += new SnesInputState(Default_pinput_state);
         }
 
         static void Default_pvideo_refresh(ushort[] data, uint width, uint height)
@@ -72,47 +72,47 @@ namespace Snes.LibSnes
 
         public static void snes_set_controller_port_device(bool port, uint device)
         {
-            Input.Input.Default.port_set_device(port, (Input.Input.Device)device);
+            Input.Input.input.port_set_device(port, (Input.Input.Device)device);
         }
 
         public static void snes_init()
         {
-            System.System.Default.init(Interface.Default);
-            Input.Input.Default.port_set_device(false, Input.Input.Device.Joypad);
-            Input.Input.Default.port_set_device(true, Input.Input.Device.Joypad);
+            System.System.system.init(Interface.inter);
+            Input.Input.input.port_set_device(false, Input.Input.Device.Joypad);
+            Input.Input.input.port_set_device(true, Input.Input.Device.Joypad);
         }
 
         public static void snes_term()
         {
-            System.System.Default.term();
+            System.System.system.term();
         }
 
         public static void snes_power()
         {
-            System.System.Default.power();
+            System.System.system.power();
         }
 
         public static void snes_reset()
         {
-            System.System.Default.reset();
+            System.System.system.reset();
         }
 
         public static void snes_run()
         {
-            System.System.Default.run();
+            System.System.system.run();
         }
 
         public static void snes_cheat_reset()
         {
-            Cheat.Cheat.Default.Clear();
-            Cheat.Cheat.Default.synchronize();
+            Cheat.Cheat.cheat.Clear();
+            Cheat.Cheat.cheat.synchronize();
         }
 
         public static void snes_cheat_set(uint index, bool enabled, string code)
         {
-            Cheat.Cheat.Default[(int)index].Assign(code);
-            Cheat.Cheat.Default[(int)index].enabled = enabled;
-            Cheat.Cheat.Default.synchronize();
+            Cheat.Cheat.cheat[(int)index].Assign(code);
+            Cheat.Cheat.cheat[(int)index].enabled = enabled;
+            Cheat.Cheat.cheat.synchronize();
         }
 
         public static bool snes_load_cartridge_normal(byte[] rom_xml, byte[] rom_data, uint rom_size)
@@ -123,8 +123,8 @@ namespace Snes.LibSnes
                 MappedRAM.cartrom.copy(rom_data, rom_size);
             }
             string xmlrom = (!ReferenceEquals(rom_xml, null)) ? ASCIIEncoding.ASCII.GetString(rom_xml) : new SnesInformation(rom_data, rom_size).xml_memory_map;
-            Cartridge.Cartridge.Default.load(Cartridge.Cartridge.Mode.Normal, new string[] { xmlrom });
-            System.System.Default.power();
+            Cartridge.Cartridge.cartridge.load(Cartridge.Cartridge.Mode.Normal, new string[] { xmlrom });
+            System.System.system.power();
             return true;
         }
 
@@ -141,8 +141,8 @@ namespace Snes.LibSnes
                 MappedRAM.bsxflash.copy(bsx_data, bsx_size);
             }
             string xmlbsx = (!ReferenceEquals(bsx_xml, null)) ? ASCIIEncoding.ASCII.GetString(bsx_xml) : new SnesInformation(bsx_data, bsx_size).xml_memory_map;
-            Cartridge.Cartridge.Default.load(Cartridge.Cartridge.Mode.BsxSlotted, new string[] { xmlrom, xmlbsx });
-            System.System.Default.power();
+            Cartridge.Cartridge.cartridge.load(Cartridge.Cartridge.Mode.BsxSlotted, new string[] { xmlrom, xmlbsx });
+            System.System.system.power();
             return true;
         }
 
@@ -159,8 +159,8 @@ namespace Snes.LibSnes
                 MappedRAM.bsxflash.copy(bsx_data, bsx_size);
             }
             string xmlbsx = (!ReferenceEquals(bsx_xml, null)) ? ASCIIEncoding.ASCII.GetString(bsx_xml) : new SnesInformation(bsx_data, bsx_size).xml_memory_map;
-            Cartridge.Cartridge.Default.load(Cartridge.Cartridge.Mode.Bsx, new string[] { xmlrom, xmlbsx });
-            System.System.Default.power();
+            Cartridge.Cartridge.cartridge.load(Cartridge.Cartridge.Mode.Bsx, new string[] { xmlrom, xmlbsx });
+            System.System.system.power();
             return true;
         }
 
@@ -182,8 +182,8 @@ namespace Snes.LibSnes
                 MappedRAM.stBrom.copy(stb_data, stb_size);
             }
             string xmlstb = (!ReferenceEquals(stb_xml, null)) ? ASCIIEncoding.ASCII.GetString(stb_xml) : new SnesInformation(stb_data, stb_size).xml_memory_map;
-            Cartridge.Cartridge.Default.load(Cartridge.Cartridge.Mode.SufamiTurbo, new string[] { xmlrom, xmlsta, xmlstb });
-            System.System.Default.power();
+            Cartridge.Cartridge.cartridge.load(Cartridge.Cartridge.Mode.SufamiTurbo, new string[] { xmlrom, xmlsta, xmlstb });
+            System.System.system.power();
             return true;
         }
 
@@ -200,24 +200,24 @@ namespace Snes.LibSnes
                 MappedRAM.gbrom.copy(dmg_data, dmg_size);
             }
             string xmldmg = (!ReferenceEquals(dmg_xml, null)) ? ASCIIEncoding.ASCII.GetString(dmg_xml) : new SnesInformation(dmg_data, dmg_size).xml_memory_map;
-            Cartridge.Cartridge.Default.load(Cartridge.Cartridge.Mode.SuperGameBoy, new string[] { xmlrom, xmldmg });
-            System.System.Default.power();
+            Cartridge.Cartridge.cartridge.load(Cartridge.Cartridge.Mode.SuperGameBoy, new string[] { xmlrom, xmldmg });
+            System.System.system.power();
             return true;
         }
 
         public static void snes_unload_cartridge()
         {
-            Cartridge.Cartridge.Default.unload();
+            Cartridge.Cartridge.cartridge.unload();
         }
 
         public static bool snes_get_region()
         {
-            return System.System.Default.region == System.System.Region.NTSC ? false : true;
+            return System.System.system.region == System.System.Region.NTSC ? false : true;
         }
 
         public static byte[] snes_get_memory_data(uint id)
         {
-            if (Cartridge.Cartridge.Default.loaded == false) return null;
+            if (Cartridge.Cartridge.cartridge.loaded == false) return null;
 
             switch ((SNES_MEMORY)id)
             {
@@ -226,42 +226,42 @@ namespace Snes.LibSnes
                 case SNES_MEMORY.CARTRIDGE_RTC:
                     return MappedRAM.cartrtc.data();
                 case SNES_MEMORY.BSX_RAM:
-                    if (Cartridge.Cartridge.Default.mode != Cartridge.Cartridge.Mode.Bsx)
+                    if (Cartridge.Cartridge.cartridge.mode != Cartridge.Cartridge.Mode.Bsx)
                     {
                         break;
                     }
                     return MappedRAM.bsxram.data();
                 case SNES_MEMORY.BSX_PRAM:
-                    if (Cartridge.Cartridge.Default.mode != Cartridge.Cartridge.Mode.Bsx)
+                    if (Cartridge.Cartridge.cartridge.mode != Cartridge.Cartridge.Mode.Bsx)
                     {
                         break;
                     }
                     return MappedRAM.bsxpram.data();
                 case SNES_MEMORY.SUFAMI_TURBO_A_RAM:
-                    if (Cartridge.Cartridge.Default.mode != Cartridge.Cartridge.Mode.SufamiTurbo)
+                    if (Cartridge.Cartridge.cartridge.mode != Cartridge.Cartridge.Mode.SufamiTurbo)
                     {
                         break;
                     }
                     return MappedRAM.stAram.data();
                 case SNES_MEMORY.SUFAMI_TURBO_B_RAM:
-                    if (Cartridge.Cartridge.Default.mode != Cartridge.Cartridge.Mode.SufamiTurbo)
+                    if (Cartridge.Cartridge.cartridge.mode != Cartridge.Cartridge.Mode.SufamiTurbo)
                     {
                         break;
                     }
                     return MappedRAM.stBram.data();
                 case SNES_MEMORY.GAME_BOY_RAM:
-                    if (Cartridge.Cartridge.Default.mode != Cartridge.Cartridge.Mode.SuperGameBoy)
+                    if (Cartridge.Cartridge.cartridge.mode != Cartridge.Cartridge.Mode.SuperGameBoy)
                     {
                         break;
                     }
-                    SuperGameBoy.Default.save();
+                    SuperGameBoy.supergameboy.save();
                     return MappedRAM.gbram.data();
                 case SNES_MEMORY.GAME_BOY_RTC:
-                    if (Cartridge.Cartridge.Default.mode != Cartridge.Cartridge.Mode.SuperGameBoy)
+                    if (Cartridge.Cartridge.cartridge.mode != Cartridge.Cartridge.Mode.SuperGameBoy)
                     {
                         break;
                     }
-                    SuperGameBoy.Default.save();
+                    SuperGameBoy.supergameboy.save();
                     return MappedRAM.gbrtc.data();
             }
 
@@ -270,7 +270,7 @@ namespace Snes.LibSnes
 
         public static uint snes_get_memory_size(uint id)
         {
-            if (Cartridge.Cartridge.Default.loaded == false)
+            if (Cartridge.Cartridge.cartridge.loaded == false)
             {
                 return 0;
             }
@@ -285,42 +285,42 @@ namespace Snes.LibSnes
                     size = MappedRAM.cartrtc.size();
                     break;
                 case SNES_MEMORY.BSX_RAM:
-                    if (Cartridge.Cartridge.Default.mode != Cartridge.Cartridge.Mode.Bsx)
+                    if (Cartridge.Cartridge.cartridge.mode != Cartridge.Cartridge.Mode.Bsx)
                     {
                         break;
                     }
                     size = MappedRAM.bsxram.size();
                     break;
                 case SNES_MEMORY.BSX_PRAM:
-                    if (Cartridge.Cartridge.Default.mode != Cartridge.Cartridge.Mode.Bsx)
+                    if (Cartridge.Cartridge.cartridge.mode != Cartridge.Cartridge.Mode.Bsx)
                     {
                         break;
                     }
                     size = MappedRAM.bsxpram.size();
                     break;
                 case SNES_MEMORY.SUFAMI_TURBO_A_RAM:
-                    if (Cartridge.Cartridge.Default.mode != Cartridge.Cartridge.Mode.SufamiTurbo)
+                    if (Cartridge.Cartridge.cartridge.mode != Cartridge.Cartridge.Mode.SufamiTurbo)
                     {
                         break;
                     }
                     size = MappedRAM.stAram.size();
                     break;
                 case SNES_MEMORY.SUFAMI_TURBO_B_RAM:
-                    if (Cartridge.Cartridge.Default.mode != Cartridge.Cartridge.Mode.SufamiTurbo)
+                    if (Cartridge.Cartridge.cartridge.mode != Cartridge.Cartridge.Mode.SufamiTurbo)
                     {
                         break;
                     }
                     size = MappedRAM.stBram.size();
                     break;
                 case SNES_MEMORY.GAME_BOY_RAM:
-                    if (Cartridge.Cartridge.Default.mode != Cartridge.Cartridge.Mode.SuperGameBoy)
+                    if (Cartridge.Cartridge.cartridge.mode != Cartridge.Cartridge.Mode.SuperGameBoy)
                     {
                         break;
                     }
                     size = MappedRAM.gbram.size();
                     break;
                 case SNES_MEMORY.GAME_BOY_RTC:
-                    if (Cartridge.Cartridge.Default.mode != Cartridge.Cartridge.Mode.SuperGameBoy)
+                    if (Cartridge.Cartridge.cartridge.mode != Cartridge.Cartridge.Mode.SuperGameBoy)
                     {
                         break;
                     }
