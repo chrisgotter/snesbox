@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Xml.Linq;
 using Nall;
 using Snes.Chip.BSX;
@@ -195,12 +196,8 @@ namespace Snes.Cartridge
                 crc32 = ~checksum;
             }
 
-            SHA256 sha = new SHA256();
-            byte[] shahash = new byte[32];
-            SHA256.init(sha);
-            SHA256.chunk(sha, MappedRAM.cartrom.data(), MappedRAM.cartrom.size());
-            SHA256.final(sha);
-            SHA256.hash(sha, shahash);
+            var sha = new SHA256Managed();
+            var shahash = sha.ComputeHash(MappedRAM.cartrom.data());
 
             string hash = string.Empty;
             foreach (var n in shahash)
