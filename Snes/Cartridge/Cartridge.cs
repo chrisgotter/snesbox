@@ -118,16 +118,28 @@ namespace Snes.Cartridge
 
             if (mode == Mode.SufamiTurbo)
             {
-                if (!ReferenceEquals(MappedRAM.stArom.data(), null)) MappedRAM.stAram.map(Enumerable.Repeat<byte>(0xff, 128 * 1024).ToArray(), 128 * 1024);
-                if (!ReferenceEquals(MappedRAM.stBrom.data(), null)) MappedRAM.stBram.map(Enumerable.Repeat<byte>(0xff, 128 * 1024).ToArray(), 128 * 1024);
+                if (!ReferenceEquals(MappedRAM.stArom.data(), null))
+                {
+                    MappedRAM.stAram.map(Enumerable.Repeat<byte>(0xff, 128 * 1024).ToArray(), 128 * 1024);
+                }
+                if (!ReferenceEquals(MappedRAM.stBrom.data(), null))
+                {
+                    MappedRAM.stBram.map(Enumerable.Repeat<byte>(0xff, 128 * 1024).ToArray(), 128 * 1024);
+                }
             }
 
             if (mode == Mode.SuperGameBoy)
             {
                 if (!ReferenceEquals(MappedRAM.gbrom.data(), null))
                 {
-                    if (supergameboy_ram_size != 0) MappedRAM.gbram.map(Enumerable.Repeat<byte>(0xff, (int)supergameboy_ram_size).ToArray(), supergameboy_ram_size);
-                    if (supergameboy_rtc_size != 0) MappedRAM.gbrtc.map(Enumerable.Repeat<byte>(0x00, (int)supergameboy_rtc_size).ToArray(), supergameboy_rtc_size);
+                    if (supergameboy_ram_size != 0)
+                    {
+                        MappedRAM.gbram.map(Enumerable.Repeat<byte>(0xff, (int)supergameboy_ram_size).ToArray(), supergameboy_ram_size);
+                    }
+                    if (supergameboy_rtc_size != 0)
+                    {
+                        MappedRAM.gbrtc.map(Enumerable.Repeat<byte>(0x00, (int)supergameboy_rtc_size).ToArray(), supergameboy_rtc_size);
+                    }
                 }
             }
 
@@ -630,7 +642,9 @@ namespace Snes.Cartridge
         private void xml_parse_sufamiturbo(XElement root)
         {
             if (mode != Mode.SufamiTurbo)
+            {
                 return;
+            }
 
             foreach (var node in root.Elements("slot"))
             {
@@ -961,7 +975,6 @@ namespace Snes.Cartridge
                         }
                         mapping.Add(m);
                     }
-
                 }
             }
         }
