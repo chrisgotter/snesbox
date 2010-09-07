@@ -2,8 +2,10 @@
 
 namespace Snes.Chip.CX4
 {
-    class Cx4 : Snes.Memory.Memory
+    class CX4 : Snes.Memory.Memory
     {
+        public static CX4 cx4 = new CX4();
+
         public override uint size() { throw new NotImplementedException(); }
         public void init() { throw new NotImplementedException(); }
         public void enable() { throw new NotImplementedException(); }

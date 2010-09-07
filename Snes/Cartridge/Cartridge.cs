@@ -4,10 +4,14 @@ using System.Linq;
 using System.Xml.Linq;
 using Nall;
 using Snes.Chip.BSX;
+using Snes.Chip.CX4;
 using Snes.Chip.MSU1;
+using Snes.Chip.OBC1;
 using Snes.Chip.SA1;
+using Snes.Chip.SRTC;
 using Snes.Chip.ST0018;
 using Snes.Chip.SuperFX;
+using Snes.Chip.SuperGameBoy;
 using Snes.Memory;
 
 namespace Snes.Cartridge
@@ -380,7 +384,6 @@ namespace Snes.Cartridge
             foreach (var leaf in root.Elements("map"))
             {
                 Mapping m = new Mapping(MappedRAM.cartram);
-
                 if (leaf.Attributes("address").Any())
                 {
                     xml_parse_address(m, leaf.Attribute("address").Value);
@@ -397,7 +400,6 @@ namespace Snes.Cartridge
                 {
                     m.size = uint.Parse(leaf.Attribute("size").Value);
                 }
-
                 mapping.Add(m);
             }
         }
@@ -408,10 +410,9 @@ namespace Snes.Cartridge
 
             foreach (var node in root.Elements("rom"))
             {
-                foreach (var leaf in root.Elements("map"))
+                foreach (var leaf in node.Elements("map"))
                 {
                     Mapping m = new Mapping(SuperFXCPUROM.fxrom);
-
                     if (leaf.Attributes("address").Any())
                     {
                         xml_parse_address(m, leaf.Attribute("address").Value);
@@ -428,7 +429,6 @@ namespace Snes.Cartridge
                     {
                         m.size = uint.Parse(leaf.Attribute("size").Value);
                     }
-
                     mapping.Add(m);
                 }
             }
@@ -440,10 +440,9 @@ namespace Snes.Cartridge
                     ram_size = uint.Parse(node.Attribute("size").Value);
                 }
 
-                foreach (var leaf in root.Elements("map"))
+                foreach (var leaf in node.Elements("map"))
                 {
                     Mapping m = new Mapping(SuperFXCPURAM.fxram);
-
                     if (leaf.Attributes("address").Any())
                     {
                         xml_parse_address(m, leaf.Attribute("address").Value);
@@ -460,22 +459,19 @@ namespace Snes.Cartridge
                     {
                         m.size = uint.Parse(leaf.Attribute("size").Value);
                     }
-
                     mapping.Add(m);
                 }
             }
 
             foreach (var node in root.Elements("mmio"))
             {
-                foreach (var leaf in root.Elements("map"))
+                foreach (var leaf in node.Elements("map"))
                 {
                     Mapping m = new Mapping(SuperFX.superfx);
-
                     if (leaf.Attributes("address").Any())
                     {
                         xml_parse_address(m, leaf.Attribute("address").Value);
                     }
-
                     mapping.Add(m);
                 }
             }
@@ -487,10 +483,9 @@ namespace Snes.Cartridge
 
             foreach (var node in root.Elements("rom"))
             {
-                foreach (var leaf in root.Elements("map"))
+                foreach (var leaf in node.Elements("map"))
                 {
                     Mapping m = new Mapping(VSPROM.vsprom);
-
                     if (leaf.Attributes("address").Any())
                     {
                         xml_parse_address(m, leaf.Attribute("address").Value);
@@ -507,17 +502,15 @@ namespace Snes.Cartridge
                     {
                         m.size = uint.Parse(leaf.Attribute("size").Value);
                     }
-
                     mapping.Add(m);
                 }
             }
 
             foreach (var node in root.Elements("iram"))
             {
-                foreach (var leaf in root.Elements("map"))
+                foreach (var leaf in node.Elements("map"))
                 {
                     Mapping m = new Mapping(CPUIRAM.cpuiram);
-
                     if (leaf.Attributes("address").Any())
                     {
                         xml_parse_address(m, leaf.Attribute("address").Value);
@@ -534,7 +527,6 @@ namespace Snes.Cartridge
                     {
                         m.size = uint.Parse(leaf.Attribute("size").Value);
                     }
-
                     mapping.Add(m);
                 }
             }
@@ -546,10 +538,9 @@ namespace Snes.Cartridge
                     ram_size = uint.Parse(node.Attribute("size").Value);
                 }
 
-                foreach (var leaf in root.Elements("map"))
+                foreach (var leaf in node.Elements("map"))
                 {
                     Mapping m = new Mapping(CC1BWRAM.cc1bwram);
-
                     if (leaf.Attributes("address").Any())
                     {
                         xml_parse_address(m, leaf.Attribute("address").Value);
@@ -566,22 +557,19 @@ namespace Snes.Cartridge
                     {
                         m.size = uint.Parse(leaf.Attribute("size").Value);
                     }
-
                     mapping.Add(m);
                 }
             }
 
             foreach (var node in root.Elements("mmio"))
             {
-                foreach (var leaf in root.Elements("map"))
+                foreach (var leaf in node.Elements("map"))
                 {
                     Mapping m = new Mapping(SA1.sa1);
-
                     if (leaf.Attributes("address").Any())
                     {
                         xml_parse_address(m, leaf.Attribute("address").Value);
                     }
-
                     mapping.Add(m);
                 }
             }
@@ -596,10 +584,9 @@ namespace Snes.Cartridge
 
             foreach (var node in root.Elements("slot"))
             {
-                foreach (var leaf in root.Elements("map"))
+                foreach (var leaf in node.Elements("map"))
                 {
                     Mapping m = new Mapping(BSXFlash.bsxflash);
-
                     if (leaf.Attributes("address").Any())
                     {
                         xml_parse_address(m, leaf.Attribute("address").Value);
@@ -616,22 +603,19 @@ namespace Snes.Cartridge
                     {
                         m.size = uint.Parse(leaf.Attribute("size").Value);
                     }
-
                     mapping.Add(m);
                 }
             }
 
             foreach (var node in root.Elements("mmio"))
             {
-                foreach (var leaf in root.Elements("map"))
+                foreach (var leaf in node.Elements("map"))
                 {
                     Mapping m = new Mapping(BSXCart.bsxcart);
-
                     if (leaf.Attributes("address").Any())
                     {
                         xml_parse_address(m, leaf.Attribute("address").Value);
                     }
-
                     mapping.Add(m);
                 }
             }
@@ -639,17 +623,131 @@ namespace Snes.Cartridge
 
         private void xml_parse_sufamiturbo(XElement root)
         {
-            throw new NotImplementedException();
+            if (mode != Mode.SufamiTurbo)
+                return;
+
+            foreach (var node in root.Elements("slot"))
+            {
+                int slotid = 0;
+                if (node.Attributes("id").Any())
+                {
+                    if (node.Attribute("id").Value == "A")
+                    {
+                        slotid = 0;
+                    }
+                    if (node.Attribute("id").Value == "B")
+                    {
+                        slotid = 1;
+                    }
+                }
+
+                foreach (var slot in root.Elements("rom"))
+                {
+                    foreach (var leaf in slot.Elements("map"))
+                    {
+                        Mapping m = new Mapping(slotid == 0 ? MappedRAM.stArom : MappedRAM.stBrom);
+                        if (leaf.Attributes("address").Any())
+                        {
+                            xml_parse_address(m, leaf.Attribute("address").Value);
+                        }
+                        if (leaf.Attributes("mode").Any())
+                        {
+                            xml_parse_mode(m, leaf.Attribute("mode").Value);
+                        }
+                        if (leaf.Attributes("offset").Any())
+                        {
+                            m.offset = uint.Parse(leaf.Attribute("offset").Value);
+                        }
+                        if (leaf.Attributes("size").Any())
+                        {
+                            m.size = uint.Parse(leaf.Attribute("size").Value);
+                        }
+                        if (m.memory.size() > 0)
+                        {
+                            mapping.Add(m);
+                        }
+                    }
+                }
+
+                foreach (var slot in root.Elements("ram"))
+                {
+                    foreach (var leaf in slot.Elements("map"))
+                    {
+                        Mapping m = new Mapping(slotid == 0 ? MappedRAM.stAram : MappedRAM.stBram);
+                        if (leaf.Attributes("address").Any())
+                        {
+                            xml_parse_address(m, leaf.Attribute("address").Value);
+                        }
+                        if (leaf.Attributes("mode").Any())
+                        {
+                            xml_parse_mode(m, leaf.Attribute("mode").Value);
+                        }
+                        if (leaf.Attributes("offset").Any())
+                        {
+                            m.offset = uint.Parse(leaf.Attribute("offset").Value);
+                        }
+                        if (leaf.Attributes("size").Any())
+                        {
+                            m.size = uint.Parse(leaf.Attribute("size").Value);
+                        }
+                        if (m.memory.size() > 0)
+                        {
+                            mapping.Add(m);
+                        }
+                    }
+                }
+            }
         }
 
         private void xml_parse_supergameboy(XElement root)
         {
-            throw new NotImplementedException();
+            if (mode != Mode.SuperGameBoy)
+            {
+                return;
+            }
+
+            if (root.Attributes("revision").Any())
+            {
+                if (root.Attribute("revision").Value == "1")
+                {
+                    supergameboy_version = SuperGameBoyVersion.Version1;
+                }
+                if (root.Attribute("revision").Value == "2")
+                {
+                    supergameboy_version = SuperGameBoyVersion.Version2;
+                }
+            }
+
+            foreach (var node in root.Elements("mmio"))
+            {
+                foreach (var leaf in node.Elements("map"))
+                {
+                    Mapping m = new Mapping((Memory.Memory)SuperGameBoy.supergameboy);
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+                    mapping.Add(m);
+                }
+            }
         }
 
         private void xml_parse_srtc(XElement root)
         {
-            throw new NotImplementedException();
+            has_srtc = true;
+
+            foreach (var node in root.Elements("mmio"))
+            {
+                foreach (var leaf in node.Elements("map"))
+                {
+                    Mapping m = new Mapping(SRTC.srtc);
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+                    mapping.Add(m);
+                }
+            }
         }
 
         private void xml_parse_sdd1(XElement root)
@@ -664,7 +762,20 @@ namespace Snes.Cartridge
 
         private void xml_parse_cx4(XElement root)
         {
-            throw new NotImplementedException();
+            has_cx4 = true;
+
+            foreach (var node in root.Elements("mmio"))
+            {
+                foreach (var leaf in node.Elements("map"))
+                {
+                    Mapping m = new Mapping(CX4.cx4);
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+                    mapping.Add(m);
+                }
+            }
         }
 
         private void xml_parse_necdsp(XElement root)
@@ -674,7 +785,20 @@ namespace Snes.Cartridge
 
         private void xml_parse_obc1(XElement root)
         {
-            throw new NotImplementedException();
+            has_obc1 = true;
+
+            foreach (var node in root.Elements("mmio"))
+            {
+                foreach (var leaf in node.Elements("map"))
+                {
+                    Mapping m = new Mapping(OBC1.obc1);
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+                    mapping.Add(m);
+                }
+            }
         }
 
         private void xml_parse_setadsp(XElement root)

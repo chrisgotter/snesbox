@@ -5,6 +5,8 @@ namespace Snes.Chip.SRTC
 {
     class SRTC : IMMIO
     {
+        public static SRTC srtc = new SRTC();
+
         public void init() { throw new NotImplementedException(); }
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }

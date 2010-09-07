@@ -4,6 +4,8 @@ namespace Snes.Chip.OBC1
 {
     partial class OBC1 : Snes.Memory.Memory
     {
+        public static OBC1 obc1 = new OBC1();
+
         public override uint size() { throw new NotImplementedException(); }
         public void init() { throw new NotImplementedException(); }
         public void enable() { throw new NotImplementedException(); }
