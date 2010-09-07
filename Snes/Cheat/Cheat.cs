@@ -19,7 +19,7 @@ namespace Snes.Cheat
 
         public Cheat() { throw new NotImplementedException(); }
 
-        public static bool decode(string s, ref uint addr, ref byte data, Type type) { throw new NotImplementedException(); }
+        public static bool decode(string s, out uint addr, out byte data, out Type type) { throw new NotImplementedException(); }
         public static bool encode(string s, uint addr, byte data, Type type) { throw new NotImplementedException(); }
 
         private byte[] bitmask = new byte[0x200000];
