@@ -3,6 +3,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Xml.Linq;
 using Nall;
+using Snes.Chip.BSX;
+using Snes.Chip.MSU1;
+using Snes.Chip.SA1;
+using Snes.Chip.ST0018;
 using Snes.Chip.SuperFX;
 using Snes.Memory;
 
@@ -431,13 +435,13 @@ namespace Snes.Cartridge
 
             foreach (var node in root.Elements("ram"))
             {
+                if (node.Attributes("size").Any())
+                {
+                    ram_size = uint.Parse(node.Attribute("size").Value);
+                }
+
                 foreach (var leaf in root.Elements("map"))
                 {
-                    if (leaf.Attributes("size").Any())
-                    {
-                        ram_size = uint.Parse(leaf.Attribute("size").Value);
-                    }
-
                     Mapping m = new Mapping(SuperFXCPURAM.fxram);
 
                     if (leaf.Attributes("address").Any())
@@ -479,12 +483,158 @@ namespace Snes.Cartridge
 
         private void xml_parse_sa1(XElement root)
         {
-            throw new NotImplementedException();
+            has_sa1 = true;
+
+            foreach (var node in root.Elements("rom"))
+            {
+                foreach (var leaf in root.Elements("map"))
+                {
+                    Mapping m = new Mapping(VSPROM.vsprom);
+
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+                    if (leaf.Attributes("mode").Any())
+                    {
+                        xml_parse_mode(m, leaf.Attribute("mode").Value);
+                    }
+                    if (leaf.Attributes("offset").Any())
+                    {
+                        m.offset = uint.Parse(leaf.Attribute("offset").Value);
+                    }
+                    if (leaf.Attributes("size").Any())
+                    {
+                        m.size = uint.Parse(leaf.Attribute("size").Value);
+                    }
+
+                    mapping.Add(m);
+                }
+            }
+
+            foreach (var node in root.Elements("iram"))
+            {
+                foreach (var leaf in root.Elements("map"))
+                {
+                    Mapping m = new Mapping(CPUIRAM.cpuiram);
+
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+                    if (leaf.Attributes("mode").Any())
+                    {
+                        xml_parse_mode(m, leaf.Attribute("mode").Value);
+                    }
+                    if (leaf.Attributes("offset").Any())
+                    {
+                        m.offset = uint.Parse(leaf.Attribute("offset").Value);
+                    }
+                    if (leaf.Attributes("size").Any())
+                    {
+                        m.size = uint.Parse(leaf.Attribute("size").Value);
+                    }
+
+                    mapping.Add(m);
+                }
+            }
+
+            foreach (var node in root.Elements("bwram"))
+            {
+                if (node.Attributes("size").Any())
+                {
+                    ram_size = uint.Parse(node.Attribute("size").Value);
+                }
+
+                foreach (var leaf in root.Elements("map"))
+                {
+                    Mapping m = new Mapping(CC1BWRAM.cc1bwram);
+
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+                    if (leaf.Attributes("mode").Any())
+                    {
+                        xml_parse_mode(m, leaf.Attribute("mode").Value);
+                    }
+                    if (leaf.Attributes("offset").Any())
+                    {
+                        m.offset = uint.Parse(leaf.Attribute("offset").Value);
+                    }
+                    if (leaf.Attributes("size").Any())
+                    {
+                        m.size = uint.Parse(leaf.Attribute("size").Value);
+                    }
+
+                    mapping.Add(m);
+                }
+            }
+
+            foreach (var node in root.Elements("mmio"))
+            {
+                foreach (var leaf in root.Elements("map"))
+                {
+                    Mapping m = new Mapping(SA1.sa1);
+
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+
+                    mapping.Add(m);
+                }
+            }
         }
 
         private void xml_parse_bsx(XElement root)
         {
-            throw new NotImplementedException();
+            if (mode != Mode.BsxSlotted && mode != Mode.Bsx)
+            {
+                return;
+            }
+
+            foreach (var node in root.Elements("slot"))
+            {
+                foreach (var leaf in root.Elements("map"))
+                {
+                    Mapping m = new Mapping(BSXFlash.bsxflash);
+
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+                    if (leaf.Attributes("mode").Any())
+                    {
+                        xml_parse_mode(m, leaf.Attribute("mode").Value);
+                    }
+                    if (leaf.Attributes("offset").Any())
+                    {
+                        m.offset = uint.Parse(leaf.Attribute("offset").Value);
+                    }
+                    if (leaf.Attributes("size").Any())
+                    {
+                        m.size = uint.Parse(leaf.Attribute("size").Value);
+                    }
+
+                    mapping.Add(m);
+                }
+            }
+
+            foreach (var node in root.Elements("mmio"))
+            {
+                foreach (var leaf in root.Elements("map"))
+                {
+                    Mapping m = new Mapping(BSXCart.bsxcart);
+
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+
+                    mapping.Add(m);
+                }
+            }
         }
 
         private void xml_parse_sufamiturbo(XElement root)
@@ -534,27 +684,109 @@ namespace Snes.Cartridge
 
         private void xml_parse_setarisc(XElement root)
         {
-            throw new NotImplementedException();
+            uint program = 0;
+
+            if (root.Attributes("program").Any() && root.Attribute("program").Value == "ST-0018")
+            {
+                program = 1;
+                has_st0018 = true;
+            }
+
+            IMMIO[] map = new IMMIO[2] { null, ST0018.st0018 };
+
+            foreach (var node in root.Elements("mmio"))
+            {
+                if (!ReferenceEquals(map[program], null))
+                {
+                    foreach (var leaf in root.Elements("map"))
+                    {
+                        Mapping m = new Mapping(map[program]);
+                        if (leaf.Attributes("address").Any())
+                        {
+                            xml_parse_address(m, leaf.Attribute("address").Value);
+                        }
+                        mapping.Add(m);
+                    }
+                }
+            }
         }
 
         private void xml_parse_msu1(XElement root)
         {
-            throw new NotImplementedException();
+            has_msu1 = true;
+
+            foreach (var node in root.Elements("mmio"))
+            {
+                foreach (var leaf in root.Elements("map"))
+                {
+                    Mapping m = new Mapping(MSU1.msu1);
+                    if (leaf.Attributes("address").Any())
+                    {
+                        xml_parse_address(m, leaf.Attribute("address").Value);
+                    }
+                    mapping.Add(m);
+                }
+            }
         }
 
         private void xml_parse_serial(XElement root)
         {
-            throw new NotImplementedException();
+            has_serial = true;
+
+            if (root.Attributes("baud").Any())
+            {
+                serial_baud_rate = uint.Parse(root.Attribute("baud").Value);
+            }
         }
 
         private void xml_parse_address(Mapping m, string data)
         {
-            throw new NotImplementedException();
+            var part = data.Split(new char[] { ':' });
+
+            if (part.Length != 2)
+            {
+                return;
+            }
+
+            var subpart = part[0].Split(new char[] { '-' });
+            if (subpart.Length == 1)
+            {
+                m.banklo = uint.Parse(subpart[0]);
+                m.bankhi = m.banklo;
+            }
+            else if (subpart.Length == 2)
+            {
+                m.banklo = uint.Parse(subpart[0]);
+                m.bankhi = uint.Parse(subpart[1]);
+            }
+
+            subpart = part[1].Split(new char[] { '-' });
+            if (subpart.Length == 1)
+            {
+                m.addrlo = uint.Parse(subpart[0]);
+                m.addrhi = m.addrlo;
+            }
+            else if (subpart.Length == 2)
+            {
+                m.addrlo = uint.Parse(subpart[0]);
+                m.addrhi = uint.Parse(subpart[1]);
+            }
         }
 
         private void xml_parse_mode(Mapping m, string data)
         {
-            throw new NotImplementedException();
+            if (data == "direct")
+            {
+                m.mode = Bus.MapMode.Direct;
+            }
+            else if (data == "linear")
+            {
+                m.mode = Bus.MapMode.Linear;
+            }
+            else if (data == "shadow")
+            {
+                m.mode = Bus.MapMode.Shadow;
+            }
         }
     }
 }

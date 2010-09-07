@@ -5,6 +5,8 @@ namespace Snes.Chip.BSX
 {
     partial class BSXCart : IMMIO
     {
+        public static BSXCart bsxcart = new BSXCart();
+
         public void init() { throw new NotImplementedException(); }
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }

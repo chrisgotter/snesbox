@@ -1,9 +1,12 @@
 ﻿using System;
+using Snes.Memory;
 
 namespace Snes.Chip.ST0018
 {
-    partial class ST0018
+    partial class ST0018 : IMMIO
     {
+        public static ST0018 st0018 = new ST0018();
+
         public void init() { throw new NotImplementedException(); }
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }

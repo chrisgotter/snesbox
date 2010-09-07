@@ -6,6 +6,8 @@ namespace Snes.Chip.SA1
 {
     partial class SA1 : CPUCore, ICoprocessor, IMMIO
     {
+        public static SA1 sa1 = new SA1();
+
         public DMA dma;
 
         public void dma_normal() { throw new NotImplementedException(); }

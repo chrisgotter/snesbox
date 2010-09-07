@@ -2,7 +2,7 @@
 
 namespace Nall
 {
-    public class uint3
+    public struct uint3
     {
         private uint data;
 

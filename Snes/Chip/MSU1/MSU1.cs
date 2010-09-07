@@ -5,6 +5,8 @@ namespace Snes.Chip.MSU1
 {
     partial class MSU1 : Coprocessor, Memory.IMMIO
     {
+        public static MSU1 msu1 = new MSU1();
+
         public static void Enter() { throw new NotImplementedException(); }
         public void enter() { throw new NotImplementedException(); }
         public void init() { throw new NotImplementedException(); }

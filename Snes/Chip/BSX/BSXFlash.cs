@@ -4,6 +4,8 @@ namespace Snes.Chip.BSX
 {
     partial class BSXFlash : Snes.Memory.Memory
     {
+        public static BSXFlash bsxflash = new BSXFlash();
+
         public void init() { throw new NotImplementedException(); }
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }
