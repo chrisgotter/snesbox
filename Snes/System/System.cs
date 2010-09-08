@@ -346,45 +346,121 @@ namespace Snes.System
 
         public void reset()
         {
-            //  bus.reset();
-            //  cpu.reset();
-            //  smp.reset();
-            //  dsp.reset();
-            //  ppu.reset();
+            Bus.bus.reset();
+            CPU.CPU.cpu.reset();
+            SMP.SMP.smp.reset();
+            DSP.DSP.dsp.reset();
+            PPU.PPU.ppu.reset();
 
-            //  if(expansion() == ExpansionPortDevice::BSX) bsxbase.reset();
-            //  if(memory::bsxflash.data()) bsxflash.reset();
-            //  if(cartridge.mode() == Cartridge::Mode::Bsx) bsxcart.reset();
-            //  if(cartridge.mode() == Cartridge::Mode::SuperGameBoy) supergameboy.reset();
+            if (expansion == ExpansionPortDevice.BSX)
+            {
+                BSXBase.bsxbase.reset();
+            }
+            if (!ReferenceEquals(MappedRAM.bsxflash.data(), null))
+            {
+                BSXFlash.bsxflash.reset();
+            }
+            if (Cartridge.Cartridge.cartridge.mode == Cartridge.Cartridge.Mode.Bsx)
+            {
+                BSXCart.bsxcart.reset();
+            }
+            if (Cartridge.Cartridge.cartridge.mode == Cartridge.Cartridge.Mode.SuperGameBoy)
+            {
+                SuperGameBoy.supergameboy.reset();
+            }
 
-            //  if(cartridge.has_superfx()) superfx.reset();
-            //  if(cartridge.has_sa1()) sa1.reset();
-            //  if(cartridge.has_srtc()) srtc.reset();
-            //  if(cartridge.has_sdd1()) sdd1.reset();
-            //  if(cartridge.has_spc7110()) spc7110.reset();
-            //  if(cartridge.has_cx4()) cx4.reset();
-            //  if(cartridge.has_dsp1()) dsp1.reset();
-            //  if(cartridge.has_dsp2()) dsp2.reset();
-            //  if(cartridge.has_dsp3()) dsp3.reset();
-            //  if(cartridge.has_dsp4()) dsp4.reset();
-            //  if(cartridge.has_obc1()) obc1.reset();
-            //  if(cartridge.has_st0010()) st0010.reset();
-            //  if(cartridge.has_st0011()) st0011.reset();
-            //  if(cartridge.has_st0018()) st0018.reset();
-            //  if(cartridge.has_msu1()) msu1.reset();
-            //  if(cartridge.has_serial()) serial.reset();
+            if (Cartridge.Cartridge.cartridge.has_superfx)
+            {
+                SuperFX.superfx.reset();
+            }
+            if (Cartridge.Cartridge.cartridge.has_sa1)
+            {
+                SA1.sa1.reset();
+            }
+            if (Cartridge.Cartridge.cartridge.has_srtc)
+            {
+                SRTC.srtc.reset();
+            }
+            if (Cartridge.Cartridge.cartridge.has_sdd1)
+            {
+                SDD1.sdd1.reset();
+            }
+            if (Cartridge.Cartridge.cartridge.has_spc7110)
+            {
+                SPC7110.spc7110.reset();
+            }
+            if (Cartridge.Cartridge.cartridge.has_cx4)
+            {
+                CX4.cx4.reset();
+            }
+            if (Cartridge.Cartridge.cartridge.has_dsp1)
+            {
+                DSP1.dsp1.reset();
+            }
+            if (Cartridge.Cartridge.cartridge.has_dsp2)
+            {
+                DSP2.dsp2.reset();
+            }
+            if (Cartridge.Cartridge.cartridge.has_dsp3)
+            {
+                DSP3.dsp3.reset();
+            }
+            if (Cartridge.Cartridge.cartridge.has_dsp4)
+            {
+                DSP4.dsp4.reset();
+            }
+            if (Cartridge.Cartridge.cartridge.has_obc1)
+            {
+                OBC1.obc1.reset();
+            }
+            if (Cartridge.Cartridge.cartridge.has_st0010)
+            {
+                ST0010.st0010.reset();
+            }
+            if (Cartridge.Cartridge.cartridge.has_st0011)
+            {
+                ST0011.st0011.reset();
+            }
+            if (Cartridge.Cartridge.cartridge.has_st0018)
+            {
+                ST0018.st0018.reset();
+            }
+            if (Cartridge.Cartridge.cartridge.has_msu1)
+            {
+                MSU1.msu1.reset();
+            }
+            if (Cartridge.Cartridge.cartridge.has_serial)
+            {
+                Serial.serial.reset();
+            }
 
-            //  if(cartridge.mode() == Cartridge::Mode::SuperGameBoy) cpu.coprocessors.append(&supergameboy);
-            //  if(cartridge.has_superfx()) cpu.coprocessors.append(&superfx);
-            //  if(cartridge.has_sa1()) cpu.coprocessors.append(&sa1);
-            //  if(cartridge.has_msu1()) cpu.coprocessors.append(&msu1);
-            //  if(cartridge.has_serial()) cpu.coprocessors.append(&serial);
+            if (Cartridge.Cartridge.cartridge.mode == Cartridge.Cartridge.Mode.SuperGameBoy)
+            {
+                CPU.CPU.cpu.coprocessors.Add(SuperGameBoy.supergameboy.Coprocessor);
+            }
+            if (Cartridge.Cartridge.cartridge.has_superfx)
+            {
+                CPU.CPU.cpu.coprocessors.Add(SuperFX.superfx);
+            }
+            if (Cartridge.Cartridge.cartridge.has_sa1)
+            {
+                CPU.CPU.cpu.coprocessors.Add(SA1.sa1.Coprocessor);
+            }
+            if (Cartridge.Cartridge.cartridge.has_msu1)
+            {
+                CPU.CPU.cpu.coprocessors.Add(MSU1.msu1);
+            }
+            if (Cartridge.Cartridge.cartridge.has_serial)
+            {
+                CPU.CPU.cpu.coprocessors.Add(Serial.serial);
+            }
 
-            //  scheduler.init();
+            Scheduler.Scheduler.scheduler.init();
 
-            //  input.port_set_device(0, config.controller_port1);
-            //  input.port_set_device(1, config.controller_port2);
-            //  input.update();
+            Input.Input.input.port_set_device(Convert.ToBoolean(0), Configuration.Configuration.config.controller_port1);
+            Input.Input.input.port_set_device(Convert.ToBoolean(1), Configuration.Configuration.config.controller_port2);
+            Input.Input.input.update();
+
         }
 
         public void unload()
@@ -431,7 +507,10 @@ namespace Snes.System
             while (true)
             {
                 Scheduler.Scheduler.scheduler.enter();
-                if (Scheduler.Scheduler.scheduler.exit_reason == Scheduler.Scheduler.ExitReason.SynchronizeEvent) break;
+                if (Scheduler.Scheduler.scheduler.exit_reason == Scheduler.Scheduler.ExitReason.SynchronizeEvent)
+                {
+                    break;
+                }
                 if (Scheduler.Scheduler.scheduler.exit_reason == Scheduler.Scheduler.ExitReason.FrameEvent)
                 {
                     Input.Input.input.update();
