@@ -5,7 +5,7 @@ namespace Snes.Configuration
     {
         public class SuperFX
         {
-            uint speed;
+            public uint speed;
         }
     }
 }

@@ -5,8 +5,8 @@ namespace Snes.Configuration
     {
         public class SMP
         {
-            uint ntsc_frequency;
-            uint pal_frequency;
+            public uint ntsc_frequency;
+            public uint pal_frequency;
         }
     }
 }

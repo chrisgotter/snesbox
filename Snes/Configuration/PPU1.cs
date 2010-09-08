@@ -5,7 +5,7 @@ namespace Snes.Configuration
     {
         public class PPU1
         {
-            uint version;
+            public uint version;
         }
     }
 }

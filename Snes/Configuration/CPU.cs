@@ -5,10 +5,10 @@ namespace Snes.Configuration
     {
         public class CPU
         {
-            uint version;
-            uint ntsc_frequency;
-            uint pal_frequency;
-            uint wram_init_value;
+            public uint version;
+            public uint ntsc_frequency;
+            public uint pal_frequency;
+            public uint wram_init_value;
         }
     }
 }
