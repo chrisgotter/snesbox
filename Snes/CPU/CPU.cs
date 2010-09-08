@@ -5,8 +5,10 @@ using Snes.PPU;
 
 namespace Snes.CPU
 {
-    abstract partial class CPU : CPUCore, IPPUCounter, IProcessor, IMMIO
+    partial class CPU : CPUCore, IPPUCounter, IProcessor, IMMIO
     {
+        public static CPU cpu = new CPU();
+
         public static readonly bool Threaded = true;
         public Processor[] coprocessors;
         public void step(uint clocks) { throw new NotImplementedException(); }

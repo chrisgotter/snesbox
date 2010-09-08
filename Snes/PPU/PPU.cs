@@ -3,8 +3,10 @@ using Snes.Memory;
 
 namespace Snes.PPU
 {
-    abstract partial class PPU : PPUCounter, IProcessor, IMMIO
+    partial class PPU : PPUCounter, IProcessor, IMMIO
     {
+        public static PPU ppu = new PPU();
+
         public static readonly bool Threaded = true;
         public void step(uint clocks) { throw new NotImplementedException(); }
         public void synchronize_cpu() { throw new NotImplementedException(); }
@@ -30,6 +32,11 @@ namespace Snes.PPU
 
         private ushort[] surface;
         private ushort[] output;
+
+        public ushort[] Output
+        {
+            get { return output; }
+        }
 
         private byte ppu1_version;
         private byte ppu2_version;

@@ -30,5 +30,10 @@ namespace Snes.Input
         private short latchx, latchy;
 
         private Port[] port = new Port[2];
+
+        public Port[] PortArray
+        {
+            get { return port; }
+        }
     }
 }

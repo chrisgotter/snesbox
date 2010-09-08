@@ -3,7 +3,7 @@ namespace Snes.Input
 {
     partial class Input
     {
-        private partial class Port
+        public partial class Port
         {
             public Device device;
             public uint counter0; //read counters
