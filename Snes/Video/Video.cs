@@ -1,14 +1,16 @@
 ﻿using System;
 
-namespace Snes
+namespace Snes.Video
 {
     class Video
     {
+        public static Video video = new Video();
+
         private bool frame_hires;
         private bool frame_interlace;
         private uint[] line_width = new uint[240];
 
-        private void update()
+        public void update()
         {
             switch (Input.Input.input.Ports[1].device)
             {
@@ -61,7 +63,7 @@ namespace Snes
             frame_interlace = false;
         }
 
-        private void scanline()
+        public void scanline()
         {
             uint y = CPU.CPU.cpu.PPUCounter.vcounter();
             if (y >= 240)
@@ -75,7 +77,7 @@ namespace Snes
             line_width[y] = width;
         }
 
-        private void init()
+        public void init()
         {
             frame_hires = false;
             frame_interlace = false;

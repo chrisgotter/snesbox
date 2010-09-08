@@ -4,7 +4,7 @@ namespace Snes
 {
     public delegate void Operation();
 
-    class Processor : IProcessor
+    class Processor
     {
         public Cothread thread;
         public uint frequency;
@@ -23,14 +23,6 @@ namespace Snes
         public Processor()
         {
             thread = null;
-        }
-
-        Processor IProcessor.Processor
-        {
-            get
-            {
-                return this;
-            }
         }
     }
 }

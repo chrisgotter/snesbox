@@ -4,6 +4,8 @@ namespace Snes.Chip.DSP2
 {
     partial class DSP2
     {
+        public static DSP2 dsp2 = new DSP2();
+
         public Status status;
 
         public void init() { throw new NotImplementedException(); }

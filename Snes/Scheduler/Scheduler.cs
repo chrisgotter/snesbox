@@ -4,11 +4,13 @@ namespace Snes.Scheduler
 {
     class Scheduler
     {
+        public static Scheduler scheduler = new Scheduler();
+
         public enum SynchronizeMode : uint { None, CPU, All }
-        SynchronizeMode sync;
+        public SynchronizeMode sync;
 
         public enum ExitReason : uint { UnknownEvent, FrameEvent, SynchronizeEvent, DebuggerEvent }
-        public ExitReason exit_reason;
+        public ExitReason exit_reason { get; private set; }
 
         public Cothread host_thread; //program thread (used to exit emulation)
         public Cothread thread; //active emulation thread (used to enter emulation)

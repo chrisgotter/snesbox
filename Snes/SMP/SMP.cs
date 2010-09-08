@@ -5,6 +5,8 @@ namespace Snes.SMP
 {
     partial class SMP : SMPCore, IProcessor
     {
+        public static SMP smp = new SMP();
+
         public static readonly bool Threaded = true;
         public void step(uint clocks) { throw new NotImplementedException(); }
         public void synchronize_cpu() { throw new NotImplementedException(); }

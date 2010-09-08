@@ -4,6 +4,8 @@ namespace Snes.DSP
 {
     partial class DSP : Processor
     {
+        public static DSP dsp = new DSP();
+
         public static readonly bool Threaded = true;
         public void step(uint clocks) { throw new NotImplementedException(); }
         public void synchronize_smp() { throw new NotImplementedException(); }

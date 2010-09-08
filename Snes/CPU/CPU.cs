@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using Nall;
 using Snes.Memory;
 using Snes.PPU;
@@ -10,7 +11,7 @@ namespace Snes.CPU
         public static CPU cpu = new CPU();
 
         public static readonly bool Threaded = true;
-        public Processor[] coprocessors;
+        public Collection<Processor> coprocessors;
         public void step(uint clocks) { throw new NotImplementedException(); }
         public void synchronize_smp() { throw new NotImplementedException(); }
         public void synchronize_ppu() { throw new NotImplementedException(); }

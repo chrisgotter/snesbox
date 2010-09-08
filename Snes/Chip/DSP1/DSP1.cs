@@ -6,6 +6,8 @@ namespace Snes.Chip.DSP1
 
     partial class DSP1
     {
+        public static DSP1 dsp1 = new DSP1();
+
         public void init() { throw new NotImplementedException(); }
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }

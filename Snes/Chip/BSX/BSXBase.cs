@@ -5,6 +5,8 @@ namespace Snes.Chip.BSX
 {
     partial class BSXBase : IMMIO
     {
+        public static BSXBase bsxbase = new BSXBase();
+
         public void init() { throw new NotImplementedException(); }
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }
