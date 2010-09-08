@@ -10,16 +10,16 @@ namespace Snes
 
         private void update()
         {
-            switch (Input.Input.input.PortArray[1].device)
+            switch (Input.Input.input.Ports[1].device)
             {
                 case Input.Input.Device.SuperScope:
-                    draw_cursor(0x001f, Input.Input.input.PortArray[1].superscope.x, Input.Input.input.PortArray[1].superscope.y);
+                    draw_cursor(0x001f, Input.Input.input.Ports[1].superscope.x, Input.Input.input.Ports[1].superscope.y);
                     break;
                 case Input.Input.Device.Justifiers:
-                    draw_cursor(0x02e0, Input.Input.input.PortArray[1].justifier.x2, Input.Input.input.PortArray[1].justifier.y2);
+                    draw_cursor(0x02e0, Input.Input.input.Ports[1].justifier.x2, Input.Input.input.Ports[1].justifier.y2);
                     goto case Input.Input.Device.Justifier;  //fallthrough
                 case Input.Input.Device.Justifier:
-                    draw_cursor(0x001f, Input.Input.input.PortArray[1].justifier.x1, Input.Input.input.PortArray[1].justifier.y1);
+                    draw_cursor(0x001f, Input.Input.input.Ports[1].justifier.x1, Input.Input.input.Ports[1].justifier.y1);
                     break;
             }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Xml.Linq;
@@ -133,11 +134,11 @@ namespace Snes.Cartridge
             {
                 if (!ReferenceEquals(MappedRAM.gbrom.data(), null))
                 {
-                    if (supergameboy_ram_size != 0)
+                    if (Convert.ToBoolean(supergameboy_ram_size))
                     {
                         MappedRAM.gbram.map(Enumerable.Repeat<byte>(0xff, (int)supergameboy_ram_size).ToArray(), supergameboy_ram_size);
                     }
-                    if (supergameboy_rtc_size != 0)
+                    if (Convert.ToBoolean(supergameboy_rtc_size))
                     {
                         MappedRAM.gbrtc.map(Enumerable.Repeat<byte>(0x00, (int)supergameboy_rtc_size).ToArray(), supergameboy_rtc_size);
                     }

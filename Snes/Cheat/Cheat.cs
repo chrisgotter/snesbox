@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace Snes.Cheat
@@ -90,7 +91,7 @@ namespace Snes.Cheat
 
         public bool exists(uint addr)
         {
-            return (bitmask[addr >> 3] & 1 << (int)(addr & 7)) != 0;
+            return Convert.ToBoolean((bitmask[addr >> 3] & 1 << (int)(addr & 7)));
         }
 
         public Cheat()

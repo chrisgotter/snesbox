@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace Nall
 {
@@ -769,7 +770,7 @@ namespace Nall
 
         private static bool memcmp(byte[] data, uint index, string str, int length)
         {
-            return string.Compare(ASCIIEncoding.ASCII.GetString(data), (int)index, str, 0, length) != 0;
+            return Convert.ToBoolean(string.Compare(ASCIIEncoding.ASCII.GetString(data), (int)index, str, 0, length));
         }
 
         private uint find_header(byte[] data, uint size)
@@ -777,7 +778,7 @@ namespace Nall
             uint score_lo = score_header(data, size, 0x007fc0);
             uint score_hi = score_header(data, size, 0x00ffc0);
             uint score_ex = score_header(data, size, 0x40ffc0);
-            if (score_ex != 0)
+            if (Convert.ToBoolean(score_ex))
             {
                 score_ex += 4;  //favor ExHiROM on images > 32mbits
             }

@@ -139,6 +139,7 @@
     <Compile Include="Chip\SDD1\SDD1_OL.cs" />
     <Compile Include="Chip\SDD1\SDD1_PEM.cs" />
     <Compile Include="Chip\SDD1\State.cs" />
+    <Compile Include="Chip\Serial\Serial.cs" />
     <Compile Include="Chip\SPC7110\ContextState.cs" />
     <Compile Include="Chip\SPC7110\SPC7110RAM.cs" />
     <Compile Include="Chip\SPC7110\SPC7110.cs" />
