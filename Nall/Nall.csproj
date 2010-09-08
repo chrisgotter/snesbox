@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Bit.cs" />
     <Compile Include="CRC32.cs" />
+    <Compile Include="Libco.cs" />
     <Compile Include="ModuloArray.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SnesInformation.cs" />

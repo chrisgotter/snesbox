@@ -16,7 +16,7 @@ namespace Snes.PPU
     //point before this in the frame, which is handled internally by this class at
     //V=128.
 
-    partial class PPUCounter
+    partial class PPUCounter : IPPUCounter
     {
         public void tick() { throw new NotImplementedException(); }
         public void tick(uint clocks) { throw new NotImplementedException(); }
@@ -38,5 +38,13 @@ namespace Snes.PPU
 
         private Status status;
         private History history;
+
+        PPUCounter IPPUCounter.PPUCounter
+        {
+            get
+            {
+                return this;
+            }
+        }
     }
 }
