@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snes.Chip.DSP1
+namespace Snes
 {
     public delegate void Callback(short[] input, short[] output);
 

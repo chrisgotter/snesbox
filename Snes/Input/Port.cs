@@ -1,5 +1,5 @@
 ﻿
-namespace Snes.Input
+namespace Snes
 {
     partial class Input
     {

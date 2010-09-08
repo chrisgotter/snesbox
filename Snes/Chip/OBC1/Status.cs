@@ -1,5 +1,5 @@
 ﻿
-namespace Snes.Chip.OBC1
+namespace Snes
 {
     partial class OBC1
     {

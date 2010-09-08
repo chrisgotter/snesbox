@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Snes.Chip.SA1
+namespace Snes
 {
-    class BitmapRAM : Snes.Memory.Memory
+    class BitmapRAM : Memory
     {
         public static BitmapRAM bitmapram = new BitmapRAM();
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snes.Chip.SDD1
+namespace Snes
 {
     class SDD1_BG
     {

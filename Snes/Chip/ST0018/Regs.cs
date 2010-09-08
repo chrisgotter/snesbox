@@ -1,5 +1,5 @@
 ﻿
-namespace Snes.Chip.ST0018
+namespace Snes
 {
     partial class ST0018
     {

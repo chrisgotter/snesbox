@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Snes.Chip.SA1
+namespace Snes
 {
-    class CPUIRAM : Snes.Memory.Memory
+    class CPUIRAM : Memory
     {
         public static CPUIRAM cpuiram = new CPUIRAM();
 

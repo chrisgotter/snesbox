@@ -1,5 +1,5 @@
 ﻿
-namespace Snes.Interface
+namespace Snes
 {
     interface Interface
     {
@@ -9,6 +9,6 @@ namespace Snes.Interface
 
         void input_poll();
 
-        short input_poll(bool port, Input.Input.Device device, uint index, uint id);
+        short input_poll(bool port, Input.Device device, uint index, uint id);
     }
 }

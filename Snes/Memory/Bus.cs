@@ -1,7 +1,7 @@
 ﻿using System;
 using Nall;
 
-namespace Snes.Memory
+namespace Snes
 {
     partial class Bus
     {

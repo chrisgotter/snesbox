@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snes.Memory
+namespace Snes
 {
     abstract class Memory
     {

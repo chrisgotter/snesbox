@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snes.Chip.SPC7110
+namespace Snes
 {
     partial class SPC7110Decomp
     {

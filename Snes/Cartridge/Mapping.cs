@@ -1,12 +1,11 @@
-﻿using Snes.Memory;
-
-namespace Snes.Cartridge
+﻿
+namespace Snes
 {
     partial class Cartridge
     {
         public class Mapping
         {
-            public Snes.Memory.Memory memory;
+            public Memory memory;
             public IMMIO mmio;
             public Bus.MapMode mode;
             public uint banklo;
@@ -24,7 +23,7 @@ namespace Snes.Cartridge
                 banklo = bankhi = addrlo = addrhi = offset = size = 0;
             }
 
-            public Mapping(Snes.Memory.Memory memory_)
+            public Mapping(Memory memory_)
             {
                 memory = memory_;
                 mmio = null;

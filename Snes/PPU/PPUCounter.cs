@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snes.PPU
+namespace Snes
 {
     public delegate void Scanline();
 

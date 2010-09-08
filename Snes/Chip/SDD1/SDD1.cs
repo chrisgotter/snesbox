@@ -1,9 +1,8 @@
 ﻿using System;
-using Snes.Memory;
 
-namespace Snes.Chip.SDD1
+namespace Snes
 {
-    partial class SDD1 : Memory.Memory, IMMIO
+    partial class SDD1 : Memory, IMMIO
     {
         public static SDD1 sdd1 = new SDD1();
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 
-namespace Snes.Chip.MSU1
+namespace Snes
 {
-    partial class MSU1 : Coprocessor, Memory.IMMIO
+    partial class MSU1 : Coprocessor, IMMIO
     {
         public static MSU1 msu1 = new MSU1();
 

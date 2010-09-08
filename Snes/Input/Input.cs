@@ -1,7 +1,6 @@
 ﻿using System;
-using Snes.Chip.Serial;
 
-namespace Snes.Input
+namespace Snes
 {
     partial class Input
     {
@@ -15,7 +14,7 @@ namespace Snes.Input
 
         public byte port_read(bool portnumber)
         {
-            if (Cartridge.Cartridge.cartridge.has_serial && Convert.ToInt32(portnumber) == 1)
+            if (Cartridge.cartridge.has_serial && Convert.ToInt32(portnumber) == 1)
             {
                 return Serial.serial.latch;
             }
@@ -26,22 +25,22 @@ namespace Snes.Input
             {
                 case Device.Joypad:
                     {
-                        if (CPU.CPU.cpu.joylatch() == false)
+                        if (CPU.cpu.joylatch() == false)
                         {
                             if (p.counter0 >= 16)
                             {
                                 return 1;
                             }
-                            return (byte)System.System.system.Interface.input_poll(portnumber, p.device, 0, p.counter0++);//, p.device, 0, p.counter0++);
+                            return (byte)System.system.Interface.input_poll(portnumber, p.device, 0, p.counter0++);//, p.device, 0, p.counter0++);
                         }
                         else
                         {
-                            return (byte)System.System.system.Interface.input_poll(portnumber, p.device, 0, 0);
+                            return (byte)System.system.Interface.input_poll(portnumber, p.device, 0, 0);
                         }
                     } //case Device::Joypad
                 case Device.Multitap:
                     {
-                        if (CPU.CPU.cpu.joylatch())
+                        if (CPU.cpu.joylatch())
                         {
                             return 2; //when latch is high -- data2 = 1, data1 = 0
                         }
@@ -49,7 +48,7 @@ namespace Snes.Input
                         uint deviceidx, deviceindex0, deviceindex1;
                         byte mask = (byte)(Convert.ToInt32(portnumber) == 0 ? 0x40 : 0x80);
 
-                        if (Convert.ToBoolean(CPU.CPU.cpu.pio() & mask))
+                        if (Convert.ToBoolean(CPU.cpu.pio() & mask))
                         {
                             deviceidx = p.counter0;
                             if (deviceidx >= 16)
@@ -74,8 +73,8 @@ namespace Snes.Input
                             deviceindex1 = 3;  //controller 4
                         }
 
-                        return (byte)((System.System.system.Interface.input_poll(portnumber, p.device, deviceindex0, deviceidx) << 0)
-                             | (System.System.system.Interface.input_poll(portnumber, p.device, deviceindex1, deviceidx) << 1));
+                        return (byte)((System.system.Interface.input_poll(portnumber, p.device, deviceindex0, deviceidx) << 0)
+                             | (System.system.Interface.input_poll(portnumber, p.device, deviceindex1, deviceidx) << 1));
                     } //case Device::Multitap
                 case Device.Mouse:
                     {
@@ -84,8 +83,8 @@ namespace Snes.Input
                             return 1;
                         }
 
-                        int position_x = System.System.system.Interface.input_poll(portnumber, p.device, 0, (uint)MouseID.X);  //-n = left, 0 = center, +n = right
-                        int position_y = System.System.system.Interface.input_poll(portnumber, p.device, 0, (uint)MouseID.Y);  //-n = up,   0 = center, +n = right
+                        int position_x = System.system.Interface.input_poll(portnumber, p.device, 0, (uint)MouseID.X);  //-n = left, 0 = center, +n = right
+                        int position_y = System.system.Interface.input_poll(portnumber, p.device, 0, (uint)MouseID.Y);  //-n = up,   0 = center, +n = right
 
                         bool direction_x = position_x < 0;  //0 = right, 1 = left
                         bool direction_y = position_y < 0;  //0 = down,  1 = up
@@ -114,8 +113,8 @@ namespace Snes.Input
                             case 6: return 0;
                             case 7: return 0;
 
-                            case 8: return (byte)System.System.system.Interface.input_poll(portnumber, p.device, 0, (uint)MouseID.Right);
-                            case 9: return (byte)System.System.system.Interface.input_poll(portnumber, p.device, 0, (uint)MouseID.Left);
+                            case 8: return (byte)System.system.Interface.input_poll(portnumber, p.device, 0, (uint)MouseID.Right);
+                            case 9: return (byte)System.system.Interface.input_poll(portnumber, p.device, 0, (uint)MouseID.Left);
                             case 10: return 0;  //speed (0 = slow, 1 = normal, 2 = fast, 3 = unused)
                             case 11: return 0;  // ||
 
@@ -157,7 +156,7 @@ namespace Snes.Input
                         if (p.counter0 == 0)
                         {
                             //turbo is a switch; toggle is edge sensitive
-                            bool turbo = Convert.ToBoolean(System.System.system.Interface.input_poll(portnumber, p.device, 0, (uint)SuperScopeID.Turbo));
+                            bool turbo = Convert.ToBoolean(System.system.Interface.input_poll(portnumber, p.device, 0, (uint)SuperScopeID.Turbo));
                             if (turbo && !p.superscope.turbolock)
                             {
                                 p.superscope.turbo = !p.superscope.turbo;  //toggle state
@@ -171,7 +170,7 @@ namespace Snes.Input
                             //trigger is a button
                             //if turbo is active, trigger is level sensitive; otherwise it is edge sensitive
                             p.superscope.trigger = false;
-                            bool trigger = Convert.ToBoolean(System.System.system.Interface.input_poll(portnumber, p.device, 0, (uint)SuperScopeID.Trigger));
+                            bool trigger = Convert.ToBoolean(System.system.Interface.input_poll(portnumber, p.device, 0, (uint)SuperScopeID.Trigger));
                             if (trigger && (p.superscope.turbo || !p.superscope.triggerlock))
                             {
                                 p.superscope.trigger = true;
@@ -183,11 +182,11 @@ namespace Snes.Input
                             }
 
                             //cursor is a button; it is always level sensitive
-                            p.superscope.cursor = Convert.ToBoolean(System.System.system.Interface.input_poll(portnumber, p.device, 0, (uint)SuperScopeID.Cursor));
+                            p.superscope.cursor = Convert.ToBoolean(System.system.Interface.input_poll(portnumber, p.device, 0, (uint)SuperScopeID.Cursor));
 
                             //pause is a button; it is always edge sensitive
                             p.superscope.pause = false;
-                            bool pause = Convert.ToBoolean(System.System.system.Interface.input_poll(portnumber, p.device, 0, (uint)SuperScopeID.Pause));
+                            bool pause = Convert.ToBoolean(System.system.Interface.input_poll(portnumber, p.device, 0, (uint)SuperScopeID.Pause));
                             if (pause && !p.superscope.pauselock)
                             {
                                 p.superscope.pause = true;
@@ -200,7 +199,7 @@ namespace Snes.Input
 
                             p.superscope.offscreen =
                                p.superscope.x < 0 || p.superscope.x >= 256
-                            || p.superscope.y < 0 || p.superscope.y >= (PPU.PPU.ppu.overscan() ? 240 : 225);
+                            || p.superscope.y < 0 || p.superscope.y >= (PPU.ppu.overscan() ? 240 : 225);
                         }
 
                         switch (p.counter0++)
@@ -232,13 +231,13 @@ namespace Snes.Input
 
                         if (p.counter0 == 0)
                         {
-                            p.justifier.trigger1 = Convert.ToBoolean(System.System.system.Interface.input_poll(portnumber, p.device, 0, (uint)JustifierID.Trigger));
-                            p.justifier.start1 = Convert.ToBoolean(System.System.system.Interface.input_poll(portnumber, p.device, 0, (uint)JustifierID.Start));
+                            p.justifier.trigger1 = Convert.ToBoolean(System.system.Interface.input_poll(portnumber, p.device, 0, (uint)JustifierID.Trigger));
+                            p.justifier.start1 = Convert.ToBoolean(System.system.Interface.input_poll(portnumber, p.device, 0, (uint)JustifierID.Start));
 
                             if (p.device == Device.Justifiers)
                             {
-                                p.justifier.trigger2 = Convert.ToBoolean(System.System.system.Interface.input_poll(portnumber, p.device, 1, (uint)JustifierID.Trigger));
-                                p.justifier.start2 = Convert.ToBoolean(System.System.system.Interface.input_poll(portnumber, p.device, 1, (uint)JustifierID.Start));
+                                p.justifier.trigger2 = Convert.ToBoolean(System.system.Interface.input_poll(portnumber, p.device, 1, (uint)JustifierID.Trigger));
+                                p.justifier.start2 = Convert.ToBoolean(System.system.Interface.input_poll(portnumber, p.device, 1, (uint)JustifierID.Start));
                             }
                             else
                             {
@@ -369,15 +368,15 @@ namespace Snes.Input
 
         public void update()
         {
-            System.System.system.Interface.input_poll();
+            System.system.Interface.input_poll();
             Port p = port[1];
 
             switch (p.device)
             {
                 case Device.SuperScope:
                     {
-                        int x = System.System.system.Interface.input_poll(Convert.ToBoolean(1), p.device, 0, (uint)SuperScopeID.X);
-                        int y = System.System.system.Interface.input_poll(Convert.ToBoolean(1), p.device, 0, (uint)SuperScopeID.Y);
+                        int x = System.system.Interface.input_poll(Convert.ToBoolean(1), p.device, 0, (uint)SuperScopeID.X);
+                        int y = System.system.Interface.input_poll(Convert.ToBoolean(1), p.device, 0, (uint)SuperScopeID.Y);
                         x += p.superscope.x;
                         y += p.superscope.y;
                         p.superscope.x = Math.Max(-16, Math.Min(256 + 16, x));
@@ -391,15 +390,15 @@ namespace Snes.Input
                     goto case Device.Justifiers;
                 case Device.Justifiers:
                     {
-                        int x1 = System.System.system.Interface.input_poll(Convert.ToBoolean(1), p.device, 0, (uint)JustifierID.X);
-                        int y1 = System.System.system.Interface.input_poll(Convert.ToBoolean(1), p.device, 0, (uint)JustifierID.Y);
+                        int x1 = System.system.Interface.input_poll(Convert.ToBoolean(1), p.device, 0, (uint)JustifierID.X);
+                        int y1 = System.system.Interface.input_poll(Convert.ToBoolean(1), p.device, 0, (uint)JustifierID.Y);
                         x1 += p.justifier.x1;
                         y1 += p.justifier.y1;
                         p.justifier.x1 = Math.Max(-16, Math.Min(256 + 16, x1));
                         p.justifier.y1 = Math.Max(-16, Math.Min(240 + 16, y1));
 
-                        int x2 = System.System.system.Interface.input_poll(Convert.ToBoolean(1), p.device, 1, (uint)JustifierID.X);
-                        int y2 = System.System.system.Interface.input_poll(Convert.ToBoolean(1), p.device, 1, (uint)JustifierID.Y);
+                        int x2 = System.system.Interface.input_poll(Convert.ToBoolean(1), p.device, 1, (uint)JustifierID.X);
+                        int y2 = System.system.Interface.input_poll(Convert.ToBoolean(1), p.device, 1, (uint)JustifierID.Y);
                         x2 += p.justifier.x2;
                         y2 += p.justifier.y2;
                         p.justifier.x2 = Math.Max(-16, Math.Min(256 + 16, x2));
@@ -419,7 +418,7 @@ namespace Snes.Input
                     break;
             }
 
-            if (latchy < 0 || latchy >= (PPU.PPU.ppu.overscan() ? 240 : 225) || latchx < 0 || latchx >= 256)
+            if (latchy < 0 || latchy >= (PPU.ppu.overscan() ? 240 : 225) || latchx < 0 || latchx >= 256)
             {
                 //cursor is offscreen, set to invalid position so counters are not latched
                 latchx = ~0;
@@ -442,9 +441,9 @@ namespace Snes.Input
 
         public void tick()
         {     //only test if Super Scope or Justifier is connected
-            if (iobit && CPU.CPU.cpu.PPUCounter.vcounter() == latchy && CPU.CPU.cpu.PPUCounter.hcounter() == latchx)
+            if (iobit && CPU.cpu.PPUCounter.vcounter() == latchy && CPU.cpu.PPUCounter.hcounter() == latchx)
             {
-                PPU.PPU.ppu.latch_counters();
+                PPU.ppu.latch_counters();
             }
         }
 

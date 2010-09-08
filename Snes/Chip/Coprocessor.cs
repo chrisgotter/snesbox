@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snes.Chip
+namespace Snes
 {
     class Coprocessor : Processor, ICoprocessor
     {

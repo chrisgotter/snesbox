@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Snes.Chip.DSP1
+namespace Snes
 {
-    class DSP1DR : Memory.Memory
+    class DSP1DR : Memory
     {
         public static DSP1DR dsp1dr = new DSP1DR();
 

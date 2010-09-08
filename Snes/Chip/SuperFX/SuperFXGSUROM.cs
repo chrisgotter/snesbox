@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Snes.Chip.SuperFX
+namespace Snes
 {
-    class SuperFXGSUROM : Snes.Memory.Memory
+    class SuperFXGSUROM : Memory
     {
         public static SuperFXGSUROM gsurom = new SuperFXGSUROM();
 

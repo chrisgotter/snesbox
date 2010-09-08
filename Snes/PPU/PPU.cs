@@ -1,7 +1,6 @@
 ﻿using System;
-using Snes.Memory;
 
-namespace Snes.PPU
+namespace Snes
 {
     partial class PPU : PPUCounter, IProcessor, IMMIO
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace Snes.Chip.BSX
+namespace Snes
 {
     partial class BSXBase
     {

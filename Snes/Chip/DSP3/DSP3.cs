@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Snes.Chip.DSP3
+namespace Snes
 {
-    class DSP3 : Memory.Memory
+    class DSP3 : Memory
     {
         public static DSP3 dsp3 = new DSP3();
 

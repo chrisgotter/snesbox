@@ -1,14 +1,14 @@
 ﻿
-namespace Snes.Configuration
+namespace Snes
 {
     partial class Configuration
     {
         public static Configuration config = new Configuration();
 
-        public Snes.Input.Input.Device controller_port1;
-        public Snes.Input.Input.Device controller_port2;
-        public System.System.ExpansionPortDevice expansion_port;
-        public System.System.Region region;
+        public Input.Device controller_port1;
+        public Input.Device controller_port2;
+        public System.ExpansionPortDevice expansion_port;
+        public System.Region region;
 
         public CPU cpu = new CPU();
         public SMP smp = new SMP();
@@ -18,10 +18,10 @@ namespace Snes.Configuration
 
         public Configuration()
         {
-            controller_port1 = Input.Input.Device.Joypad;
-            controller_port2 = Input.Input.Device.Joypad;
-            expansion_port = System.System.ExpansionPortDevice.BSX;
-            region = System.System.Region.Autodetect;
+            controller_port1 = Input.Device.Joypad;
+            controller_port2 = Input.Device.Joypad;
+            expansion_port = System.ExpansionPortDevice.BSX;
+            region = System.Region.Autodetect;
 
             cpu.version = 2;
             cpu.ntsc_frequency = 21477272;  //315 / 88 * 6000000

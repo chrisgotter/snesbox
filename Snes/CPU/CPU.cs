@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using Nall;
-using Snes.Memory;
-using Snes.PPU;
 
-namespace Snes.CPU
+namespace Snes
 {
     partial class CPU : CPUCore, IPPUCounter, IProcessor, IMMIO
     {

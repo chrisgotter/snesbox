@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Text;
 
-namespace Snes.Cheat
+namespace Snes
 {
     class Cheat : Collection<CheatCode>
     {

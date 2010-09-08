@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snes.SMP
+namespace Snes
 {
     public delegate byte SingleByteFunction(byte x);
     public delegate byte DoubleByteFunction(byte x, byte y);

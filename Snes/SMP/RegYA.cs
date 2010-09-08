@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snes.SMP
+namespace Snes
 {
     public class ByteRef
     {

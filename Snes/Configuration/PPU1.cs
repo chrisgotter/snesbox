@@ -1,5 +1,5 @@
 ﻿
-namespace Snes.Configuration
+namespace Snes
 {
     partial class Configuration
     {

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Snes.Chip.SPC7110
+namespace Snes
 {
-    class SPC7110MCU : Snes.Memory.Memory
+    class SPC7110MCU : Memory
     {
         public static SPC7110MCU spc7110mcu = new SPC7110MCU();
 

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Snes.Chip.CX4
+namespace Snes
 {
-    class CX4 : Snes.Memory.Memory
+    class CX4 : Memory
     {
         public static CX4 cx4 = new CX4();
 

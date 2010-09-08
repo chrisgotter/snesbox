@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Snes.Chip.ST0010
+namespace Snes
 {
-    class ST0010 : Snes.Memory.Memory
+    class ST0010 : Memory
     {
         public static ST0010 st0010 = new ST0010();
 

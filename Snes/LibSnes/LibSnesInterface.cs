@@ -1,14 +1,14 @@
 ﻿
-namespace Snes.LibSnes
+namespace Snes
 {
-    class Interface : Snes.Interface.Interface
+    class LibSnesInterface : Interface
     {
-        public static Interface inter = new Interface();
+        public static LibSnesInterface inter = new LibSnesInterface();
 
-        public event Snes.LibSnes.LibSnes.SnesVideoRefresh pvideo_refresh = null;
-        public event Snes.LibSnes.LibSnes.SnesAudioSample paudio_sample = null;
-        public event Snes.LibSnes.LibSnes.SnesInputPoll pinput_poll = null;
-        public event Snes.LibSnes.LibSnes.SnesInputState pinput_state = null;
+        public event LibSnes.SnesVideoRefresh pvideo_refresh = null;
+        public event LibSnes.SnesAudioSample paudio_sample = null;
+        public event LibSnes.SnesInputPoll pinput_poll = null;
+        public event LibSnes.SnesInputState pinput_state = null;
 
         public void video_refresh(ushort[] data, uint width, uint height)
         {
@@ -28,7 +28,7 @@ namespace Snes.LibSnes
                 pinput_poll();
         }
 
-        public short input_poll(bool port, Input.Input.Device device, uint index, uint id)
+        public short input_poll(bool port, Input.Device device, uint index, uint id)
         {
             if (!ReferenceEquals(pinput_state, null))
                 return pinput_state(port, (uint)device, index, id);

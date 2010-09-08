@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snes.DSP
+namespace Snes
 {
     partial class DSP : Processor
     {

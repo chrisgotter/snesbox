@@ -1,7 +1,7 @@
 ﻿using System;
 using Nall;
 
-namespace Snes.SMP
+namespace Snes
 {
     partial class SMP : SMPCore, IProcessor
     {

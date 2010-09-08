@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Snes.Chip.SA1
+namespace Snes
 {
-    class SA1IRAM : Snes.Memory.Memory
+    class SA1IRAM : Memory
     {
         public static SA1IRAM sa1iram = new SA1IRAM();
 

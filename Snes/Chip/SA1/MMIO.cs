@@ -1,5 +1,5 @@
 ﻿
-namespace Snes.Chip.SA1
+namespace Snes
 {
     partial class SA1
     {

@@ -1,7 +1,6 @@
 ﻿using System;
-using Snes.Memory;
 
-namespace Snes.Chip.BSX
+namespace Snes
 {
     partial class BSXBase : IMMIO
     {

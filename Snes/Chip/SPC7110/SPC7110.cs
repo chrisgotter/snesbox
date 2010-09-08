@@ -1,7 +1,6 @@
 ﻿using System;
-using Snes.Memory;
 
-namespace Snes.Chip.SPC7110
+namespace Snes
 {
     class SPC7110 : IMMIO
     {

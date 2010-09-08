@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snes.Chip.ST0011
+namespace Snes
 {
     class ST0011
     {

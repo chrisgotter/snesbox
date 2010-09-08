@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Snes.Chip.SA1
+namespace Snes
 {
-    class VSPROM : Snes.Memory.Memory
+    class VSPROM : Memory
     {
         public static VSPROM vsprom = new VSPROM();
 

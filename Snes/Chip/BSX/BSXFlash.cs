@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Snes.Chip.BSX
+namespace Snes
 {
-    partial class BSXFlash : Snes.Memory.Memory
+    partial class BSXFlash : Memory
     {
         public static BSXFlash bsxflash = new BSXFlash();
 

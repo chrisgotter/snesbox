@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snes.SMP
+namespace Snes
 {
     partial class SMPCore
     {
@@ -10,7 +10,7 @@ namespace Snes.SMP
             public ByteRef[] r = new ByteRef[4];
             public ByteRef a, x, y, sp;
             public RegYA ya;
-            public Snes.SMP.SMPCore.Flag p;
+            public SMPCore.Flag p;
             public Regs() { throw new NotImplementedException(); }
         }
     }

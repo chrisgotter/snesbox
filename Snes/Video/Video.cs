@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snes.Video
+namespace Snes
 {
     class Video
     {
@@ -12,27 +12,27 @@ namespace Snes.Video
 
         public void update()
         {
-            switch (Input.Input.input.Ports[1].device)
+            switch (Input.input.Ports[1].device)
             {
-                case Input.Input.Device.SuperScope:
-                    draw_cursor(0x001f, Input.Input.input.Ports[1].superscope.x, Input.Input.input.Ports[1].superscope.y);
+                case Input.Device.SuperScope:
+                    draw_cursor(0x001f, Input.input.Ports[1].superscope.x, Input.input.Ports[1].superscope.y);
                     break;
-                case Input.Input.Device.Justifiers:
-                    draw_cursor(0x02e0, Input.Input.input.Ports[1].justifier.x2, Input.Input.input.Ports[1].justifier.y2);
-                    goto case Input.Input.Device.Justifier;  //fallthrough
-                case Input.Input.Device.Justifier:
-                    draw_cursor(0x001f, Input.Input.input.Ports[1].justifier.x1, Input.Input.input.Ports[1].justifier.y1);
+                case Input.Device.Justifiers:
+                    draw_cursor(0x02e0, Input.input.Ports[1].justifier.x2, Input.input.Ports[1].justifier.y2);
+                    goto case Input.Device.Justifier;  //fallthrough
+                case Input.Device.Justifier:
+                    draw_cursor(0x001f, Input.input.Ports[1].justifier.x1, Input.input.Ports[1].justifier.y1);
                     break;
             }
 
-            ushort[] data = PPU.PPU.ppu.Output;
+            ushort[] data = PPU.ppu.Output;
             var dataSeg = new ArraySegment<ushort>(data);
-            if (PPU.PPU.ppu.interlace() && PPU.PPU.ppu.field())
+            if (PPU.ppu.interlace() && PPU.ppu.field())
             {
                 dataSeg = new ArraySegment<ushort>(data, 512, data.Length - 512);
             }
             uint width = 256;
-            uint height = !PPU.PPU.ppu.overscan() ? 224U : 239U;
+            uint height = !PPU.ppu.overscan() ? 224U : 239U;
 
             if (frame_hires)
             {
@@ -57,7 +57,7 @@ namespace Snes.Video
                 height <<= 1;
             }
 
-            System.System.system.Interface.video_refresh(new ArraySegment<ushort>(PPU.PPU.ppu.Output, 1024, PPU.PPU.ppu.Output.Length - 1024).Array, width, height);
+            System.system.Interface.video_refresh(new ArraySegment<ushort>(PPU.ppu.Output, 1024, PPU.ppu.Output.Length - 1024).Array, width, height);
 
             frame_hires = false;
             frame_interlace = false;
@@ -65,15 +65,15 @@ namespace Snes.Video
 
         public void scanline()
         {
-            uint y = CPU.CPU.cpu.PPUCounter.vcounter();
+            uint y = CPU.cpu.PPUCounter.vcounter();
             if (y >= 240)
             {
                 return;
             }
 
-            frame_hires |= PPU.PPU.ppu.hires();
-            frame_interlace |= PPU.PPU.ppu.interlace();
-            uint width = (PPU.PPU.ppu.hires() == false ? 256U : 512U);
+            frame_hires |= PPU.ppu.hires();
+            frame_interlace |= PPU.ppu.interlace();
+            uint width = (PPU.ppu.hires() == false ? 256U : 512U);
             line_width[y] = width;
         }
 
@@ -108,9 +108,9 @@ namespace Snes.Video
 
         private void draw_cursor(ushort color, int x, int y)
         {
-            ushort[] data = PPU.PPU.ppu.Output;
+            ushort[] data = PPU.ppu.Output;
             var dataSeg = new ArraySegment<ushort>(data);
-            if (PPU.PPU.ppu.interlace() && PPU.PPU.ppu.field())
+            if (PPU.ppu.interlace() && PPU.ppu.field())
             {
                 dataSeg = new ArraySegment<ushort>(data, 512, data.Length - 512);
             }

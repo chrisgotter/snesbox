@@ -1,5 +1,5 @@
 ﻿
-namespace Snes.PPU
+namespace Snes
 {
     interface IPPUCounter
     {

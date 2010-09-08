@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Snes.Chip.MSU1
+﻿
+namespace Snes
 {
     partial class MSU1
     {

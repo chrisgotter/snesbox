@@ -1,7 +1,6 @@
 ﻿using System;
-using Snes.Memory;
 
-namespace Snes.Chip.SRTC
+namespace Snes
 {
     class SRTC : IMMIO
     {

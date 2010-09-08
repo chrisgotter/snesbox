@@ -1,5 +1,5 @@
 ﻿
-namespace Snes.Chip
+namespace Snes
 {
     interface ICoprocessor
     {

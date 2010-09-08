@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Snes.CPU
+namespace Snes
 {
     abstract partial class CPUCore
     {

@@ -1,7 +1,6 @@
 ﻿using System;
-using Snes.Memory;
 
-namespace Snes.Chip.SuperFX
+namespace Snes
 {
     class SuperFXBus : Bus
     {

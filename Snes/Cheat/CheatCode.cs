@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace Snes.Cheat
+namespace Snes
 {
     class CheatCode
     {

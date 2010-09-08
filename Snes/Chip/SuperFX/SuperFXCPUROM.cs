@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Snes.Chip.SuperFX
+namespace Snes
 {
-    class SuperFXCPUROM : Snes.Memory.Memory
+    class SuperFXCPUROM : Memory
     {
         public static SuperFXCPUROM fxrom = new SuperFXCPUROM();
 

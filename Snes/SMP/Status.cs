@@ -1,5 +1,5 @@
 ﻿
-namespace Snes.SMP
+namespace Snes
 {
     partial class SMP
     {

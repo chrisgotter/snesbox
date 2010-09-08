@@ -1,7 +1,6 @@
 ﻿using System;
-using Snes.Memory;
 
-namespace Snes.Chip.ST0018
+namespace Snes
 {
     partial class ST0018 : IMMIO
     {

@@ -1,6 +1,6 @@
 ﻿using Nall;
 
-namespace Snes.DSP
+namespace Snes
 {
     partial class DSP
     {

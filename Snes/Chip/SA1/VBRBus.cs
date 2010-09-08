@@ -1,7 +1,6 @@
 ﻿using System;
-using Snes.Memory;
 
-namespace Snes.Chip.SA1
+namespace Snes
 {
     class VBRBus : Bus
     {

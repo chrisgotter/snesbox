@@ -189,7 +189,7 @@
     <Compile Include="Input\Superscope.cs" />
     <Compile Include="Interface\Interface.cs" />
     <Compile Include="IProcessor.cs" />
-    <Compile Include="LibSnes\Interface.cs" />
+    <Compile Include="LibSnes\LibSnesInterface.cs" />
     <Compile Include="LibSnes\LibSnes.cs" />
     <Compile Include="Memory\Page.cs" />
     <Compile Include="PPU\Background.cs" />

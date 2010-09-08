@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Snes.Chip.SA1
+namespace Snes
 {
-    class CC1BWRAM : Snes.Memory.Memory
+    class CC1BWRAM : Memory
     {
         public static CC1BWRAM cc1bwram = new CC1BWRAM();
 

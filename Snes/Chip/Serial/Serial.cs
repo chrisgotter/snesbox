@@ -1,7 +1,6 @@
 ﻿using System;
-using Snes.Memory;
 
-namespace Snes.Chip.Serial
+namespace Snes
 {
     class Serial : Coprocessor, IMMIO
     {

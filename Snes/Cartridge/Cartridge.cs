@@ -4,25 +4,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Xml.Linq;
 using Nall;
-using Snes.Chip.BSX;
-using Snes.Chip.CX4;
-using Snes.Chip.DSP1;
-using Snes.Chip.DSP2;
-using Snes.Chip.DSP3;
-using Snes.Chip.DSP4;
-using Snes.Chip.MSU1;
-using Snes.Chip.OBC1;
-using Snes.Chip.SA1;
-using Snes.Chip.SDD1;
-using Snes.Chip.SPC7110;
-using Snes.Chip.SRTC;
-using Snes.Chip.ST0010;
-using Snes.Chip.ST0018;
-using Snes.Chip.SuperFX;
-using Snes.Chip.SuperGameBoy;
-using Snes.Memory;
 
-namespace Snes.Cartridge
+namespace Snes
 {
     partial class Cartridge
     {
@@ -741,7 +724,7 @@ namespace Snes.Cartridge
             {
                 foreach (var leaf in node.Elements("map"))
                 {
-                    Mapping m = new Mapping((Memory.Memory)SuperGameBoy.supergameboy);
+                    Mapping m = new Mapping((Memory)SuperGameBoy.supergameboy);
                     if (leaf.Attributes("address").Any())
                     {
                         xml_parse_address(m, leaf.Attribute("address").Value);
@@ -777,7 +760,7 @@ namespace Snes.Cartridge
             {
                 foreach (var leaf in node.Elements("map"))
                 {
-                    Mapping m = new Mapping((Memory.Memory)SDD1.sdd1);
+                    Mapping m = new Mapping((Memory)SDD1.sdd1);
                     if (leaf.Attributes("address").Any())
                     {
                         xml_parse_address(m, leaf.Attribute("address").Value);
@@ -790,7 +773,7 @@ namespace Snes.Cartridge
             {
                 foreach (var leaf in node.Elements("map"))
                 {
-                    Mapping m = new Mapping((Memory.Memory)SDD1.sdd1);
+                    Mapping m = new Mapping((Memory)SDD1.sdd1);
                     if (leaf.Attributes("address").Any())
                     {
                         xml_parse_address(m, leaf.Attribute("address").Value);
@@ -941,8 +924,8 @@ namespace Snes.Cartridge
                 }
             }
 
-            Memory.Memory[] dr = new Memory.Memory[5] { null, DSP1DR.dsp1dr, DSP2DR.dsp2dr, DSP3.dsp3, DSP4.dsp4 };
-            Memory.Memory[] sr = new Memory.Memory[5] { null, DSP1SR.dsp1sr, DSP2SR.dsp2sr, DSP3.dsp3, DSP4.dsp4 };
+            Memory[] dr = new Memory[5] { null, DSP1DR.dsp1dr, DSP2DR.dsp2dr, DSP3.dsp3, DSP4.dsp4 };
+            Memory[] sr = new Memory[5] { null, DSP1SR.dsp1sr, DSP2SR.dsp2sr, DSP3.dsp3, DSP4.dsp4 };
 
             foreach (var node in root.Elements("dr"))
             {
@@ -1014,7 +997,7 @@ namespace Snes.Cartridge
                 }
             }
 
-            Memory.Memory[] map = new Memory.Memory[3] { null, ST0010.st0010, null };
+            Memory[] map = new Memory[3] { null, ST0010.st0010, null };
 
             foreach (var node in root.Elements("mmio"))
             {

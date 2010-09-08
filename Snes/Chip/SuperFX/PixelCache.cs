@@ -1,5 +1,5 @@
 ﻿
-namespace Snes.Chip.SuperFX
+namespace Snes
 {
     partial class SuperFX
     {

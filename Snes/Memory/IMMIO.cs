@@ -1,5 +1,5 @@
 ﻿
-namespace Snes.Memory
+namespace Snes
 {
     interface IMMIO
     {

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Snes.Chip.OBC1
+namespace Snes
 {
-    partial class OBC1 : Snes.Memory.Memory
+    partial class OBC1 : Memory
     {
         public static OBC1 obc1 = new OBC1();
 

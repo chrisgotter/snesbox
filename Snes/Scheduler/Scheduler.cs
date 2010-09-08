@@ -1,6 +1,6 @@
 ﻿using Nall;
 
-namespace Snes.Scheduler
+namespace Snes
 {
     class Scheduler
     {
@@ -31,7 +31,7 @@ namespace Snes.Scheduler
         public void init()
         {
             host_thread = Libco.Active();
-            thread = CPU.CPU.cpu.Processor.thread;
+            thread = CPU.cpu.Processor.thread;
             sync = SynchronizeMode.None;
         }
 

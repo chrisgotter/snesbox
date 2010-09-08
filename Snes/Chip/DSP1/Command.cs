@@ -1,5 +1,5 @@
 ﻿
-namespace Snes.Chip.DSP1
+namespace Snes
 {
     partial class DSP1
     {

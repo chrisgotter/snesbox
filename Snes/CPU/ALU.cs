@@ -1,5 +1,5 @@
 ﻿
-namespace Snes.CPU
+namespace Snes
 {
     partial class CPU
     {

@@ -1,9 +1,8 @@
 ﻿using System;
-using Snes.Memory;
 
-namespace Snes.Chip.SuperGameBoy
+namespace Snes
 {
-    class SuperGameBoy : Memory.Memory, ICoprocessor, IMMIO
+    class SuperGameBoy : Memory, ICoprocessor, IMMIO
     {
         public static SuperGameBoy supergameboy = new SuperGameBoy();
 
