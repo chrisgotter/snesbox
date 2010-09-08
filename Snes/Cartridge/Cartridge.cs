@@ -355,7 +355,7 @@ namespace Snes.Cartridge
         private void parse_xml_gameboy(string data)
         {
             XDocument document = XDocument.Parse(data);
-            if (document.Elements().Count() == 0)
+            if (document.Root.IsEmpty)
             {
                 return;
             }
