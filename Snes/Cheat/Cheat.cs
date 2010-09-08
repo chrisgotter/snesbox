@@ -59,7 +59,7 @@ namespace Snes
             cheat_enabled = system_enabled && code_enabled;
         }
 
-        public bool read(uint addr, ref byte data)
+        public bool read(uint addr, out byte data)
         {
             addr = mirror(addr);
 
@@ -81,6 +81,7 @@ namespace Snes
                 }
             }
 
+            data = 0;
             return false;
         }
 

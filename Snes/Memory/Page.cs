@@ -5,8 +5,8 @@ namespace Snes
     {
         public class Page
         {
-            Memory access;
-            uint offset;
+            public Memory access;
+            public uint offset;
         }
     }
 }

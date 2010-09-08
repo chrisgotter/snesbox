@@ -12,8 +12,27 @@ namespace Snes
         public enum MapMode : uint { Direct, Linear, Shadow }
         public void map(MapMode mode, byte bank_lo, byte bank_hi, ushort addr_lo, ushort addr_hi, Memory access, uint offset = 0, uint size = 0) { throw new NotImplementedException(); }
 
-        public byte read(uint24 addr) { throw new NotImplementedException(); }
-        public void write(uint24 addr, byte data) { throw new NotImplementedException(); }
+        public byte read(uint24 addr)
+        {
+#if CHEAT_SYSTEM
+            if (Cheat.cheat.active() && Cheat.cheat.exists((uint)addr))
+            {
+                byte r;
+                if (Cheat.cheat.read((uint)addr, out r))
+                {
+                    return r;
+                }
+            }
+#endif
+            Page p = page[addr >> 8];
+            return p.access.read(p.offset + (uint)addr);
+        }
+
+        public void write(uint24 addr, byte data)
+        {
+            Page p = page[addr >> 8];
+            p.access.write(p.offset + (uint)addr, data);
+        }
 
         public bool load_cart() { throw new NotImplementedException(); }
         public void unload_cart() { throw new NotImplementedException(); }

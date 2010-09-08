@@ -18,19 +18,85 @@ namespace Snes
         public static MappedRAM gbram = new MappedRAM();
         public static MappedRAM gbrtc = new MappedRAM();
 
-        public void reset() { throw new NotImplementedException(); }
-        public void map(byte[] source, uint length) { throw new NotImplementedException(); }
-        public void copy(byte[] data, uint size) { throw new NotImplementedException(); }
+        public void reset()
+        {
+            if (!ReferenceEquals(data_, null))
+            {
+                data_ = null;
+            }
 
-        public void write_protect(bool status) { throw new NotImplementedException(); }
-        public byte[] data() { throw new NotImplementedException(); }
-        public override uint size() { throw new NotImplementedException(); }
+            unchecked
+            {
+                size_ = (uint)-1U;
+            }
+            write_protect_ = false;
+        }
 
-        public override byte read(uint addr) { throw new NotImplementedException(); }
-        public override void write(uint addr, byte n) { throw new NotImplementedException(); }
-        public byte this[uint addr] { get { throw new NotImplementedException(); } }
+        public void map(byte[] source, uint length)
+        {
+            reset();
+            data_ = source;
+            unchecked
+            {
+                size_ = !ReferenceEquals(data_, null) && length > 0 ? length : (uint)-1U;
+            }
+        }
 
-        public MappedRAM() { throw new NotImplementedException(); }
+        public void copy(byte[] data, uint size)
+        {
+            if (ReferenceEquals(data_, null))
+            {
+                size_ = (uint)((size & ~255) + (Convert.ToBoolean(size & 255) ? 1 : 0 << 8));
+                data_ = new byte[size_];
+            }
+            Array.Copy(data, data_, Math.Min(size_, size));
+        }
+
+        public void write_protect(bool status)
+        {
+            write_protect_ = status;
+        }
+
+        public byte[] data()
+        {
+            return data_;
+        }
+
+        public override uint size()
+        {
+            return size_;
+        }
+
+        public override byte read(uint addr)
+        {
+            return data_[addr];
+        }
+
+        public override void write(uint addr, byte n)
+        {
+            if (!write_protect_)
+            {
+                data_[addr] = n;
+            }
+        }
+
+        public byte this[uint addr]
+        {
+            get
+            {
+                return data_[addr];
+            }
+        }
+
+        public MappedRAM()
+        {
+            data_ = null;
+            unchecked
+            {
+                size_ = (uint)-1U;
+            }
+            write_protect_ = false;
+        }
 
         private byte[] data_;
         private uint size_;

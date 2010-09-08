@@ -1,17 +1,38 @@
-﻿using System;
-
+﻿
 namespace Snes
 {
     class StaticRAM : Memory
     {
-        public byte[] data() { throw new NotImplementedException(); }
-        public override uint size() { throw new NotImplementedException(); }
+        public byte[] data()
+        {
+            return data_;
+        }
 
-        public override byte read(uint addr) { throw new NotImplementedException(); }
-        public override void write(uint addr, byte n) { throw new NotImplementedException(); }
-        public byte this[uint addr] { get { throw new NotImplementedException(); } }
+        public override uint size()
+        {
+            return size_;
+        }
 
-        public StaticRAM(uint size) { throw new NotImplementedException(); }
+        public override byte read(uint addr)
+        {
+            return data_[addr];
+        }
+
+        public override void write(uint addr, byte n)
+        {
+            data_[addr] = n;
+        }
+
+        public byte this[uint addr]
+        {
+            get { return data_[addr]; }
+        }
+
+        public StaticRAM(uint n)
+        {
+            size_ = n;
+            data_ = new byte[size_];
+        }
 
         private byte[] data_;
         private uint size_;
