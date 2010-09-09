@@ -1,18 +1,38 @@
-﻿using System;
-
+﻿
 namespace Snes
 {
     class MMIOAccess : Memory
     {
         public static MMIOAccess mmio = new MMIOAccess();
 
-        IMMIO handle(uint addr) { throw new NotImplementedException(); }
-        public override uint size() { throw new NotImplementedException(); }
-        public void map(uint addr, IMMIO access) { throw new NotImplementedException(); }
-        public override byte read(uint addr) { throw new NotImplementedException(); }
-        public override void write(uint addr, byte data) { throw new NotImplementedException(); }
-        MMIOAccess() { throw new NotImplementedException(); }
+        public IMMIO handle(uint addr)
+        {
+            return _mmio[addr & 0x7fff];
+        }
 
-        public IMMIO[] _mmio = new IMMIO[0x8000];
+        public void map(uint addr, IMMIO access)
+        {
+            _mmio[addr & 0x7fff] = access;
+        }
+
+        public override byte read(uint addr)
+        {
+            return _mmio[addr & 0x7fff].mmio_read(addr);
+        }
+
+        public override void write(uint addr, byte data)
+        {
+            _mmio[addr & 0x7fff].mmio_write(addr, data);
+        }
+
+        public MMIOAccess()
+        {
+            for (uint i = 0; i < 0x8000; i++)
+            {
+                _mmio[i] = UnmappedMMIO.mmio_unmapped;
+            }
+        }
+
+        private IMMIO[] _mmio = new IMMIO[0x8000];
     }
 }

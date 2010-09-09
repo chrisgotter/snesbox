@@ -3,6 +3,12 @@ namespace Snes
 {
     class StaticRAM : Memory
     {
+        public static StaticRAM wram = new StaticRAM(128 * 1024);
+        public static StaticRAM apuram = new StaticRAM(64 * 1024);
+        public static StaticRAM vram = new StaticRAM(64 * 1024);
+        public static StaticRAM oam = new StaticRAM(544);
+        public static StaticRAM cgram = new StaticRAM(512);
+
         public byte[] data()
         {
             return data_;
@@ -25,7 +31,14 @@ namespace Snes
 
         public byte this[uint addr]
         {
-            get { return data_[addr]; }
+            get
+            {
+                return data_[addr];
+            }
+            set
+            {
+                data_[addr] = value;
+            }
         }
 
         public StaticRAM(uint n)

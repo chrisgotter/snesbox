@@ -1,10 +1,15 @@
-﻿using System;
-
+﻿
 namespace Snes
 {
     class UnmappedMMIO : IMMIO
     {
-        public byte mmio_read(uint addr) { throw new NotImplementedException(); }
-        public void mmio_write(uint addr, byte data) { throw new NotImplementedException(); }
+        public static UnmappedMMIO mmio_unmapped = new UnmappedMMIO();
+
+        public byte mmio_read(uint addr)
+        {
+            return CPU.cpu.regs.mdr;
+        }
+
+        public void mmio_write(uint addr, byte data) { }
     }
 }

@@ -1,11 +1,20 @@
-﻿using System;
-
+﻿
 namespace Snes
 {
     class UnmappedMemory : Memory
     {
-        public override uint size() { throw new NotImplementedException(); }
-        public override byte read(uint addr) { throw new NotImplementedException(); }
-        public override void write(uint addr, byte data) { throw new NotImplementedException(); }
+        public static UnmappedMemory memory_unmapped = new UnmappedMemory();
+
+        public override uint size()
+        {
+            return 16 * 1024 * 1024;
+        }
+
+        public override byte read(uint addr)
+        {
+            return CPU.cpu.regs.mdr;
+        }
+
+        public override void write(uint addr, byte data) { }
     }
 }

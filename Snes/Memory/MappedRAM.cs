@@ -86,6 +86,10 @@ namespace Snes
             {
                 return data_[addr];
             }
+            set
+            {
+                data_[addr] = value;
+            }
         }
 
         public MappedRAM()
