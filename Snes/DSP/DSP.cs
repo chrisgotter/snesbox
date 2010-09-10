@@ -363,6 +363,7 @@ namespace Snes
         private int gaussian_interpolate(Voice v)
         {   //make pointers into gaussian table based on fractional position between samples
             int offset = (v.interp_pos >> 4) & 0xff;
+            // TODO: verify array segments
             short[] fwd = new ArraySegment<short>(gaussian_table, 255 - offset, gaussian_table.Length - (255 - offset)).Array;
             short[] rev = new ArraySegment<short>(gaussian_table, offset, gaussian_table.Length - offset).Array; //mirror left half of gaussian table
 
@@ -552,15 +553,15 @@ namespace Snes
 
                 switch (filter)
                 {
-                    case 0: break; //no filter
-
+                    case 0:
+                        break; //no filter
                     case 1:
                         {
                             //s += p1 * 0.46875
                             s += p1 >> 1;
                             s += (-p1) >> 5;
-                        } break;
-
+                        }
+                        break;
                     case 2:
                         {
                             //s += p1 * 0.953125 - p2 * 0.46875
@@ -568,8 +569,8 @@ namespace Snes
                             s -= p2;
                             s += p2 >> 4;
                             s += (p1 * -3) >> 6;
-                        } break;
-
+                        }
+                        break;
                     case 3:
                         {
                             //s += p1 * 0.8984375 - p2 * 0.40625
@@ -577,14 +578,18 @@ namespace Snes
                             s -= p2;
                             s += (p1 * -13) >> 7;
                             s += (p2 * 3) >> 4;
-                        } break;
+                        }
+                        break;
                 }
 
                 //adjust and write sample
                 s = Bit.sclamp(16, s);
                 s = (short)(s << 1);
                 v.buffer.write((uint)v.buf_pos++, s);
-                if (v.buf_pos >= brr_buf_size) v.buf_pos = 0;
+                if (v.buf_pos >= brr_buf_size)
+                {
+                    v.buf_pos = 0;
+                }
             }
         }
 
@@ -654,7 +659,10 @@ namespace Snes
         private void voice_2(Voice v)
         {   //read sample pointer (ignored if not needed)
             ushort addr = (ushort)state.t_dir_addr;
-            if (!Convert.ToBoolean(v.kon_delay)) addr += 2;
+            if (!Convert.ToBoolean(v.kon_delay))
+            {
+                addr += 2;
+            }
             byte lo = StaticRAM.apuram[(ushort)(addr + 0)];
             byte hi = StaticRAM.apuram[(ushort)(addr + 1)];
             state.t_brr_next_addr = ((hi << 8) + lo);
@@ -709,7 +717,10 @@ namespace Snes
                 //disable BRR decoding until last three samples
                 v.interp_pos = 0;
                 v.kon_delay--;
-                if (Convert.ToBoolean(v.kon_delay & 3)) v.interp_pos = 0x4000;
+                if (Convert.ToBoolean(v.kon_delay & 3))
+                {
+                    v.interp_pos = 0x4000;
+                }
 
                 //pitch is never added during KON
                 state.t_pitch = 0;
@@ -752,7 +763,10 @@ namespace Snes
             }
 
             //run envelope for next sample
-            if (!Convert.ToBoolean(v.kon_delay)) envelope_run(v);
+            if (!Convert.ToBoolean(v.kon_delay))
+            {
+                envelope_run(v);
+            }
         }
 
         private void voice_4(Voice v)
@@ -779,7 +793,10 @@ namespace Snes
             v.interp_pos = (v.interp_pos & 0x3fff) + state.t_pitch;
 
             //keep from getting too far ahead (when using pitch modulation)
-            if (v.interp_pos > 0x7fff) v.interp_pos = 0x7fff;
+            if (v.interp_pos > 0x7fff)
+            {
+                v.interp_pos = 0x7fff;
+            }
 
             //output left
             voice_output(v, Convert.ToBoolean(0));
@@ -793,7 +810,10 @@ namespace Snes
             state.endx_buf = state.regs[(int)GlobalReg.r_endx] | state.t_looped;
 
             //clear bit in ENDX if KON just began
-            if (v.kon_delay == 5) state.endx_buf &= ~v.vbit;
+            if (v.kon_delay == 5)
+            {
+                state.endx_buf &= ~v.vbit;
+            }
         }
 
         private void voice_6(Voice v)
@@ -821,13 +841,15 @@ namespace Snes
         private int calc_fir(int i, bool channel)
         {
             int s = state.echo_hist[Convert.ToInt32(channel)][state.echo_hist_pos + i + 1];
-            return (s * (sbyte)(state.regs[(int)GlobalReg.r_fir] + i * 0x10)) >> 6;
+            //TODO: verify this matches the macro
+            return (s * (sbyte)(state.regs[(int)GlobalReg.r_fir + i * 0x10])) >> 6;
         }
 
         private int echo_output(bool channel)
         {
-            int output = (short)((state.t_main_out[Convert.ToInt32(channel)] * (sbyte)(state.regs[(int)GlobalReg.r_mvoll] + Convert.ToInt32(channel) * 0x10)) >> 7)
-                + (short)((state.t_echo_in[Convert.ToInt32(channel)] * (sbyte)(state.regs[(int)GlobalReg.r_evoll] + Convert.ToInt32(channel) * 0x10)) >> 7);
+            //TODO: verify this matches the macro
+            int output = (short)((state.t_main_out[Convert.ToInt32(channel)] * (sbyte)(state.regs[(int)GlobalReg.r_mvoll + Convert.ToInt32(channel) * 0x10])) >> 7)
+                + (short)((state.t_echo_in[Convert.ToInt32(channel)] * (sbyte)(state.regs[(int)GlobalReg.r_evoll + Convert.ToInt32(channel) * 0x10])) >> 7);
             return Bit.sclamp(16, output);
         }
 
@@ -856,7 +878,10 @@ namespace Snes
         private void echo_22()
         {   //history
             state.echo_hist_pos++;
-            if (state.echo_hist_pos >= echo_hist_size) state.echo_hist_pos = 0;
+            if (state.echo_hist_pos >= echo_hist_size)
+            {
+                state.echo_hist_pos = 0;
+            }
 
             state.t_echo_ptr = (ushort)((state.t_esa << 8) + state.echo_offset);
             echo_read(Convert.ToBoolean(0));

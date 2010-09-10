@@ -180,6 +180,7 @@ namespace Snes
                 crc32 = ~checksum;
             }
 
+            // TODO: verify hash
             var sha = new SHA256Managed();
             var shahash = sha.ComputeHash(MappedRAM.cartrom.data());
 
@@ -239,8 +240,8 @@ namespace Snes
             }
             else if (mode == Mode.SufamiTurbo)
             {
-                parse_xml_sufami_turbo(list[1], false);
-                parse_xml_sufami_turbo(list[2], true);
+                parse_xml_sufami_turbo(list[1], Convert.ToBoolean(0));
+                parse_xml_sufami_turbo(list[2], Convert.ToBoolean(1));
             }
             else if (mode == Mode.SuperGameBoy)
             {
@@ -256,7 +257,13 @@ namespace Snes
                 return;
             }
 
-            region = (document.Element("cartridge").Attribute("region").Value == "NTSC") ? Region.NTSC : Region.PAL;
+            if (document.Elements("cartridge").Any())
+            {
+                if (document.Element("cartridge").Attributes("region").Any())
+                {
+                    region = (document.Element("cartridge").Attribute("region").Value == "NTSC") ? Region.NTSC : Region.PAL;
+                }
+            }
 
             foreach (var node in document.Elements("rom"))
             {
@@ -344,8 +351,23 @@ namespace Snes
                 return;
             }
 
-            supergameboy_rtc_size = (document.Element("cartridge").Attribute("rtc").Value == "true") ? 4U : 0U;
-            supergameboy_ram_size = uint.Parse(document.Element("cartridge").Element("ram").Attribute("size").Value);
+            if (document.Elements("cartridge").Any())
+            {
+                if (document.Element("cartridge").Attributes("rtc").Any())
+                {
+                    supergameboy_rtc_size = (document.Element("cartridge").Attribute("rtc").Value == "true") ? 4U : 0U;
+                }
+            }
+            if (document.Elements("cartridge").Any())
+            {
+                if (document.Element("cartridge").Elements("ram").Any())
+                {
+                    if (document.Element("cartridge").Element("ram").Attributes("size").Any())
+                    {
+                        supergameboy_ram_size = uint.Parse(document.Element("cartridge").Element("ram").Attribute("size").Value);
+                    }
+                }
+            }
         }
 
         private void xml_parse_rom(XElement root)
@@ -585,7 +607,7 @@ namespace Snes
             {
                 foreach (var leaf in node.Elements("map"))
                 {
-                    Mapping m = new Mapping(BSXFlash.bsxflash);
+                    Mapping m = new Mapping(MappedRAM.bsxflash);
                     if (leaf.Attributes("address").Any())
                     {
                         xml_parse_address(m, leaf.Attribute("address").Value);
@@ -629,17 +651,16 @@ namespace Snes
 
             foreach (var node in root.Elements("slot"))
             {
-                uint slotid = 0;
-
+                bool slotid = Convert.ToBoolean(0);
                 if (node.Attributes("id").Any())
                 {
                     if (node.Attribute("id").Value == "A")
                     {
-                        slotid = 0;
+                        slotid = Convert.ToBoolean(0);
                     }
                     if (node.Attribute("id").Value == "B")
                     {
-                        slotid = 1;
+                        slotid = Convert.ToBoolean(1);
                     }
                 }
 
@@ -647,7 +668,7 @@ namespace Snes
                 {
                     foreach (var leaf in slot.Elements("map"))
                     {
-                        Mapping m = new Mapping(slotid == 0 ? MappedRAM.stArom : MappedRAM.stBrom);
+                        Mapping m = new Mapping(slotid == Convert.ToBoolean(0) ? MappedRAM.stArom : MappedRAM.stBrom);
                         if (leaf.Attributes("address").Any())
                         {
                             xml_parse_address(m, leaf.Attribute("address").Value);
@@ -675,7 +696,7 @@ namespace Snes
                 {
                     foreach (var leaf in slot.Elements("map"))
                     {
-                        Mapping m = new Mapping(slotid == 0 ? MappedRAM.stAram : MappedRAM.stBram);
+                        Mapping m = new Mapping(slotid == Convert.ToBoolean(0) ? MappedRAM.stAram : MappedRAM.stBram);
                         if (leaf.Attributes("address").Any())
                         {
                             xml_parse_address(m, leaf.Attribute("address").Value);
@@ -773,7 +794,7 @@ namespace Snes
             {
                 foreach (var leaf in node.Elements("map"))
                 {
-                    Mapping m = new Mapping((Memory)SDD1.sdd1);
+                    Mapping m = new Mapping((IMMIO)SDD1.sdd1);
                     if (leaf.Attributes("address").Any())
                     {
                         xml_parse_address(m, leaf.Attribute("address").Value);
@@ -901,23 +922,22 @@ namespace Snes
 
             if (root.Attributes("program").Any())
             {
-                var content = root.Attribute("program").Value;
-                if (content == "DSP-1" || content == "DSP-1A" || content == "DSP-1B")
+                if (root.Attribute("program").Value == "DSP-1" || root.Attribute("program").Value == "DSP-1A" || root.Attribute("program").Value == "DSP-1B")
                 {
                     program = 1;
                     has_dsp1 = true;
                 }
-                else if (content == "DSP-2")
+                else if (root.Attribute("program").Value == "DSP-2")
                 {
                     program = 2;
                     has_dsp2 = true;
                 }
-                else if (content == "DSP-3")
+                else if (root.Attribute("program").Value == "DSP-3")
                 {
                     program = 3;
                     has_dsp3 = true;
                 }
-                else if (content == "DSP-4")
+                else if (root.Attribute("program").Value == "DSP-4")
                 {
                     program = 4;
                     has_dsp4 = true;
@@ -1017,10 +1037,13 @@ namespace Snes
         {
             uint program = 0;
 
-            if (root.Attributes("program").Any() && root.Attribute("program").Value == "ST-0018")
+            if (root.Attributes("program").Any())
             {
-                program = 1;
-                has_st0018 = true;
+                if (root.Attribute("program").Value == "ST-0018")
+                {
+                    program = 1;
+                    has_st0018 = true;
+                }
             }
 
             IMMIO[] map = new IMMIO[2] { null, ST0018.st0018 };

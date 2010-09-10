@@ -46,7 +46,7 @@ namespace Snes
         {
             if (ReferenceEquals(data_, null))
             {
-                size_ = (uint)((size & ~255) + (Convert.ToBoolean(size & 255) ? 1 : 0 << 8));
+                size_ = (uint)((size & ~255) + (Convert.ToInt32(Convert.ToBoolean(size & 255)) << 8));
                 data_ = new byte[size_];
             }
             Array.Copy(data, data_, Math.Min(size_, size));
@@ -85,10 +85,6 @@ namespace Snes
             get
             {
                 return data_[addr];
-            }
-            set
-            {
-                data_[addr] = value;
             }
         }
 

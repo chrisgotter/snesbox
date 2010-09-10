@@ -25,13 +25,13 @@ namespace Snes
             {
                 case Device.Joypad:
                     {
-                        if (CPU.cpu.joylatch() == false)
+                        if (CPU.cpu.joylatch() == Convert.ToBoolean(0))
                         {
                             if (p.counter0 >= 16)
                             {
                                 return 1;
                             }
-                            return (byte)System.system.Interface.input_poll(portnumber, p.device, 0, p.counter0++);//, p.device, 0, p.counter0++);
+                            return (byte)System.system.Interface.input_poll(portnumber, p.device, 0, p.counter0++);
                         }
                         else
                         {
@@ -103,43 +103,76 @@ namespace Snes
 
                         switch (p.counter0++)
                         {
-                            default: return 0;
-                            case 0: return 0;
-                            case 1: return 0;
-                            case 2: return 0;
-                            case 3: return 0;
-                            case 4: return 0;
-                            case 5: return 0;
-                            case 6: return 0;
-                            case 7: return 0;
+                            default:
+                                goto case 0;
+                            case 0:
+                                return 0;
+                            case 1:
+                                return 0;
+                            case 2:
+                                return 0;
+                            case 3:
+                                return 0;
+                            case 4:
+                                return 0;
+                            case 5:
+                                return 0;
+                            case 6:
+                                return 0;
+                            case 7:
+                                return 0;
 
-                            case 8: return (byte)System.system.Interface.input_poll(portnumber, p.device, 0, (uint)MouseID.Right);
-                            case 9: return (byte)System.system.Interface.input_poll(portnumber, p.device, 0, (uint)MouseID.Left);
-                            case 10: return 0;  //speed (0 = slow, 1 = normal, 2 = fast, 3 = unused)
-                            case 11: return 0;  // ||
+                            case 8:
+                                return (byte)System.system.Interface.input_poll(portnumber, p.device, 0, (uint)MouseID.Right);
+                            case 9:
+                                return (byte)System.system.Interface.input_poll(portnumber, p.device, 0, (uint)MouseID.Left);
+                            case 10:
+                                return 0;  //speed (0 = slow, 1 = normal, 2 = fast, 3 = unused)
+                            case 11:
+                                return 0;  // ||
 
-                            case 12: return 0;  //signature
-                            case 13: return 0;  // ||
-                            case 14: return 0;  // ||
-                            case 15: return 1;  // ||
+                            case 12:
+                                return 0;  //signature
+                            case 13:
+                                return 0;  // ||
+                            case 14:
+                                return 0;  // ||
+                            case 15:
+                                return 1;  // ||
 
-                            case 16: return (byte)(Convert.ToInt32(direction_y) & 1);
-                            case 17: return (byte)((position_y >> 6) & 1);
-                            case 18: return (byte)((position_y >> 5) & 1);
-                            case 19: return (byte)((position_y >> 4) & 1);
-                            case 20: return (byte)((position_y >> 3) & 1);
-                            case 21: return (byte)((position_y >> 2) & 1);
-                            case 22: return (byte)((position_y >> 1) & 1);
-                            case 23: return (byte)((position_y >> 0) & 1);
+                            case 16:
+                                return (byte)(Convert.ToInt32(direction_y) & 1);
+                            case 17:
+                                return (byte)((position_y >> 6) & 1);
+                            case 18:
+                                return (byte)((position_y >> 5) & 1);
+                            case 19:
+                                return (byte)((position_y >> 4) & 1);
+                            case 20:
+                                return (byte)((position_y >> 3) & 1);
+                            case 21:
+                                return (byte)((position_y >> 2) & 1);
+                            case 22:
+                                return (byte)((position_y >> 1) & 1);
+                            case 23:
+                                return (byte)((position_y >> 0) & 1);
 
-                            case 24: return (byte)(Convert.ToInt32(direction_x) & 1);
-                            case 25: return (byte)((position_x >> 6) & 1);
-                            case 26: return (byte)((position_x >> 5) & 1);
-                            case 27: return (byte)((position_x >> 4) & 1);
-                            case 28: return (byte)((position_x >> 3) & 1);
-                            case 29: return (byte)((position_x >> 2) & 1);
-                            case 30: return (byte)((position_x >> 1) & 1);
-                            case 31: return (byte)((position_x >> 0) & 1);
+                            case 24:
+                                return (byte)(Convert.ToInt32(direction_x) & 1);
+                            case 25:
+                                return (byte)((position_x >> 6) & 1);
+                            case 26:
+                                return (byte)((position_x >> 5) & 1);
+                            case 27:
+                                return (byte)((position_x >> 4) & 1);
+                            case 28:
+                                return (byte)((position_x >> 3) & 1);
+                            case 29:
+                                return (byte)((position_x >> 2) & 1);
+                            case 30:
+                                return (byte)((position_x >> 1) & 1);
+                            case 31:
+                                return (byte)((position_x >> 0) & 1);
                         }
                     } //case Device::Mouse
                 case Device.SuperScope:
@@ -204,17 +237,25 @@ namespace Snes
 
                         switch (p.counter0++)
                         {
-                            case 0: return Convert.ToByte(p.superscope.trigger);
-                            case 1: return Convert.ToByte(p.superscope.cursor);
-                            case 2: return Convert.ToByte(p.superscope.turbo);
-                            case 3: return Convert.ToByte(p.superscope.pause);
-                            case 4: return 0;
-                            case 5: return 0;
-                            case 6: return Convert.ToByte(p.superscope.offscreen);
-                            case 7: return 0;  //noise (1 = yes)
-                            default: return 0;
+                            case 0:
+                                return Convert.ToByte(p.superscope.trigger);
+                            case 1:
+                                return Convert.ToByte(p.superscope.cursor);
+                            case 2:
+                                return Convert.ToByte(p.superscope.turbo);
+                            case 3:
+                                return Convert.ToByte(p.superscope.pause);
+                            case 4:
+                                return 0;
+                            case 5:
+                                return 0;
+                            case 6:
+                                return Convert.ToByte(p.superscope.offscreen);
+                            case 7:
+                                return 0;  //noise (1 = yes)
+                            default:
+                                return 0;
                         }
-
                     } //case Device::SuperScope
                 case Device.Justifier:
                     goto case Device.Justifiers;
@@ -251,43 +292,76 @@ namespace Snes
 
                         switch (p.counter0++)
                         {
-                            case 0: return 0;
-                            case 1: return 0;
-                            case 2: return 0;
-                            case 3: return 0;
-                            case 4: return 0;
-                            case 5: return 0;
-                            case 6: return 0;
-                            case 7: return 0;
-                            case 8: return 0;
-                            case 9: return 0;
-                            case 10: return 0;
-                            case 11: return 0;
+                            case 0:
+                                return 0;
+                            case 1:
+                                return 0;
+                            case 2:
+                                return 0;
+                            case 3:
+                                return 0;
+                            case 4:
+                                return 0;
+                            case 5:
+                                return 0;
+                            case 6:
+                                return 0;
+                            case 7:
+                                return 0;
+                            case 8:
+                                return 0;
+                            case 9:
+                                return 0;
+                            case 10:
+                                return 0;
+                            case 11:
+                                return 0;
 
-                            case 12: return 1;  //signature
-                            case 13: return 1;  // ||
-                            case 14: return 1;  // ||
-                            case 15: return 0;  // ||
+                            case 12:
+                                return 1;  //signature
+                            case 13:
+                                return 1;  // ||
+                            case 14:
+                                return 1;  // ||
+                            case 15:
+                                return 0;  // ||
 
-                            case 16: return 0;
-                            case 17: return 1;
-                            case 18: return 0;
-                            case 19: return 1;
-                            case 20: return 0;
-                            case 21: return 1;
-                            case 22: return 0;
-                            case 23: return 1;
+                            case 16:
+                                return 0;
+                            case 17:
+                                return 1;
+                            case 18:
+                                return 0;
+                            case 19:
+                                return 1;
+                            case 20:
+                                return 0;
+                            case 21:
+                                return 1;
+                            case 22:
+                                return 0;
+                            case 23:
+                                return 1;
 
-                            case 24: return Convert.ToByte(p.justifier.trigger1);
-                            case 25: return Convert.ToByte(p.justifier.trigger2);
-                            case 26: return Convert.ToByte(p.justifier.start1);
-                            case 27: return Convert.ToByte(p.justifier.start2);
-                            case 28: return Convert.ToByte(p.justifier.active);
+                            case 24:
+                                return Convert.ToByte(p.justifier.trigger1);
+                            case 25:
+                                return Convert.ToByte(p.justifier.trigger2);
+                            case 26:
+                                return Convert.ToByte(p.justifier.start1);
+                            case 27:
+                                return Convert.ToByte(p.justifier.start2);
+                            case 28:
+                                return Convert.ToByte(p.justifier.active);
 
-                            case 29: return 0;
-                            case 30: return 0;
-                            case 31: return 0;
-                            default: return 0;
+                            case 29:
+                                return 0;
+                            case 30:
+                                return 0;
+                            case 31:
+                                return 0;
+                            default:
+                                return 0;
                         }
                     } //case Device::Justifier(s)
             } //switch(p.device)

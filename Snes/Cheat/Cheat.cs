@@ -148,7 +148,7 @@ namespace Snes
                 //strip ':'
                 if (t.Length == 9 && t[6] == ':')
                 {
-                    t = t.Substring(0, 6) + t.Substring(7);
+                    t = string.Empty + t.Substring(0, 6) + t.Substring(7);
                 }
                 //validate input
                 for (uint i = 0; i < 8; i++)
@@ -168,7 +168,7 @@ namespace Snes
             else if (t.Length == 9 && t[4] == '-')
             {
                 //strip '-'
-                t = t.Substring(0, 4) + t.Substring(5);
+                t = string.Empty + t.Substring(0, 4) + t.Substring(5);
                 //validate input
                 for (uint i = 0; i < 8; i++)
                 {
@@ -184,21 +184,18 @@ namespace Snes
                 //8421 8421 8421 8421 8421 8421
                 //abcd efgh ijkl mnop qrst uvwx
                 //ijkl qrst opab cduv wxef ghmn
-                unchecked
-                {
-                    addr = (~~(r & 0x002000) << 23) | (~~(r & 0x001000) << 22)
-                         | (~~(r & 0x000800) << 21) | (~~(r & 0x000400) << 20)
-                         | (~~(r & 0x000020) << 19) | (~~(r & 0x000010) << 18)
-                         | (~~(r & 0x000008) << 17) | (~~(r & 0x000004) << 16)
-                         | (~~(r & 0x800000) << 15) | (~~(r & 0x400000) << 14)
-                         | (~~(r & 0x200000) << 13) | (~~(r & 0x100000) << 12)
-                         | (~~(r & 0x000002) << 11) | (~~(r & 0x000001) << 10)
-                         | (~~(r & 0x008000) << 9) | (~~(r & 0x004000) << 8)
-                         | (~~(r & 0x080000) << 7) | (~~(r & 0x040000) << 6)
-                         | (~~(r & 0x020000) << 5) | (~~(r & 0x010000) << 4)
-                         | (~~(r & 0x000200) << 3) | (~~(r & 0x000100) << 2)
-                         | (~~(r & 0x000080) << 1) | (~~(r & 0x000040) << 0);
-                }
+                addr = (NotNot(r & 0x002000) << 23) | (NotNot(r & 0x001000) << 22)
+                     | (NotNot(r & 0x000800) << 21) | (NotNot(r & 0x000400) << 20)
+                     | (NotNot(r & 0x000020) << 19) | (NotNot(r & 0x000010) << 18)
+                     | (NotNot(r & 0x000008) << 17) | (NotNot(r & 0x000004) << 16)
+                     | (NotNot(r & 0x800000) << 15) | (NotNot(r & 0x400000) << 14)
+                     | (NotNot(r & 0x200000) << 13) | (NotNot(r & 0x100000) << 12)
+                     | (NotNot(r & 0x000002) << 11) | (NotNot(r & 0x000001) << 10)
+                     | (NotNot(r & 0x008000) << 9) | (NotNot(r & 0x004000) << 8)
+                     | (NotNot(r & 0x080000) << 7) | (NotNot(r & 0x040000) << 6)
+                     | (NotNot(r & 0x020000) << 5) | (NotNot(r & 0x010000) << 4)
+                     | (NotNot(r & 0x000200) << 3) | (NotNot(r & 0x000100) << 2)
+                     | (NotNot(r & 0x000080) << 1) | (NotNot(r & 0x000040) << 0);
                 data = (byte)(r >> 24);
                 return true;
             }
@@ -206,6 +203,11 @@ namespace Snes
             {
                 return false;
             }
+        }
+
+        public static uint NotNot(uint r)
+        {
+            return Convert.ToUInt32(Convert.ToBoolean(r));
         }
 
         public static bool encode(string s, uint addr, byte data, Type type)
@@ -220,18 +222,19 @@ namespace Snes
             else if (type == Type.GameGenie)
             {
                 uint r = addr;
-                addr = (~~(r & 0x008000) << 23) | (~~(r & 0x004000) << 22)
-                     | (~~(r & 0x002000) << 21) | (~~(r & 0x001000) << 20)
-                     | (~~(r & 0x000080) << 19) | (~~(r & 0x000040) << 18)
-                     | (~~(r & 0x000020) << 17) | (~~(r & 0x000010) << 16)
-                     | (~~(r & 0x000200) << 15) | (~~(r & 0x000100) << 14)
-                     | (~~(r & 0x800000) << 13) | (~~(r & 0x400000) << 12)
-                     | (~~(r & 0x200000) << 11) | (~~(r & 0x100000) << 10)
-                     | (~~(r & 0x000008) << 9) | (~~(r & 0x000004) << 8)
-                     | (~~(r & 0x000002) << 7) | (~~(r & 0x000001) << 6)
-                     | (~~(r & 0x080000) << 5) | (~~(r & 0x040000) << 4)
-                     | (~~(r & 0x020000) << 3) | (~~(r & 0x010000) << 2)
-                     | (~~(r & 0x000800) << 1) | (~~(r & 0x000400) << 0);
+                //TODO: Unit test to verify values in C# match C++
+                addr = (NotNot(r & 0x008000) << 23) | (NotNot(r & 0x004000) << 22)
+                     | (NotNot(r & 0x002000) << 21) | (NotNot(r & 0x001000) << 20)
+                     | (NotNot(r & 0x000080) << 19) | (NotNot(r & 0x000040) << 18)
+                     | (NotNot(r & 0x000020) << 17) | (NotNot(r & 0x000010) << 16)
+                     | (NotNot(r & 0x000200) << 15) | (NotNot(r & 0x000100) << 14)
+                     | (NotNot(r & 0x800000) << 13) | (NotNot(r & 0x400000) << 12)
+                     | (NotNot(r & 0x200000) << 11) | (NotNot(r & 0x100000) << 10)
+                     | (NotNot(r & 0x000008) << 9) | (NotNot(r & 0x000004) << 8)
+                     | (NotNot(r & 0x000002) << 7) | (NotNot(r & 0x000001) << 6)
+                     | (NotNot(r & 0x080000) << 5) | (NotNot(r & 0x040000) << 4)
+                     | (NotNot(r & 0x020000) << 3) | (NotNot(r & 0x010000) << 2)
+                     | (NotNot(r & 0x000800) << 1) | (NotNot(r & 0x000400) << 0);
                 s = data.ToString("X2") + (addr >> 16).ToString("X2") + "-" + (addr & 0xffff).ToString("X4");
                 transform(s, "0123456789abcdef", "df4709156bc8a23e");
                 return true;

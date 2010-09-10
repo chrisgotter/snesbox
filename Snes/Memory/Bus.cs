@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Nall;
 
 namespace Snes
@@ -43,6 +44,9 @@ namespace Snes
 
         public void map(MapMode mode, byte bank_lo, byte bank_hi, ushort addr_lo, ushort addr_hi, Memory access, uint offset = 0, uint size = 0)
         {
+            Debug.Assert(bank_lo <= bank_hi);
+            Debug.Assert(addr_lo <= addr_hi);
+
             unchecked
             {
                 if (access.size() == (uint)-1U)

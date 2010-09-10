@@ -53,8 +53,8 @@ namespace Snes
             r_sum_l += (int)(left * r_frac);
             r_sum_r += (int)(right * r_frac);
 
-            ushort output_left = (ushort)Bit.sclamp(16, ((int)(r_sum_l / r_step)));
-            ushort output_right = (ushort)Bit.sclamp(16, ((int)(r_sum_r / r_step)));
+            ushort output_left = (ushort)Bit.sclamp(16, (int)(r_sum_l / r_step));
+            ushort output_right = (ushort)Bit.sclamp(16, (int)(r_sum_r / r_step));
 
             double first = 1.0 - r_frac;
             r_sum_l = (int)(left * first);
@@ -81,7 +81,6 @@ namespace Snes
 
         private void flush()
         {
-
             while (dsp_length > 0 && cop_length > 0)
             {
                 uint dsp_sample = dsp_buffer[dsp_rdoffset];
@@ -99,7 +98,7 @@ namespace Snes
                 int cop_left = (short)(cop_sample >> 0);
                 int cop_right = (short)(cop_sample >> 16);
 
-                System.system.Interface.audio_sample((ushort)Bit.sclamp(16, ((dsp_left + cop_left) / 2)), (ushort)Bit.sclamp(16, ((dsp_right + cop_right) / 2)));
+                System.system.Interface.audio_sample((ushort)Bit.sclamp(16, (dsp_left + cop_left) / 2), (ushort)Bit.sclamp(16, (dsp_right + cop_right) / 2));
             }
         }
     }

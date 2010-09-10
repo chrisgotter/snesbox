@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using Nall;
 
 namespace Snes
@@ -19,8 +20,15 @@ namespace Snes
         public delegate void SnesInputPoll();
         public delegate short SnesInputState(bool port, uint device, uint index, uint id);
 
-        public static uint snes_library_revision_major() { return 1; }
-        public static uint snes_library_revision_minor() { return 0; }
+        public static uint snes_library_revision_major()
+        {
+            return 1;
+        }
+
+        public static uint snes_library_revision_minor()
+        {
+            return 0;
+        }
 
         public static event SnesVideoRefresh snes_video_refresh = null;
         public static event SnesAudioSample snes_audio_sample = null;
@@ -76,8 +84,8 @@ namespace Snes
         public static void snes_init()
         {
             System.system.init(LibSnesInterface.inter);
-            Input.input.port_set_device(false, Input.Device.Joypad);
-            Input.input.port_set_device(true, Input.Device.Joypad);
+            Input.input.port_set_device(Convert.ToBoolean(0), Input.Device.Joypad);
+            Input.input.port_set_device(Convert.ToBoolean(1), Input.Device.Joypad);
         }
 
         public static void snes_term()
@@ -210,12 +218,15 @@ namespace Snes
 
         public static bool snes_get_region()
         {
-            return System.system.region == System.Region.NTSC ? false : true;
+            return System.system.region == System.Region.NTSC ? Convert.ToBoolean(0) : Convert.ToBoolean(1);
         }
 
         public static byte[] snes_get_memory_data(uint id)
         {
-            if (Cartridge.cartridge.loaded == false) return null;
+            if (Cartridge.cartridge.loaded == false)
+            {
+                return null;
+            }
 
             switch ((SNES_MEMORY)id)
             {
@@ -274,60 +285,60 @@ namespace Snes
             }
             uint size = 0;
 
-            switch ((SNES_MEMORY)id)
-            {
-                case SNES_MEMORY.CARTRIDGE_RAM:
-                    size = MappedRAM.cartram.size();
-                    break;
-                case SNES_MEMORY.CARTRIDGE_RTC:
-                    size = MappedRAM.cartrtc.size();
-                    break;
-                case SNES_MEMORY.BSX_RAM:
-                    if (Cartridge.cartridge.mode != Cartridge.Mode.Bsx)
-                    {
-                        break;
-                    }
-                    size = MappedRAM.bsxram.size();
-                    break;
-                case SNES_MEMORY.BSX_PRAM:
-                    if (Cartridge.cartridge.mode != Cartridge.Mode.Bsx)
-                    {
-                        break;
-                    }
-                    size = MappedRAM.bsxpram.size();
-                    break;
-                case SNES_MEMORY.SUFAMI_TURBO_A_RAM:
-                    if (Cartridge.cartridge.mode != Cartridge.Mode.SufamiTurbo)
-                    {
-                        break;
-                    }
-                    size = MappedRAM.stAram.size();
-                    break;
-                case SNES_MEMORY.SUFAMI_TURBO_B_RAM:
-                    if (Cartridge.cartridge.mode != Cartridge.Mode.SufamiTurbo)
-                    {
-                        break;
-                    }
-                    size = MappedRAM.stBram.size();
-                    break;
-                case SNES_MEMORY.GAME_BOY_RAM:
-                    if (Cartridge.cartridge.mode != Cartridge.Mode.SuperGameBoy)
-                    {
-                        break;
-                    }
-                    size = MappedRAM.gbram.size();
-                    break;
-                case SNES_MEMORY.GAME_BOY_RTC:
-                    if (Cartridge.cartridge.mode != Cartridge.Mode.SuperGameBoy)
-                    {
-                        break;
-                    }
-                    size = MappedRAM.gbrtc.size();
-                    break;
-            }
-
             unchecked
             {
+                switch ((SNES_MEMORY)id)
+                {
+                    case SNES_MEMORY.CARTRIDGE_RAM:
+                        size = MappedRAM.cartram.size();
+                        break;
+                    case SNES_MEMORY.CARTRIDGE_RTC:
+                        size = MappedRAM.cartrtc.size();
+                        break;
+                    case SNES_MEMORY.BSX_RAM:
+                        if (Cartridge.cartridge.mode != Cartridge.Mode.Bsx)
+                        {
+                            break;
+                        }
+                        size = MappedRAM.bsxram.size();
+                        break;
+                    case SNES_MEMORY.BSX_PRAM:
+                        if (Cartridge.cartridge.mode != Cartridge.Mode.Bsx)
+                        {
+                            break;
+                        }
+                        size = MappedRAM.bsxpram.size();
+                        break;
+                    case SNES_MEMORY.SUFAMI_TURBO_A_RAM:
+                        if (Cartridge.cartridge.mode != Cartridge.Mode.SufamiTurbo)
+                        {
+                            break;
+                        }
+                        size = MappedRAM.stAram.size();
+                        break;
+                    case SNES_MEMORY.SUFAMI_TURBO_B_RAM:
+                        if (Cartridge.cartridge.mode != Cartridge.Mode.SufamiTurbo)
+                        {
+                            break;
+                        }
+                        size = MappedRAM.stBram.size();
+                        break;
+                    case SNES_MEMORY.GAME_BOY_RAM:
+                        if (Cartridge.cartridge.mode != Cartridge.Mode.SuperGameBoy)
+                        {
+                            break;
+                        }
+                        size = MappedRAM.gbram.size();
+                        break;
+                    case SNES_MEMORY.GAME_BOY_RTC:
+                        if (Cartridge.cartridge.mode != Cartridge.Mode.SuperGameBoy)
+                        {
+                            break;
+                        }
+                        size = MappedRAM.gbrtc.size();
+                        break;
+                }
+
                 if (size == (uint)-1U)
                 {
                     size = 0;

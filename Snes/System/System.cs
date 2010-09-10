@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Snes
 {
@@ -58,6 +59,7 @@ namespace Snes
         public void init(Interface interface_)
         {
             inter = interface_;
+            Debug.Assert(!ReferenceEquals(inter, null));
 
             SuperGameBoy.supergameboy.init();
             SuperFX.superfx.init();
@@ -441,7 +443,7 @@ namespace Snes
             Input.input.port_set_device(Convert.ToBoolean(0), Configuration.config.controller_port1);
             Input.input.port_set_device(Convert.ToBoolean(1), Configuration.config.controller_port2);
             Input.input.update();
-
+            //video.update();
         }
 
         public void unload()
@@ -473,6 +475,7 @@ namespace Snes
 
         public System()
         {
+            inter = null;
             region = Region.Autodetect;
             expansion = ExpansionPortDevice.None;
         }
