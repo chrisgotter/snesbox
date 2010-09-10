@@ -438,6 +438,11 @@ namespace Snes
         }
 
         private static readonly byte[] iplrom = new byte[64];
+        public static byte[] Iplrom
+        {
+            get { return SMP.iplrom; }
+        } 
+
 
         private Status status = new Status();
 

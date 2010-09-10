@@ -9,8 +9,8 @@ namespace Snes
             public uint counter0; //read counters
             public uint counter1;
 
-            public Superscope superscope;
-            public Justifier justifier;
+            public Superscope superscope = new Superscope();
+            public Justifier justifier = new Justifier();
         }
     }
 }
