@@ -545,7 +545,7 @@ namespace Snes
 
         public void op_div_ya_x(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public SMPCoreOp[] opcode_table = new SMPCoreOp[256];
+        public SMPCoreOperation[] opcode_table = new SMPCoreOperation[256];
 
         public void initialize_opcode_table()
         {

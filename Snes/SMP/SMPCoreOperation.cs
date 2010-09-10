@@ -1,14 +1,14 @@
 ﻿
 namespace Snes
 {
-    public delegate void SMPCoreOperation(SMPCoreOpArguments args);
+    public delegate void SMPCoreOp(SMPCoreOpArguments args);
 
-    public class SMPCoreOp
+    public class SMPCoreOperation
     {
-        private SMPCoreOperation op { get; set; }
+        private SMPCoreOp op { get; set; }
         private SMPCoreOpArguments args { get; set; }
 
-        public SMPCoreOp(SMPCoreOperation op, SMPCoreOpArguments args)
+        public SMPCoreOperation(SMPCoreOp op, SMPCoreOpArguments args)
         {
             this.op = op;
             this.args = args;
