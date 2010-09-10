@@ -3,10 +3,6 @@ using System.Text;
 
 namespace Snes
 {
-    public delegate byte SingleByteFunction(byte x);
-    public delegate byte DoubleByteFunction(byte x, byte y);
-    public delegate ushort DoubleUShortFunction(ushort x, ushort y);
-
     abstract partial class SMPCore
     {
         public byte op_readpc()
@@ -363,450 +359,450 @@ namespace Snes
         public abstract byte op_read(ushort addr);
         public abstract void op_write(ushort addr, byte data);
 
-        public byte op_adc(byte x, byte y) { throw new NotImplementedException(); }
+        public byte op_adc(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public ushort op_addw(ushort x, ushort y) { throw new NotImplementedException(); }
+        public ushort op_addw(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public byte op_and(byte x, byte y) { throw new NotImplementedException(); }
+        public byte op_and(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public byte op_cmp(byte x, byte y) { throw new NotImplementedException(); }
+        public byte op_cmp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public ushort op_cmpw(ushort x, ushort y) { throw new NotImplementedException(); }
+        public ushort op_cmpw(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public byte op_eor(byte x, byte y) { throw new NotImplementedException(); }
+        public byte op_eor(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public byte op_inc(byte x) { throw new NotImplementedException(); }
+        public byte op_inc(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public byte op_dec(byte x) { throw new NotImplementedException(); }
+        public byte op_dec(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public byte op_or(byte x, byte y) { throw new NotImplementedException(); }
+        public byte op_or(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public byte op_sbc(byte x, byte y) { throw new NotImplementedException(); }
+        public byte op_sbc(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public ushort op_subw(ushort x, ushort y) { throw new NotImplementedException(); }
+        public ushort op_subw(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public byte op_asl(byte x) { throw new NotImplementedException(); }
+        public byte op_asl(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public byte op_lsr(byte x) { throw new NotImplementedException(); }
+        public byte op_lsr(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public byte op_rol(byte x) { throw new NotImplementedException(); }
+        public byte op_rol(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public byte op_ror(byte x) { throw new NotImplementedException(); }
+        public byte op_ror(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_reg_reg(int to, int from) { throw new NotImplementedException(); }
+        public void op_mov_reg_reg(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_sp_x() { throw new NotImplementedException(); }
+        public void op_mov_sp_x(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_reg_const(int n) { throw new NotImplementedException(); }
+        public void op_mov_reg_const(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_a_ix() { throw new NotImplementedException(); }
+        public void op_mov_a_ix(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_a_ixinc() { throw new NotImplementedException(); }
+        public void op_mov_a_ixinc(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_reg_dp(int n) { throw new NotImplementedException(); }
+        public void op_mov_reg_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_reg_dpr(int n, int i) { throw new NotImplementedException(); }
+        public void op_mov_reg_dpr(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_reg_addr(int n) { throw new NotImplementedException(); }
+        public void op_mov_reg_addr(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_a_addrr(int n) { throw new NotImplementedException(); }
+        public void op_mov_a_addrr(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_a_idpx() { throw new NotImplementedException(); }
+        public void op_mov_a_idpx(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_a_idpy() { throw new NotImplementedException(); }
+        public void op_mov_a_idpy(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_dp_dp() { throw new NotImplementedException(); }
+        public void op_mov_dp_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_dp_const() { throw new NotImplementedException(); }
+        public void op_mov_dp_const(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_ix_a() { throw new NotImplementedException(); }
+        public void op_mov_ix_a(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_ixinc_a() { throw new NotImplementedException(); }
+        public void op_mov_ixinc_a(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_dp_reg(int n) { throw new NotImplementedException(); }
+        public void op_mov_dp_reg(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_dpr_reg(int n, int i) { throw new NotImplementedException(); }
+        public void op_mov_dpr_reg(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_addr_reg(int n) { throw new NotImplementedException(); }
+        public void op_mov_addr_reg(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_addrr_a(int n) { throw new NotImplementedException(); }
+        public void op_mov_addrr_a(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_idpx_a() { throw new NotImplementedException(); }
+        public void op_mov_idpx_a(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov_idpy_a() { throw new NotImplementedException(); }
+        public void op_mov_idpy_a(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_movw_ya_dp() { throw new NotImplementedException(); }
+        public void op_movw_ya_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_movw_dp_ya() { throw new NotImplementedException(); }
+        public void op_movw_dp_ya(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov1_c_bit() { throw new NotImplementedException(); }
+        public void op_mov1_c_bit(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mov1_bit_c() { throw new NotImplementedException(); }
+        public void op_mov1_bit_c(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_bra() { throw new NotImplementedException(); }
+        public void op_bra(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_branch(int flag, int value) { throw new NotImplementedException(); }
+        public void op_branch(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_bitbranch(int mask, int value) { throw new NotImplementedException(); }
+        public void op_bitbranch(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_cbne_dp() { throw new NotImplementedException(); }
+        public void op_cbne_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_cbne_dpx() { throw new NotImplementedException(); }
+        public void op_cbne_dpx(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_dbnz_dp() { throw new NotImplementedException(); }
+        public void op_dbnz_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_dbnz_y() { throw new NotImplementedException(); }
+        public void op_dbnz_y(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_jmp_addr() { throw new NotImplementedException(); }
+        public void op_jmp_addr(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_jmp_iaddrx() { throw new NotImplementedException(); }
+        public void op_jmp_iaddrx(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_call() { throw new NotImplementedException(); }
+        public void op_call(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_pcall() { throw new NotImplementedException(); }
+        public void op_pcall(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_tcall(int n) { throw new NotImplementedException(); }
+        public void op_tcall(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_brk() { throw new NotImplementedException(); }
+        public void op_brk(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_ret() { throw new NotImplementedException(); }
+        public void op_ret(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_reti() { throw new NotImplementedException(); }
+        public void op_reti(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_read_reg_const(DoubleByteFunction opcode_table, int n) { throw new NotImplementedException(); }
+        public void op_read_reg_const(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_read_a_ix(DoubleByteFunction opcode_table) { throw new NotImplementedException(); }
+        public void op_read_a_ix(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_read_reg_dp(DoubleByteFunction opcode_table, int n) { throw new NotImplementedException(); }
+        public void op_read_reg_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_read_a_dpx() { throw new NotImplementedException(); }
+        public void op_read_a_dpx(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_read_reg_addr(DoubleByteFunction opcode_table, int n) { throw new NotImplementedException(); }
+        public void op_read_reg_addr(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_read_a_addrr(DoubleByteFunction opcode_table, int n) { throw new NotImplementedException(); }
+        public void op_read_a_addrr(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_read_a_idpx() { throw new NotImplementedException(); }
+        public void op_read_a_idpx(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_read_a_idpy() { throw new NotImplementedException(); }
+        public void op_read_a_idpy(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_read_ix_iy() { throw new NotImplementedException(); }
+        public void op_read_ix_iy(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_read_dp_dp() { throw new NotImplementedException(); }
+        public void op_read_dp_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_read_dp_const() { throw new NotImplementedException(); }
+        public void op_read_dp_const(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_read_ya_dp(DoubleUShortFunction opcode_table) { throw new NotImplementedException(); }
+        public void op_read_ya_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_cmpw_ya_dp() { throw new NotImplementedException(); }
+        public void op_cmpw_ya_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_and1_bit(int opcode_table) { throw new NotImplementedException(); }
+        public void op_and1_bit(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_eor1_bit() { throw new NotImplementedException(); }
+        public void op_eor1_bit(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_not1_bit() { throw new NotImplementedException(); }
+        public void op_not1_bit(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_or1_bit(int opcode_table) { throw new NotImplementedException(); }
+        public void op_or1_bit(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_adjust_reg(SingleByteFunction opcode_table, int n) { throw new NotImplementedException(); }
+        public void op_adjust_reg(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_adjust_dp(SingleByteFunction opcode_table) { throw new NotImplementedException(); }
+        public void op_adjust_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_adjust_dpx(SingleByteFunction opcode_table) { throw new NotImplementedException(); }
+        public void op_adjust_dpx(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_adjust_addr(SingleByteFunction opcode_table) { throw new NotImplementedException(); }
+        public void op_adjust_addr(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_adjust_addr_a(int opcode_table) { throw new NotImplementedException(); }
+        public void op_adjust_addr_a(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_adjustw_dp(int adjust) { throw new NotImplementedException(); }
+        public void op_adjustw_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_nop() { throw new NotImplementedException(); }
+        public void op_nop(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_wait() { throw new NotImplementedException(); }
+        public void op_wait(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_xcn() { throw new NotImplementedException(); }
+        public void op_xcn(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_daa() { throw new NotImplementedException(); }
+        public void op_daa(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_das() { throw new NotImplementedException(); }
+        public void op_das(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_setbit(int mask, int value) { throw new NotImplementedException(); }
+        public void op_setbit(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_notc() { throw new NotImplementedException(); }
+        public void op_notc(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_seti(int value) { throw new NotImplementedException(); }
+        public void op_seti(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_setbit_dp(int opcode_table, int value) { throw new NotImplementedException(); }
+        public void op_setbit_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_push_reg(int n) { throw new NotImplementedException(); }
+        public void op_push_reg(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_push_p() { throw new NotImplementedException(); }
+        public void op_push_p(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_pop_reg(int n) { throw new NotImplementedException(); }
+        public void op_pop_reg(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_pop_p() { throw new NotImplementedException(); }
+        public void op_pop_p(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_mul_ya() { throw new NotImplementedException(); }
+        public void op_mul_ya(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public void op_div_ya_x() { throw new NotImplementedException(); }
+        public void op_div_ya_x(SMPCoreOpArguments args) { throw new NotImplementedException(); }
 
-        public Operation[] opcode_table = new Operation[256];
+        public SMPCoreOp[] opcode_table = new SMPCoreOp[256];
 
         public void initialize_opcode_table()
         {
             //opcode_table[0x00] = op_nop;
-            //opcode_table[0x01] = op_tcall<0>;
-            //opcode_table[0x02] = op_setbit_dp<1, 0x01>;
-            //opcode_table[0x03] = op_bitbranch<0x01, true>;
-            //opcode_table[0x04] = op_read_reg_dp<op_or, A>;
-            //opcode_table[0x05] = op_read_reg_addr<op_or, A>;
-            //opcode_table[0x06] = op_read_a_ix<op_or>;
-            //opcode_table[0x07] = op_read_a_idpx<op_or>;
-            //opcode_table[0x08] = op_read_reg_const<op_or, A>;
-            //opcode_table[0x09] = op_read_dp_dp<op_or>;
-            //opcode_table[0x0a] = op_or1_bit<0>;
-            //opcode_table[0x0b] = op_adjust_dp<op_asl>;
-            //opcode_table[0x0c] = op_adjust_addr<op_asl>;
+            //opcode_table[0x01] = op_tcall;
+            //opcode_table[0x02] = op_setbit_dp;
+            //opcode_table[0x03] = op_bitbranch;
+            //opcode_table[0x04] = op_read_reg_dp;
+            //opcode_table[0x05] = op_read_reg_addr;
+            //opcode_table[0x06] = op_read_a_ix;
+            //opcode_table[0x07] = op_read_a_idpx;
+            //opcode_table[0x08] = op_read_reg_const;
+            //opcode_table[0x09] = op_read_dp_dp;
+            //opcode_table[0x0a] = op_or1_bit;
+            //opcode_table[0x0b] = op_adjust_dp;
+            //opcode_table[0x0c] = op_adjust_addr;
             //opcode_table[0x0d] = op_push_p;
-            //opcode_table[0x0e] = op_adjust_addr_a<1>;
+            //opcode_table[0x0e] = op_adjust_addr_a;
             //opcode_table[0x0f] = op_brk;
-            //opcode_table[0x10] = op_branch<0x80, false>;
-            //opcode_table[0x11] = op_tcall<1>;
-            //opcode_table[0x12] = op_setbit_dp<0, 0x01>;
-            //opcode_table[0x13] = op_bitbranch<0x01, false>;
-            //opcode_table[0x14] = op_read_a_dpx<op_or>;
-            //opcode_table[0x15] = op_read_a_addrr<op_or, X>;
-            //opcode_table[0x16] = op_read_a_addrr<op_or, Y>;
-            //opcode_table[0x17] = op_read_a_idpy<op_or>;
-            //opcode_table[0x18] = op_read_dp_const<op_or>;
-            //opcode_table[0x19] = op_read_ix_iy<op_or>;
-            //opcode_table[0x1a] = op_adjustw_dp<-1>;
-            //opcode_table[0x1b] = op_adjust_dpx<op_asl>;
-            //opcode_table[0x1c] = op_adjust_reg<op_asl, A>;
-            //opcode_table[0x1d] = op_adjust_reg<op_dec, X>;
-            //opcode_table[0x1e] = op_read_reg_addr<op_cmp, X>;
+            //opcode_table[0x10] = op_branch;
+            //opcode_table[0x11] = op_tcall;
+            //opcode_table[0x12] = op_setbit_dp;
+            //opcode_table[0x13] = op_bitbranch;
+            //opcode_table[0x14] = op_read_a_dpx;
+            //opcode_table[0x15] = op_read_a_addrr;
+            //opcode_table[0x16] = op_read_a_addrr;
+            //opcode_table[0x17] = op_read_a_idpy;
+            //opcode_table[0x18] = op_read_dp_const;
+            //opcode_table[0x19] = op_read_ix_iy;
+            //opcode_table[0x1a] = op_adjustw_dp;
+            //opcode_table[0x1b] = op_adjust_dpx;
+            //opcode_table[0x1c] = op_adjust_reg;
+            //opcode_table[0x1d] = op_adjust_reg;
+            //opcode_table[0x1e] = op_read_reg_addr;
             //opcode_table[0x1f] = op_jmp_iaddrx;
-            //opcode_table[0x20] = op_setbit<0x20, 0x00>;
-            //opcode_table[0x21] = op_tcall<2>;
-            //opcode_table[0x22] = op_setbit_dp<1, 0x02>;
-            //opcode_table[0x23] = op_bitbranch<0x02, true>;
-            //opcode_table[0x24] = op_read_reg_dp<op_and, A>;
-            //opcode_table[0x25] = op_read_reg_addr<op_and, A>;
-            //opcode_table[0x26] = op_read_a_ix<op_and>;
-            //opcode_table[0x27] = op_read_a_idpx<op_and>;
-            //opcode_table[0x28] = op_read_reg_const<op_and, A>;
-            //opcode_table[0x29] = op_read_dp_dp<op_and>;
-            //opcode_table[0x2a] = op_or1_bit<1>;
-            //opcode_table[0x2b] = op_adjust_dp<op_rol>;
-            //opcode_table[0x2c] = op_adjust_addr<op_rol>;
-            //opcode_table[0x2d] = op_push_reg<A>;
+            //opcode_table[0x20] = op_setbit;
+            //opcode_table[0x21] = op_tcall;
+            //opcode_table[0x22] = op_setbit_dp;
+            //opcode_table[0x23] = op_bitbranch;
+            //opcode_table[0x24] = op_read_reg_dp;
+            //opcode_table[0x25] = op_read_reg_addr;
+            //opcode_table[0x26] = op_read_a_ix;
+            //opcode_table[0x27] = op_read_a_idpx;
+            //opcode_table[0x28] = op_read_reg_const;
+            //opcode_table[0x29] = op_read_dp_dp;
+            //opcode_table[0x2a] = op_or1_bit;
+            //opcode_table[0x2b] = op_adjust_dp;
+            //opcode_table[0x2c] = op_adjust_addr;
+            //opcode_table[0x2d] = op_push_reg;
             //opcode_table[0x2e] = op_cbne_dp;
             //opcode_table[0x2f] = op_bra;
-            //opcode_table[0x30] = op_branch<0x80, true>;
-            //opcode_table[0x31] = op_tcall<3>;
-            //opcode_table[0x32] = op_setbit_dp<0, 0x02>;
-            //opcode_table[0x33] = op_bitbranch<0x02, false>;
-            //opcode_table[0x34] = op_read_a_dpx<op_and>;
-            //opcode_table[0x35] = op_read_a_addrr<op_and, X>;
-            //opcode_table[0x36] = op_read_a_addrr<op_and, Y>;
-            //opcode_table[0x37] = op_read_a_idpy<op_and>;
-            //opcode_table[0x38] = op_read_dp_const<op_and>;
-            //opcode_table[0x39] = op_read_ix_iy<op_and>;
-            //opcode_table[0x3a] = op_adjustw_dp<+1>;
-            //opcode_table[0x3b] = op_adjust_dpx<op_rol>;
-            //opcode_table[0x3c] = op_adjust_reg<op_rol, A>;
-            //opcode_table[0x3d] = op_adjust_reg<op_inc, X>;
-            //opcode_table[0x3e] = op_read_reg_dp<op_cmp, X>;
+            //opcode_table[0x30] = op_branch;
+            //opcode_table[0x31] = op_tcall;
+            //opcode_table[0x32] = op_setbit_dp;
+            //opcode_table[0x33] = op_bitbranch;
+            //opcode_table[0x34] = op_read_a_dpx;
+            //opcode_table[0x35] = op_read_a_addrr;
+            //opcode_table[0x36] = op_read_a_addrr;
+            //opcode_table[0x37] = op_read_a_idpy;
+            //opcode_table[0x38] = op_read_dp_const;
+            //opcode_table[0x39] = op_read_ix_iy;
+            //opcode_table[0x3a] = op_adjustw_dp;
+            //opcode_table[0x3b] = op_adjust_dpx;
+            //opcode_table[0x3c] = op_adjust_reg;
+            //opcode_table[0x3d] = op_adjust_reg;
+            //opcode_table[0x3e] = op_read_reg_dp;
             //opcode_table[0x3f] = op_call;
-            //opcode_table[0x40] = op_setbit<0x20, 0x20>;
-            //opcode_table[0x41] = op_tcall<4>;
-            //opcode_table[0x42] = op_setbit_dp<1, 0x04>;
-            //opcode_table[0x43] = op_bitbranch<0x04, true>;
-            //opcode_table[0x44] = op_read_reg_dp<op_eor, A>;
-            //opcode_table[0x45] = op_read_reg_addr<op_eor, A>;
-            //opcode_table[0x46] = op_read_a_ix<op_eor>;
-            //opcode_table[0x47] = op_read_a_idpx<op_eor>;
-            //opcode_table[0x48] = op_read_reg_const<op_eor, A>;
-            //opcode_table[0x49] = op_read_dp_dp<op_eor>;
-            //opcode_table[0x4a] = op_and1_bit<0>;
-            //opcode_table[0x4b] = op_adjust_dp<op_lsr>;
-            //opcode_table[0x4c] = op_adjust_addr<op_lsr>;
-            //opcode_table[0x4d] = op_push_reg<X>;
-            //opcode_table[0x4e] = op_adjust_addr_a<0>;
+            //opcode_table[0x40] = op_setbit;
+            //opcode_table[0x41] = op_tcall;
+            //opcode_table[0x42] = op_setbit_dp;
+            //opcode_table[0x43] = op_bitbranch;
+            //opcode_table[0x44] = op_read_reg_dp;
+            //opcode_table[0x45] = op_read_reg_addr;
+            //opcode_table[0x46] = op_read_a_ix;
+            //opcode_table[0x47] = op_read_a_idpx;
+            //opcode_table[0x48] = op_read_reg_const;
+            //opcode_table[0x49] = op_read_dp_dp;
+            //opcode_table[0x4a] = op_and1_bit;
+            //opcode_table[0x4b] = op_adjust_dp;
+            //opcode_table[0x4c] = op_adjust_addr;
+            //opcode_table[0x4d] = op_push_reg;
+            //opcode_table[0x4e] = op_adjust_addr_a;
             //opcode_table[0x4f] = op_pcall;
-            //opcode_table[0x50] = op_branch<0x40, false>;
-            //opcode_table[0x51] = op_tcall<5>;
-            //opcode_table[0x52] = op_setbit_dp<0, 0x04>;
-            //opcode_table[0x53] = op_bitbranch<0x04, false>;
-            //opcode_table[0x54] = op_read_a_dpx<op_eor>;
-            //opcode_table[0x55] = op_read_a_addrr<op_eor, X>;
-            //opcode_table[0x56] = op_read_a_addrr<op_eor, Y>;
-            //opcode_table[0x57] = op_read_a_idpy<op_eor>;
-            //opcode_table[0x58] = op_read_dp_const<op_eor>;
-            //opcode_table[0x59] = op_read_ix_iy<op_eor>;
+            //opcode_table[0x50] = op_branch;
+            //opcode_table[0x51] = op_tcall;
+            //opcode_table[0x52] = op_setbit_dp;
+            //opcode_table[0x53] = op_bitbranch;
+            //opcode_table[0x54] = op_read_a_dpx;
+            //opcode_table[0x55] = op_read_a_addrr;
+            //opcode_table[0x56] = op_read_a_addrr;
+            //opcode_table[0x57] = op_read_a_idpy;
+            //opcode_table[0x58] = op_read_dp_const;
+            //opcode_table[0x59] = op_read_ix_iy;
             //opcode_table[0x5a] = op_cmpw_ya_dp;
-            //opcode_table[0x5b] = op_adjust_dpx<op_lsr>;
-            //opcode_table[0x5c] = op_adjust_reg<op_lsr, A>;
-            //opcode_table[0x5d] = op_mov_reg_reg<X, A>;
-            //opcode_table[0x5e] = op_read_reg_addr<op_cmp, Y>;
+            //opcode_table[0x5b] = op_adjust_dpx;
+            //opcode_table[0x5c] = op_adjust_reg;
+            //opcode_table[0x5d] = op_mov_reg_reg;
+            //opcode_table[0x5e] = op_read_reg_addr;
             //opcode_table[0x5f] = op_jmp_addr;
-            //opcode_table[0x60] = op_setbit<0x01, 0x00>;
-            //opcode_table[0x61] = op_tcall<6>;
-            //opcode_table[0x62] = op_setbit_dp<1, 0x08>;
-            //opcode_table[0x63] = op_bitbranch<0x08, true>;
-            //opcode_table[0x64] = op_read_reg_dp<op_cmp, A>;
-            //opcode_table[0x65] = op_read_reg_addr<op_cmp, A>;
-            //opcode_table[0x66] = op_read_a_ix<op_cmp>;
-            //opcode_table[0x67] = op_read_a_idpx<op_cmp>;
-            //opcode_table[0x68] = op_read_reg_const<op_cmp, A>;
-            //opcode_table[0x69] = op_read_dp_dp<op_cmp>;
-            //opcode_table[0x6a] = op_and1_bit<1>;
-            //opcode_table[0x6b] = op_adjust_dp<op_ror>;
-            //opcode_table[0x6c] = op_adjust_addr<op_ror>;
-            //opcode_table[0x6d] = op_push_reg<Y>;
+            //opcode_table[0x60] = op_setbit;
+            //opcode_table[0x61] = op_tcall;
+            //opcode_table[0x62] = op_setbit_dp;
+            //opcode_table[0x63] = op_bitbranch;
+            //opcode_table[0x64] = op_read_reg_dp;
+            //opcode_table[0x65] = op_read_reg_addr;
+            //opcode_table[0x66] = op_read_a_ix;
+            //opcode_table[0x67] = op_read_a_idpx;
+            //opcode_table[0x68] = op_read_reg_const;
+            //opcode_table[0x69] = op_read_dp_dp;
+            //opcode_table[0x6a] = op_and1_bit;
+            //opcode_table[0x6b] = op_adjust_dp;
+            //opcode_table[0x6c] = op_adjust_addr;
+            //opcode_table[0x6d] = op_push_reg;
             //opcode_table[0x6e] = op_dbnz_dp;
             //opcode_table[0x6f] = op_ret;
-            //opcode_table[0x70] = op_branch<0x40, true>;
-            //opcode_table[0x71] = op_tcall<7>;
-            //opcode_table[0x72] = op_setbit_dp<0, 0x08>;
-            //opcode_table[0x73] = op_bitbranch<0x08, false>;
-            //opcode_table[0x74] = op_read_a_dpx<op_cmp>;
-            //opcode_table[0x75] = op_read_a_addrr<op_cmp, X>;
-            //opcode_table[0x76] = op_read_a_addrr<op_cmp, Y>;
-            //opcode_table[0x77] = op_read_a_idpy<op_cmp>;
-            //opcode_table[0x78] = op_read_dp_const<op_cmp>;
-            //opcode_table[0x79] = op_read_ix_iy<op_cmp>;
-            //opcode_table[0x7a] = op_read_ya_dp<op_addw>;
-            //opcode_table[0x7b] = op_adjust_dpx<op_ror>;
-            //opcode_table[0x7c] = op_adjust_reg<op_ror, A>;
-            //opcode_table[0x7d] = op_mov_reg_reg<A, X>;
-            //opcode_table[0x7e] = op_read_reg_dp<op_cmp, Y>;
+            //opcode_table[0x70] = op_branch;
+            //opcode_table[0x71] = op_tcall;
+            //opcode_table[0x72] = op_setbit_dp;
+            //opcode_table[0x73] = op_bitbranch;
+            //opcode_table[0x74] = op_read_a_dpx;
+            //opcode_table[0x75] = op_read_a_addrr;
+            //opcode_table[0x76] = op_read_a_addrr;
+            //opcode_table[0x77] = op_read_a_idpy;
+            //opcode_table[0x78] = op_read_dp_const;
+            //opcode_table[0x79] = op_read_ix_iy;
+            //opcode_table[0x7a] = op_read_ya_dp;
+            //opcode_table[0x7b] = op_adjust_dpx;
+            //opcode_table[0x7c] = op_adjust_reg;
+            //opcode_table[0x7d] = op_mov_reg_reg;
+            //opcode_table[0x7e] = op_read_reg_dp;
             //opcode_table[0x7f] = op_reti;
-            //opcode_table[0x80] = op_setbit<0x01, 0x01>;
-            //opcode_table[0x81] = op_tcall<8>;
-            //opcode_table[0x82] = op_setbit_dp<1, 0x10>;
-            //opcode_table[0x83] = op_bitbranch<0x10, true>;
-            //opcode_table[0x84] = op_read_reg_dp<op_adc, A>;
-            //opcode_table[0x85] = op_read_reg_addr<op_adc, A>;
-            //opcode_table[0x86] = op_read_a_ix<op_adc>;
-            //opcode_table[0x87] = op_read_a_idpx<op_adc>;
-            //opcode_table[0x88] = op_read_reg_const<op_adc, A>;
-            //opcode_table[0x89] = op_read_dp_dp<op_adc>;
+            //opcode_table[0x80] = op_setbit;
+            //opcode_table[0x81] = op_tcall;
+            //opcode_table[0x82] = op_setbit_dp;
+            //opcode_table[0x83] = op_bitbranch;
+            //opcode_table[0x84] = op_read_reg_dp;
+            //opcode_table[0x85] = op_read_reg_addr;
+            //opcode_table[0x86] = op_read_a_ix;
+            //opcode_table[0x87] = op_read_a_idpx;
+            //opcode_table[0x88] = op_read_reg_const;
+            //opcode_table[0x89] = op_read_dp_dp;
             //opcode_table[0x8a] = op_eor1_bit;
-            //opcode_table[0x8b] = op_adjust_dp<op_dec>;
-            //opcode_table[0x8c] = op_adjust_addr<op_dec>;
-            //opcode_table[0x8d] = op_mov_reg_const<Y>;
+            //opcode_table[0x8b] = op_adjust_dp;
+            //opcode_table[0x8c] = op_adjust_addr;
+            //opcode_table[0x8d] = op_mov_reg_const;
             //opcode_table[0x8e] = op_pop_p;
             //opcode_table[0x8f] = op_mov_dp_const;
-            //opcode_table[0x90] = op_branch<0x01, false>;
-            //opcode_table[0x91] = op_tcall<9>;
-            //opcode_table[0x92] = op_setbit_dp<0, 0x10>;
-            //opcode_table[0x93] = op_bitbranch<0x10, false>;
-            //opcode_table[0x94] = op_read_a_dpx<op_adc>;
-            //opcode_table[0x95] = op_read_a_addrr<op_adc, X>;
-            //opcode_table[0x96] = op_read_a_addrr<op_adc, Y>;
-            //opcode_table[0x97] = op_read_a_idpy<op_adc>;
-            //opcode_table[0x98] = op_read_dp_const<op_adc>;
-            //opcode_table[0x99] = op_read_ix_iy<op_adc>;
-            //opcode_table[0x9a] = op_read_ya_dp<op_subw>;
-            //opcode_table[0x9b] = op_adjust_dpx<op_dec>;
-            //opcode_table[0x9c] = op_adjust_reg<op_dec, A>;
-            //opcode_table[0x9d] = op_mov_reg_reg<X, SP>;
+            //opcode_table[0x90] = op_branch;
+            //opcode_table[0x91] = op_tcall;
+            //opcode_table[0x92] = op_setbit_dp;
+            //opcode_table[0x93] = op_bitbranch;
+            //opcode_table[0x94] = op_read_a_dpx;
+            //opcode_table[0x95] = op_read_a_addrr;
+            //opcode_table[0x96] = op_read_a_addrr;
+            //opcode_table[0x97] = op_read_a_idpy;
+            //opcode_table[0x98] = op_read_dp_const;
+            //opcode_table[0x99] = op_read_ix_iy;
+            //opcode_table[0x9a] = op_read_ya_dp;
+            //opcode_table[0x9b] = op_adjust_dpx;
+            //opcode_table[0x9c] = op_adjust_reg;
+            //opcode_table[0x9d] = op_mov_reg_reg;
             //opcode_table[0x9e] = op_div_ya_x;
             //opcode_table[0x9f] = op_xcn;
-            //opcode_table[0xa0] = op_seti<1>;
-            //opcode_table[0xa1] = op_tcall<10>;
-            //opcode_table[0xa2] = op_setbit_dp<1, 0x20>;
-            //opcode_table[0xa3] = op_bitbranch<0x20, true>;
-            //opcode_table[0xa4] = op_read_reg_dp<op_sbc, A>;
-            //opcode_table[0xa5] = op_read_reg_addr<op_sbc, A>;
-            //opcode_table[0xa6] = op_read_a_ix<op_sbc>;
-            //opcode_table[0xa7] = op_read_a_idpx<op_sbc>;
-            //opcode_table[0xa8] = op_read_reg_const<op_sbc, A>;
-            //opcode_table[0xa9] = op_read_dp_dp<op_sbc>;
+            //opcode_table[0xa0] = op_seti;
+            //opcode_table[0xa1] = op_tcall;
+            //opcode_table[0xa2] = op_setbit_dp;
+            //opcode_table[0xa3] = op_bitbranch;
+            //opcode_table[0xa4] = op_read_reg_dp;
+            //opcode_table[0xa5] = op_read_reg_addr;
+            //opcode_table[0xa6] = op_read_a_ix;
+            //opcode_table[0xa7] = op_read_a_idpx;
+            //opcode_table[0xa8] = op_read_reg_const;
+            //opcode_table[0xa9] = op_read_dp_dp;
             //opcode_table[0xaa] = op_mov1_c_bit;
-            //opcode_table[0xab] = op_adjust_dp<op_inc>;
-            //opcode_table[0xac] = op_adjust_addr<op_inc>;
-            //opcode_table[0xad] = op_read_reg_const<op_cmp, Y>;
-            //opcode_table[0xae] = op_pop_reg<A>;
+            //opcode_table[0xab] = op_adjust_dp;
+            //opcode_table[0xac] = op_adjust_addr;
+            //opcode_table[0xad] = op_read_reg_const;
+            //opcode_table[0xae] = op_pop_reg;
             //opcode_table[0xaf] = op_mov_ixinc_a;
-            //opcode_table[0xb0] = op_branch<0x01, true>;
-            //opcode_table[0xb1] = op_tcall<11>;
-            //opcode_table[0xb2] = op_setbit_dp<0, 0x20>;
-            //opcode_table[0xb3] = op_bitbranch<0x20, false>;
-            //opcode_table[0xb4] = op_read_a_dpx<op_sbc>;
-            //opcode_table[0xb5] = op_read_a_addrr<op_sbc, X>;
-            //opcode_table[0xb6] = op_read_a_addrr<op_sbc, Y>;
-            //opcode_table[0xb7] = op_read_a_idpy<op_sbc>;
-            //opcode_table[0xb8] = op_read_dp_const<op_sbc>;
-            //opcode_table[0xb9] = op_read_ix_iy<op_sbc>;
+            //opcode_table[0xb0] = op_branch;
+            //opcode_table[0xb1] = op_tcall;
+            //opcode_table[0xb2] = op_setbit_dp;
+            //opcode_table[0xb3] = op_bitbranch;
+            //opcode_table[0xb4] = op_read_a_dpx;
+            //opcode_table[0xb5] = op_read_a_addrr;
+            //opcode_table[0xb6] = op_read_a_addrr;
+            //opcode_table[0xb7] = op_read_a_idpy;
+            //opcode_table[0xb8] = op_read_dp_const;
+            //opcode_table[0xb9] = op_read_ix_iy;
             //opcode_table[0xba] = op_movw_ya_dp;
-            //opcode_table[0xbb] = op_adjust_dpx<op_inc>;
-            //opcode_table[0xbc] = op_adjust_reg<op_inc, A>;
+            //opcode_table[0xbb] = op_adjust_dpx;
+            //opcode_table[0xbc] = op_adjust_reg;
             //opcode_table[0xbd] = op_mov_sp_x;
             //opcode_table[0xbe] = op_das;
             //opcode_table[0xbf] = op_mov_a_ixinc;
-            //opcode_table[0xc0] = op_seti<0>;
-            //opcode_table[0xc1] = op_tcall<12>;
-            //opcode_table[0xc2] = op_setbit_dp<1, 0x40>;
-            //opcode_table[0xc3] = op_bitbranch<0x40, true>;
-            //opcode_table[0xc4] = op_mov_dp_reg<A>;
-            //opcode_table[0xc5] = op_mov_addr_reg<A>;
+            //opcode_table[0xc0] = op_seti;
+            //opcode_table[0xc1] = op_tcall;
+            //opcode_table[0xc2] = op_setbit_dp;
+            //opcode_table[0xc3] = op_bitbranch;
+            //opcode_table[0xc4] = op_mov_dp_reg;
+            //opcode_table[0xc5] = op_mov_addr_reg;
             //opcode_table[0xc6] = op_mov_ix_a;
             //opcode_table[0xc7] = op_mov_idpx_a;
-            //opcode_table[0xc8] = op_read_reg_const<op_cmp, X>;
-            //opcode_table[0xc9] = op_mov_addr_reg<X>;
+            //opcode_table[0xc8] = op_read_reg_const;
+            //opcode_table[0xc9] = op_mov_addr_reg;
             //opcode_table[0xca] = op_mov1_bit_c;
-            //opcode_table[0xcb] = op_mov_dp_reg<Y>;
-            //opcode_table[0xcc] = op_mov_addr_reg<Y>;
-            //opcode_table[0xcd] = op_mov_reg_const<X>;
-            //opcode_table[0xce] = op_pop_reg<X>;
+            //opcode_table[0xcb] = op_mov_dp_reg;
+            //opcode_table[0xcc] = op_mov_addr_reg;
+            //opcode_table[0xcd] = op_mov_reg_const;
+            //opcode_table[0xce] = op_pop_reg;
             //opcode_table[0xcf] = op_mul_ya;
-            //opcode_table[0xd0] = op_branch<0x02, false>;
-            //opcode_table[0xd1] = op_tcall<13>;
-            //opcode_table[0xd2] = op_setbit_dp<0, 0x40>;
-            //opcode_table[0xd3] = op_bitbranch<0x40, false>;
-            //opcode_table[0xd4] = op_mov_dpr_reg<A, X>;
-            //opcode_table[0xd5] = op_mov_addrr_a<X>;
-            //opcode_table[0xd6] = op_mov_addrr_a<Y>;
+            //opcode_table[0xd0] = op_branch;
+            //opcode_table[0xd1] = op_tcall;
+            //opcode_table[0xd2] = op_setbit_dp;
+            //opcode_table[0xd3] = op_bitbranch;
+            //opcode_table[0xd4] = op_mov_dpr_reg;
+            //opcode_table[0xd5] = op_mov_addrr_a;
+            //opcode_table[0xd6] = op_mov_addrr_a;
             //opcode_table[0xd7] = op_mov_idpy_a;
-            //opcode_table[0xd8] = op_mov_dp_reg<X>;
-            //opcode_table[0xd9] = op_mov_dpr_reg<X, Y>;
+            //opcode_table[0xd8] = op_mov_dp_reg;
+            //opcode_table[0xd9] = op_mov_dpr_reg;
             //opcode_table[0xda] = op_movw_dp_ya;
-            //opcode_table[0xdb] = op_mov_dpr_reg<Y, X>;
-            //opcode_table[0xdc] = op_adjust_reg<op_dec, Y>;
-            //opcode_table[0xdd] = op_mov_reg_reg<A, Y>;
+            //opcode_table[0xdb] = op_mov_dpr_reg;
+            //opcode_table[0xdc] = op_adjust_reg;
+            //opcode_table[0xdd] = op_mov_reg_reg;
             //opcode_table[0xde] = op_cbne_dpx;
             //opcode_table[0xdf] = op_daa;
-            //opcode_table[0xe0] = op_setbit<0x48, 0x00>;
-            //opcode_table[0xe1] = op_tcall<14>;
-            //opcode_table[0xe2] = op_setbit_dp<1, 0x80>;
-            //opcode_table[0xe3] = op_bitbranch<0x80, true>;
-            //opcode_table[0xe4] = op_mov_reg_dp<A>;
-            //opcode_table[0xe5] = op_mov_reg_addr<A>;
+            //opcode_table[0xe0] = op_setbit;
+            //opcode_table[0xe1] = op_tcall;
+            //opcode_table[0xe2] = op_setbit_dp;
+            //opcode_table[0xe3] = op_bitbranch;
+            //opcode_table[0xe4] = op_mov_reg_dp;
+            //opcode_table[0xe5] = op_mov_reg_addr;
             //opcode_table[0xe6] = op_mov_a_ix;
             //opcode_table[0xe7] = op_mov_a_idpx;
-            //opcode_table[0xe8] = op_mov_reg_const<A>;
-            //opcode_table[0xe9] = op_mov_reg_addr<X>;
+            //opcode_table[0xe8] = op_mov_reg_const;
+            //opcode_table[0xe9] = op_mov_reg_addr;
             //opcode_table[0xea] = op_not1_bit;
-            //opcode_table[0xeb] = op_mov_reg_dp<Y>;
-            //opcode_table[0xec] = op_mov_reg_addr<Y>;
+            //opcode_table[0xeb] = op_mov_reg_dp;
+            //opcode_table[0xec] = op_mov_reg_addr;
             //opcode_table[0xed] = op_notc;
-            //opcode_table[0xee] = op_pop_reg<Y>;
+            //opcode_table[0xee] = op_pop_reg;
             //opcode_table[0xef] = op_wait;
-            //opcode_table[0xf0] = op_branch<0x02, true>;
-            //opcode_table[0xf1] = op_tcall<15>;
-            //opcode_table[0xf2] = op_setbit_dp<0, 0x80>;
-            //opcode_table[0xf3] = op_bitbranch<0x80, false>;
-            //opcode_table[0xf4] = op_mov_reg_dpr<A, X>;
-            //opcode_table[0xf5] = op_mov_a_addrr<X>;
-            //opcode_table[0xf6] = op_mov_a_addrr<Y>;
+            //opcode_table[0xf0] = op_branch;
+            //opcode_table[0xf1] = op_tcall;
+            //opcode_table[0xf2] = op_setbit_dp;
+            //opcode_table[0xf3] = op_bitbranch;
+            //opcode_table[0xf4] = op_mov_reg_dpr;
+            //opcode_table[0xf5] = op_mov_a_addrr;
+            //opcode_table[0xf6] = op_mov_a_addrr;
             //opcode_table[0xf7] = op_mov_a_idpy;
-            //opcode_table[0xf8] = op_mov_reg_dp<X>;
-            //opcode_table[0xf9] = op_mov_reg_dpr<X, Y>;
+            //opcode_table[0xf8] = op_mov_reg_dp;
+            //opcode_table[0xf9] = op_mov_reg_dpr;
             //opcode_table[0xfa] = op_mov_dp_dp;
-            //opcode_table[0xfb] = op_mov_reg_dpr<Y, X>;
-            //opcode_table[0xfc] = op_adjust_reg<op_inc, Y>;
-            //opcode_table[0xfd] = op_mov_reg_reg<Y, A>;
+            //opcode_table[0xfb] = op_mov_reg_dpr;
+            //opcode_table[0xfc] = op_adjust_reg;
+            //opcode_table[0xfd] = op_mov_reg_reg;
             //opcode_table[0xfe] = op_dbnz_y;
             //opcode_table[0xff] = op_wait;
         }

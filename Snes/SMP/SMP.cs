@@ -453,7 +453,7 @@ namespace Snes
 
         private void op_step()
         {
-            this.opcode_table[op_readpc()]();
+            this.opcode_table[op_readpc()].Invoke();
         }
 
         public Processor Processor

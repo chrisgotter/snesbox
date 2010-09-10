@@ -227,6 +227,8 @@
     <Compile Include="SMP\RegYA.cs" />
     <Compile Include="SMP\SMP.cs" />
     <Compile Include="SMP\SMPCore.cs" />
+    <Compile Include="SMP\SMPCoreOp.cs" />
+    <Compile Include="SMP\SMPCoreOpArguments.cs" />
     <Compile Include="SMP\sSMPTimer.cs" />
     <Compile Include="SMP\Status.cs" />
     <Compile Include="System\System.cs" />
