@@ -104,7 +104,6 @@ namespace Snes
                         switch (p.counter0++)
                         {
                             default:
-                                goto case 0;
                             case 0:
                                 return 0;
                             case 1:
@@ -258,7 +257,6 @@ namespace Snes
                         }
                     } //case Device::SuperScope
                 case Device.Justifier:
-                    goto case Device.Justifiers;
                 case Device.Justifiers:
                     {
                         if (Convert.ToInt32(portnumber) == 0)
@@ -461,7 +459,6 @@ namespace Snes
                     }
                     break;
                 case Device.Justifier:
-                    goto case Device.Justifiers;
                 case Device.Justifiers:
                     {
                         int x1 = System.system.Interface.input_poll(Convert.ToBoolean(1), p.device, 0, (uint)JustifierID.X);

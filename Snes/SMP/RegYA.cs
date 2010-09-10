@@ -2,22 +2,29 @@
 
 namespace Snes
 {
-    public class ByteRef
-    {
-        public ByteRef(byte value) { throw new NotImplementedException(); }
-    }
-
     partial class SMPCore
     {
         public class RegYA
         {
-            public ByteRef hi, lo;
+            public byte[] hi, lo;
 
-            public static explicit operator ushort(RegYA reg) { throw new NotImplementedException(); }
+            public static explicit operator ushort(RegYA reg)
+            {
+                return (ushort)((reg.hi[0] << 8) + reg.lo[0]);
+            }
 
-            public RegYA Assign(ushort data) { throw new NotImplementedException(); }
+            public RegYA Assign(ushort data)
+            {
+                hi[0] = (byte)(data >> 8);
+                lo[0] = (byte)data;
+                return this;
+            }
 
-            public RegYA(ByteRef hi_, ByteRef lo_) { throw new NotImplementedException(); }
+            public RegYA(byte[] hi_, byte[] lo_)
+            {
+                hi = hi_;
+                lo = lo_;
+            }
         }
     }
 }
