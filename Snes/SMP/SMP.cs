@@ -163,7 +163,10 @@ namespace Snes
 
         private void ram_write(ushort addr, byte data)
         {   //writes to $ffc0-$ffff always go to apuram, even if the iplrom is enabled
-            if (status.ram_writable && !status.ram_disabled) StaticRAM.apuram[addr] = data;
+            if (status.ram_writable && !status.ram_disabled)
+            {
+                StaticRAM.apuram[addr] = data;
+            }
         }
 
         private byte op_busread(ushort addr)
@@ -247,29 +250,206 @@ namespace Snes
             return r;
         }
 
-        private void op_buswrite(ushort addr, byte data) { throw new NotImplementedException(); }
+        private void op_buswrite(ushort addr, byte data)
+        {
+            if ((addr & 0xfff0) == 0x00f0)
+            {  //$00f0-00ff
+                switch (addr)
+                {
+                    case 0xf0:
+                        {  //TEST
+                            if (regs.p.p)
+                            {
+                                break;  //writes only valid when P flag is clear
+                            }
 
-        public override void op_io() { throw new NotImplementedException(); }
+                            status.clock_speed = (byte)((data >> 6) & 3);
+                            status.timer_speed = (byte)((data >> 4) & 3);
+                            status.timers_enabled = Convert.ToBoolean(data & 0x08);
+                            status.ram_disabled = Convert.ToBoolean(data & 0x04);
+                            status.ram_writable = Convert.ToBoolean(data & 0x02);
+                            status.timers_disabled = Convert.ToBoolean(data & 0x01);
 
-        public override byte op_read(ushort addr) { throw new NotImplementedException(); }
+                            status.timer_step = (uint)((1 << status.clock_speed) + (2 << status.timer_speed));
 
-        public override void op_write(ushort addr, byte data) { throw new NotImplementedException(); }
+                            t0.sync_stage1();
+                            t1.sync_stage1();
+                            t2.sync_stage1();
+                        } break;
+                    case 0xf1:
+                        {  //CONTROL
+                            status.iplrom_enabled = Convert.ToBoolean(data & 0x80);
+
+                            if (Convert.ToBoolean(data & 0x30))
+                            {
+                                //one-time clearing of APU port read registers,
+                                //emulated by simulating CPU writes of 0x00
+                                synchronize_cpu();
+                                if (Convert.ToBoolean(data & 0x20))
+                                {
+                                    CPU.cpu.port_write(new uint2(2), 0x00);
+                                    CPU.cpu.port_write(new uint2(3), 0x00);
+                                }
+                                if (Convert.ToBoolean(data & 0x10))
+                                {
+                                    CPU.cpu.port_write(new uint2(0), 0x00);
+                                    CPU.cpu.port_write(new uint2(1), 0x00);
+                                }
+                            }
+
+                            //0->1 transistion resets timers
+                            if (t2.enabled == false && Convert.ToBoolean(data & 0x04))
+                            {
+                                t2.stage2_ticks = 0;
+                                t2.stage3_ticks = 0;
+                            }
+                            t2.enabled = Convert.ToBoolean(data & 0x04);
+
+                            if (t1.enabled == false && Convert.ToBoolean(data & 0x02))
+                            {
+                                t1.stage2_ticks = 0;
+                                t1.stage3_ticks = 0;
+                            }
+                            t1.enabled = Convert.ToBoolean(data & 0x02);
+
+                            if (t0.enabled == false && Convert.ToBoolean(data & 0x01))
+                            {
+                                t0.stage2_ticks = 0;
+                                t0.stage3_ticks = 0;
+                            }
+                            t0.enabled = Convert.ToBoolean(data & 0x01);
+                        } break;
+                    case 0xf2:
+                        {  //DSPADDR
+                            status.dsp_addr = data;
+                        } break;
+                    case 0xf3:
+                        {  //DSPDATA
+                            //0x80-0xff are read-only mirrors of 0x00-0x7f
+                            if (!Convert.ToBoolean(status.dsp_addr & 0x80))
+                            {
+                                DSP.dsp.write((byte)(status.dsp_addr & 0x7f), data);
+                            }
+                        } break;
+                    case 0xf4:    //CPUIO0
+                    case 0xf5:    //CPUIO1
+                    case 0xf6:    //CPUIO2
+                    case 0xf7:
+                        {  //CPUIO3
+                            synchronize_cpu();
+                            port_write(new uint2(addr), data);
+                        } break;
+                    case 0xf8:
+                        {  //RAM0
+                            status.ram0 = data;
+                        } break;
+                    case 0xf9:
+                        {  //RAM1
+                            status.ram1 = data;
+                        } break;
+                    case 0xfa:
+                        {  //T0TARGET
+                            t0.target = data;
+                        } break;
+                    case 0xfb:
+                        {  //T1TARGET
+                            t1.target = data;
+                        } break;
+                    case 0xfc:
+                        {  //T2TARGET
+                            t2.target = data;
+                        } break;
+                    case 0xfd:    //T0OUT
+                    case 0xfe:    //T1OUT
+                    case 0xff:
+                        {  //T2OUT -- read-only registers
+                        }
+                        break;
+                }
+            }
+
+            //all writes, even to MMIO registers, appear on bus
+            ram_write(addr, data);
+        }
+
+        public override void op_io()
+        {
+            add_clocks(24);
+            cycle_edge();
+        }
+
+        public override byte op_read(ushort addr)
+        {
+            add_clocks(12);
+            byte r = op_busread(addr);
+            add_clocks(12);
+            cycle_edge();
+            return r;
+        }
+
+        public override void op_write(ushort addr, byte data)
+        {
+            add_clocks(24);
+            op_buswrite(addr, data);
+            cycle_edge();
+        }
 
         private sSMPTimer t0 = new sSMPTimer(192);
         private sSMPTimer t1 = new sSMPTimer(192);
         private sSMPTimer t2 = new sSMPTimer(24);
 
-        private void add_clocks(uint clocks) { throw new NotImplementedException(); }
+        private void add_clocks(uint clocks)
+        {
+            step(clocks);
+            synchronize_dsp();
 
-        private void cycle_edge() { throw new NotImplementedException(); }
+            //forcefully sync S-SMP to S-CPU in case chips are not communicating
+            //sync if S-SMP is more than 24 samples ahead of S-CPU
+            if (Processor.clock > +(768 * 24 * (long)24000000))
+            {
+                synchronize_cpu();
+            }
+        }
+
+        private void cycle_edge()
+        {
+            t0.tick();
+            t1.tick();
+            t2.tick();
+
+            //TEST register S-SMP speed control
+            //24 clocks have already been added for this cycle at this point
+            switch (status.clock_speed)
+            {
+                case 0:
+                    break;                       //100% speed
+                case 1:
+                    add_clocks(24);
+                    break;       // 50% speed
+                case 2:
+                    while (true)
+                    {
+                        add_clocks(24);  //  0% speed -- locks S-SMP
+                    }
+                case 3:
+                    add_clocks(24 * 9);
+                    break;   // 10% speed
+            }
+        }
 
         private static readonly byte[] iplrom = new byte[64];
 
-        private Status status;
+        private Status status = new Status();
 
-        private static void Enter() { throw new NotImplementedException(); }
+        private static void Enter()
+        {
+            SMP.smp.enter();
+        }
 
-        private void op_step() { throw new NotImplementedException(); }
+        private void op_step()
+        {
+            this.opcode_table[op_readpc()]();
+        }
 
         public Processor Processor
         {
