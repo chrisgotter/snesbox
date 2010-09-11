@@ -1898,6 +1898,7 @@ namespace Snes
             //result is set based on a (quotient) only
             regs.p.n = Convert.ToBoolean(Convert.ToInt32(Convert.ToBoolean(regs.a[0] & 0x80)));
             regs.p.z = (regs.a[0] == 0);
+            return null;
         }
 
         public SMPCoreOperation[] opcode_table = new SMPCoreOperation[256];
