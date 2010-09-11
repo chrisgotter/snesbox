@@ -1,26 +1,84 @@
-﻿using System;
-
+﻿
 namespace Nall
 {
     public struct uint10
     {
         private uint data;
+        private static readonly int bits = 10;
 
-        public static explicit operator uint(uint10 number) { throw new NotImplementedException(); }
-        public static uint10 operator ++(uint10 number) { throw new NotImplementedException(); }
-        public static uint10 operator --(uint10 number) { throw new NotImplementedException(); }
-        public static uint Assign(uint i) { throw new NotImplementedException(); }
-        public static uint operator |(uint10 number, uint i) { throw new NotImplementedException(); }
-        public static uint operator ^(uint10 number, uint i) { throw new NotImplementedException(); }
-        public static uint operator &(uint10 number, uint i) { throw new NotImplementedException(); }
-        public static uint operator <<(uint10 number, int i) { throw new NotImplementedException(); }
-        public static uint operator >>(uint10 number, int i) { throw new NotImplementedException(); }
-        public static uint operator +(uint10 number, uint i) { throw new NotImplementedException(); }
-        public static uint operator -(uint10 number, uint i) { throw new NotImplementedException(); }
-        public static uint operator *(uint10 number, uint i) { throw new NotImplementedException(); }
-        public static uint operator /(uint10 number, uint i) { throw new NotImplementedException(); }
-        public static uint operator %(uint10 number, uint i) { throw new NotImplementedException(); }
+        public static explicit operator uint(uint10 number)
+        {
+            return number.data;
+        }
 
-        public uint10(uint i) { throw new NotImplementedException(); }
+        public static uint10 operator ++(uint10 number)
+        {
+            return new uint10(number + 1);
+        }
+
+        public static uint10 operator --(uint10 number)
+        {
+            return new uint10(number - 1);
+        }
+
+        public uint Assign(uint i)
+        {
+            return data = Bit.uclip(bits, i);
+        }
+
+        public static uint operator |(uint10 number, uint i)
+        {
+            return number.data = Bit.uclip(bits, number.data | i);
+        }
+
+        public static uint operator ^(uint10 number, uint i)
+        {
+            return number.data = Bit.uclip(bits, number.data ^ i);
+        }
+
+        public static uint operator &(uint10 number, uint i)
+        {
+            return number.data = Bit.uclip(bits, number.data & i);
+        }
+
+        public static uint operator <<(uint10 number, int i)
+        {
+            return number.data = Bit.uclip(bits, number.data << i);
+        }
+
+        public static uint operator >>(uint10 number, int i)
+        {
+            return number.data = Bit.uclip(bits, number.data >> i);
+        }
+
+        public static uint operator +(uint10 number, uint i)
+        {
+            return number.data = Bit.uclip(bits, number.data + i);
+        }
+
+        public static uint operator -(uint10 number, uint i)
+        {
+            return number.data = Bit.uclip(bits, number.data - i);
+        }
+
+        public static uint operator *(uint10 number, uint i)
+        {
+            return number.data = Bit.uclip(bits, number.data * i);
+        }
+
+        public static uint operator /(uint10 number, uint i)
+        {
+            return number.data = Bit.uclip(bits, number.data / i);
+        }
+
+        public static uint operator %(uint10 number, uint i)
+        {
+            return number.data = Bit.uclip(bits, number.data % i);
+        }
+
+        public uint10(uint i)
+        {
+            data = Bit.uclip(bits, i);
+        }
     }
 }
