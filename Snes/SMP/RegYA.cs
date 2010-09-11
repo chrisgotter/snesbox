@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace Snes
 {
     partial class SMPCore

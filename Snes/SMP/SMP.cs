@@ -441,7 +441,7 @@ namespace Snes
         public static byte[] Iplrom
         {
             get { return SMP.iplrom; }
-        } 
+        }
 
 
         private Status status = new Status();

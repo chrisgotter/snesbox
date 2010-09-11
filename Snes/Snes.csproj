@@ -13,7 +13,7 @@
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
-    <XnaProfile>HiDef</XnaProfile>
+    <XnaProfile>Reach</XnaProfile>
     <XnaCrossPlatformGroupID>45ce064b-c3ce-41c4-ade0-944916147a80</XnaCrossPlatformGroupID>
     <XnaOutputType>Library</XnaOutputType>
   </PropertyGroup>
@@ -228,7 +228,8 @@
     <Compile Include="SMP\SMP.cs" />
     <Compile Include="SMP\SMPCore.cs" />
     <Compile Include="SMP\SMPCoreOperation.cs" />
-    <Compile Include="SMP\SMPCoreOpArguments.cs" />
+    <Compile Include="SMP\SMPCoreOpArgument.cs" />
+    <Compile Include="SMP\SMPCoreOpResult.cs" />
     <Compile Include="SMP\sSMPTimer.cs" />
     <Compile Include="SMP\Status.cs" />
     <Compile Include="System\System.cs" />

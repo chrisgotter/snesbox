@@ -45,7 +45,7 @@ namespace Snes
             string s, t;
             byte opcode_table, op0, op1;
             ushort opw, opdp0, opdp1;
-            s = ASCIIEncoding.ASCII.GetString(output);
+            s = new UTF8Encoding().GetString(output);
 
             s = string.Format("..%.4x ", addr);
 
@@ -322,7 +322,7 @@ namespace Snes
             s += t;
 
             t = string.Format("A:%.2x X:%.2x Y:%.2x SP:01%.2x YA:%.4x ",
-              regs.a, regs.x, regs.y, regs.sp, (ushort)regs.ya);
+              regs.a[0], regs.x[0], regs.y[0], regs.sp[0], (ushort)regs.ya);
             s += t;
 
             t = string.Format("%c%c%c%c%c%c%c%c",
@@ -335,6 +335,8 @@ namespace Snes
               regs.p.z ? 'Z' : 'z',
               regs.p.c ? 'C' : 'c');
             s += t;
+
+            output = new UTF8Encoding().GetBytes(s);
         }
 
         public byte disassemble_read(ushort addr)
@@ -354,457 +356,466 @@ namespace Snes
 
         public Regs regs = new Regs();
         public ushort dp, sp, rd, wr, bit, ya;
+        public enum OpCode { A = 0, X = 1, Y = 2, SP = 3 };
 
         public abstract void op_io();
         public abstract byte op_read(ushort addr);
         public abstract void op_write(ushort addr, byte data);
 
-        public byte op_adc(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_adc(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public ushort op_addw(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_addw(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public byte op_and(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_and(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public byte op_cmp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_cmp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public ushort op_cmpw(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_cmpw(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public byte op_eor(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_eor(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public byte op_inc(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_inc(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public byte op_dec(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_dec(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public byte op_or(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_or(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public byte op_sbc(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_sbc(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public ushort op_subw(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_subw(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public byte op_asl(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_asl(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public byte op_lsr(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_lsr(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public byte op_rol(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_rol(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public byte op_ror(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_ror(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_reg_reg(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_reg_reg(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_sp_x(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_sp_x(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_reg_const(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_reg_const(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_a_ix(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_a_ix(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_a_ixinc(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_a_ixinc(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_reg_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_reg_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_reg_dpr(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_reg_dpr(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_reg_addr(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_reg_addr(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_a_addrr(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_a_addrr(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_a_idpx(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_a_idpx(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_a_idpy(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_a_idpy(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_dp_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_dp_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_dp_const(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_dp_const(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_ix_a(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_ix_a(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_ixinc_a(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_ixinc_a(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_dp_reg(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_dp_reg(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_dpr_reg(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_dpr_reg(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_addr_reg(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_addr_reg(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_addrr_a(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_addrr_a(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_idpx_a(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_idpx_a(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov_idpy_a(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_idpy_a(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_movw_ya_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_movw_ya_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_movw_dp_ya(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_movw_dp_ya(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov1_c_bit(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov1_c_bit(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mov1_bit_c(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov1_bit_c(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_bra(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_bra(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_branch(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_branch(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_bitbranch(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_bitbranch(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_cbne_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_cbne_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_cbne_dpx(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_cbne_dpx(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_dbnz_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_dbnz_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_dbnz_y(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_dbnz_y(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_jmp_addr(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_jmp_addr(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_jmp_iaddrx(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_jmp_iaddrx(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_call(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_call(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_pcall(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_pcall(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_tcall(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_tcall(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_brk(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_brk(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_ret(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_ret(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_reti(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_reti(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_read_reg_const(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_reg_const(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_read_a_ix(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_a_ix(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_read_reg_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_reg_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_read_a_dpx(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_a_dpx(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_read_reg_addr(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_reg_addr(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_read_a_addrr(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_a_addrr(SMPCoreOpArgument args)
+        {
+            dp = (ushort)(op_readpc() << 0);
+            dp |= (ushort)(op_readpc() << 8);
+            op_io();
+            rd = op_readaddr((ushort)(dp + regs.r[args.i]));
+            regs.a[0] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).return_byte;
+            return null;
+        }
 
-        public void op_read_a_idpx(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_a_idpx(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_read_a_idpy(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_a_idpy(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_read_ix_iy(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_ix_iy(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_read_dp_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_dp_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_read_dp_const(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_dp_const(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_read_ya_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_ya_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_cmpw_ya_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_cmpw_ya_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_and1_bit(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_and1_bit(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_eor1_bit(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_eor1_bit(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_not1_bit(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_not1_bit(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_or1_bit(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_or1_bit(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_adjust_reg(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_adjust_reg(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_adjust_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_adjust_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_adjust_dpx(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_adjust_dpx(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_adjust_addr(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_adjust_addr(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_adjust_addr_a(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_adjust_addr_a(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_adjustw_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_adjustw_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_nop(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_nop(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_wait(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_wait(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_xcn(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_xcn(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_daa(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_daa(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_das(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_das(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_setbit(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_setbit(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_notc(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_notc(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_seti(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_seti(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_setbit_dp(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_setbit_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_push_reg(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_push_reg(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_push_p(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_push_p(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_pop_reg(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_pop_reg(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_pop_p(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_pop_p(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_mul_ya(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mul_ya(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
-        public void op_div_ya_x(SMPCoreOpArguments args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_div_ya_x(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
         public SMPCoreOperation[] opcode_table = new SMPCoreOperation[256];
 
         public void initialize_opcode_table()
         {
-            //opcode_table[0x00] = op_nop;
-            //opcode_table[0x01] = op_tcall;
-            //opcode_table[0x02] = op_setbit_dp;
-            //opcode_table[0x03] = op_bitbranch;
-            //opcode_table[0x04] = op_read_reg_dp;
-            //opcode_table[0x05] = op_read_reg_addr;
-            //opcode_table[0x06] = op_read_a_ix;
-            //opcode_table[0x07] = op_read_a_idpx;
-            //opcode_table[0x08] = op_read_reg_const;
-            //opcode_table[0x09] = op_read_dp_dp;
-            //opcode_table[0x0a] = op_or1_bit;
-            //opcode_table[0x0b] = op_adjust_dp;
-            //opcode_table[0x0c] = op_adjust_addr;
-            //opcode_table[0x0d] = op_push_p;
-            //opcode_table[0x0e] = op_adjust_addr_a;
-            //opcode_table[0x0f] = op_brk;
-            //opcode_table[0x10] = op_branch;
-            //opcode_table[0x11] = op_tcall;
-            //opcode_table[0x12] = op_setbit_dp;
-            //opcode_table[0x13] = op_bitbranch;
-            //opcode_table[0x14] = op_read_a_dpx;
-            //opcode_table[0x15] = op_read_a_addrr;
-            //opcode_table[0x16] = op_read_a_addrr;
-            //opcode_table[0x17] = op_read_a_idpy;
-            //opcode_table[0x18] = op_read_dp_const;
-            //opcode_table[0x19] = op_read_ix_iy;
-            //opcode_table[0x1a] = op_adjustw_dp;
-            //opcode_table[0x1b] = op_adjust_dpx;
-            //opcode_table[0x1c] = op_adjust_reg;
-            //opcode_table[0x1d] = op_adjust_reg;
-            //opcode_table[0x1e] = op_read_reg_addr;
-            //opcode_table[0x1f] = op_jmp_iaddrx;
-            //opcode_table[0x20] = op_setbit;
-            //opcode_table[0x21] = op_tcall;
-            //opcode_table[0x22] = op_setbit_dp;
-            //opcode_table[0x23] = op_bitbranch;
-            //opcode_table[0x24] = op_read_reg_dp;
-            //opcode_table[0x25] = op_read_reg_addr;
-            //opcode_table[0x26] = op_read_a_ix;
-            //opcode_table[0x27] = op_read_a_idpx;
-            //opcode_table[0x28] = op_read_reg_const;
-            //opcode_table[0x29] = op_read_dp_dp;
-            //opcode_table[0x2a] = op_or1_bit;
-            //opcode_table[0x2b] = op_adjust_dp;
-            //opcode_table[0x2c] = op_adjust_addr;
-            //opcode_table[0x2d] = op_push_reg;
-            //opcode_table[0x2e] = op_cbne_dp;
-            //opcode_table[0x2f] = op_bra;
-            //opcode_table[0x30] = op_branch;
-            //opcode_table[0x31] = op_tcall;
-            //opcode_table[0x32] = op_setbit_dp;
-            //opcode_table[0x33] = op_bitbranch;
-            //opcode_table[0x34] = op_read_a_dpx;
-            //opcode_table[0x35] = op_read_a_addrr;
-            //opcode_table[0x36] = op_read_a_addrr;
-            //opcode_table[0x37] = op_read_a_idpy;
-            //opcode_table[0x38] = op_read_dp_const;
-            //opcode_table[0x39] = op_read_ix_iy;
-            //opcode_table[0x3a] = op_adjustw_dp;
-            //opcode_table[0x3b] = op_adjust_dpx;
-            //opcode_table[0x3c] = op_adjust_reg;
-            //opcode_table[0x3d] = op_adjust_reg;
-            //opcode_table[0x3e] = op_read_reg_dp;
-            //opcode_table[0x3f] = op_call;
-            //opcode_table[0x40] = op_setbit;
-            //opcode_table[0x41] = op_tcall;
-            //opcode_table[0x42] = op_setbit_dp;
-            //opcode_table[0x43] = op_bitbranch;
-            //opcode_table[0x44] = op_read_reg_dp;
-            //opcode_table[0x45] = op_read_reg_addr;
-            //opcode_table[0x46] = op_read_a_ix;
-            //opcode_table[0x47] = op_read_a_idpx;
-            //opcode_table[0x48] = op_read_reg_const;
-            //opcode_table[0x49] = op_read_dp_dp;
-            //opcode_table[0x4a] = op_and1_bit;
-            //opcode_table[0x4b] = op_adjust_dp;
-            //opcode_table[0x4c] = op_adjust_addr;
-            //opcode_table[0x4d] = op_push_reg;
-            //opcode_table[0x4e] = op_adjust_addr_a;
-            //opcode_table[0x4f] = op_pcall;
-            //opcode_table[0x50] = op_branch;
-            //opcode_table[0x51] = op_tcall;
-            //opcode_table[0x52] = op_setbit_dp;
-            //opcode_table[0x53] = op_bitbranch;
-            //opcode_table[0x54] = op_read_a_dpx;
-            //opcode_table[0x55] = op_read_a_addrr;
-            //opcode_table[0x56] = op_read_a_addrr;
-            //opcode_table[0x57] = op_read_a_idpy;
-            //opcode_table[0x58] = op_read_dp_const;
-            //opcode_table[0x59] = op_read_ix_iy;
-            //opcode_table[0x5a] = op_cmpw_ya_dp;
-            //opcode_table[0x5b] = op_adjust_dpx;
-            //opcode_table[0x5c] = op_adjust_reg;
-            //opcode_table[0x5d] = op_mov_reg_reg;
-            //opcode_table[0x5e] = op_read_reg_addr;
-            //opcode_table[0x5f] = op_jmp_addr;
-            //opcode_table[0x60] = op_setbit;
-            //opcode_table[0x61] = op_tcall;
-            //opcode_table[0x62] = op_setbit_dp;
-            //opcode_table[0x63] = op_bitbranch;
-            //opcode_table[0x64] = op_read_reg_dp;
-            //opcode_table[0x65] = op_read_reg_addr;
-            //opcode_table[0x66] = op_read_a_ix;
-            //opcode_table[0x67] = op_read_a_idpx;
-            //opcode_table[0x68] = op_read_reg_const;
-            //opcode_table[0x69] = op_read_dp_dp;
-            //opcode_table[0x6a] = op_and1_bit;
-            //opcode_table[0x6b] = op_adjust_dp;
-            //opcode_table[0x6c] = op_adjust_addr;
-            //opcode_table[0x6d] = op_push_reg;
-            //opcode_table[0x6e] = op_dbnz_dp;
-            //opcode_table[0x6f] = op_ret;
-            //opcode_table[0x70] = op_branch;
-            //opcode_table[0x71] = op_tcall;
-            //opcode_table[0x72] = op_setbit_dp;
-            //opcode_table[0x73] = op_bitbranch;
-            //opcode_table[0x74] = op_read_a_dpx;
-            //opcode_table[0x75] = op_read_a_addrr;
-            //opcode_table[0x76] = op_read_a_addrr;
-            //opcode_table[0x77] = op_read_a_idpy;
-            //opcode_table[0x78] = op_read_dp_const;
-            //opcode_table[0x79] = op_read_ix_iy;
-            //opcode_table[0x7a] = op_read_ya_dp;
-            //opcode_table[0x7b] = op_adjust_dpx;
-            //opcode_table[0x7c] = op_adjust_reg;
-            //opcode_table[0x7d] = op_mov_reg_reg;
-            //opcode_table[0x7e] = op_read_reg_dp;
-            //opcode_table[0x7f] = op_reti;
-            //opcode_table[0x80] = op_setbit;
-            //opcode_table[0x81] = op_tcall;
-            //opcode_table[0x82] = op_setbit_dp;
-            //opcode_table[0x83] = op_bitbranch;
-            //opcode_table[0x84] = op_read_reg_dp;
-            //opcode_table[0x85] = op_read_reg_addr;
-            //opcode_table[0x86] = op_read_a_ix;
-            //opcode_table[0x87] = op_read_a_idpx;
-            //opcode_table[0x88] = op_read_reg_const;
-            //opcode_table[0x89] = op_read_dp_dp;
-            //opcode_table[0x8a] = op_eor1_bit;
-            //opcode_table[0x8b] = op_adjust_dp;
-            //opcode_table[0x8c] = op_adjust_addr;
-            //opcode_table[0x8d] = op_mov_reg_const;
-            //opcode_table[0x8e] = op_pop_p;
-            //opcode_table[0x8f] = op_mov_dp_const;
-            //opcode_table[0x90] = op_branch;
-            //opcode_table[0x91] = op_tcall;
-            //opcode_table[0x92] = op_setbit_dp;
-            //opcode_table[0x93] = op_bitbranch;
-            //opcode_table[0x94] = op_read_a_dpx;
-            //opcode_table[0x95] = op_read_a_addrr;
-            //opcode_table[0x96] = op_read_a_addrr;
-            //opcode_table[0x97] = op_read_a_idpy;
-            //opcode_table[0x98] = op_read_dp_const;
-            //opcode_table[0x99] = op_read_ix_iy;
-            //opcode_table[0x9a] = op_read_ya_dp;
-            //opcode_table[0x9b] = op_adjust_dpx;
-            //opcode_table[0x9c] = op_adjust_reg;
-            //opcode_table[0x9d] = op_mov_reg_reg;
-            //opcode_table[0x9e] = op_div_ya_x;
-            //opcode_table[0x9f] = op_xcn;
-            //opcode_table[0xa0] = op_seti;
-            //opcode_table[0xa1] = op_tcall;
-            //opcode_table[0xa2] = op_setbit_dp;
-            //opcode_table[0xa3] = op_bitbranch;
-            //opcode_table[0xa4] = op_read_reg_dp;
-            //opcode_table[0xa5] = op_read_reg_addr;
-            //opcode_table[0xa6] = op_read_a_ix;
-            //opcode_table[0xa7] = op_read_a_idpx;
-            //opcode_table[0xa8] = op_read_reg_const;
-            //opcode_table[0xa9] = op_read_dp_dp;
-            //opcode_table[0xaa] = op_mov1_c_bit;
-            //opcode_table[0xab] = op_adjust_dp;
-            //opcode_table[0xac] = op_adjust_addr;
-            //opcode_table[0xad] = op_read_reg_const;
-            //opcode_table[0xae] = op_pop_reg;
-            //opcode_table[0xaf] = op_mov_ixinc_a;
-            //opcode_table[0xb0] = op_branch;
-            //opcode_table[0xb1] = op_tcall;
-            //opcode_table[0xb2] = op_setbit_dp;
-            //opcode_table[0xb3] = op_bitbranch;
-            //opcode_table[0xb4] = op_read_a_dpx;
-            //opcode_table[0xb5] = op_read_a_addrr;
-            //opcode_table[0xb6] = op_read_a_addrr;
-            //opcode_table[0xb7] = op_read_a_idpy;
-            //opcode_table[0xb8] = op_read_dp_const;
-            //opcode_table[0xb9] = op_read_ix_iy;
-            //opcode_table[0xba] = op_movw_ya_dp;
-            //opcode_table[0xbb] = op_adjust_dpx;
-            //opcode_table[0xbc] = op_adjust_reg;
-            //opcode_table[0xbd] = op_mov_sp_x;
-            //opcode_table[0xbe] = op_das;
-            //opcode_table[0xbf] = op_mov_a_ixinc;
-            //opcode_table[0xc0] = op_seti;
-            //opcode_table[0xc1] = op_tcall;
-            //opcode_table[0xc2] = op_setbit_dp;
-            //opcode_table[0xc3] = op_bitbranch;
-            //opcode_table[0xc4] = op_mov_dp_reg;
-            //opcode_table[0xc5] = op_mov_addr_reg;
-            //opcode_table[0xc6] = op_mov_ix_a;
-            //opcode_table[0xc7] = op_mov_idpx_a;
-            //opcode_table[0xc8] = op_read_reg_const;
-            //opcode_table[0xc9] = op_mov_addr_reg;
-            //opcode_table[0xca] = op_mov1_bit_c;
-            //opcode_table[0xcb] = op_mov_dp_reg;
-            //opcode_table[0xcc] = op_mov_addr_reg;
-            //opcode_table[0xcd] = op_mov_reg_const;
-            //opcode_table[0xce] = op_pop_reg;
-            //opcode_table[0xcf] = op_mul_ya;
-            //opcode_table[0xd0] = op_branch;
-            //opcode_table[0xd1] = op_tcall;
-            //opcode_table[0xd2] = op_setbit_dp;
-            //opcode_table[0xd3] = op_bitbranch;
-            //opcode_table[0xd4] = op_mov_dpr_reg;
-            //opcode_table[0xd5] = op_mov_addrr_a;
-            //opcode_table[0xd6] = op_mov_addrr_a;
-            //opcode_table[0xd7] = op_mov_idpy_a;
-            //opcode_table[0xd8] = op_mov_dp_reg;
-            //opcode_table[0xd9] = op_mov_dpr_reg;
-            //opcode_table[0xda] = op_movw_dp_ya;
-            //opcode_table[0xdb] = op_mov_dpr_reg;
-            //opcode_table[0xdc] = op_adjust_reg;
-            //opcode_table[0xdd] = op_mov_reg_reg;
-            //opcode_table[0xde] = op_cbne_dpx;
-            //opcode_table[0xdf] = op_daa;
-            //opcode_table[0xe0] = op_setbit;
-            //opcode_table[0xe1] = op_tcall;
-            //opcode_table[0xe2] = op_setbit_dp;
-            //opcode_table[0xe3] = op_bitbranch;
-            //opcode_table[0xe4] = op_mov_reg_dp;
-            //opcode_table[0xe5] = op_mov_reg_addr;
-            //opcode_table[0xe6] = op_mov_a_ix;
-            //opcode_table[0xe7] = op_mov_a_idpx;
-            //opcode_table[0xe8] = op_mov_reg_const;
-            //opcode_table[0xe9] = op_mov_reg_addr;
-            //opcode_table[0xea] = op_not1_bit;
-            //opcode_table[0xeb] = op_mov_reg_dp;
-            //opcode_table[0xec] = op_mov_reg_addr;
-            //opcode_table[0xed] = op_notc;
-            //opcode_table[0xee] = op_pop_reg;
-            //opcode_table[0xef] = op_wait;
-            //opcode_table[0xf0] = op_branch;
-            //opcode_table[0xf1] = op_tcall;
-            //opcode_table[0xf2] = op_setbit_dp;
-            //opcode_table[0xf3] = op_bitbranch;
-            //opcode_table[0xf4] = op_mov_reg_dpr;
-            //opcode_table[0xf5] = op_mov_a_addrr;
-            //opcode_table[0xf6] = op_mov_a_addrr;
-            //opcode_table[0xf7] = op_mov_a_idpy;
-            //opcode_table[0xf8] = op_mov_reg_dp;
-            //opcode_table[0xf9] = op_mov_reg_dpr;
-            //opcode_table[0xfa] = op_mov_dp_dp;
-            //opcode_table[0xfb] = op_mov_reg_dpr;
-            //opcode_table[0xfc] = op_adjust_reg;
-            //opcode_table[0xfd] = op_mov_reg_reg;
-            //opcode_table[0xfe] = op_dbnz_y;
-            //opcode_table[0xff] = op_wait;
+            opcode_table[0x00] = new SMPCoreOperation(op_nop, null);
+            opcode_table[0x01] = new SMPCoreOperation(op_tcall, new SMPCoreOpArgument() { n = 0 });
+            opcode_table[0x02] = new SMPCoreOperation(op_setbit_dp, new SMPCoreOpArgument() { op = 1, value = 0x01 });
+            opcode_table[0x03] = new SMPCoreOperation(op_bitbranch, new SMPCoreOpArgument() { mask = 0x01, value = Convert.ToInt32(true) });
+            opcode_table[0x04] = new SMPCoreOperation(op_read_reg_dp, new SMPCoreOpArgument() { op_func = op_or, n = (int)OpCode.A });
+            opcode_table[0x05] = new SMPCoreOperation(op_read_reg_addr, new SMPCoreOpArgument() { op_func = op_or, n = (int)OpCode.A });
+            opcode_table[0x06] = new SMPCoreOperation(op_read_a_ix, new SMPCoreOpArgument() { op_func = op_or });
+            opcode_table[0x07] = new SMPCoreOperation(op_read_a_idpx, new SMPCoreOpArgument() { op_func = op_or });
+            opcode_table[0x08] = new SMPCoreOperation(op_read_reg_const, new SMPCoreOpArgument() { op_func = op_or, n = (int)OpCode.A });
+            opcode_table[0x09] = new SMPCoreOperation(op_read_dp_dp, new SMPCoreOpArgument() { op_func = op_or });
+            opcode_table[0x0a] = new SMPCoreOperation(op_or1_bit, new SMPCoreOpArgument() { op = 0 });
+            opcode_table[0x0b] = new SMPCoreOperation(op_adjust_dp, new SMPCoreOpArgument() { op_func = op_asl });
+            opcode_table[0x0c] = new SMPCoreOperation(op_adjust_addr, new SMPCoreOpArgument() { op_func = op_asl });
+            opcode_table[0x0d] = new SMPCoreOperation(op_push_p, null);
+            opcode_table[0x0e] = new SMPCoreOperation(op_adjust_addr_a, new SMPCoreOpArgument() { op = 1 });
+            opcode_table[0x0f] = new SMPCoreOperation(op_brk, null);
+            opcode_table[0x10] = new SMPCoreOperation(op_branch, new SMPCoreOpArgument() { flag = 0x80, value = Convert.ToInt32(false) });
+            opcode_table[0x11] = new SMPCoreOperation(op_tcall, new SMPCoreOpArgument() { n = 1 });
+            opcode_table[0x12] = new SMPCoreOperation(op_setbit_dp, new SMPCoreOpArgument() { op = 0, value = 0x01 });
+            opcode_table[0x13] = new SMPCoreOperation(op_bitbranch, new SMPCoreOpArgument() { mask = 0x01, value = Convert.ToInt32(false) });
+            opcode_table[0x14] = new SMPCoreOperation(op_read_a_dpx, new SMPCoreOpArgument() { op_func = op_or });
+            opcode_table[0x15] = new SMPCoreOperation(op_read_a_addrr, new SMPCoreOpArgument() { op_func = op_or, i = (int)OpCode.X });
+            opcode_table[0x16] = new SMPCoreOperation(op_read_a_addrr, new SMPCoreOpArgument() { op_func = op_or, i = (int)OpCode.Y });
+            opcode_table[0x17] = new SMPCoreOperation(op_read_a_idpy, new SMPCoreOpArgument() { op_func = op_or });
+            opcode_table[0x18] = new SMPCoreOperation(op_read_dp_const, new SMPCoreOpArgument() { op_func = op_or });
+            opcode_table[0x19] = new SMPCoreOperation(op_read_ix_iy, new SMPCoreOpArgument() { op_func = op_or });
+            opcode_table[0x1a] = new SMPCoreOperation(op_adjustw_dp, new SMPCoreOpArgument() { adjust = -1 });
+            opcode_table[0x1b] = new SMPCoreOperation(op_adjust_dpx, new SMPCoreOpArgument() { op_func = op_asl });
+            opcode_table[0x1c] = new SMPCoreOperation(op_adjust_reg, new SMPCoreOpArgument() { op_func = op_asl, n = (int)OpCode.A });
+            opcode_table[0x1d] = new SMPCoreOperation(op_adjust_reg, new SMPCoreOpArgument() { op_func = op_dec, n = (int)OpCode.X });
+            opcode_table[0x1e] = new SMPCoreOperation(op_read_reg_addr, new SMPCoreOpArgument() { op_func = op_cmp, n = (int)OpCode.X });
+            opcode_table[0x1f] = new SMPCoreOperation(op_jmp_iaddrx, null);
+            opcode_table[0x20] = new SMPCoreOperation(op_setbit, new SMPCoreOpArgument() { mask = 0x20, value = 0x00 });
+            opcode_table[0x21] = new SMPCoreOperation(op_tcall, new SMPCoreOpArgument() { n = 2 });
+            opcode_table[0x22] = new SMPCoreOperation(op_setbit_dp, new SMPCoreOpArgument() { op = 1, value = 0x02 });
+            opcode_table[0x23] = new SMPCoreOperation(op_bitbranch, new SMPCoreOpArgument() { mask = 0x02, value = Convert.ToInt32(true) });
+            opcode_table[0x24] = new SMPCoreOperation(op_read_reg_dp, new SMPCoreOpArgument() { op_func = op_and, n = (int)OpCode.A });
+            opcode_table[0x25] = new SMPCoreOperation(op_read_reg_addr, new SMPCoreOpArgument() { op_func = op_and, n = (int)OpCode.A });
+            opcode_table[0x26] = new SMPCoreOperation(op_read_a_ix, new SMPCoreOpArgument() { op_func = op_and });
+            opcode_table[0x27] = new SMPCoreOperation(op_read_a_idpx, new SMPCoreOpArgument() { op_func = op_and });
+            opcode_table[0x28] = new SMPCoreOperation(op_read_reg_const, new SMPCoreOpArgument() { op_func = op_and, n = (int)OpCode.A });
+            opcode_table[0x29] = new SMPCoreOperation(op_read_dp_dp, new SMPCoreOpArgument() { op_func = op_and });
+            opcode_table[0x2a] = new SMPCoreOperation(op_or1_bit, new SMPCoreOpArgument() { op = 1 });
+            opcode_table[0x2b] = new SMPCoreOperation(op_adjust_dp, new SMPCoreOpArgument() { op_func = op_rol });
+            opcode_table[0x2c] = new SMPCoreOperation(op_adjust_addr, new SMPCoreOpArgument() { op_func = op_rol });
+            opcode_table[0x2d] = new SMPCoreOperation(op_push_reg, new SMPCoreOpArgument() { n = (int)OpCode.A });
+            opcode_table[0x2e] = new SMPCoreOperation(op_cbne_dp, null);
+            opcode_table[0x2f] = new SMPCoreOperation(op_bra, null);
+            opcode_table[0x30] = new SMPCoreOperation(op_branch, new SMPCoreOpArgument() { flag = 0x80, value = Convert.ToInt32(true) });
+            opcode_table[0x31] = new SMPCoreOperation(op_tcall, new SMPCoreOpArgument() { n = 3 });
+            opcode_table[0x32] = new SMPCoreOperation(op_setbit_dp, new SMPCoreOpArgument() { op = 0, value = 0x02 });
+            opcode_table[0x33] = new SMPCoreOperation(op_bitbranch, new SMPCoreOpArgument() { mask = 0x02, value = Convert.ToInt32(false) });
+            opcode_table[0x34] = new SMPCoreOperation(op_read_a_dpx, new SMPCoreOpArgument() { op_func = op_and });
+            opcode_table[0x35] = new SMPCoreOperation(op_read_a_addrr, new SMPCoreOpArgument() { op_func = op_and, i = (int)OpCode.X });
+            opcode_table[0x36] = new SMPCoreOperation(op_read_a_addrr, new SMPCoreOpArgument() { op_func = op_and, i = (int)OpCode.Y });
+            opcode_table[0x37] = new SMPCoreOperation(op_read_a_idpy, new SMPCoreOpArgument() { op_func = op_and });
+            opcode_table[0x38] = new SMPCoreOperation(op_read_dp_const, new SMPCoreOpArgument() { op_func = op_and });
+            opcode_table[0x39] = new SMPCoreOperation(op_read_ix_iy, new SMPCoreOpArgument() { op_func = op_and });
+            opcode_table[0x3a] = new SMPCoreOperation(op_adjustw_dp, new SMPCoreOpArgument() { adjust = +1 });
+            opcode_table[0x3b] = new SMPCoreOperation(op_adjust_dpx, new SMPCoreOpArgument() { op_func = op_rol });
+            opcode_table[0x3c] = new SMPCoreOperation(op_adjust_reg, new SMPCoreOpArgument() { op_func = op_rol, n = (int)OpCode.A });
+            opcode_table[0x3d] = new SMPCoreOperation(op_adjust_reg, new SMPCoreOpArgument() { op_func = op_inc, n = (int)OpCode.X });
+            opcode_table[0x3e] = new SMPCoreOperation(op_read_reg_dp, new SMPCoreOpArgument() { op_func = op_cmp, n = (int)OpCode.X });
+            opcode_table[0x3f] = new SMPCoreOperation(op_call, null);
+            opcode_table[0x40] = new SMPCoreOperation(op_setbit, new SMPCoreOpArgument() { mask = 0x20, value = 0x20 });
+            opcode_table[0x41] = new SMPCoreOperation(op_tcall, new SMPCoreOpArgument() { n = 4 });
+            opcode_table[0x42] = new SMPCoreOperation(op_setbit_dp, new SMPCoreOpArgument() { op = 1, value = 0x04 });
+            opcode_table[0x43] = new SMPCoreOperation(op_bitbranch, new SMPCoreOpArgument() { mask = 0x04, value = Convert.ToInt32(true) });
+            opcode_table[0x44] = new SMPCoreOperation(op_read_reg_dp, new SMPCoreOpArgument() { op_func = op_eor, n = (int)OpCode.A });
+            opcode_table[0x45] = new SMPCoreOperation(op_read_reg_addr, new SMPCoreOpArgument() { op_func = op_eor, n = (int)OpCode.A });
+            opcode_table[0x46] = new SMPCoreOperation(op_read_a_ix, new SMPCoreOpArgument() { op_func = op_eor });
+            opcode_table[0x47] = new SMPCoreOperation(op_read_a_idpx, new SMPCoreOpArgument() { op_func = op_eor });
+            opcode_table[0x48] = new SMPCoreOperation(op_read_reg_const, new SMPCoreOpArgument() { op_func = op_eor, n = (int)OpCode.A });
+            opcode_table[0x49] = new SMPCoreOperation(op_read_dp_dp, new SMPCoreOpArgument() { op_func = op_eor });
+            opcode_table[0x4a] = new SMPCoreOperation(op_and1_bit, new SMPCoreOpArgument() { op = 0 });
+            opcode_table[0x4b] = new SMPCoreOperation(op_adjust_dp, new SMPCoreOpArgument() { op_func = op_lsr });
+            opcode_table[0x4c] = new SMPCoreOperation(op_adjust_addr, new SMPCoreOpArgument() { op_func = op_lsr });
+            opcode_table[0x4d] = new SMPCoreOperation(op_push_reg, new SMPCoreOpArgument() { n = (int)OpCode.X });
+            opcode_table[0x4e] = new SMPCoreOperation(op_adjust_addr_a, new SMPCoreOpArgument() { op = 0 });
+            opcode_table[0x4f] = new SMPCoreOperation(op_pcall, null);
+            opcode_table[0x50] = new SMPCoreOperation(op_branch, new SMPCoreOpArgument() { flag = 0x40, value = Convert.ToInt32(false) });
+            opcode_table[0x51] = new SMPCoreOperation(op_tcall, new SMPCoreOpArgument() { n = 5 });
+            opcode_table[0x52] = new SMPCoreOperation(op_setbit_dp, new SMPCoreOpArgument() { op = 0, value = 0x04 });
+            opcode_table[0x53] = new SMPCoreOperation(op_bitbranch, new SMPCoreOpArgument() { mask = 0x04, value = Convert.ToInt32(false) });
+            opcode_table[0x54] = new SMPCoreOperation(op_read_a_dpx, new SMPCoreOpArgument() { op_func = op_eor });
+            opcode_table[0x55] = new SMPCoreOperation(op_read_a_addrr, new SMPCoreOpArgument() { op_func = op_eor, i = (int)OpCode.X });
+            opcode_table[0x56] = new SMPCoreOperation(op_read_a_addrr, new SMPCoreOpArgument() { op_func = op_eor, i = (int)OpCode.Y });
+            opcode_table[0x57] = new SMPCoreOperation(op_read_a_idpy, new SMPCoreOpArgument() { op_func = op_eor });
+            opcode_table[0x58] = new SMPCoreOperation(op_read_dp_const, new SMPCoreOpArgument() { op_func = op_eor });
+            opcode_table[0x59] = new SMPCoreOperation(op_read_ix_iy, new SMPCoreOpArgument() { op_func = op_eor });
+            opcode_table[0x5a] = new SMPCoreOperation(op_cmpw_ya_dp, null);
+            opcode_table[0x5b] = new SMPCoreOperation(op_adjust_dpx, new SMPCoreOpArgument() { op_func = op_lsr });
+            opcode_table[0x5c] = new SMPCoreOperation(op_adjust_reg, new SMPCoreOpArgument() { op_func = op_lsr, n = (int)OpCode.A });
+            opcode_table[0x5d] = new SMPCoreOperation(op_mov_reg_reg, new SMPCoreOpArgument() { to = (int)OpCode.X, from = (int)OpCode.A });
+            opcode_table[0x5e] = new SMPCoreOperation(op_read_reg_addr, new SMPCoreOpArgument() { op_func = op_cmp, n = (int)OpCode.Y });
+            opcode_table[0x5f] = new SMPCoreOperation(op_jmp_addr, null);
+            opcode_table[0x60] = new SMPCoreOperation(op_setbit, new SMPCoreOpArgument() { mask = 0x01, value = 0x00 });
+            opcode_table[0x61] = new SMPCoreOperation(op_tcall, new SMPCoreOpArgument() { n = 6 });
+            opcode_table[0x62] = new SMPCoreOperation(op_setbit_dp, new SMPCoreOpArgument() { op = 1, value = 0x08 });
+            opcode_table[0x63] = new SMPCoreOperation(op_bitbranch, new SMPCoreOpArgument() { mask = 0x08, value = Convert.ToInt32(true) });
+            opcode_table[0x64] = new SMPCoreOperation(op_read_reg_dp, new SMPCoreOpArgument() { op_func = op_cmp, n = (int)OpCode.A });
+            opcode_table[0x65] = new SMPCoreOperation(op_read_reg_addr, new SMPCoreOpArgument() { op_func = op_cmp, n = (int)OpCode.A });
+            opcode_table[0x66] = new SMPCoreOperation(op_read_a_ix, new SMPCoreOpArgument() { op_func = op_cmp });
+            opcode_table[0x67] = new SMPCoreOperation(op_read_a_idpx, new SMPCoreOpArgument() { op_func = op_cmp });
+            opcode_table[0x68] = new SMPCoreOperation(op_read_reg_const, new SMPCoreOpArgument() { op_func = op_cmp, n = (int)OpCode.A });
+            opcode_table[0x69] = new SMPCoreOperation(op_read_dp_dp, new SMPCoreOpArgument() { op_func = op_cmp });
+            opcode_table[0x6a] = new SMPCoreOperation(op_and1_bit, new SMPCoreOpArgument() { op = 1 });
+            opcode_table[0x6b] = new SMPCoreOperation(op_adjust_dp, new SMPCoreOpArgument() { op_func = op_ror });
+            opcode_table[0x6c] = new SMPCoreOperation(op_adjust_addr, new SMPCoreOpArgument() { op_func = op_ror });
+            opcode_table[0x6d] = new SMPCoreOperation(op_push_reg, new SMPCoreOpArgument() { n = (int)OpCode.Y });
+            opcode_table[0x6e] = new SMPCoreOperation(op_dbnz_dp, null);
+            opcode_table[0x6f] = new SMPCoreOperation(op_ret, null);
+            opcode_table[0x70] = new SMPCoreOperation(op_branch, new SMPCoreOpArgument() { flag = 0x40, value = Convert.ToInt32(true) });
+            opcode_table[0x71] = new SMPCoreOperation(op_tcall, new SMPCoreOpArgument() { n = 7 });
+            opcode_table[0x72] = new SMPCoreOperation(op_setbit_dp, new SMPCoreOpArgument() { op = 0, value = 0x08 });
+            opcode_table[0x73] = new SMPCoreOperation(op_bitbranch, new SMPCoreOpArgument() { mask = 0x08, value = Convert.ToInt32(false) });
+            opcode_table[0x74] = new SMPCoreOperation(op_read_a_dpx, new SMPCoreOpArgument() { op_func = op_cmp });
+            opcode_table[0x75] = new SMPCoreOperation(op_read_a_addrr, new SMPCoreOpArgument() { op_func = op_cmp, i = (int)OpCode.X });
+            opcode_table[0x76] = new SMPCoreOperation(op_read_a_addrr, new SMPCoreOpArgument() { op_func = op_cmp, i = (int)OpCode.Y });
+            opcode_table[0x77] = new SMPCoreOperation(op_read_a_idpy, new SMPCoreOpArgument() { op_func = op_cmp });
+            opcode_table[0x78] = new SMPCoreOperation(op_read_dp_const, new SMPCoreOpArgument() { op_func = op_cmp });
+            opcode_table[0x79] = new SMPCoreOperation(op_read_ix_iy, new SMPCoreOpArgument() { op_func = op_cmp });
+            opcode_table[0x7a] = new SMPCoreOperation(op_read_ya_dp, new SMPCoreOpArgument() { op_func = op_addw });
+            opcode_table[0x7b] = new SMPCoreOperation(op_adjust_dpx, new SMPCoreOpArgument() { op_func = op_ror });
+            opcode_table[0x7c] = new SMPCoreOperation(op_adjust_reg, new SMPCoreOpArgument() { op_func = op_ror, n = (int)OpCode.A });
+            opcode_table[0x7d] = new SMPCoreOperation(op_mov_reg_reg, new SMPCoreOpArgument() { to = (int)OpCode.A, from = (int)OpCode.X });
+            opcode_table[0x7e] = new SMPCoreOperation(op_read_reg_dp, new SMPCoreOpArgument() { op_func = op_cmp, n = (int)OpCode.Y });
+            opcode_table[0x7f] = new SMPCoreOperation(op_reti, null);
+            opcode_table[0x80] = new SMPCoreOperation(op_setbit, new SMPCoreOpArgument() { mask = 0x01, value = 0x01 });
+            opcode_table[0x81] = new SMPCoreOperation(op_tcall, new SMPCoreOpArgument() { n = 8 });
+            opcode_table[0x82] = new SMPCoreOperation(op_setbit_dp, new SMPCoreOpArgument() { op = 1, value = 0x10 });
+            opcode_table[0x83] = new SMPCoreOperation(op_bitbranch, new SMPCoreOpArgument() { mask = 0x10, value = Convert.ToInt32(true) });
+            opcode_table[0x84] = new SMPCoreOperation(op_read_reg_dp, new SMPCoreOpArgument() { op_func = op_adc, n = (int)OpCode.A });
+            opcode_table[0x85] = new SMPCoreOperation(op_read_reg_addr, new SMPCoreOpArgument() { op_func = op_adc, n = (int)OpCode.A });
+            opcode_table[0x86] = new SMPCoreOperation(op_read_a_ix, new SMPCoreOpArgument() { op_func = op_adc });
+            opcode_table[0x87] = new SMPCoreOperation(op_read_a_idpx, new SMPCoreOpArgument() { op_func = op_adc });
+            opcode_table[0x88] = new SMPCoreOperation(op_read_reg_const, new SMPCoreOpArgument() { op_func = op_adc, n = (int)OpCode.A });
+            opcode_table[0x89] = new SMPCoreOperation(op_read_dp_dp, new SMPCoreOpArgument() { op_func = op_adc });
+            opcode_table[0x8a] = new SMPCoreOperation(op_eor1_bit, null);
+            opcode_table[0x8b] = new SMPCoreOperation(op_adjust_dp, new SMPCoreOpArgument() { op_func = op_dec });
+            opcode_table[0x8c] = new SMPCoreOperation(op_adjust_addr, new SMPCoreOpArgument() { op_func = op_dec });
+            opcode_table[0x8d] = new SMPCoreOperation(op_mov_reg_const, new SMPCoreOpArgument() { n = (int)OpCode.Y });
+            opcode_table[0x8e] = new SMPCoreOperation(op_pop_p, null);
+            opcode_table[0x8f] = new SMPCoreOperation(op_mov_dp_const, null);
+            opcode_table[0x90] = new SMPCoreOperation(op_branch, new SMPCoreOpArgument() { flag = 0x01, value = Convert.ToInt32(false) });
+            opcode_table[0x91] = new SMPCoreOperation(op_tcall, new SMPCoreOpArgument() { n = 9 });
+            opcode_table[0x92] = new SMPCoreOperation(op_setbit_dp, new SMPCoreOpArgument() { op = 0, value = 0x10 });
+            opcode_table[0x93] = new SMPCoreOperation(op_bitbranch, new SMPCoreOpArgument() { mask = 0x10, value = Convert.ToInt32(false) });
+            opcode_table[0x94] = new SMPCoreOperation(op_read_a_dpx, new SMPCoreOpArgument() { op_func = op_adc });
+            opcode_table[0x95] = new SMPCoreOperation(op_read_a_addrr, new SMPCoreOpArgument() { op_func = op_adc, i = (int)OpCode.X });
+            opcode_table[0x96] = new SMPCoreOperation(op_read_a_addrr, new SMPCoreOpArgument() { op_func = op_adc, i = (int)OpCode.Y });
+            opcode_table[0x97] = new SMPCoreOperation(op_read_a_idpy, new SMPCoreOpArgument() { op_func = op_adc });
+            opcode_table[0x98] = new SMPCoreOperation(op_read_dp_const, new SMPCoreOpArgument() { op_func = op_adc });
+            opcode_table[0x99] = new SMPCoreOperation(op_read_ix_iy, new SMPCoreOpArgument() { op_func = op_adc });
+            opcode_table[0x9a] = new SMPCoreOperation(op_read_ya_dp, new SMPCoreOpArgument() { op_func = op_subw });
+            opcode_table[0x9b] = new SMPCoreOperation(op_adjust_dpx, new SMPCoreOpArgument() { op_func = op_dec });
+            opcode_table[0x9c] = new SMPCoreOperation(op_adjust_reg, new SMPCoreOpArgument() { op_func = op_dec, n = (int)OpCode.A });
+            opcode_table[0x9d] = new SMPCoreOperation(op_mov_reg_reg, new SMPCoreOpArgument() { to = (int)OpCode.X, from = (int)OpCode.SP });
+            opcode_table[0x9e] = new SMPCoreOperation(op_div_ya_x, null);
+            opcode_table[0x9f] = new SMPCoreOperation(op_xcn, null);
+            opcode_table[0xa0] = new SMPCoreOperation(op_seti, new SMPCoreOpArgument() { value = 1 });
+            opcode_table[0xa1] = new SMPCoreOperation(op_tcall, new SMPCoreOpArgument() { n = 10 });
+            opcode_table[0xa2] = new SMPCoreOperation(op_setbit_dp, new SMPCoreOpArgument() { op = 1, value = 0x20 });
+            opcode_table[0xa3] = new SMPCoreOperation(op_bitbranch, new SMPCoreOpArgument() { mask = 0x20, value = Convert.ToInt32(true) });
+            opcode_table[0xa4] = new SMPCoreOperation(op_read_reg_dp, new SMPCoreOpArgument() { op_func = op_sbc, n = (int)OpCode.A });
+            opcode_table[0xa5] = new SMPCoreOperation(op_read_reg_addr, new SMPCoreOpArgument() { op_func = op_sbc, n = (int)OpCode.A });
+            opcode_table[0xa6] = new SMPCoreOperation(op_read_a_ix, new SMPCoreOpArgument() { op_func = op_sbc });
+            opcode_table[0xa7] = new SMPCoreOperation(op_read_a_idpx, new SMPCoreOpArgument() { op_func = op_sbc });
+            opcode_table[0xa8] = new SMPCoreOperation(op_read_reg_const, new SMPCoreOpArgument() { op_func = op_sbc, n = (int)OpCode.A });
+            opcode_table[0xa9] = new SMPCoreOperation(op_read_dp_dp, new SMPCoreOpArgument() { op_func = op_sbc });
+            opcode_table[0xaa] = new SMPCoreOperation(op_mov1_c_bit, null);
+            opcode_table[0xab] = new SMPCoreOperation(op_adjust_dp, new SMPCoreOpArgument() { op_func = op_inc });
+            opcode_table[0xac] = new SMPCoreOperation(op_adjust_addr, new SMPCoreOpArgument() { op_func = op_inc });
+            opcode_table[0xad] = new SMPCoreOperation(op_read_reg_const, new SMPCoreOpArgument() { op_func = op_cmp, n = (int)OpCode.Y });
+            opcode_table[0xae] = new SMPCoreOperation(op_pop_reg, new SMPCoreOpArgument() { n = (int)OpCode.A });
+            opcode_table[0xaf] = new SMPCoreOperation(op_mov_ixinc_a, null);
+            opcode_table[0xb0] = new SMPCoreOperation(op_branch, new SMPCoreOpArgument() { flag = 0x01, value = Convert.ToInt32(true) });
+            opcode_table[0xb1] = new SMPCoreOperation(op_tcall, new SMPCoreOpArgument() { n = 11 });
+            opcode_table[0xb2] = new SMPCoreOperation(op_setbit_dp, new SMPCoreOpArgument() { op = 0, value = 0x20 });
+            opcode_table[0xb3] = new SMPCoreOperation(op_bitbranch, new SMPCoreOpArgument() { mask = 0x20, value = Convert.ToInt32(false) });
+            opcode_table[0xb4] = new SMPCoreOperation(op_read_a_dpx, new SMPCoreOpArgument() { op_func = op_sbc });
+            opcode_table[0xb5] = new SMPCoreOperation(op_read_a_addrr, new SMPCoreOpArgument() { op_func = op_sbc, i = (int)OpCode.X });
+            opcode_table[0xb6] = new SMPCoreOperation(op_read_a_addrr, new SMPCoreOpArgument() { op_func = op_sbc, i = (int)OpCode.Y });
+            opcode_table[0xb7] = new SMPCoreOperation(op_read_a_idpy, new SMPCoreOpArgument() { op_func = op_sbc });
+            opcode_table[0xb8] = new SMPCoreOperation(op_read_dp_const, new SMPCoreOpArgument() { op_func = op_sbc });
+            opcode_table[0xb9] = new SMPCoreOperation(op_read_ix_iy, new SMPCoreOpArgument() { op_func = op_sbc });
+            opcode_table[0xba] = new SMPCoreOperation(op_movw_ya_dp, null);
+            opcode_table[0xbb] = new SMPCoreOperation(op_adjust_dpx, new SMPCoreOpArgument() { op_func = op_inc });
+            opcode_table[0xbc] = new SMPCoreOperation(op_adjust_reg, new SMPCoreOpArgument() { op_func = op_inc, n = (int)OpCode.A });
+            opcode_table[0xbd] = new SMPCoreOperation(op_mov_sp_x, null);
+            opcode_table[0xbe] = new SMPCoreOperation(op_das, null);
+            opcode_table[0xbf] = new SMPCoreOperation(op_mov_a_ixinc, null);
+            opcode_table[0xc0] = new SMPCoreOperation(op_seti, new SMPCoreOpArgument() { value = 0 });
+            opcode_table[0xc1] = new SMPCoreOperation(op_tcall, new SMPCoreOpArgument() { n = 12 });
+            opcode_table[0xc2] = new SMPCoreOperation(op_setbit_dp, new SMPCoreOpArgument() { op = 1, value = 0x40 });
+            opcode_table[0xc3] = new SMPCoreOperation(op_bitbranch, new SMPCoreOpArgument() { mask = 0x40, value = Convert.ToInt32(true) });
+            opcode_table[0xc4] = new SMPCoreOperation(op_mov_dp_reg, new SMPCoreOpArgument() { n = (int)OpCode.A });
+            opcode_table[0xc5] = new SMPCoreOperation(op_mov_addr_reg, new SMPCoreOpArgument() { n = (int)OpCode.A });
+            opcode_table[0xc6] = new SMPCoreOperation(op_mov_ix_a, null);
+            opcode_table[0xc7] = new SMPCoreOperation(op_mov_idpx_a, null);
+            opcode_table[0xc8] = new SMPCoreOperation(op_read_reg_const, new SMPCoreOpArgument() { op_func = op_cmp, n = (int)OpCode.X });
+            opcode_table[0xc9] = new SMPCoreOperation(op_mov_addr_reg, new SMPCoreOpArgument() { n = (int)OpCode.X });
+            opcode_table[0xca] = new SMPCoreOperation(op_mov1_bit_c, null);
+            opcode_table[0xcb] = new SMPCoreOperation(op_mov_dp_reg, new SMPCoreOpArgument() { n = (int)OpCode.Y });
+            opcode_table[0xcc] = new SMPCoreOperation(op_mov_addr_reg, new SMPCoreOpArgument() { n = (int)OpCode.Y });
+            opcode_table[0xcd] = new SMPCoreOperation(op_mov_reg_const, new SMPCoreOpArgument() { n = (int)OpCode.X });
+            opcode_table[0xce] = new SMPCoreOperation(op_pop_reg, new SMPCoreOpArgument() { n = (int)OpCode.X });
+            opcode_table[0xcf] = new SMPCoreOperation(op_mul_ya, null);
+            opcode_table[0xd0] = new SMPCoreOperation(op_branch, new SMPCoreOpArgument() { flag = 0x02, value = Convert.ToInt32(false) });
+            opcode_table[0xd1] = new SMPCoreOperation(op_tcall, new SMPCoreOpArgument() { n = 13 });
+            opcode_table[0xd2] = new SMPCoreOperation(op_setbit_dp, new SMPCoreOpArgument() { op = 1, value = 0x40 });
+            opcode_table[0xd3] = new SMPCoreOperation(op_bitbranch, new SMPCoreOpArgument() { mask = 0x40, value = Convert.ToInt32(false) });
+            opcode_table[0xd4] = new SMPCoreOperation(op_mov_dpr_reg, new SMPCoreOpArgument() { n = (int)OpCode.A, i = (int)OpCode.X });
+            opcode_table[0xd5] = new SMPCoreOperation(op_mov_addrr_a, new SMPCoreOpArgument() { i = (int)OpCode.X });
+            opcode_table[0xd6] = new SMPCoreOperation(op_mov_addrr_a, new SMPCoreOpArgument() { i = (int)OpCode.Y });
+            opcode_table[0xd7] = new SMPCoreOperation(op_mov_idpy_a, null);
+            opcode_table[0xd8] = new SMPCoreOperation(op_mov_dp_reg, new SMPCoreOpArgument() { n = (int)OpCode.X });
+            opcode_table[0xd9] = new SMPCoreOperation(op_mov_dpr_reg, new SMPCoreOpArgument() { n = (int)OpCode.X, i = (int)OpCode.Y });
+            opcode_table[0xda] = new SMPCoreOperation(op_movw_dp_ya, null);
+            opcode_table[0xdb] = new SMPCoreOperation(op_mov_dpr_reg, new SMPCoreOpArgument() { n = (int)OpCode.Y, i = (int)OpCode.X });
+            opcode_table[0xdc] = new SMPCoreOperation(op_adjust_reg, new SMPCoreOpArgument() { op_func = op_dec, n = (int)OpCode.Y });
+            opcode_table[0xdd] = new SMPCoreOperation(op_mov_reg_reg, new SMPCoreOpArgument() { to = (int)OpCode.A, from = (int)OpCode.Y });
+            opcode_table[0xde] = new SMPCoreOperation(op_cbne_dpx, null);
+            opcode_table[0xdf] = new SMPCoreOperation(op_daa, null);
+            opcode_table[0xe0] = new SMPCoreOperation(op_setbit, new SMPCoreOpArgument() { mask = 0x48, value = 0x00 });
+            opcode_table[0xe1] = new SMPCoreOperation(op_tcall, new SMPCoreOpArgument() { n = 14 });
+            opcode_table[0xe2] = new SMPCoreOperation(op_setbit_dp, new SMPCoreOpArgument() { op = 1, value = 0x80 });
+            opcode_table[0xe3] = new SMPCoreOperation(op_bitbranch, new SMPCoreOpArgument() { mask = 0x80, value = Convert.ToInt32(true) });
+            opcode_table[0xe4] = new SMPCoreOperation(op_mov_reg_dp, new SMPCoreOpArgument() { n = (int)OpCode.A });
+            opcode_table[0xe5] = new SMPCoreOperation(op_mov_reg_addr, new SMPCoreOpArgument() { n = (int)OpCode.A });
+            opcode_table[0xe6] = new SMPCoreOperation(op_mov_a_ix, null);
+            opcode_table[0xe7] = new SMPCoreOperation(op_mov_a_idpx, null);
+            opcode_table[0xe8] = new SMPCoreOperation(op_mov_reg_const, new SMPCoreOpArgument() { n = (int)OpCode.A });
+            opcode_table[0xe9] = new SMPCoreOperation(op_mov_reg_addr, new SMPCoreOpArgument() { n = (int)OpCode.X });
+            opcode_table[0xea] = new SMPCoreOperation(op_not1_bit, null);
+            opcode_table[0xeb] = new SMPCoreOperation(op_mov_reg_dp, new SMPCoreOpArgument() { n = (int)OpCode.Y });
+            opcode_table[0xec] = new SMPCoreOperation(op_mov_reg_addr, new SMPCoreOpArgument() { n = (int)OpCode.Y });
+            opcode_table[0xed] = new SMPCoreOperation(op_notc, null);
+            opcode_table[0xee] = new SMPCoreOperation(op_pop_reg, new SMPCoreOpArgument() { n = (int)OpCode.Y });
+            opcode_table[0xef] = new SMPCoreOperation(op_wait, null);
+            opcode_table[0xf0] = new SMPCoreOperation(op_branch, new SMPCoreOpArgument() { flag = 0x02, value = Convert.ToInt32(true) });
+            opcode_table[0xf1] = new SMPCoreOperation(op_tcall, new SMPCoreOpArgument() { n = 15 });
+            opcode_table[0xf2] = new SMPCoreOperation(op_setbit_dp, new SMPCoreOpArgument() { op = 0, value = 0x80 });
+            opcode_table[0xf3] = new SMPCoreOperation(op_bitbranch, new SMPCoreOpArgument() { mask = 0x80, value = Convert.ToInt32(false) });
+            opcode_table[0xf4] = new SMPCoreOperation(op_mov_reg_dpr, new SMPCoreOpArgument() { n = (int)OpCode.A, i = (int)OpCode.X });
+            opcode_table[0xf5] = new SMPCoreOperation(op_mov_a_addrr, new SMPCoreOpArgument() { i = (int)OpCode.X });
+            opcode_table[0xf6] = new SMPCoreOperation(op_mov_a_addrr, new SMPCoreOpArgument() { i = (int)OpCode.Y });
+            opcode_table[0xf7] = new SMPCoreOperation(op_mov_a_idpy, null);
+            opcode_table[0xf8] = new SMPCoreOperation(op_mov_reg_dp, new SMPCoreOpArgument() { n = (int)OpCode.X });
+            opcode_table[0xf9] = new SMPCoreOperation(op_mov_reg_dpr, new SMPCoreOpArgument() { n = (int)OpCode.X, i = (int)OpCode.Y });
+            opcode_table[0xfa] = new SMPCoreOperation(op_mov_dp_dp, null);
+            opcode_table[0xfb] = new SMPCoreOperation(op_mov_reg_dpr, new SMPCoreOpArgument() { n = (int)OpCode.Y, i = (int)OpCode.X });
+            opcode_table[0xfc] = new SMPCoreOperation(op_adjust_reg, new SMPCoreOpArgument() { op_func = op_inc, n = (int)OpCode.Y });
+            opcode_table[0xfd] = new SMPCoreOperation(op_mov_reg_reg, new SMPCoreOpArgument() { to = (int)OpCode.Y, from = (int)OpCode.A });
+            opcode_table[0xfe] = new SMPCoreOperation(op_dbnz_y, null);
+            opcode_table[0xff] = new SMPCoreOperation(op_wait, null);
         }
 
         public SMPCore()
