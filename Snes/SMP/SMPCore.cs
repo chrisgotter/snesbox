@@ -362,91 +362,435 @@ namespace Snes
         public abstract byte op_read(ushort addr);
         public abstract void op_write(ushort addr, byte data);
 
-        public SMPCoreOpResult op_adc(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_adc(SMPCoreOpArgument args)
+        {
+            int r = args.x_byte + args.y_byte + Convert.ToInt32(regs.p.c);
+            regs.p.n = Convert.ToBoolean(r & 0x80);
+            regs.p.v = Convert.ToBoolean(~(args.x_byte ^ args.y_byte) & (args.x_byte ^ r) & 0x80);
+            regs.p.h = Convert.ToBoolean((args.x_byte ^ args.y_byte ^ r) & 0x10);
+            regs.p.z = (byte)r == 0;
+            regs.p.c = r > 0xff;
+            return new SMPCoreOpResult() { result_byte = (byte)r };
+        }
 
-        public SMPCoreOpResult op_addw(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_addw(SMPCoreOpArgument args)
+        {
+            ushort r;
+            regs.p.c = Convert.ToBoolean(0);
+            r = op_adc(new SMPCoreOpArgument() { x_byte = (byte)args.x_ushort, y_byte = (byte)args.y_ushort }).result_byte;
+            r |= (ushort)(op_adc(new SMPCoreOpArgument() { x_byte = (byte)(args.x_ushort >> 8), y_byte = (byte)(args.y_ushort >> 8) }).result_byte << 8);
+            regs.p.z = r == 0;
+            return new SMPCoreOpResult() { result_ushort = r };
+        }
 
-        public SMPCoreOpResult op_and(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_and(SMPCoreOpArgument args)
+        {
+            args.x_byte &= args.y_byte;
+            regs.p.n = Convert.ToBoolean(args.x_byte & 0x80);
+            regs.p.z = args.x_byte == 0;
+            return new SMPCoreOpResult() { result_byte = args.x_byte };
+        }
 
-        public SMPCoreOpResult op_cmp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_cmp(SMPCoreOpArgument args)
+        {
+            int r = args.x_byte - args.y_byte;
+            regs.p.n = Convert.ToBoolean(r & 0x80);
+            regs.p.z = (byte)r == 0;
+            regs.p.c = r >= 0;
+            return new SMPCoreOpResult() { result_byte = args.x_byte };
+        }
 
-        public SMPCoreOpResult op_cmpw(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_cmpw(SMPCoreOpArgument args)
+        {
+            int r = args.x_ushort - args.y_ushort;
+            regs.p.n = Convert.ToBoolean(r & 0x8000);
+            regs.p.z = (ushort)r == 0;
+            regs.p.c = r >= 0;
+            return new SMPCoreOpResult() { result_ushort = args.x_ushort };
+        }
 
-        public SMPCoreOpResult op_eor(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_eor(SMPCoreOpArgument args)
+        {
+            args.x_byte ^= args.y_byte;
+            regs.p.n = Convert.ToBoolean(args.x_byte & 0x80);
+            regs.p.z = args.x_byte == 0;
+            return new SMPCoreOpResult() { result_byte = args.x_byte };
+        }
 
-        public SMPCoreOpResult op_inc(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_inc(SMPCoreOpArgument args)
+        {
+            args.x_byte++;
+            regs.p.n = Convert.ToBoolean(args.x_byte & 0x80);
+            regs.p.z = args.x_byte == 0;
+            return new SMPCoreOpResult() { result_byte = args.x_byte };
+        }
 
-        public SMPCoreOpResult op_dec(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_dec(SMPCoreOpArgument args)
+        {
+            args.x_byte--;
+            regs.p.n = Convert.ToBoolean(args.x_byte & 0x80);
+            regs.p.z = args.x_byte == 0;
+            return new SMPCoreOpResult() { result_byte = args.x_byte };
+        }
 
-        public SMPCoreOpResult op_or(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_or(SMPCoreOpArgument args)
+        {
+            args.x_byte |= args.y_byte;
+            regs.p.n = Convert.ToBoolean(args.x_byte & 0x80);
+            regs.p.z = args.x_byte == 0;
+            return new SMPCoreOpResult() { result_byte = args.x_byte };
+        }
 
-        public SMPCoreOpResult op_sbc(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_sbc(SMPCoreOpArgument args)
+        {
+            int r = args.x_byte - args.y_byte - Convert.ToInt32(!regs.p.c);
+            regs.p.n = Convert.ToBoolean(r & 0x80);
+            regs.p.v = Convert.ToBoolean((args.x_byte ^ args.y_byte) & (args.x_byte ^ r) & 0x80);
+            regs.p.h = !Convert.ToBoolean(((args.x_byte ^ args.y_byte ^ r) & 0x10));
+            regs.p.z = (byte)r == 0;
+            regs.p.c = r >= 0;
+            return new SMPCoreOpResult() { result_byte = (byte)r };
+        }
 
-        public SMPCoreOpResult op_subw(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_subw(SMPCoreOpArgument args)
+        {
+            ushort r;
+            regs.p.c = Convert.ToBoolean(1);
+            r = op_sbc(new SMPCoreOpArgument() { x_byte = (byte)args.x_ushort, y_byte = (byte)args.y_ushort }).result_byte;
+            r |= (ushort)(op_sbc(new SMPCoreOpArgument() { x_byte = (byte)(args.x_ushort >> 8), y_byte = (byte)(args.y_ushort >> 8) }).result_byte << 8);
+            regs.p.z = r == 0;
+            return new SMPCoreOpResult() { result_ushort = r };
+        }
 
-        public SMPCoreOpResult op_asl(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_asl(SMPCoreOpArgument args)
+        {
+            regs.p.c = Convert.ToBoolean(args.x_byte & 0x80);
+            args.x_byte <<= 1;
+            regs.p.n = Convert.ToBoolean(args.x_byte & 0x80);
+            regs.p.z = args.x_byte == 0;
+            return new SMPCoreOpResult() { result_byte = args.x_byte };
+        }
 
-        public SMPCoreOpResult op_lsr(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_lsr(SMPCoreOpArgument args)
+        {
+            regs.p.c = Convert.ToBoolean(args.x_byte & 0x01);
+            args.x_byte >>= 1;
+            regs.p.n = Convert.ToBoolean(args.x_byte & 0x80);
+            regs.p.z = args.x_byte == 0;
+            return new SMPCoreOpResult() { result_byte = args.x_byte };
+        }
 
-        public SMPCoreOpResult op_rol(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_rol(SMPCoreOpArgument args)
+        {
+            uint carry = Convert.ToUInt32(regs.p.c);
+            regs.p.c = Convert.ToBoolean(args.x_byte & 0x80);
+            args.x_byte = (byte)((uint)(args.x_byte << 1) | carry);
+            regs.p.n = Convert.ToBoolean(args.x_byte & 0x80);
+            regs.p.z = args.x_byte == 0;
+            return new SMPCoreOpResult() { result_byte = args.x_byte };
+        }
 
-        public SMPCoreOpResult op_ror(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_ror(SMPCoreOpArgument args)
+        {
+            uint carry = Convert.ToUInt32(regs.p.c) << 7;
+            regs.p.c = Convert.ToBoolean(args.x_byte & 0x01);
+            args.x_byte = (byte)(carry | (uint)(args.x_byte >> 1));
+            regs.p.n = Convert.ToBoolean(args.x_byte & 0x80);
+            regs.p.z = args.x_byte == 0;
+            return new SMPCoreOpResult() { result_byte = args.x_byte };
+        }
 
-        public SMPCoreOpResult op_mov_reg_reg(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_reg_reg(SMPCoreOpArgument args)
+        {
+            op_io();
+            regs.r[args.to] = regs.r[args.from];
+            regs.p.n = Convert.ToBoolean(regs.r[args.to] & 0x80);
+            regs.p.z = (regs.r[args.to] == 0);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_sp_x(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_sp_x(SMPCoreOpArgument args)
+        {
+            op_io();
+            regs.sp = regs.x;
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_reg_const(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_reg_const(SMPCoreOpArgument args)
+        {
+            regs.r[args.n] = op_readpc();
+            regs.p.n = Convert.ToBoolean(regs.r[args.n] & 0x80);
+            regs.p.z = (regs.r[args.n] == 0);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_a_ix(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_a_ix(SMPCoreOpArgument args)
+        {
+            op_io();
+            regs.a[0] = op_readdp(regs.x[0]);
+            regs.p.n = Convert.ToBoolean(regs.a[0] & 0x80);
+            regs.p.z = (regs.a[0] == 0);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_a_ixinc(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_a_ixinc(SMPCoreOpArgument args)
+        {
+            op_io();
+            regs.a[0] = op_readdp(regs.x[0]++);
+            op_io();
+            regs.p.n = Convert.ToBoolean(regs.a[0] & 0x80);
+            regs.p.z = (regs.a[0] == 0);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_reg_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_reg_dp(SMPCoreOpArgument args)
+        {
+            sp = op_readpc();
+            regs.r[args.n] = op_readdp((byte)sp);
+            regs.p.n = Convert.ToBoolean(regs.r[args.n] & 0x80);
+            regs.p.z = (regs.r[args.n] == 0);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_reg_dpr(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_reg_dpr(SMPCoreOpArgument args)
+        {
+            sp = op_readpc();
+            op_io();
+            regs.r[args.n] = op_readdp((byte)(sp + regs.r[args.i]));
+            regs.p.n = Convert.ToBoolean(regs.r[args.n] & 0x80);
+            regs.p.z = (regs.r[args.n] == 0);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_reg_addr(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_reg_addr(SMPCoreOpArgument args)
+        {
+            sp = (ushort)(op_readpc() << 0);
+            sp |= (ushort)(op_readpc() << 8);
+            regs.r[args.n] = op_readaddr(sp);
+            regs.p.n = Convert.ToBoolean(regs.r[args.n] & 0x80);
+            regs.p.z = (regs.r[args.n] == 0);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_a_addrr(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_a_addrr(SMPCoreOpArgument args)
+        {
+            sp = (ushort)(op_readpc() << 0);
+            sp |= (ushort)(op_readpc() << 8);
+            op_io();
+            regs.a[0] = op_readaddr((ushort)(sp + regs.r[args.i]));
+            regs.p.n = Convert.ToBoolean(regs.a[0] & 0x80);
+            regs.p.z = (regs.a[0] == 0);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_a_idpx(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_a_idpx(SMPCoreOpArgument args)
+        {
+            dp = (ushort)(op_readpc() + regs.x[0]);
+            op_io();
+            sp = (ushort)(op_readdp((byte)(dp + 0)) << 0);
+            sp |= (ushort)(op_readdp((byte)(dp + 1)) << 8);
+            regs.a[0] = op_readaddr(sp);
+            regs.p.n = Convert.ToBoolean(regs.a[0] & 0x80);
+            regs.p.z = (regs.a[0] == 0);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_a_idpy(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_a_idpy(SMPCoreOpArgument args)
+        {
+            dp = op_readpc();
+            op_io();
+            sp = (ushort)(op_readdp((byte)(dp + 0)) << 0);
+            sp |= (ushort)(op_readdp((byte)(dp + 1)) << 8);
+            regs.a[0] = op_readaddr((byte)(sp + regs.y[0]));
+            regs.p.n = Convert.ToBoolean(regs.a[0] & 0x80);
+            regs.p.z = (regs.a[0] == 0);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_dp_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_dp_dp(SMPCoreOpArgument args)
+        {
+            sp = op_readpc();
+            rd = op_readdp((byte)sp);
+            dp = op_readpc();
+            op_writedp((byte)dp, (byte)rd);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_dp_const(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_dp_const(SMPCoreOpArgument args)
+        {
+            rd = op_readpc();
+            dp = op_readpc();
+            op_readdp((byte)dp);
+            op_writedp((byte)dp, (byte)rd);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_ix_a(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_ix_a(SMPCoreOpArgument args)
+        {
+            op_io();
+            op_readdp(regs.x[0]);
+            op_writedp(regs.x[0], regs.a[0]);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_ixinc_a(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_ixinc_a(SMPCoreOpArgument args)
+        {
+            op_io();
+            op_io();
+            op_writedp(regs.x[0]++, regs.a[0]);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_dp_reg(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_dp_reg(SMPCoreOpArgument args)
+        {
+            dp = op_readpc();
+            op_readdp((byte)dp);
+            op_writedp((byte)dp, regs.r[args.n]);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_dpr_reg(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_dpr_reg(SMPCoreOpArgument args)
+        {
+            dp = op_readpc();
+            op_io();
+            dp += regs.r[args.i];
+            op_readdp((byte)dp);
+            op_writedp((byte)dp, regs.r[args.n]);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_addr_reg(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_addr_reg(SMPCoreOpArgument args)
+        {
+            dp = (ushort)(op_readpc() << 0);
+            dp |= (ushort)(op_readpc() << 8);
+            op_readaddr(dp);
+            op_writeaddr(dp, regs.r[args.n]);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_addrr_a(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_addrr_a(SMPCoreOpArgument args)
+        {
+            dp = (ushort)(op_readpc() << 0);
+            dp |= (ushort)(op_readpc() << 8);
+            op_io();
+            dp += regs.r[args.i];
+            op_readaddr(dp);
+            op_writeaddr(dp, regs.a[0]);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_idpx_a(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_idpx_a(SMPCoreOpArgument args)
+        {
+            sp = op_readpc();
+            op_io();
+            sp += regs.x[0];
+            dp = (ushort)(op_readdp((byte)(sp + 0)) << 0);
+            dp |= (ushort)(op_readdp((byte)(sp + 1)) << 8);
+            op_readaddr(dp);
+            op_writeaddr(dp, regs.a[0]);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov_idpy_a(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov_idpy_a(SMPCoreOpArgument args)
+        {
+            sp = op_readpc();
+            dp = (ushort)(op_readdp((byte)(sp + 0)) << 0);
+            dp |= (ushort)(op_readdp((byte)(sp + 1)) << 8);
+            op_io();
+            dp += regs.y[0];
+            op_readaddr(dp);
+            op_writeaddr(dp, regs.a[0]);
+            return null;
+        }
 
-        public SMPCoreOpResult op_movw_ya_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_movw_ya_dp(SMPCoreOpArgument args)
+        {
+            sp = op_readpc();
+            regs.a[0] = op_readdp((byte)(sp + 0));
+            op_io();
+            regs.y[0] = op_readdp((byte)(sp + 1));
+            regs.p.n = Convert.ToBoolean((ushort)regs.ya & 0x8000);
+            regs.p.z = ((ushort)regs.ya == 0);
+            return null;
+        }
 
-        public SMPCoreOpResult op_movw_dp_ya(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_movw_dp_ya(SMPCoreOpArgument args)
+        {
+            dp = op_readpc();
+            op_readdp((byte)dp);
+            op_writedp((byte)(dp + 0), regs.a[0]);
+            op_writedp((byte)(dp + 1), regs.y[0]);
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov1_c_bit(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov1_c_bit(SMPCoreOpArgument args)
+        {
+            sp = (ushort)(op_readpc() << 0);
+            sp |= (ushort)(op_readpc() << 8);
+            bit = (ushort)(sp >> 13);
+            sp &= 0x1fff;
+            rd = op_readaddr(sp);
+            regs.p.c = Convert.ToBoolean(rd & (1 << bit));
+            return null;
+        }
 
-        public SMPCoreOpResult op_mov1_bit_c(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mov1_bit_c(SMPCoreOpArgument args)
+        {
+            dp = (ushort)(op_readpc() << 0);
+            dp |= (ushort)(op_readpc() << 8);
+            bit = (ushort)(dp >> 13);
+            dp &= 0x1fff;
+            rd = op_readaddr(dp);
+            if (regs.p.c)
+            {
+                rd |= (ushort)(1 << bit);
+            }
+            else
+            {
+                rd &= (ushort)(~(1 << bit));
+            }
+            op_io();
+            op_writeaddr((byte)dp, (byte)rd);
+            return null;
+        }
 
-        public SMPCoreOpResult op_bra(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_bra(SMPCoreOpArgument args)
+        {
+            rd = op_readpc();
+            op_io();
+            op_io();
+            regs.pc += (ushort)((sbyte)rd);
+            return null;
+        }
 
-        public SMPCoreOpResult op_branch(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_branch(SMPCoreOpArgument args)
+        {
+            rd = op_readpc();
+            if (Convert.ToInt32(Convert.ToBoolean((uint)regs.p & args.flag)) != args.value)
+            {
+                return null;
+            }
+            op_io();
+            op_io();
+            regs.pc += (ushort)((sbyte)rd);
+            return null;
+        }
 
-        public SMPCoreOpResult op_bitbranch(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_bitbranch(SMPCoreOpArgument args)
+        {
+            dp = op_readpc();
+            sp = op_readdp((byte)dp);
+            rd = op_readpc();
+            op_io();
+            if (Convert.ToInt32(Convert.ToBoolean(sp & args.mask)) != args.value)
+            {
+                return null;
+            }
+            op_io();
+            op_io();
+            regs.pc += (ushort)((sbyte)rd);
+            return null;
+        }
 
         public SMPCoreOpResult op_cbne_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
 
@@ -488,7 +832,7 @@ namespace Snes
             dp |= (ushort)(op_readpc() << 8);
             op_io();
             rd = op_readaddr((ushort)(dp + regs.r[args.i]));
-            regs.a[0] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).return_byte;
+            regs.a[0] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
             return null;
         }
 
