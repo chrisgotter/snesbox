@@ -60,262 +60,774 @@ namespace Snes
 
             switch (opcode_table)
             {
-                case 0x00: t = string.Format("nop"); break;
-                case 0x01: t = string.Format("tcall 0"); break;
-                case 0x02: t = string.Format("set0  $%.3x", opdp0); break;
-                case 0x03: t = string.Format("bbs0  $%.3x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0x04: t = string.Format("or    a,$%.3x", opdp0); break;
-                case 0x05: t = string.Format("or    a,$%.4x", opw); break;
-                case 0x06: t = string.Format("or    a,(x)"); break;
-                case 0x07: t = string.Format("or    a,($%.3x+x)", opdp0); break;
-                case 0x08: t = string.Format("or    a,#$%.2x", op0); break;
-                case 0x09: t = string.Format("or    $%.3x,$%.3x", opdp1, opdp0); break;
-                case 0x0a: t = string.Format("or1   c,$%.4x:%d", opw & 0x1fff, opw >> 13); break;
-                case 0x0b: t = string.Format("asl   $%.3x", opdp0); break;
-                case 0x0c: t = string.Format("asl   $%.4x", opw); break;
-                case 0x0d: t = string.Format("push  p"); break;
-                case 0x0e: t = string.Format("tset  $%.4x,a", opw); break;
-                case 0x0f: t = string.Format("brk"); break;
-                case 0x10: t = string.Format("bpl   $%.4x", relb(op0, 2)); break;
-                case 0x11: t = string.Format("tcall 1"); break;
-                case 0x12: t = string.Format("clr0  $%.3x", opdp0); break;
-                case 0x13: t = string.Format("bbc0  $%.3x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0x14: t = string.Format("or    a,$%.3x+x", opdp0); break;
-                case 0x15: t = string.Format("or    a,$%.4x+x", opw); break;
-                case 0x16: t = string.Format("or    a,$%.4x+y", opw); break;
-                case 0x17: t = string.Format("or    a,($%.3x)+y", opdp0); break;
-                case 0x18: t = string.Format("or    $%.3x,#$%.2x", opdp1, op0); break;
-                case 0x19: t = string.Format("or    (x),(y)"); break;
-                case 0x1a: t = string.Format("decw  $%.3x", opdp0); break;
-                case 0x1b: t = string.Format("asl   $%.3x+x", opdp0); break;
-                case 0x1c: t = string.Format("asl   a"); break;
-                case 0x1d: t = string.Format("dec   x"); break;
-                case 0x1e: t = string.Format("cmp   x,$%.4x", opw); break;
-                case 0x1f: t = string.Format("jmp   ($%.4x+x)", opw); break;
-                case 0x20: t = string.Format("clrp"); break;
-                case 0x21: t = string.Format("tcall 2"); break;
-                case 0x22: t = string.Format("set1  $%.3x", opdp0); break;
-                case 0x23: t = string.Format("bbs1  $%.3x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0x24: t = string.Format("and   a,$%.3x", opdp0); break;
-                case 0x25: t = string.Format("and   a,$%.4x", opw); break;
-                case 0x26: t = string.Format("and   a,(x)"); break;
-                case 0x27: t = string.Format("and   a,($%.3x+x)", opdp0); break;
-                case 0x28: t = string.Format("and   a,#$%.2x", op0); break;
-                case 0x29: t = string.Format("and   $%.3x,$%.3x", opdp1, opdp0); break;
-                case 0x2a: t = string.Format("or1   c,!$%.4x:%d", opw & 0x1fff, opw >> 13); break;
-                case 0x2b: t = string.Format("rol   $%.3x", opdp0); break;
-                case 0x2c: t = string.Format("rol   $%.4x", opw); break;
-                case 0x2d: t = string.Format("push  a"); break;
-                case 0x2e: t = string.Format("cbne  $%.3x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0x2f: t = string.Format("bra   $%.4x", relb(op0, 2)); break;
-                case 0x30: t = string.Format("bmi   $%.4x", relb(op0, 2)); break;
-                case 0x31: t = string.Format("tcall 3"); break;
-                case 0x32: t = string.Format("clr1  $%.3x", opdp0); break;
-                case 0x33: t = string.Format("bbc1  $%.3x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0x34: t = string.Format("and   a,$%.3x+x", opdp0); break;
-                case 0x35: t = string.Format("and   a,$%.4x+x", opw); break;
-                case 0x36: t = string.Format("and   a,$%.4x+y", opw); break;
-                case 0x37: t = string.Format("and   a,($%.3x)+y", opdp0); break;
-                case 0x38: t = string.Format("and   $%.3x,#$%.2x", opdp1, op0); break;
-                case 0x39: t = string.Format("and   (x),(y)"); break;
-                case 0x3a: t = string.Format("incw  $%.3x", opdp0); break;
-                case 0x3b: t = string.Format("rol   $%.3x+x", opdp0); break;
-                case 0x3c: t = string.Format("rol   a"); break;
-                case 0x3d: t = string.Format("inc   x"); break;
-                case 0x3e: t = string.Format("cmp   x,$%.3x", opdp0); break;
-                case 0x3f: t = string.Format("call  $%.4x", opw); break;
-                case 0x40: t = string.Format("setp"); break;
-                case 0x41: t = string.Format("tcall 4"); break;
-                case 0x42: t = string.Format("set2  $%.3x", opdp0); break;
-                case 0x43: t = string.Format("bbs2  $%.3x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0x44: t = string.Format("eor   a,$%.3x", opdp0); break;
-                case 0x45: t = string.Format("eor   a,$%.4x", opw); break;
-                case 0x46: t = string.Format("eor   a,(x)"); break;
-                case 0x47: t = string.Format("eor   a,($%.3x+x)", opdp0); break;
-                case 0x48: t = string.Format("eor   a,#$%.2x", op0); break;
-                case 0x49: t = string.Format("eor   $%.3x,$%.3x", opdp1, opdp0); break;
-                case 0x4a: t = string.Format("and1  c,$%.4x:%d", opw & 0x1fff, opw >> 13); break;
-                case 0x4b: t = string.Format("lsr   $%.3x", opdp0); break;
-                case 0x4c: t = string.Format("lsr   $%.4x", opw); break;
-                case 0x4d: t = string.Format("push  x"); break;
-                case 0x4e: t = string.Format("tclr  $%.4x,a", opw); break;
-                case 0x4f: t = string.Format("pcall $ff%.2x", op0); break;
-                case 0x50: t = string.Format("bvc   $%.4x", relb(op0, 2)); break;
-                case 0x51: t = string.Format("tcall 5"); break;
-                case 0x52: t = string.Format("clr2  $%.3x", opdp0); break;
-                case 0x53: t = string.Format("bbc2  $%.3x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0x54: t = string.Format("eor   a,$%.3x+x", opdp0); break;
-                case 0x55: t = string.Format("eor   a,$%.4x+x", opw); break;
-                case 0x56: t = string.Format("eor   a,$%.4x+y", opw); break;
-                case 0x57: t = string.Format("eor   a,($%.3x)+y", opdp0); break;
-                case 0x58: t = string.Format("eor   $%.3x,#$%.2x", opdp1, op0); break;
-                case 0x59: t = string.Format("eor   (x),(y)"); break;
-                case 0x5a: t = string.Format("cmpw  ya,$%.3x", opdp0); break;
-                case 0x5b: t = string.Format("lsr   $%.3x+x", opdp0); break;
-                case 0x5c: t = string.Format("lsr   a"); break;
-                case 0x5d: t = string.Format("mov   x,a"); break;
-                case 0x5e: t = string.Format("cmp   y,$%.4x", opw); break;
-                case 0x5f: t = string.Format("jmp   $%.4x", opw); break;
-                case 0x60: t = string.Format("clrc"); break;
-                case 0x61: t = string.Format("tcall 6"); break;
-                case 0x62: t = string.Format("set3  $%.3x", opdp0); break;
-                case 0x63: t = string.Format("bbs3  $%.3x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0x64: t = string.Format("cmp   a,$%.3x", opdp0); break;
-                case 0x65: t = string.Format("cmp   a,$%.4x", opw); break;
-                case 0x66: t = string.Format("cmp   a,(x)"); break;
-                case 0x67: t = string.Format("cmp   a,($%.3x+x)", opdp0); break;
-                case 0x68: t = string.Format("cmp   a,#$%.2x", op0); break;
-                case 0x69: t = string.Format("cmp   $%.3x,$%.3x", opdp1, opdp0); break;
-                case 0x6a: t = string.Format("and1  c,!$%.4x:%d", opw & 0x1fff, opw >> 13); break;
-                case 0x6b: t = string.Format("ror   $%.3x", opdp0); break;
-                case 0x6c: t = string.Format("ror   $%.4x", opw); break;
-                case 0x6d: t = string.Format("push  y"); break;
-                case 0x6e: t = string.Format("dbnz  $%.3x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0x6f: t = string.Format("ret"); break;
-                case 0x70: t = string.Format("bvs   $%.4x", relb(op0, 2)); break;
-                case 0x71: t = string.Format("tcall 7"); break;
-                case 0x72: t = string.Format("clr3  $%.3x", opdp0); break;
-                case 0x73: t = string.Format("bbc3  $%.3x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0x74: t = string.Format("cmp   a,$%.3x+x", opdp0); break;
-                case 0x75: t = string.Format("cmp   a,$%.4x+x", opw); break;
-                case 0x76: t = string.Format("cmp   a,$%.4x+y", opw); break;
-                case 0x77: t = string.Format("cmp   a,($%.3x)+y", opdp0); break;
-                case 0x78: t = string.Format("cmp   $%.3x,#$%.2x", opdp1, op0); break;
-                case 0x79: t = string.Format("cmp   (x),(y)"); break;
-                case 0x7a: t = string.Format("addw  ya,$%.3x", opdp0); break;
-                case 0x7b: t = string.Format("ror   $%.3x+x", opdp0); break;
-                case 0x7c: t = string.Format("ror   a"); break;
-                case 0x7d: t = string.Format("mov   a,x"); break;
-                case 0x7e: t = string.Format("cmp   y,$%.3x", opdp0); break;
-                case 0x7f: t = string.Format("reti"); break;
-                case 0x80: t = string.Format("setc"); break;
-                case 0x81: t = string.Format("tcall 8"); break;
-                case 0x82: t = string.Format("set4  $%.3x", opdp0); break;
-                case 0x83: t = string.Format("bbs4  $%.3x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0x84: t = string.Format("adc   a,$%.3x", opdp0); break;
-                case 0x85: t = string.Format("adc   a,$%.4x", opw); break;
-                case 0x86: t = string.Format("adc   a,(x)"); break;
-                case 0x87: t = string.Format("adc   a,($%.3x+x)", opdp0); break;
-                case 0x88: t = string.Format("adc   a,#$%.2x", op0); break;
-                case 0x89: t = string.Format("adc   $%.3x,$%.3x", opdp1, opdp0); break;
-                case 0x8a: t = string.Format("eor1  c,$%.4x:%d", opw & 0x1fff, opw >> 13); break;
-                case 0x8b: t = string.Format("dec   $%.3x", opdp0); break;
-                case 0x8c: t = string.Format("dec   $%.4x", opw); break;
-                case 0x8d: t = string.Format("mov   y,#$%.2x", op0); break;
-                case 0x8e: t = string.Format("pop   p"); break;
-                case 0x8f: t = string.Format("mov   $%.3x,#$%.2x", opdp1, op0); break;
-                case 0x90: t = string.Format("bcc   $%.4x", relb(op0, 2)); break;
-                case 0x91: t = string.Format("tcall 9"); break;
-                case 0x92: t = string.Format("clr4  $%.3x", opdp0); break;
-                case 0x93: t = string.Format("bbc4  $%.3x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0x94: t = string.Format("adc   a,$%.3x+x", opdp0); break;
-                case 0x95: t = string.Format("adc   a,$%.4x+x", opw); break;
-                case 0x96: t = string.Format("adc   a,$%.4x+y", opw); break;
-                case 0x97: t = string.Format("adc   a,($%.3x)+y", opdp0); break;
-                case 0x98: t = string.Format("adc   $%.3x,#$%.2x", opdp1, op0); break;
-                case 0x99: t = string.Format("adc   (x),(y)"); break;
-                case 0x9a: t = string.Format("subw  ya,$%.3x", opdp0); break;
-                case 0x9b: t = string.Format("dec   $%.3x+x", opdp0); break;
-                case 0x9c: t = string.Format("dec   a"); break;
-                case 0x9d: t = string.Format("mov   x,sp"); break;
-                case 0x9e: t = string.Format("div   ya,x"); break;
-                case 0x9f: t = string.Format("xcn   a"); break;
-                case 0xa0: t = string.Format("ei"); break;
-                case 0xa1: t = string.Format("tcall 10"); break;
-                case 0xa2: t = string.Format("set5  $%.3x", opdp0); break;
-                case 0xa3: t = string.Format("bbs5  $%.3x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0xa4: t = string.Format("sbc   a,$%.3x", opdp0); break;
-                case 0xa5: t = string.Format("sbc   a,$%.4x", opw); break;
-                case 0xa6: t = string.Format("sbc   a,(x)"); break;
-                case 0xa7: t = string.Format("sbc   a,($%.3x+x)", opdp0); break;
-                case 0xa8: t = string.Format("sbc   a,#$%.2x", op0); break;
-                case 0xa9: t = string.Format("sbc   $%.3x,$%.3x", opdp1, opdp0); break;
-                case 0xaa: t = string.Format("mov1  c,$%.4x:%d", opw & 0x1fff, opw >> 13); break;
-                case 0xab: t = string.Format("inc   $%.3x", opdp0); break;
-                case 0xac: t = string.Format("inc   $%.4x", opw); break;
-                case 0xad: t = string.Format("cmp   y,#$%.2x", op0); break;
-                case 0xae: t = string.Format("pop   a"); break;
-                case 0xaf: t = string.Format("mov   (x)+,a"); break;
-                case 0xb0: t = string.Format("bcs   $%.4x", relb(op0, 2)); break;
-                case 0xb1: t = string.Format("tcall 11"); break;
-                case 0xb2: t = string.Format("clr5  $%.3x", opdp0); break;
-                case 0xb3: t = string.Format("bbc5  $%.3x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0xb4: t = string.Format("sbc   a,$%.3x+x", opdp0); break;
-                case 0xb5: t = string.Format("sbc   a,$%.4x+x", opw); break;
-                case 0xb6: t = string.Format("sbc   a,$%.4x+y", opw); break;
-                case 0xb7: t = string.Format("sbc   a,($%.3x)+y", opdp0); break;
-                case 0xb8: t = string.Format("sbc   $%.3x,#$%.2x", opdp1, op0); break;
-                case 0xb9: t = string.Format("sbc   (x),(y)"); break;
-                case 0xba: t = string.Format("movw  ya,$%.3x", opdp0); break;
-                case 0xbb: t = string.Format("inc   $%.3x+x", opdp0); break;
-                case 0xbc: t = string.Format("inc   a"); break;
-                case 0xbd: t = string.Format("mov   sp,x"); break;
-                case 0xbe: t = string.Format("das   a"); break;
-                case 0xbf: t = string.Format("mov   a,(x)+"); break;
-                case 0xc0: t = string.Format("di"); break;
-                case 0xc1: t = string.Format("tcall 12"); break;
-                case 0xc2: t = string.Format("set6  $%.3x", opdp0); break;
-                case 0xc3: t = string.Format("bbs6  $%.3x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0xc4: t = string.Format("mov   $%.3x,a", opdp0); break;
-                case 0xc5: t = string.Format("mov   $%.4x,a", opw); break;
-                case 0xc6: t = string.Format("mov   (x),a"); break;
-                case 0xc7: t = string.Format("mov   ($%.3x+x),a", opdp0); break;
-                case 0xc8: t = string.Format("cmp   x,#$%.2x", op0); break;
-                case 0xc9: t = string.Format("mov   $%.4x,x", opw); break;
-                case 0xca: t = string.Format("mov1  $%.4x:%d,c", opw & 0x1fff, opw >> 13); break;
-                case 0xcb: t = string.Format("mov   $%.3x,y", opdp0); break;
-                case 0xcc: t = string.Format("mov   $%.4x,y", opw); break;
-                case 0xcd: t = string.Format("mov   x,#$%.2x", op0); break;
-                case 0xce: t = string.Format("pop   x"); break;
-                case 0xcf: t = string.Format("mul   ya"); break;
-                case 0xd0: t = string.Format("bne   $%.4x", relb(op0, 2)); break;
-                case 0xd1: t = string.Format("tcall 13"); break;
-                case 0xd2: t = string.Format("clr6  $%.3x", opdp0); break;
-                case 0xd3: t = string.Format("bbc6  $%.3x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0xd4: t = string.Format("mov   $%.3x+x,a", opdp0); break;
-                case 0xd5: t = string.Format("mov   $%.4x+x,a", opw); break;
-                case 0xd6: t = string.Format("mov   $%.4x+y,a", opw); break;
-                case 0xd7: t = string.Format("mov   ($%.3x)+y,a", opdp0); break;
-                case 0xd8: t = string.Format("mov   $%.3x,x", opdp0); break;
-                case 0xd9: t = string.Format("mov   $%.3x+y,x", opdp0); break;
-                case 0xda: t = string.Format("movw  $%.3x,ya", opdp0); break;
-                case 0xdb: t = string.Format("mov   $%.3x+x,y", opdp0); break;
-                case 0xdc: t = string.Format("dec   y"); break;
-                case 0xdd: t = string.Format("mov   a,y"); break;
-                case 0xde: t = string.Format("cbne  $%.3x+x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0xdf: t = string.Format("daa   a"); break;
-                case 0xe0: t = string.Format("clrv"); break;
-                case 0xe1: t = string.Format("tcall 14"); break;
-                case 0xe2: t = string.Format("set7  $%.3x", opdp0); break;
-                case 0xe3: t = string.Format("bbs7  $%.3x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0xe4: t = string.Format("mov   a,$%.3x", opdp0); break;
-                case 0xe5: t = string.Format("mov   a,$%.4x", opw); break;
-                case 0xe6: t = string.Format("mov   a,(x)"); break;
-                case 0xe7: t = string.Format("mov   a,($%.3x+x)", opdp0); break;
-                case 0xe8: t = string.Format("mov   a,#$%.2x", op0); break;
-                case 0xe9: t = string.Format("mov   x,$%.4x", opw); break;
-                case 0xea: t = string.Format("not1  c,$%.4x:%d", opw & 0x1fff, opw >> 13); break;
-                case 0xeb: t = string.Format("mov   y,$%.3x", opdp0); break;
-                case 0xec: t = string.Format("mov   y,$%.4x", opw); break;
-                case 0xed: t = string.Format("notc"); break;
-                case 0xee: t = string.Format("pop   y"); break;
-                case 0xef: t = string.Format("sleep"); break;
-                case 0xf0: t = string.Format("beq   $%.4x", relb(op0, 2)); break;
-                case 0xf1: t = string.Format("tcall 15"); break;
-                case 0xf2: t = string.Format("clr7  $%.3x", opdp0); break;
-                case 0xf3: t = string.Format("bbc7  $%.3x,$%.4x", opdp0, relb(op1, 3)); break;
-                case 0xf4: t = string.Format("mov   a,$%.3x+x", opdp0); break;
-                case 0xf5: t = string.Format("mov   a,$%.4x+x", opw); break;
-                case 0xf6: t = string.Format("mov   a,$%.4x+y", opw); break;
-                case 0xf7: t = string.Format("mov   a,($%.3x)+y", opdp0); break;
-                case 0xf8: t = string.Format("mov   x,$%.3x", opdp0); break;
-                case 0xf9: t = string.Format("mov   x,$%.3x+y", opdp0); break;
-                case 0xfa: t = string.Format("mov   $%.3x,$%.3x", opdp1, opdp0); break;
-                case 0xfb: t = string.Format("mov   y,$%.3x+x", opdp0); break;
-                case 0xfc: t = string.Format("inc   y"); break;
-                case 0xfd: t = string.Format("mov   y,a"); break;
-                case 0xfe: t = string.Format("dbnz  y,$%.4x", relb(op0, 2)); break;
-                case 0xff: t = string.Format("stop"); break;
+                case 0x00:
+                    t = string.Format("nop");
+                    break;
+                case 0x01:
+                    t = string.Format("tcall 0");
+                    break;
+                case 0x02:
+                    t = string.Format("set0  $%.3x", opdp0);
+                    break;
+                case 0x03:
+                    t = string.Format("bbs0  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0x04:
+                    t = string.Format("or    a,$%.3x", opdp0);
+                    break;
+                case 0x05:
+                    t = string.Format("or    a,$%.4x", opw);
+                    break;
+                case 0x06:
+                    t = string.Format("or    a,(x)");
+                    break;
+                case 0x07:
+                    t = string.Format("or    a,($%.3x+x)", opdp0);
+                    break;
+                case 0x08:
+                    t = string.Format("or    a,#$%.2x", op0);
+                    break;
+                case 0x09:
+                    t = string.Format("or    $%.3x,$%.3x", opdp1, opdp0);
+                    break;
+                case 0x0a:
+                    t = string.Format("or1   c,$%.4x:%d", opw & 0x1fff, opw >> 13);
+                    break;
+                case 0x0b:
+                    t = string.Format("asl   $%.3x", opdp0);
+                    break;
+                case 0x0c:
+                    t = string.Format("asl   $%.4x", opw);
+                    break;
+                case 0x0d:
+                    t = string.Format("push  p");
+                    break;
+                case 0x0e:
+                    t = string.Format("tset  $%.4x,a", opw);
+                    break;
+                case 0x0f:
+                    t = string.Format("brk");
+                    break;
+                case 0x10:
+                    t = string.Format("bpl   $%.4x", relb(op0, 2));
+                    break;
+                case 0x11:
+                    t = string.Format("tcall 1");
+                    break;
+                case 0x12:
+                    t = string.Format("clr0  $%.3x", opdp0);
+                    break;
+                case 0x13:
+                    t = string.Format("bbc0  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0x14:
+                    t = string.Format("or    a,$%.3x+x", opdp0);
+                    break;
+                case 0x15:
+                    t = string.Format("or    a,$%.4x+x", opw);
+                    break;
+                case 0x16:
+                    t = string.Format("or    a,$%.4x+y", opw);
+                    break;
+                case 0x17:
+                    t = string.Format("or    a,($%.3x)+y", opdp0);
+                    break;
+                case 0x18:
+                    t = string.Format("or    $%.3x,#$%.2x", opdp1, op0);
+                    break;
+                case 0x19:
+                    t = string.Format("or    (x),(y)");
+                    break;
+                case 0x1a:
+                    t = string.Format("decw  $%.3x", opdp0);
+                    break;
+                case 0x1b:
+                    t = string.Format("asl   $%.3x+x", opdp0);
+                    break;
+                case 0x1c:
+                    t = string.Format("asl   a");
+                    break;
+                case 0x1d:
+                    t = string.Format("dec   x");
+                    break;
+                case 0x1e:
+                    t = string.Format("cmp   x,$%.4x", opw);
+                    break;
+                case 0x1f:
+                    t = string.Format("jmp   ($%.4x+x)", opw);
+                    break;
+                case 0x20:
+                    t = string.Format("clrp");
+                    break;
+                case 0x21:
+                    t = string.Format("tcall 2");
+                    break;
+                case 0x22:
+                    t = string.Format("set1  $%.3x", opdp0);
+                    break;
+                case 0x23:
+                    t = string.Format("bbs1  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0x24:
+                    t = string.Format("and   a,$%.3x", opdp0);
+                    break;
+                case 0x25:
+                    t = string.Format("and   a,$%.4x", opw);
+                    break;
+                case 0x26:
+                    t = string.Format("and   a,(x)");
+                    break;
+                case 0x27:
+                    t = string.Format("and   a,($%.3x+x)", opdp0);
+                    break;
+                case 0x28:
+                    t = string.Format("and   a,#$%.2x", op0);
+                    break;
+                case 0x29:
+                    t = string.Format("and   $%.3x,$%.3x", opdp1, opdp0);
+                    break;
+                case 0x2a:
+                    t = string.Format("or1   c,!$%.4x:%d", opw & 0x1fff, opw >> 13);
+                    break;
+                case 0x2b:
+                    t = string.Format("rol   $%.3x", opdp0);
+                    break;
+                case 0x2c:
+                    t = string.Format("rol   $%.4x", opw);
+                    break;
+                case 0x2d:
+                    t = string.Format("push  a");
+                    break;
+                case 0x2e:
+                    t = string.Format("cbne  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0x2f:
+                    t = string.Format("bra   $%.4x", relb(op0, 2));
+                    break;
+                case 0x30:
+                    t = string.Format("bmi   $%.4x", relb(op0, 2));
+                    break;
+                case 0x31:
+                    t = string.Format("tcall 3");
+                    break;
+                case 0x32:
+                    t = string.Format("clr1  $%.3x", opdp0);
+                    break;
+                case 0x33:
+                    t = string.Format("bbc1  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0x34:
+                    t = string.Format("and   a,$%.3x+x", opdp0);
+                    break;
+                case 0x35:
+                    t = string.Format("and   a,$%.4x+x", opw);
+                    break;
+                case 0x36:
+                    t = string.Format("and   a,$%.4x+y", opw);
+                    break;
+                case 0x37:
+                    t = string.Format("and   a,($%.3x)+y", opdp0);
+                    break;
+                case 0x38:
+                    t = string.Format("and   $%.3x,#$%.2x", opdp1, op0);
+                    break;
+                case 0x39:
+                    t = string.Format("and   (x),(y)");
+                    break;
+                case 0x3a:
+                    t = string.Format("incw  $%.3x", opdp0);
+                    break;
+                case 0x3b:
+                    t = string.Format("rol   $%.3x+x", opdp0);
+                    break;
+                case 0x3c:
+                    t = string.Format("rol   a");
+                    break;
+                case 0x3d:
+                    t = string.Format("inc   x");
+                    break;
+                case 0x3e:
+                    t = string.Format("cmp   x,$%.3x", opdp0);
+                    break;
+                case 0x3f:
+                    t = string.Format("call  $%.4x", opw);
+                    break;
+                case 0x40:
+                    t = string.Format("setp");
+                    break;
+                case 0x41:
+                    t = string.Format("tcall 4");
+                    break;
+                case 0x42:
+                    t = string.Format("set2  $%.3x", opdp0);
+                    break;
+                case 0x43:
+                    t = string.Format("bbs2  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0x44:
+                    t = string.Format("eor   a,$%.3x", opdp0);
+                    break;
+                case 0x45:
+                    t = string.Format("eor   a,$%.4x", opw);
+                    break;
+                case 0x46:
+                    t = string.Format("eor   a,(x)");
+                    break;
+                case 0x47:
+                    t = string.Format("eor   a,($%.3x+x)", opdp0);
+                    break;
+                case 0x48:
+                    t = string.Format("eor   a,#$%.2x", op0);
+                    break;
+                case 0x49:
+                    t = string.Format("eor   $%.3x,$%.3x", opdp1, opdp0);
+                    break;
+                case 0x4a:
+                    t = string.Format("and1  c,$%.4x:%d", opw & 0x1fff, opw >> 13);
+                    break;
+                case 0x4b:
+                    t = string.Format("lsr   $%.3x", opdp0);
+                    break;
+                case 0x4c:
+                    t = string.Format("lsr   $%.4x", opw);
+                    break;
+                case 0x4d:
+                    t = string.Format("push  x");
+                    break;
+                case 0x4e:
+                    t = string.Format("tclr  $%.4x,a", opw);
+                    break;
+                case 0x4f:
+                    t = string.Format("pcall $ff%.2x", op0);
+                    break;
+                case 0x50:
+                    t = string.Format("bvc   $%.4x", relb(op0, 2));
+                    break;
+                case 0x51:
+                    t = string.Format("tcall 5");
+                    break;
+                case 0x52:
+                    t = string.Format("clr2  $%.3x", opdp0);
+                    break;
+                case 0x53:
+                    t = string.Format("bbc2  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0x54:
+                    t = string.Format("eor   a,$%.3x+x", opdp0);
+                    break;
+                case 0x55:
+                    t = string.Format("eor   a,$%.4x+x", opw);
+                    break;
+                case 0x56:
+                    t = string.Format("eor   a,$%.4x+y", opw);
+                    break;
+                case 0x57:
+                    t = string.Format("eor   a,($%.3x)+y", opdp0);
+                    break;
+                case 0x58:
+                    t = string.Format("eor   $%.3x,#$%.2x", opdp1, op0);
+                    break;
+                case 0x59:
+                    t = string.Format("eor   (x),(y)");
+                    break;
+                case 0x5a:
+                    t = string.Format("cmpw  ya,$%.3x", opdp0);
+                    break;
+                case 0x5b:
+                    t = string.Format("lsr   $%.3x+x", opdp0);
+                    break;
+                case 0x5c:
+                    t = string.Format("lsr   a");
+                    break;
+                case 0x5d:
+                    t = string.Format("mov   x,a");
+                    break;
+                case 0x5e:
+                    t = string.Format("cmp   y,$%.4x", opw);
+                    break;
+                case 0x5f:
+                    t = string.Format("jmp   $%.4x", opw);
+                    break;
+                case 0x60:
+                    t = string.Format("clrc");
+                    break;
+                case 0x61:
+                    t = string.Format("tcall 6");
+                    break;
+                case 0x62:
+                    t = string.Format("set3  $%.3x", opdp0);
+                    break;
+                case 0x63:
+                    t = string.Format("bbs3  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0x64:
+                    t = string.Format("cmp   a,$%.3x", opdp0);
+                    break;
+                case 0x65:
+                    t = string.Format("cmp   a,$%.4x", opw);
+                    break;
+                case 0x66:
+                    t = string.Format("cmp   a,(x)");
+                    break;
+                case 0x67:
+                    t = string.Format("cmp   a,($%.3x+x)", opdp0);
+                    break;
+                case 0x68:
+                    t = string.Format("cmp   a,#$%.2x", op0);
+                    break;
+                case 0x69:
+                    t = string.Format("cmp   $%.3x,$%.3x", opdp1, opdp0);
+                    break;
+                case 0x6a:
+                    t = string.Format("and1  c,!$%.4x:%d", opw & 0x1fff, opw >> 13);
+                    break;
+                case 0x6b:
+                    t = string.Format("ror   $%.3x", opdp0);
+                    break;
+                case 0x6c:
+                    t = string.Format("ror   $%.4x", opw);
+                    break;
+                case 0x6d:
+                    t = string.Format("push  y");
+                    break;
+                case 0x6e:
+                    t = string.Format("dbnz  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0x6f:
+                    t = string.Format("ret");
+                    break;
+                case 0x70:
+                    t = string.Format("bvs   $%.4x", relb(op0, 2));
+                    break;
+                case 0x71:
+                    t = string.Format("tcall 7");
+                    break;
+                case 0x72:
+                    t = string.Format("clr3  $%.3x", opdp0);
+                    break;
+                case 0x73:
+                    t = string.Format("bbc3  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0x74:
+                    t = string.Format("cmp   a,$%.3x+x", opdp0);
+                    break;
+                case 0x75:
+                    t = string.Format("cmp   a,$%.4x+x", opw);
+                    break;
+                case 0x76:
+                    t = string.Format("cmp   a,$%.4x+y", opw);
+                    break;
+                case 0x77:
+                    t = string.Format("cmp   a,($%.3x)+y", opdp0);
+                    break;
+                case 0x78:
+                    t = string.Format("cmp   $%.3x,#$%.2x", opdp1, op0);
+                    break;
+                case 0x79:
+                    t = string.Format("cmp   (x),(y)");
+                    break;
+                case 0x7a:
+                    t = string.Format("addw  ya,$%.3x", opdp0);
+                    break;
+                case 0x7b:
+                    t = string.Format("ror   $%.3x+x", opdp0);
+                    break;
+                case 0x7c:
+                    t = string.Format("ror   a");
+                    break;
+                case 0x7d:
+                    t = string.Format("mov   a,x");
+                    break;
+                case 0x7e:
+                    t = string.Format("cmp   y,$%.3x", opdp0);
+                    break;
+                case 0x7f:
+                    t = string.Format("reti");
+                    break;
+                case 0x80:
+                    t = string.Format("setc");
+                    break;
+                case 0x81:
+                    t = string.Format("tcall 8");
+                    break;
+                case 0x82:
+                    t = string.Format("set4  $%.3x", opdp0);
+                    break;
+                case 0x83:
+                    t = string.Format("bbs4  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0x84:
+                    t = string.Format("adc   a,$%.3x", opdp0);
+                    break;
+                case 0x85:
+                    t = string.Format("adc   a,$%.4x", opw);
+                    break;
+                case 0x86:
+                    t = string.Format("adc   a,(x)");
+                    break;
+                case 0x87:
+                    t = string.Format("adc   a,($%.3x+x)", opdp0);
+                    break;
+                case 0x88:
+                    t = string.Format("adc   a,#$%.2x", op0);
+                    break;
+                case 0x89:
+                    t = string.Format("adc   $%.3x,$%.3x", opdp1, opdp0);
+                    break;
+                case 0x8a:
+                    t = string.Format("eor1  c,$%.4x:%d", opw & 0x1fff, opw >> 13);
+                    break;
+                case 0x8b:
+                    t = string.Format("dec   $%.3x", opdp0);
+                    break;
+                case 0x8c:
+                    t = string.Format("dec   $%.4x", opw);
+                    break;
+                case 0x8d:
+                    t = string.Format("mov   y,#$%.2x", op0);
+                    break;
+                case 0x8e:
+                    t = string.Format("pop   p");
+                    break;
+                case 0x8f:
+                    t = string.Format("mov   $%.3x,#$%.2x", opdp1, op0);
+                    break;
+                case 0x90:
+                    t = string.Format("bcc   $%.4x", relb(op0, 2));
+                    break;
+                case 0x91:
+                    t = string.Format("tcall 9");
+                    break;
+                case 0x92:
+                    t = string.Format("clr4  $%.3x", opdp0);
+                    break;
+                case 0x93:
+                    t = string.Format("bbc4  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0x94:
+                    t = string.Format("adc   a,$%.3x+x", opdp0);
+                    break;
+                case 0x95:
+                    t = string.Format("adc   a,$%.4x+x", opw);
+                    break;
+                case 0x96:
+                    t = string.Format("adc   a,$%.4x+y", opw);
+                    break;
+                case 0x97:
+                    t = string.Format("adc   a,($%.3x)+y", opdp0);
+                    break;
+                case 0x98:
+                    t = string.Format("adc   $%.3x,#$%.2x", opdp1, op0);
+                    break;
+                case 0x99:
+                    t = string.Format("adc   (x),(y)");
+                    break;
+                case 0x9a:
+                    t = string.Format("subw  ya,$%.3x", opdp0);
+                    break;
+                case 0x9b:
+                    t = string.Format("dec   $%.3x+x", opdp0);
+                    break;
+                case 0x9c:
+                    t = string.Format("dec   a");
+                    break;
+                case 0x9d:
+                    t = string.Format("mov   x,sp");
+                    break;
+                case 0x9e:
+                    t = string.Format("div   ya,x");
+                    break;
+                case 0x9f:
+                    t = string.Format("xcn   a");
+                    break;
+                case 0xa0:
+                    t = string.Format("ei");
+                    break;
+                case 0xa1:
+                    t = string.Format("tcall 10");
+                    break;
+                case 0xa2:
+                    t = string.Format("set5  $%.3x", opdp0);
+                    break;
+                case 0xa3:
+                    t = string.Format("bbs5  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0xa4:
+                    t = string.Format("sbc   a,$%.3x", opdp0);
+                    break;
+                case 0xa5:
+                    t = string.Format("sbc   a,$%.4x", opw);
+                    break;
+                case 0xa6:
+                    t = string.Format("sbc   a,(x)");
+                    break;
+                case 0xa7:
+                    t = string.Format("sbc   a,($%.3x+x)", opdp0);
+                    break;
+                case 0xa8:
+                    t = string.Format("sbc   a,#$%.2x", op0);
+                    break;
+                case 0xa9:
+                    t = string.Format("sbc   $%.3x,$%.3x", opdp1, opdp0);
+                    break;
+                case 0xaa:
+                    t = string.Format("mov1  c,$%.4x:%d", opw & 0x1fff, opw >> 13);
+                    break;
+                case 0xab:
+                    t = string.Format("inc   $%.3x", opdp0);
+                    break;
+                case 0xac:
+                    t = string.Format("inc   $%.4x", opw);
+                    break;
+                case 0xad:
+                    t = string.Format("cmp   y,#$%.2x", op0);
+                    break;
+                case 0xae:
+                    t = string.Format("pop   a");
+                    break;
+                case 0xaf:
+                    t = string.Format("mov   (x)+,a");
+                    break;
+                case 0xb0:
+                    t = string.Format("bcs   $%.4x", relb(op0, 2));
+                    break;
+                case 0xb1:
+                    t = string.Format("tcall 11");
+                    break;
+                case 0xb2:
+                    t = string.Format("clr5  $%.3x", opdp0);
+                    break;
+                case 0xb3:
+                    t = string.Format("bbc5  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0xb4:
+                    t = string.Format("sbc   a,$%.3x+x", opdp0);
+                    break;
+                case 0xb5:
+                    t = string.Format("sbc   a,$%.4x+x", opw);
+                    break;
+                case 0xb6:
+                    t = string.Format("sbc   a,$%.4x+y", opw);
+                    break;
+                case 0xb7:
+                    t = string.Format("sbc   a,($%.3x)+y", opdp0);
+                    break;
+                case 0xb8:
+                    t = string.Format("sbc   $%.3x,#$%.2x", opdp1, op0);
+                    break;
+                case 0xb9:
+                    t = string.Format("sbc   (x),(y)");
+                    break;
+                case 0xba:
+                    t = string.Format("movw  ya,$%.3x", opdp0);
+                    break;
+                case 0xbb:
+                    t = string.Format("inc   $%.3x+x", opdp0);
+                    break;
+                case 0xbc:
+                    t = string.Format("inc   a");
+                    break;
+                case 0xbd:
+                    t = string.Format("mov   sp,x");
+                    break;
+                case 0xbe:
+                    t = string.Format("das   a");
+                    break;
+                case 0xbf:
+                    t = string.Format("mov   a,(x)+");
+                    break;
+                case 0xc0:
+                    t = string.Format("di");
+                    break;
+                case 0xc1:
+                    t = string.Format("tcall 12");
+                    break;
+                case 0xc2:
+                    t = string.Format("set6  $%.3x", opdp0);
+                    break;
+                case 0xc3:
+                    t = string.Format("bbs6  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0xc4:
+                    t = string.Format("mov   $%.3x,a", opdp0);
+                    break;
+                case 0xc5:
+                    t = string.Format("mov   $%.4x,a", opw);
+                    break;
+                case 0xc6:
+                    t = string.Format("mov   (x),a");
+                    break;
+                case 0xc7:
+                    t = string.Format("mov   ($%.3x+x),a", opdp0);
+                    break;
+                case 0xc8:
+                    t = string.Format("cmp   x,#$%.2x", op0);
+                    break;
+                case 0xc9:
+                    t = string.Format("mov   $%.4x,x", opw);
+                    break;
+                case 0xca:
+                    t = string.Format("mov1  $%.4x:%d,c", opw & 0x1fff, opw >> 13);
+                    break;
+                case 0xcb:
+                    t = string.Format("mov   $%.3x,y", opdp0);
+                    break;
+                case 0xcc:
+                    t = string.Format("mov   $%.4x,y", opw);
+                    break;
+                case 0xcd:
+                    t = string.Format("mov   x,#$%.2x", op0);
+                    break;
+                case 0xce:
+                    t = string.Format("pop   x");
+                    break;
+                case 0xcf:
+                    t = string.Format("mul   ya");
+                    break;
+                case 0xd0:
+                    t = string.Format("bne   $%.4x", relb(op0, 2));
+                    break;
+                case 0xd1:
+                    t = string.Format("tcall 13");
+                    break;
+                case 0xd2:
+                    t = string.Format("clr6  $%.3x", opdp0);
+                    break;
+                case 0xd3:
+                    t = string.Format("bbc6  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0xd4:
+                    t = string.Format("mov   $%.3x+x,a", opdp0);
+                    break;
+                case 0xd5:
+                    t = string.Format("mov   $%.4x+x,a", opw);
+                    break;
+                case 0xd6:
+                    t = string.Format("mov   $%.4x+y,a", opw);
+                    break;
+                case 0xd7:
+                    t = string.Format("mov   ($%.3x)+y,a", opdp0);
+                    break;
+                case 0xd8:
+                    t = string.Format("mov   $%.3x,x", opdp0);
+                    break;
+                case 0xd9:
+                    t = string.Format("mov   $%.3x+y,x", opdp0);
+                    break;
+                case 0xda:
+                    t = string.Format("movw  $%.3x,ya", opdp0);
+                    break;
+                case 0xdb:
+                    t = string.Format("mov   $%.3x+x,y", opdp0);
+                    break;
+                case 0xdc:
+                    t = string.Format("dec   y");
+                    break;
+                case 0xdd:
+                    t = string.Format("mov   a,y");
+                    break;
+                case 0xde:
+                    t = string.Format("cbne  $%.3x+x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0xdf:
+                    t = string.Format("daa   a");
+                    break;
+                case 0xe0:
+                    t = string.Format("clrv");
+                    break;
+                case 0xe1:
+                    t = string.Format("tcall 14");
+                    break;
+                case 0xe2:
+                    t = string.Format("set7  $%.3x", opdp0);
+                    break;
+                case 0xe3:
+                    t = string.Format("bbs7  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0xe4:
+                    t = string.Format("mov   a,$%.3x", opdp0);
+                    break;
+                case 0xe5:
+                    t = string.Format("mov   a,$%.4x", opw);
+                    break;
+                case 0xe6:
+                    t = string.Format("mov   a,(x)");
+                    break;
+                case 0xe7:
+                    t = string.Format("mov   a,($%.3x+x)", opdp0);
+                    break;
+                case 0xe8:
+                    t = string.Format("mov   a,#$%.2x", op0);
+                    break;
+                case 0xe9:
+                    t = string.Format("mov   x,$%.4x", opw);
+                    break;
+                case 0xea:
+                    t = string.Format("not1  c,$%.4x:%d", opw & 0x1fff, opw >> 13);
+                    break;
+                case 0xeb:
+                    t = string.Format("mov   y,$%.3x", opdp0);
+                    break;
+                case 0xec:
+                    t = string.Format("mov   y,$%.4x", opw);
+                    break;
+                case 0xed:
+                    t = string.Format("notc");
+                    break;
+                case 0xee:
+                    t = string.Format("pop   y");
+                    break;
+                case 0xef:
+                    t = string.Format("sleep");
+                    break;
+                case 0xf0:
+                    t = string.Format("beq   $%.4x", relb(op0, 2));
+                    break;
+                case 0xf1:
+                    t = string.Format("tcall 15");
+                    break;
+                case 0xf2:
+                    t = string.Format("clr7  $%.3x", opdp0);
+                    break;
+                case 0xf3:
+                    t = string.Format("bbc7  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    break;
+                case 0xf4:
+                    t = string.Format("mov   a,$%.3x+x", opdp0);
+                    break;
+                case 0xf5:
+                    t = string.Format("mov   a,$%.4x+x", opw);
+                    break;
+                case 0xf6:
+                    t = string.Format("mov   a,$%.4x+y", opw);
+                    break;
+                case 0xf7:
+                    t = string.Format("mov   a,($%.3x)+y", opdp0);
+                    break;
+                case 0xf8:
+                    t = string.Format("mov   x,$%.3x", opdp0);
+                    break;
+                case 0xf9:
+                    t = string.Format("mov   x,$%.3x+y", opdp0);
+                    break;
+                case 0xfa:
+                    t = string.Format("mov   $%.3x,$%.3x", opdp1, opdp0);
+                    break;
+                case 0xfb:
+                    t = string.Format("mov   y,$%.3x+x", opdp0);
+                    break;
+                case 0xfc:
+                    t = string.Format("inc   y");
+                    break;
+                case 0xfd:
+                    t = string.Format("mov   y,a");
+                    break;
+                case 0xfe:
+                    t = string.Format("dbnz  y,$%.4x", relb(op0, 2));
+                    break;
+                case 0xff:
+                    t = string.Format("stop");
+                    break;
             }
 
             t += ' ';
@@ -792,39 +1304,205 @@ namespace Snes
             return null;
         }
 
-        public SMPCoreOpResult op_cbne_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_cbne_dp(SMPCoreOpArgument args)
+        {
+            dp = op_readpc();
+            sp = op_readdp((byte)dp);
+            rd = op_readpc();
+            op_io();
+            if (regs.a[0] == sp)
+            {
+                return null;
+            }
+            op_io();
+            op_io();
+            regs.pc += (ushort)((sbyte)rd);
+            return null;
+        }
 
-        public SMPCoreOpResult op_cbne_dpx(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_cbne_dpx(SMPCoreOpArgument args)
+        {
+            dp = op_readpc();
+            op_io();
+            sp = op_readdp((byte)(dp + regs.x[0]));
+            rd = op_readpc();
+            op_io();
+            if (regs.a[0] == sp)
+            {
+                return null;
+            }
+            op_io();
+            op_io();
+            regs.pc += (ushort)((sbyte)rd);
+            return null;
+        }
 
-        public SMPCoreOpResult op_dbnz_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_dbnz_dp(SMPCoreOpArgument args)
+        {
+            dp = op_readpc();
+            wr = op_readdp((byte)dp);
+            op_writedp((byte)dp, (byte)--wr);
+            rd = op_readpc();
+            if (wr == 0)
+            {
+                return null;
+            }
+            op_io();
+            op_io();
+            regs.pc += (ushort)((sbyte)rd);
+            return null;
+        }
 
-        public SMPCoreOpResult op_dbnz_y(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_dbnz_y(SMPCoreOpArgument args)
+        {
+            rd = op_readpc();
+            op_io();
+            regs.y[0]--;
+            op_io();
+            if (regs.y[0] == 0)
+            {
+                return null;
+            }
+            op_io();
+            op_io();
+            regs.pc += (ushort)((sbyte)rd);
+            return null;
+        }
 
-        public SMPCoreOpResult op_jmp_addr(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_jmp_addr(SMPCoreOpArgument args)
+        {
+            rd = (ushort)(op_readpc() << 0);
+            rd |= (ushort)(op_readpc() << 8);
+            regs.pc = rd;
+            return null;
+        }
 
-        public SMPCoreOpResult op_jmp_iaddrx(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_jmp_iaddrx(SMPCoreOpArgument args)
+        {
+            dp = (ushort)(op_readpc() << 0);
+            dp |= (ushort)(op_readpc() << 8);
+            op_io();
+            dp += regs.x[0];
+            rd = (ushort)(op_readaddr((ushort)(dp + 0)) << 0);
+            rd |= (ushort)(op_readaddr((ushort)(dp + 1)) << 8);
+            regs.pc = rd;
+            return null;
+        }
 
-        public SMPCoreOpResult op_call(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_call(SMPCoreOpArgument args)
+        {
+            rd = (ushort)(op_readpc() << 0);
+            rd |= (ushort)(op_readpc() << 8);
+            op_io();
+            op_io();
+            op_io();
+            op_writestack((byte)(regs.pc >> 8));
+            op_writestack((byte)(regs.pc >> 0));
+            regs.pc = rd;
+            return null;
+        }
 
-        public SMPCoreOpResult op_pcall(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_pcall(SMPCoreOpArgument args)
+        {
+            rd = op_readpc();
+            op_io();
+            op_io();
+            op_writestack((byte)(regs.pc >> 8));
+            op_writestack((byte)(regs.pc >> 0));
+            regs.pc = (ushort)(0xff00 | rd);
+            return null;
+        }
 
-        public SMPCoreOpResult op_tcall(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_tcall(SMPCoreOpArgument args)
+        {
+            dp = (ushort)(0xffde - (args.n << 1));
+            rd = (ushort)(op_readaddr((ushort)(dp + 0)) << 0);
+            rd |= (ushort)(op_readaddr((ushort)(dp + 1)) << 8);
+            op_io();
+            op_io();
+            op_io();
+            op_writestack((byte)(regs.pc >> 8));
+            op_writestack((byte)(regs.pc >> 0));
+            regs.pc = rd;
+            return null;
+        }
 
-        public SMPCoreOpResult op_brk(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_brk(SMPCoreOpArgument args)
+        {
+            rd = (ushort)(op_readaddr(0xffde) << 0);
+            rd |= (ushort)(op_readaddr(0xffdf) << 8);
+            op_io();
+            op_io();
+            op_writestack((byte)(regs.pc >> 8));
+            op_writestack((byte)(regs.pc >> 0));
+            op_writestack((byte)(regs.p));
+            regs.pc = rd;
+            regs.p.b = Convert.ToBoolean(1);
+            regs.p.i = Convert.ToBoolean(0);
+            return null;
+        }
 
-        public SMPCoreOpResult op_ret(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_ret(SMPCoreOpArgument args)
+        {
+            rd = (ushort)(op_readstack() << 0);
+            rd |= (ushort)(op_readstack() << 8);
+            op_io();
+            op_io();
+            regs.pc = rd;
+            return null;
+        }
 
-        public SMPCoreOpResult op_reti(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_reti(SMPCoreOpArgument args)
+        {
+            regs.p.Assign(op_readstack());
+            rd = (ushort)(op_readstack() << 0);
+            rd |= (ushort)(op_readstack() << 8);
+            op_io();
+            op_io();
+            regs.pc = rd;
+            return null;
+        }
 
-        public SMPCoreOpResult op_read_reg_const(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_reg_const(SMPCoreOpArgument args)
+        {
+            rd = op_readpc();
+            regs.r[args.n] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.r[args.n], y_byte = (byte)rd }).result_byte;
+            return null;
+        }
 
-        public SMPCoreOpResult op_read_a_ix(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_a_ix(SMPCoreOpArgument args)
+        {
+            op_io();
+            rd = op_readdp(regs.x[0]);
+            regs.a[0] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
+            return null;
+        }
 
-        public SMPCoreOpResult op_read_reg_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_reg_dp(SMPCoreOpArgument args)
+        {
+            dp = op_readpc();
+            rd = op_readdp((byte)dp);
+            regs.r[args.n] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.r[args.n], y_byte = (byte)rd }).result_byte;
+            return null;
+        }
 
-        public SMPCoreOpResult op_read_a_dpx(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_a_dpx(SMPCoreOpArgument args)
+        {
+            dp = op_readpc();
+            op_io();
+            rd = op_readdp((byte)(dp + regs.x[0]));
+            regs.a[0] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
+            return null;
+        }
 
-        public SMPCoreOpResult op_read_reg_addr(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_reg_addr(SMPCoreOpArgument args)
+        {
+            dp = (ushort)(op_readpc() << 0);
+            dp |= (ushort)(op_readpc() << 8);
+            rd = op_readaddr(dp);
+            regs.r[args.n] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.r[args.n], y_byte = (byte)rd }).result_byte;
+            return null;
+        }
 
         public SMPCoreOpResult op_read_a_addrr(SMPCoreOpArgument args)
         {
@@ -836,69 +1514,391 @@ namespace Snes
             return null;
         }
 
-        public SMPCoreOpResult op_read_a_idpx(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_a_idpx(SMPCoreOpArgument args)
+        {
+            dp = (ushort)(op_readpc() + regs.x[0]);
+            op_io();
+            sp = (ushort)(op_readdp((byte)(dp + 0)) << 0);
+            sp |= (ushort)(op_readdp((byte)(dp + 1)) << 8);
+            rd = op_readaddr(sp);
+            regs.a[0] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
+            return null;
+        }
 
-        public SMPCoreOpResult op_read_a_idpy(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_a_idpy(SMPCoreOpArgument args)
+        {
+            dp = op_readpc();
+            op_io();
+            sp = (ushort)(op_readdp((byte)(dp + 0)) << 0);
+            sp |= (ushort)(op_readdp((byte)(dp + 1)) << 8);
+            rd = op_readaddr((ushort)(sp + regs.y[0]));
+            regs.a[0] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
+            return null;
+        }
 
-        public SMPCoreOpResult op_read_ix_iy(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_ix_iy(SMPCoreOpArgument args)
+        {
+            op_io();
+            rd = op_readdp(regs.y[0]);
+            wr = op_readdp(regs.x[0]);
+            wr = args.op_func(new SMPCoreOpArgument() { x_byte = (byte)wr, y_byte = (byte)rd }).result_byte;
+            SMPCoreOp cmp = op_cmp;
+            if (args.op_func != cmp)
+            {
+                op_writedp(regs.x[0], (byte)wr);
+            }
+            else
+            {
+                op_io();
+            }
+            return null;
+        }
 
-        public SMPCoreOpResult op_read_dp_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_dp_dp(SMPCoreOpArgument args)
+        {
+            sp = op_readpc();
+            rd = op_readdp((byte)sp);
+            dp = op_readpc();
+            wr = op_readdp((byte)dp);
+            wr = args.op_func(new SMPCoreOpArgument() { x_byte = (byte)wr, y_byte = (byte)rd }).result_byte;
+            SMPCoreOp cmp = op_cmp;
+            if (args.op_func != cmp)
+            {
+                op_writedp((byte)dp, (byte)wr);
+            }
+            else
+            {
+                op_io();
+            }
+            return null;
+        }
 
-        public SMPCoreOpResult op_read_dp_const(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_dp_const(SMPCoreOpArgument args)
+        {
+            rd = op_readpc();
+            dp = op_readpc();
+            wr = op_readdp((byte)dp);
+            wr = args.op_func(new SMPCoreOpArgument() { x_byte = (byte)wr, y_byte = (byte)rd }).result_byte;
+            SMPCoreOp cmp = op_cmp;
+            if (args.op_func != cmp)
+            {
+                op_writedp((byte)dp, (byte)wr);
+            }
+            else
+            {
+                op_io();
+            }
+            return null;
+        }
 
-        public SMPCoreOpResult op_read_ya_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_read_ya_dp(SMPCoreOpArgument args)
+        {
+            dp = op_readpc();
+            rd = (ushort)(op_readdp((byte)(dp + 0)) << 0);
+            op_io();
+            rd |= (ushort)(op_readdp((byte)(dp + 1)) << 8);
+            regs.ya.Assign(args.op_func(new SMPCoreOpArgument() { x_ushort = (ushort)regs.ya, y_ushort = rd }).result_ushort);
+            return null;
+        }
 
-        public SMPCoreOpResult op_cmpw_ya_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_cmpw_ya_dp(SMPCoreOpArgument args)
+        {
+            dp = op_readpc();
+            rd = (ushort)(op_readdp((byte)(dp + 0)) << 0);
+            rd |= (ushort)(op_readdp((byte)(dp + 1)) << 8);
+            op_cmpw(new SMPCoreOpArgument() { x_ushort = (ushort)regs.ya, y_ushort = rd });
+            return null;
+        }
 
-        public SMPCoreOpResult op_and1_bit(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_and1_bit(SMPCoreOpArgument args)
+        {
+            dp = (ushort)(op_readpc() << 0);
+            dp |= (ushort)(op_readpc() << 8);
+            bit = (ushort)(dp >> 13);
+            dp &= 0x1fff;
+            rd = op_readaddr(dp);
+            regs.p.c = Convert.ToBoolean(Convert.ToInt32(regs.p.c) & (Convert.ToInt32(Convert.ToBoolean(rd & (1 << bit))) ^ args.op));
+            return null;
+        }
 
-        public SMPCoreOpResult op_eor1_bit(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_eor1_bit(SMPCoreOpArgument args)
+        {
+            dp = (ushort)(op_readpc() << 0);
+            dp |= (ushort)(op_readpc() << 8);
+            bit = (ushort)(dp >> 13);
+            dp &= 0x1fff;
+            rd = op_readaddr(dp);
+            op_io();
+            regs.p.c = Convert.ToBoolean(Convert.ToInt32(regs.p.c) ^ Convert.ToInt32(Convert.ToBoolean(rd & (1 << bit))));
+            return null;
+        }
 
-        public SMPCoreOpResult op_not1_bit(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_not1_bit(SMPCoreOpArgument args)
+        {
+            dp = (ushort)(op_readpc() << 0);
+            dp |= (ushort)(op_readpc() << 8);
+            bit = (ushort)(dp >> 13);
+            dp &= 0x1fff;
+            rd = op_readaddr(dp);
+            rd ^= (ushort)(1 << bit);
+            op_writeaddr(dp, (byte)rd);
+            return null;
+        }
 
-        public SMPCoreOpResult op_or1_bit(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_or1_bit(SMPCoreOpArgument args)
+        {
+            dp = (ushort)(op_readpc() << 0);
+            dp |= (ushort)(op_readpc() << 8);
+            bit = (ushort)(dp >> 13);
+            dp &= 0x1fff;
+            rd = op_readaddr(dp);
+            op_io();
+            regs.p.c = Convert.ToBoolean(Convert.ToInt32(regs.p.c) | (Convert.ToInt32(Convert.ToBoolean(rd & (1 << bit))) ^ args.op));
+            return null;
+        }
 
-        public SMPCoreOpResult op_adjust_reg(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_adjust_reg(SMPCoreOpArgument args)
+        {
+            op_io();
+            regs.r[args.n] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.r[args.n] }).result_byte;
+            return null;
+        }
 
-        public SMPCoreOpResult op_adjust_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_adjust_dp(SMPCoreOpArgument args)
+        {
+            dp = op_readpc();
+            rd = op_readdp((byte)dp);
+            rd = args.op_func(new SMPCoreOpArgument() { x_byte = (byte)rd }).result_byte;
+            op_writedp((byte)dp, (byte)rd);
+            return null;
+        }
 
-        public SMPCoreOpResult op_adjust_dpx(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_adjust_dpx(SMPCoreOpArgument args)
+        {
+            dp = op_readpc();
+            op_io();
+            rd = op_readdp((byte)(dp + regs.x[0]));
+            rd = args.op_func(new SMPCoreOpArgument() { x_byte = (byte)rd }).result_byte;
+            op_writedp((byte)(dp + regs.x[0]), (byte)rd);
+            return null;
+        }
 
-        public SMPCoreOpResult op_adjust_addr(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_adjust_addr(SMPCoreOpArgument args)
+        {
+            dp = (ushort)(op_readpc() << 0);
+            dp |= (ushort)(op_readpc() << 8);
+            rd = op_readaddr(dp);
+            rd = args.op_func(new SMPCoreOpArgument() { x_byte = (byte)rd }).result_byte;
+            op_writeaddr(dp, (byte)rd);
+            return null;
+        }
 
-        public SMPCoreOpResult op_adjust_addr_a(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_adjust_addr_a(SMPCoreOpArgument args)
+        {
+            dp = (ushort)(op_readpc() << 0);
+            dp |= (ushort)(op_readpc() << 8);
+            rd = op_readaddr(dp);
+            regs.p.n = Convert.ToBoolean((regs.a[0] - rd) & 0x80);
+            regs.p.z = ((regs.a[0] - rd) == 0);
+            op_readaddr(dp);
+            op_writeaddr(dp, (byte)(Convert.ToBoolean(args.op) ? rd | regs.a[0] : rd & ~regs.a[0]));
+            return null;
+        }
 
-        public SMPCoreOpResult op_adjustw_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_adjustw_dp(SMPCoreOpArgument args)
+        {
+            dp = op_readpc();
+            rd = (ushort)(op_readdp((byte)dp) << 0);
+            rd += (ushort)args.adjust;
+            op_writedp((byte)(dp++), (byte)rd);
+            rd += (ushort)(op_readdp((byte)dp) << 8);
+            op_writedp((byte)dp, (byte)(rd >> 8));
+            regs.p.n = Convert.ToBoolean(rd & 0x8000);
+            regs.p.z = (rd == 0);
+            return null;
+        }
 
-        public SMPCoreOpResult op_nop(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_nop(SMPCoreOpArgument args)
+        {
+            op_io();
+            return null;
+        }
 
-        public SMPCoreOpResult op_wait(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_wait(SMPCoreOpArgument args)
+        {
+            while (true)
+            {
+                op_io();
+                op_io();
+            }
+        }
 
-        public SMPCoreOpResult op_xcn(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_xcn(SMPCoreOpArgument args)
+        {
+            op_io();
+            op_io();
+            op_io();
+            op_io();
+            regs.a[0] = (byte)((regs.a[0] >> 4) | (regs.a[0] << 4));
+            regs.p.n = Convert.ToBoolean(regs.a[0] & 0x80);
+            regs.p.z = (regs.a[0] == 0);
+            return null;
+        }
 
-        public SMPCoreOpResult op_daa(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_daa(SMPCoreOpArgument args)
+        {
+            op_io();
+            op_io();
+            if (regs.p.c || (regs.a[0]) > 0x99)
+            {
+                regs.a[0] += 0x60;
+                regs.p.c = Convert.ToBoolean(1);
+            }
+            if (regs.p.h || (regs.a[0] & 15) > 0x09)
+            {
+                regs.a[0] += 0x06;
+            }
+            //TODO: See if this logic matches
+            regs.p.n = Convert.ToBoolean(Convert.ToInt32(Convert.ToBoolean(regs.a[0] & 0x80)));
+            regs.p.z = (regs.a[0] == 0);
+            return null;
+        }
 
-        public SMPCoreOpResult op_das(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_das(SMPCoreOpArgument args)
+        {
+            op_io();
+            op_io();
+            if (!regs.p.c || (regs.a[0]) > 0x99)
+            {
+                regs.a[0] -= 0x60;
+                regs.p.c = Convert.ToBoolean(0);
+            }
+            if (!regs.p.h || (regs.a[0] & 15) > 0x09)
+            {
+                regs.a[0] -= 0x06;
+            }
+            regs.p.n = Convert.ToBoolean(Convert.ToInt32(Convert.ToBoolean(regs.a[0] & 0x80)));
+            regs.p.z = (regs.a[0] == 0);
+            return null;
+        }
 
-        public SMPCoreOpResult op_setbit(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_setbit(SMPCoreOpArgument args)
+        {
+            op_io();
+            regs.p.Assign((byte)(((uint)regs.p & ~args.mask) | (uint)args.value));
+            return null;
+        }
 
-        public SMPCoreOpResult op_notc(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_notc(SMPCoreOpArgument args)
+        {
+            op_io();
+            op_io();
+            regs.p.c = !regs.p.c;
+            return null;
+        }
 
-        public SMPCoreOpResult op_seti(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_seti(SMPCoreOpArgument args)
+        {
+            op_io();
+            op_io();
+            regs.p.i = Convert.ToBoolean(args.value);
+            return null;
+        }
 
-        public SMPCoreOpResult op_setbit_dp(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_setbit_dp(SMPCoreOpArgument args)
+        {
+            dp = op_readpc();
+            rd = op_readdp((byte)dp);
+            rd = (ushort)(Convert.ToBoolean(args.op) ? rd | args.value : rd & ~args.value);
+            op_writedp((byte)dp, (byte)rd);
+            return null;
+        }
 
-        public SMPCoreOpResult op_push_reg(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_push_reg(SMPCoreOpArgument args)
+        {
+            op_io();
+            op_io();
+            op_writestack(regs.r[args.n]);
+            return null;
+        }
 
-        public SMPCoreOpResult op_push_p(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_push_p(SMPCoreOpArgument args)
+        {
+            op_io();
+            op_io();
+            op_writestack((byte)regs.p);
+            return null;
+        }
 
-        public SMPCoreOpResult op_pop_reg(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_pop_reg(SMPCoreOpArgument args)
+        {
+            op_io();
+            op_io();
+            regs.r[args.n] = op_readstack();
+            return null;
+        }
 
-        public SMPCoreOpResult op_pop_p(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_pop_p(SMPCoreOpArgument args)
+        {
+            op_io();
+            op_io();
+            regs.p.Assign(op_readstack());
+            return null;
+        }
 
-        public SMPCoreOpResult op_mul_ya(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_mul_ya(SMPCoreOpArgument args)
+        {
+            op_io();
+            op_io();
+            op_io();
+            op_io();
+            op_io();
+            op_io();
+            op_io();
+            op_io();
+            ya = (ushort)(regs.y[0] * regs.a[0]);
+            regs.a[0] = (byte)ya;
+            regs.y[0] = (byte)(ya >> 8);
+            //result is set based on y (high-byte) only
+            regs.p.n = Convert.ToBoolean(Convert.ToInt32(Convert.ToBoolean(regs.y[0] & 0x80)));
+            regs.p.z = (regs.y[0] == 0);
+            return null;
+        }
 
-        public SMPCoreOpResult op_div_ya_x(SMPCoreOpArgument args) { throw new NotImplementedException(); }
+        public SMPCoreOpResult op_div_ya_x(SMPCoreOpArgument args)
+        {
+            op_io();
+            op_io();
+            op_io();
+            op_io();
+            op_io();
+            op_io();
+            op_io();
+            op_io();
+            op_io();
+            op_io();
+            op_io();
+            ya = (ushort)regs.ya;
+            //overflow set if quotient >= 256
+            regs.p.v = !!(regs.y[0] >= regs.x[0]);
+            regs.p.h = !!((regs.y[0] & 15) >= (regs.x[0] & 15));
+            if (regs.y[0] < (regs.x[0] << 1))
+            {
+                //if quotient is <= 511 (will fit into 9-bit result)
+                regs.a[0] = (byte)(ya / regs.x[0]);
+                regs.y[0] = (byte)(ya % regs.x[0]);
+            }
+            else
+            {
+                //otherwise, the quotient won't fit into regs.p.v + regs.a
+                //this emulates the odd behavior of the S-SMP in this case
+                regs.a[0] = (byte)(255 - (ya - (regs.x[0] << 9)) / (256 - regs.x[0]));
+                regs.y[0] = (byte)(regs.x[0] + (ya - (regs.x[0] << 9)) % (256 - regs.x[0]));
+            }
+            //result is set based on a (quotient) only
+            regs.p.n = Convert.ToBoolean(Convert.ToInt32(Convert.ToBoolean(regs.a[0] & 0x80)));
+            regs.p.z = (regs.a[0] == 0);
+        }
 
         public SMPCoreOperation[] opcode_table = new SMPCoreOperation[256];
 
