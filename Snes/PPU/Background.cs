@@ -101,7 +101,10 @@ namespace Snes
                 if (hires)
                 {
                     hscroll <<= 1;
-                    if (self.regs.interlace) y = (uint)((y << 1) + Convert.ToInt32(self.field()));
+                    if (self.regs.interlace)
+                    {
+                        y = (uint)((y << 1) + Convert.ToInt32(self.field()));
+                    }
                 }
 
                 uint hoffset = hscroll + mosaic_table[regs.mosaic, x];

@@ -13,7 +13,8 @@ namespace Snes
                     public uint palette;
                     public uint tile;
                 }
-                public Flag main, sub;
+                public Flag main = new Flag();
+                public Flag sub = new Flag();
             }
         }
     }
@@ -29,7 +30,8 @@ namespace Snes
                     public uint priority;  //0 = none (transparent)
                     public uint palette;
                 }
-                public Flag main, sub;
+                public Flag main = new Flag();
+                public Flag sub = new Flag();
             }
         }
     }
@@ -44,7 +46,8 @@ namespace Snes
                 {
                     public bool color_enable;
                 }
-                public Flag main, sub;
+                public Flag main = new Flag();
+                public Flag sub = new Flag();
             }
         }
     }

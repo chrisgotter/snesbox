@@ -15,7 +15,7 @@ namespace Snes
 
             public void scanline()
             {
-                output = new ArraySegment<ushort>(self.output, self.vcounter() * 1024, self.output.Length - self.vcounter() * 1024).Array;
+                output = new ArraySegment<ushort>(self.output, self.vcounter() * 1024, self.output.Length - (self.vcounter() * 1024)).Array;
                 if (self.display.interlace && self.field())
                 {
                     outputIndex += 512;
@@ -225,7 +225,10 @@ namespace Snes
                     bool halve = false;
                     if (regs.color_halve && self.window.output.main.color_enable)
                     {
-                        if (!regs.addsub_mode || source_sub != (uint)Source.BACK) halve = true;
+                        if (!regs.addsub_mode || source_sub != (uint)Source.BACK)
+                        {
+                            halve = true;
+                        }
                     }
                     output = addsub(color_main, color_sub, halve);
                 }
@@ -239,7 +242,10 @@ namespace Snes
                 //========
 
                 output = light_table[self.regs.display_brightness, output];
-                if (self.regs.display_disabled) output = 0x0000;
+                if (self.regs.display_disabled)
+                {
+                    output = 0x0000;
+                }
                 return output;
             }
 

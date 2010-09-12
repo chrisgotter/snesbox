@@ -39,7 +39,10 @@ namespace Snes
                 {
                     if (size == Convert.ToBoolean(0))
                     {
-                        if (ppu.oam.regs.interlace && ppu.oam.regs.base_size >= 6) return 16;
+                        if (ppu.oam.regs.interlace && ppu.oam.regs.base_size >= 6)
+                        {
+                            return 16;
+                        }
                         return Height1[ppu.oam.regs.base_size];
                     }
                     else

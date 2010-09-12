@@ -47,7 +47,7 @@ namespace Snes
                         continue;
                     }
                     // TODO: verify array segments
-                    ushort[] buffer = new ArraySegment<ushort>(dataSeg.Array, (int)(y * 1024), (int)(dataSeg.Array.Length - y * 1024)).Array;
+                    ushort[] buffer = new ArraySegment<ushort>(dataSeg.Array, (int)(y * 1024), (int)(dataSeg.Array.Length - (y * 1024))).Array;
                     for (int x = 255; x >= 0; x--)
                     {
                         buffer[(x * 2) + 0] = buffer[(x * 2) + 1] = buffer[x];

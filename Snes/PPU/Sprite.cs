@@ -126,7 +126,10 @@ namespace Snes
                 for (uint n = 0; n < 34; n++)
                 {
                     var tile = oam_tile[n];
-                    if (tile.x == 0xffff) break;
+                    if (tile.x == 0xffff)
+                    {
+                        break;
+                    }
 
                     int px = (int)(x - Bit.sclip(9, tile.x));
                     if (Convert.ToBoolean(px & ~7))

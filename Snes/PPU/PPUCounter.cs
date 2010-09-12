@@ -110,7 +110,7 @@ namespace Snes
             }
         }
 
-        public Scanline scanline = null;
+        public Scanline Scanline = null;
 
         private void vcounter_tick()
         {
@@ -130,9 +130,9 @@ namespace Snes
                 status.vcounter = 0;
                 status.field = !status.field;
             }
-            if (!ReferenceEquals(scanline, null))
+            if (!ReferenceEquals(Scanline, null))
             {
-                scanline();
+                Scanline();
             }
         }
 
