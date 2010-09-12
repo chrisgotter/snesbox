@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Nall;
 
 namespace Snes
 {
@@ -12,7 +12,7 @@ namespace Snes
             {
                 get
                 {
-                    throw new NotImplementedException();
+                    return Bit.LSB2(w, 0);
                 }
             }
 
@@ -20,73 +20,73 @@ namespace Snes
             {
                 get
                 {
-                    throw new NotImplementedException();
+                    return Bit.LSB2(w, 1);
                 }
             }
 
             public static explicit operator uint(Reg16 reg16)
             {
-                throw new NotImplementedException();
+                return reg16.w;
             }
 
             public uint Assign(uint i)
             {
-                throw new NotImplementedException();
+                return w = (ushort)i;
             }
 
             public static uint operator |(Reg16 reg16, uint i)
             {
-                throw new NotImplementedException();
+                return reg16.w |= (ushort)i;
             }
 
             public static uint operator ^(Reg16 reg16, uint i)
             {
-                throw new NotImplementedException();
+                return reg16.w ^= (ushort)i;
             }
 
             public static uint operator &(Reg16 reg16, uint i)
             {
-                throw new NotImplementedException();
+                return reg16.w &= (ushort)i;
             }
 
             public static uint operator <<(Reg16 reg16, int i)
             {
-                throw new NotImplementedException();
+                return reg16.w <<= i;
             }
 
             public static uint operator >>(Reg16 reg16, int i)
             {
-                throw new NotImplementedException();
+                return reg16.w >>= i;
             }
 
             public static uint operator +(Reg16 reg16, uint i)
             {
-                throw new NotImplementedException();
+                return reg16.w += (ushort)i;
             }
 
             public static uint operator -(Reg16 reg16, uint i)
             {
-                throw new NotImplementedException();
+                return reg16.w -= (ushort)i;
             }
 
             public static uint operator *(Reg16 reg16, uint i)
             {
-                throw new NotImplementedException();
+                return reg16.w *= (ushort)i;
             }
 
             public static uint operator /(Reg16 reg16, uint i)
             {
-                throw new NotImplementedException();
+                return reg16.w /= (ushort)i;
             }
 
             public static uint operator %(Reg16 reg16, uint i)
             {
-                throw new NotImplementedException();
+                return reg16.w %= (ushort)i;
             }
 
             public Reg16()
             {
-                throw new NotImplementedException();
+                w = 0;
             }
         }
     }
