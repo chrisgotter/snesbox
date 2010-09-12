@@ -24,12 +24,12 @@ namespace Snes
         {
             public class Output
             {
-                class Flag
+                public class Flag
                 {
-                    uint priority;  //0 = none (transparent)
-                    uint palette;
+                    public uint priority;  //0 = none (transparent)
+                    public uint palette;
                 }
-                Flag main, sub;
+                public Flag main, sub;
             }
         }
     }
@@ -40,11 +40,11 @@ namespace Snes
         {
             public class Output
             {
-                class Flag
+                public class Flag
                 {
-                    bool color_enable;
+                    public bool color_enable;
                 }
-                Flag main, sub;
+                public Flag main, sub;
             }
         }
     }

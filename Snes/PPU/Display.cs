@@ -5,8 +5,8 @@ namespace Snes
     {
         private class Display
         {
-            bool interlace;
-            bool overscan;
+            public bool interlace;
+            public bool overscan;
         }
     }
 }

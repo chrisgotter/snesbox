@@ -120,21 +120,21 @@ namespace Snes
         {
             public class Regs
             {
-                bool addsub_mode;
-                bool direct_color;
+                public bool addsub_mode;
+                public bool direct_color;
 
-                bool color_mode;
-                bool color_halve;
-                bool bg1_color_enable;
-                bool bg2_color_enable;
-                bool bg3_color_enable;
-                bool bg4_color_enable;
-                bool oam_color_enable;
-                bool back_color_enable;
+                public bool color_mode;
+                public bool color_halve;
+                public bool bg1_color_enable;
+                public bool bg2_color_enable;
+                public bool bg3_color_enable;
+                public bool bg4_color_enable;
+                public bool oam_color_enable;
+                public bool back_color_enable;
 
-                byte color_b;
-                byte color_g;
-                byte color_r;
+                public byte color_b;
+                public byte color_g;
+                public byte color_r;
             }
         }
     }
