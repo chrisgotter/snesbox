@@ -16,35 +16,127 @@ namespace Snes
     //point before this in the frame, which is handled internally by this class at
     //V=128.
 
-    partial class PPUCounter : IPPUCounter
+    partial class PPUCounter
     {
-        public void tick() { throw new NotImplementedException(); }
-        public void tick(uint clocks) { throw new NotImplementedException(); }
-
-        public bool field() { throw new NotImplementedException(); }
-        public ushort vcounter() { throw new NotImplementedException(); }
-        public ushort hcounter() { throw new NotImplementedException(); }
-        public ushort hdot() { throw new NotImplementedException(); }
-        public ushort lineclocks() { throw new NotImplementedException(); }
-
-        public bool field(uint offset) { throw new NotImplementedException(); }
-        public ushort vcounter(uint offset) { throw new NotImplementedException(); }
-        public ushort hcounter(uint offset) { throw new NotImplementedException(); }
-
-        public void reset() { throw new NotImplementedException(); }
-        public Scanline scanline;
-
-        private void vcounter_tick() { throw new NotImplementedException(); }
-
-        private Status status;
-        private History history;
-
-        PPUCounter IPPUCounter.PPUCounter
+        public void tick()
         {
-            get
+            status.hcounter += 2;  //increment by smallest unit of time
+            if (status.hcounter >= 1360 && status.hcounter == lineclocks())
             {
-                return this;
+                status.hcounter = 0;
+                vcounter_tick();
+            }
+
+            history.index = (history.index + 1) & 2047;
+            history.field[history.index] = status.field;
+            history.vcounter[history.index] = status.vcounter;
+            history.hcounter[history.index] = status.hcounter;
+        }
+
+        public void tick(uint clocks)
+        {
+            status.hcounter += (ushort)clocks;
+            if (status.hcounter >= lineclocks())
+            {
+                status.hcounter -= lineclocks();
+                vcounter_tick();
             }
         }
+
+        public bool field()
+        {
+            return status.field;
+        }
+
+        public ushort vcounter()
+        {
+            return status.vcounter;
+        }
+
+        public ushort hcounter()
+        {
+            return status.hcounter;
+        }
+
+        public ushort hdot()
+        {
+            if (System.system.region == System.Region.NTSC && status.interlace == false && vcounter() == 240 && field() == Convert.ToBoolean(1))
+            {
+                return (ushort)(hcounter() >> 2);
+            }
+            else
+            {
+                return (ushort)((hcounter() - (Convert.ToInt32(hcounter() > 1292) << 1) - (Convert.ToInt32(hcounter() > 1310) << 1)) >> 2);
+            }
+        }
+
+        public ushort lineclocks()
+        {
+            if (System.system.region == System.Region.NTSC && status.interlace == false && vcounter() == 240 && field() == Convert.ToBoolean(1))
+            {
+                return 1360;
+            }
+            return 1364;
+        }
+
+        public bool field(uint offset)
+        {
+            return history.field[(history.index - (offset >> 1)) & 2047];
+        }
+
+        public ushort vcounter(uint offset)
+        {
+            return history.vcounter[(history.index - (offset >> 1)) & 2047];
+        }
+
+        public ushort hcounter(uint offset)
+        {
+            return history.hcounter[(history.index - (offset >> 1)) & 2047];
+        }
+
+        public void reset()
+        {
+            status.interlace = false;
+            status.field = Convert.ToBoolean(0);
+            status.vcounter = 0;
+            status.hcounter = 0;
+            history.index = 0;
+
+            for (uint i = 0; i < 2048; i++)
+            {
+                history.field[i] = Convert.ToBoolean(0);
+                history.vcounter[i] = 0;
+                history.hcounter[i] = 0;
+            }
+        }
+
+        public Scanline scanline = null;
+
+        private void vcounter_tick()
+        {
+            if (++status.vcounter == 128)
+            {
+                status.interlace = PPU.ppu.interlace();
+            }
+
+            if ((System.system.region == System.Region.NTSC && status.interlace == false && status.vcounter == 262)
+            || (System.system.region == System.Region.NTSC && status.interlace == true && status.vcounter == 263)
+            || (System.system.region == System.Region.NTSC && status.interlace == true && status.vcounter == 262 && status.field == Convert.ToBoolean(1))
+            || (System.system.region == System.Region.PAL && status.interlace == false && status.vcounter == 312)
+            || (System.system.region == System.Region.PAL && status.interlace == true && status.vcounter == 313)
+            || (System.system.region == System.Region.PAL && status.interlace == true && status.vcounter == 312 && status.field == Convert.ToBoolean(1))
+            )
+            {
+                status.vcounter = 0;
+                status.field = !status.field;
+            }
+            if (!ReferenceEquals(scanline, null))
+            {
+                scanline();
+            }
+        }
+
+        private Status status = new Status();
+        private History history = new History();
     }
 }

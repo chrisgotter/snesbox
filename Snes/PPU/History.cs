@@ -5,11 +5,11 @@ namespace Snes
     {
         private class History
         {
-            bool[] field = new bool[2048];
-            ushort[] vcounter = new ushort[2048];
-            ushort[] hcounter = new ushort[2048];
+            public bool[] field = new bool[2048];
+            public ushort[] vcounter = new ushort[2048];
+            public ushort[] hcounter = new ushort[2048];
 
-            int index;
+            public int index;
         }
     }
 }

@@ -2,17 +2,9 @@
 
 namespace Snes
 {
-    class Coprocessor : Processor, ICoprocessor
+    class Coprocessor : Processor
     {
         public void step(uint clocks) { throw new NotImplementedException(); }
         public void synchronize_cpu() { throw new NotImplementedException(); }
-
-        Coprocessor ICoprocessor.Coprocessor
-        {
-            get
-            {
-                return this;
-            }
-        }
     }
 }

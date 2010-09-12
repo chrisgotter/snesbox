@@ -5,10 +5,10 @@ namespace Snes
     {
         private class Status
         {
-            bool interlace;
-            bool field;
-            ushort vcounter;
-            ushort hcounter;
+            public bool interlace;
+            public bool field;
+            public ushort vcounter;
+            public ushort hcounter;
         }
     }
 }
