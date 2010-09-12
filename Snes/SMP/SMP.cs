@@ -456,9 +456,13 @@ namespace Snes
             this.opcode_table[op_readpc()].Invoke();
         }
 
+        private Processor _processor = new Processor();
         public Processor Processor
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                return _processor;
+            }
         }
     }
 }

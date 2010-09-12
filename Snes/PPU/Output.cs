@@ -7,13 +7,13 @@ namespace Snes
         {
             public class Output
             {
-                class Flag
+                public class Flag
                 {
-                    uint priority;  //0 = none (transparent)
-                    uint palette;
-                    uint tile;
+                    public uint priority;  //0 = none (transparent)
+                    public uint palette;
+                    public uint tile;
                 }
-                Flag main, sub;
+                public Flag main, sub;
             }
         }
     }

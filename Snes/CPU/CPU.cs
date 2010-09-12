@@ -132,7 +132,6 @@ namespace Snes
         private void mmio_w43xa(byte i, byte data) { throw new NotImplementedException(); }
         private void mmio_w43xb(byte i, byte data) { throw new NotImplementedException(); }
 
-        //timing.cpp
         private uint dma_counter() { throw new NotImplementedException(); }
 
         private void add_clocks(uint clocks) { throw new NotImplementedException(); }
@@ -145,7 +144,6 @@ namespace Snes
         private void timing_power() { throw new NotImplementedException(); }
         private void timing_reset() { throw new NotImplementedException(); }
 
-        //irq.cpp
         private void poll_interrupts() { throw new NotImplementedException(); }
         private void nmitimen_update(byte data) { throw new NotImplementedException(); }
         private bool rdnmi() { throw new NotImplementedException(); }
@@ -154,7 +152,6 @@ namespace Snes
         private bool nmi_test() { throw new NotImplementedException(); }
         private bool irq_test() { throw new NotImplementedException(); }
 
-        //joypad.cpp
         private void run_auto_joypad_poll() { throw new NotImplementedException(); }
 
         private byte cpu_version;

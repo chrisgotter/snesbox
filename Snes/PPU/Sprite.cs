@@ -12,10 +12,8 @@ namespace Snes
             public Regs regs;
             public Output output;
 
-            //list.cpp
             public void update(uint addr, byte data) { throw new NotImplementedException(); }
 
-            //sprite.cpp
             public void address_reset() { throw new NotImplementedException(); }
             public void frame() { throw new NotImplementedException(); }
             public void scanline() { throw new NotImplementedException(); }

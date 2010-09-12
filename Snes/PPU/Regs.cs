@@ -3,25 +3,113 @@ namespace Snes
 {
     partial class PPU
     {
+        public class Regs
+        {
+            public byte ppu1_mdr;
+            public byte ppu2_mdr;
+
+            public ushort vram_readbuffer;
+            public byte oam_latchdata;
+            public byte cgram_latchdata;
+            public byte bgofs_latchdata;
+            public byte mode7_latchdata;
+            public bool counters_latched;
+            public bool latch_hcounter;
+            public bool latch_vcounter;
+
+            public ushort ioamaddr;
+            public ushort icgramaddr;
+
+            //$2100  INIDISP
+            public bool display_disabled;
+            public uint display_brightness;
+
+            //$2102  OAMADDL
+            //$2103  OAMADDH
+            public ushort oam_baseaddr;
+            public ushort oam_addr;
+            public bool oam_priority;
+
+            //$2105  BGMODE
+            public bool bg3_priority;
+            public byte bgmode;
+
+            //$210d  BG1HOFS
+            public ushort mode7_hoffset;
+
+            //$210e  BG1VOFS
+            public ushort mode7_voffset;
+
+            //$2115  VMAIN
+            public bool vram_incmode;
+            public byte vram_mapping;
+            public byte vram_incsize;
+
+            //$2116  VMADDL
+            //$2117  VMADDH
+            public ushort vram_addr;
+
+            //$211a  M7SEL
+            public byte mode7_repeat;
+            public bool mode7_vflip;
+            public bool mode7_hflip;
+
+            //$211b  M7A
+            public ushort m7a;
+
+            //$211c  M7B
+            public ushort m7b;
+
+            //$211d  M7C
+            public ushort m7c;
+
+            //$211e  M7D
+            public ushort m7d;
+
+            //$211f  M7X
+            public ushort m7x;
+
+            //$2120  M7Y
+            public ushort m7y;
+
+            //$2121  CGADD
+            public ushort cgram_addr;
+
+            //$2133  SETINI
+            public bool mode7_extbg;
+            public bool pseudo_hires;
+            public bool overscan;
+            public bool interlace;
+
+            //$213c  OPHCT
+            public ushort hcounter;
+
+            //$213d  OPVCT
+            public ushort vcounter;
+        }
+    }
+
+    partial class PPU
+    {
         partial class Background
         {
             public class Regs
             {
-                uint tiledata_addr;
-                uint screen_addr;
-                uint screen_size;
-                uint mosaic;
-                bool tile_size;
+                public uint tiledata_addr;
+                public uint screen_addr;
+                public uint screen_size;
+                public uint mosaic;
+                public bool tile_size;
 
-                uint mode;
-                uint priority0;
-                uint priority1;
+                public uint mode;
+                public uint priority0;
+                public uint priority1;
 
-                bool main_enabled;
-                bool sub_enabled;
+                public bool main_enabled;
+                public bool sub_enabled;
 
-                uint hoffset;
-                uint voffset;
+                public uint hoffset;
+                public uint voffset;
             }
         }
     }

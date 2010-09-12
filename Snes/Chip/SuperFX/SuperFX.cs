@@ -18,7 +18,6 @@ namespace Snes
         public Operation[] opcode_table = new Operation[1024];
         public void initialize_opcode_table() { throw new NotImplementedException(); }
 
-        //opcodes.cpp
         public void op_adc_i(int n) { throw new NotImplementedException(); }
         public void op_adc_r(int n) { throw new NotImplementedException(); }
         public void op_add_i(int n) { throw new NotImplementedException(); }

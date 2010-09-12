@@ -7,9 +7,9 @@ namespace Snes
         {
             public class T
             {
-                uint x;
-                uint mosaic_y;
-                uint mosaic_countdown;
+                public uint x;
+                public uint mosaic_y;
+                public uint mosaic_countdown;
             }
         }
     }
