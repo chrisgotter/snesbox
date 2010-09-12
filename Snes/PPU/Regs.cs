@@ -145,22 +145,22 @@ namespace Snes
         {
             public class Regs
             {
-                bool main_enabled;
-                bool sub_enabled;
-                bool interlace;
+                public bool main_enabled;
+                public bool sub_enabled;
+                public bool interlace;
 
-                byte base_size;
-                byte nameselect;
-                ushort tiledata_addr;
-                byte first_sprite;
+                public byte base_size;
+                public byte nameselect;
+                public ushort tiledata_addr;
+                public byte first_sprite;
 
-                uint priority0;
-                uint priority1;
-                uint priority2;
-                uint priority3;
+                public uint priority0;
+                public uint priority1;
+                public uint priority2;
+                public uint priority3;
 
-                bool time_over;
-                bool range_over;
+                public bool time_over;
+                public bool range_over;
             }
         }
     }
