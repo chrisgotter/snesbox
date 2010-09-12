@@ -57,15 +57,12 @@ namespace Nall
 
         public static uint calculate(byte[] data, uint length)
         {
-            unchecked
+            uint crc32 = Bit.ToUint32(~0);
+            for (uint i = 0; i < length; i++)
             {
-                uint crc32 = (uint)~0;
-                for (uint i = 0; i < length; i++)
-                {
-                    crc32 = adjust(crc32, data[i]);
-                }
-                return ~crc32;
+                crc32 = adjust(crc32, data[i]);
             }
+            return ~crc32;
         }
     }
 }

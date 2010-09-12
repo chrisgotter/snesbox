@@ -47,12 +47,9 @@ namespace Snes
             Debug.Assert(bank_lo <= bank_hi);
             Debug.Assert(addr_lo <= addr_hi);
 
-            unchecked
+            if (access.size() == Bit.ToUint32(-1))
             {
-                if (access.size() == (uint)-1U)
-                {
-                    return;
-                }
+                return;
             }
 
             byte page_lo = (byte)(addr_lo >> 8);

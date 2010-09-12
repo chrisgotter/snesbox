@@ -1,4 +1,5 @@
 ﻿using System;
+using Nall;
 
 namespace Snes
 {
@@ -25,10 +26,7 @@ namespace Snes
                 data_ = null;
             }
 
-            unchecked
-            {
-                size_ = (uint)-1U;
-            }
+            size_ = Bit.ToUint32(-1);
             write_protect_ = false;
         }
 
@@ -36,10 +34,7 @@ namespace Snes
         {
             reset();
             data_ = source;
-            unchecked
-            {
-                size_ = !ReferenceEquals(data_, null) && length > 0 ? length : (uint)-1U;
-            }
+            size_ = !ReferenceEquals(data_, null) && length > 0 ? length : Bit.ToUint32(-1);
         }
 
         public void copy(byte[] data, uint size)
@@ -91,10 +86,7 @@ namespace Snes
         public MappedRAM()
         {
             data_ = null;
-            unchecked
-            {
-                size_ = (uint)-1U;
-            }
+            size_ = Bit.ToUint32(-1);
             write_protect_ = false;
         }
 

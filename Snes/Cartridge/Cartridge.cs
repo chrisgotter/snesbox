@@ -142,43 +142,40 @@ namespace Snes
             MappedRAM.gbram.write_protect(false);
             MappedRAM.gbrtc.write_protect(false);
 
-            unchecked
+            uint checksum = Bit.ToUint32(~0);
+            foreach (var n in MappedRAM.cartram.data())
             {
-                uint checksum = (uint)~0;
-                foreach (var n in MappedRAM.cartram.data())
+                checksum = CRC32.adjust(checksum, n);
+            }
+            if (MappedRAM.bsxflash.size() != 0 && MappedRAM.bsxflash.size() != Bit.ToUint32(~0))
+            {
+                foreach (var n in MappedRAM.bsxflash.data())
                 {
                     checksum = CRC32.adjust(checksum, n);
                 }
-                if (MappedRAM.bsxflash.size() != 0 && MappedRAM.bsxflash.size() != (uint)~0)
-                {
-                    foreach (var n in MappedRAM.bsxflash.data())
-                    {
-                        checksum = CRC32.adjust(checksum, n);
-                    }
-                }
-                if (MappedRAM.stArom.size() != 0 && MappedRAM.stArom.size() != (uint)~0)
-                {
-                    foreach (var n in MappedRAM.stArom.data())
-                    {
-                        checksum = CRC32.adjust(checksum, n);
-                    }
-                }
-                if (MappedRAM.stBrom.size() != 0 && MappedRAM.stBrom.size() != (uint)~0)
-                {
-                    foreach (var n in MappedRAM.stBrom.data())
-                    {
-                        checksum = CRC32.adjust(checksum, n);
-                    }
-                }
-                if (MappedRAM.gbrom.size() != 0 && MappedRAM.gbrom.size() != (uint)~0)
-                {
-                    foreach (var n in MappedRAM.gbrom.data())
-                    {
-                        checksum = CRC32.adjust(checksum, n);
-                    }
-                }
-                crc32 = ~checksum;
             }
+            if (MappedRAM.stArom.size() != 0 && MappedRAM.stArom.size() != Bit.ToUint32(~0))
+            {
+                foreach (var n in MappedRAM.stArom.data())
+                {
+                    checksum = CRC32.adjust(checksum, n);
+                }
+            }
+            if (MappedRAM.stBrom.size() != 0 && MappedRAM.stBrom.size() != Bit.ToUint32(~0))
+            {
+                foreach (var n in MappedRAM.stBrom.data())
+                {
+                    checksum = CRC32.adjust(checksum, n);
+                }
+            }
+            if (MappedRAM.gbrom.size() != 0 && MappedRAM.gbrom.size() != Bit.ToUint32(~0))
+            {
+                foreach (var n in MappedRAM.gbrom.data())
+                {
+                    checksum = CRC32.adjust(checksum, n);
+                }
+            }
+            crc32 = ~checksum;
 
             // TODO: verify hash
             var sha = new SHA256Managed();

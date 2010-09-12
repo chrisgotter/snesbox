@@ -864,36 +864,30 @@ namespace Snes
 
         private byte mmio_r2139()
         {
-            unchecked
+            ushort addr = (ushort)(get_vram_address() + 0);
+            regs.ppu1_mdr = (byte)(regs.vram_readbuffer >> 0);
+            if (regs.vram_incmode == Convert.ToBoolean(0))
             {
-                ushort addr = (ushort)(get_vram_address() + 0);
-                regs.ppu1_mdr = (byte)(regs.vram_readbuffer >> 0);
-                if (regs.vram_incmode == Convert.ToBoolean(0))
-                {
-                    addr &= (ushort)~1;
-                    regs.vram_readbuffer = (ushort)(vram_read(addr + 0U) << 0);
-                    regs.vram_readbuffer |= (ushort)(vram_read(addr + 1U) << 8);
-                    regs.vram_addr += regs.vram_incsize;
-                }
-                return regs.ppu1_mdr;
+                addr &= Bit.ToUint16(~1);
+                regs.vram_readbuffer = (ushort)(vram_read(addr + 0U) << 0);
+                regs.vram_readbuffer |= (ushort)(vram_read(addr + 1U) << 8);
+                regs.vram_addr += regs.vram_incsize;
             }
+            return regs.ppu1_mdr;
         }  //VMDATALREAD
 
         private byte mmio_r213a()
         {
-            unchecked
+            ushort addr = (ushort)(get_vram_address() + 1);
+            regs.ppu1_mdr = (byte)(regs.vram_readbuffer >> 8);
+            if (regs.vram_incmode == Convert.ToBoolean(1))
             {
-                ushort addr = (ushort)(get_vram_address() + 1);
-                regs.ppu1_mdr = (byte)(regs.vram_readbuffer >> 8);
-                if (regs.vram_incmode == Convert.ToBoolean(1))
-                {
-                    addr &= (ushort)~1;
-                    regs.vram_readbuffer = (ushort)(vram_read(addr + 0U) << 0);
-                    regs.vram_readbuffer |= (ushort)(vram_read(addr + 1U) << 8);
-                    regs.vram_addr += regs.vram_incsize;
-                }
-                return regs.ppu1_mdr;
+                addr &= Bit.ToUint16(~1);
+                regs.vram_readbuffer = (ushort)(vram_read(addr + 0U) << 0);
+                regs.vram_readbuffer |= (ushort)(vram_read(addr + 1U) << 8);
+                regs.vram_addr += regs.vram_incsize;
             }
+            return regs.ppu1_mdr;
         }  //VMDATAHREAD
 
         private byte mmio_r213b()

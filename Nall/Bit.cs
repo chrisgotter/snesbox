@@ -34,5 +34,15 @@ namespace Nall
         {
             return Convert.ToUInt32(Convert.ToBoolean(value));
         }
+
+        public static uint ToUint32(int value)
+        {
+            return BitConverter.ToUInt32(BitConverter.GetBytes(value), 0);
+        }
+
+        public static ushort ToUint16(int value)
+        {
+            return BitConverter.ToUInt16(BitConverter.GetBytes(value), 0);
+        }
     }
 }
