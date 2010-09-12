@@ -15,9 +15,9 @@ namespace Snes
             public enum ScreenSize { Size32x32, Size32x64, Size64x32, Size64x64 }
             public enum TileSize { Size8x8, Size16x16 }
 
-            public T t;
-            public Regs regs;
-            public Output output;
+            public T t = new T();
+            public Regs regs = new Regs();
+            public Output output = new Output();
 
             public void scanline()
             {

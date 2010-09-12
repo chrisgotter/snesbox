@@ -171,61 +171,61 @@ namespace Snes
         {
             public class Regs
             {
-                bool bg1_one_enable;
-                bool bg1_one_invert;
-                bool bg1_two_enable;
-                bool bg1_two_invert;
+                public bool bg1_one_enable;
+                public bool bg1_one_invert;
+                public bool bg1_two_enable;
+                public bool bg1_two_invert;
 
-                bool bg2_one_enable;
-                bool bg2_one_invert;
-                bool bg2_two_enable;
-                bool bg2_two_invert;
+                public bool bg2_one_enable;
+                public bool bg2_one_invert;
+                public bool bg2_two_enable;
+                public bool bg2_two_invert;
 
-                bool bg3_one_enable;
-                bool bg3_one_invert;
-                bool bg3_two_enable;
-                bool bg3_two_invert;
+                public bool bg3_one_enable;
+                public bool bg3_one_invert;
+                public bool bg3_two_enable;
+                public bool bg3_two_invert;
 
-                bool bg4_one_enable;
-                bool bg4_one_invert;
-                bool bg4_two_enable;
-                bool bg4_two_invert;
+                public bool bg4_one_enable;
+                public bool bg4_one_invert;
+                public bool bg4_two_enable;
+                public bool bg4_two_invert;
 
-                bool oam_one_enable;
-                bool oam_one_invert;
-                bool oam_two_enable;
-                bool oam_two_invert;
+                public bool oam_one_enable;
+                public bool oam_one_invert;
+                public bool oam_two_enable;
+                public bool oam_two_invert;
 
-                bool col_one_enable;
-                bool col_one_invert;
-                bool col_two_enable;
-                bool col_two_invert;
+                public bool col_one_enable;
+                public bool col_one_invert;
+                public bool col_two_enable;
+                public bool col_two_invert;
 
-                byte one_left;
-                byte one_right;
-                byte two_left;
-                byte two_right;
+                public byte one_left;
+                public byte one_right;
+                public byte two_left;
+                public byte two_right;
 
-                byte bg1_mask;
-                byte bg2_mask;
-                byte bg3_mask;
-                byte bg4_mask;
-                byte oam_mask;
-                byte col_mask;
+                public byte bg1_mask;
+                public byte bg2_mask;
+                public byte bg3_mask;
+                public byte bg4_mask;
+                public byte oam_mask;
+                public byte col_mask;
 
-                bool bg1_main_enable;
-                bool bg1_sub_enable;
-                bool bg2_main_enable;
-                bool bg2_sub_enable;
-                bool bg3_main_enable;
-                bool bg3_sub_enable;
-                bool bg4_main_enable;
-                bool bg4_sub_enable;
-                bool oam_main_enable;
-                bool oam_sub_enable;
+                public bool bg1_main_enable;
+                public bool bg1_sub_enable;
+                public bool bg2_main_enable;
+                public bool bg2_sub_enable;
+                public bool bg3_main_enable;
+                public bool bg3_sub_enable;
+                public bool bg4_main_enable;
+                public bool bg4_sub_enable;
+                public bool oam_main_enable;
+                public bool oam_sub_enable;
 
-                byte col_main_mask;
-                byte col_sub_mask;
+                public byte col_main_mask;
+                public byte col_sub_mask;
             }
         }
     }

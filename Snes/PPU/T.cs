@@ -20,7 +20,7 @@ namespace Snes
         {
             public class T
             {
-                uint x;
+                public uint x;
             }
         }
     }
