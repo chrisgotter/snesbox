@@ -279,8 +279,8 @@ namespace Snes
                             uint d0 = StaticRAM.vram[offset + 0U];
                             uint d1 = StaticRAM.vram[offset + 1U];
 
-                            return ((ConvertToBit(d0 & mask)) << 0)
-                                + ((ConvertToBit(d1 & mask)) << 1);
+                            return ((Bit.bit(d0 & mask)) << 0)
+                                + ((Bit.bit(d1 & mask)) << 1);
                         }
                     case Background.Mode.BPP4:
                         {
@@ -291,10 +291,10 @@ namespace Snes
                             uint d2 = StaticRAM.vram[offset + 16U];
                             uint d3 = StaticRAM.vram[offset + 17U];
 
-                            return ((ConvertToBit(d0 & mask)) << 0)
-                                + ((ConvertToBit(d1 & mask)) << 1)
-                                + ((ConvertToBit(d2 & mask)) << 2)
-                                + ((ConvertToBit(d3 & mask)) << 3);
+                            return ((Bit.bit(d0 & mask)) << 0)
+                                + ((Bit.bit(d1 & mask)) << 1)
+                                + ((Bit.bit(d2 & mask)) << 2)
+                                + ((Bit.bit(d3 & mask)) << 3);
                         }
                     case Background.Mode.BPP8:
                         {
@@ -309,23 +309,18 @@ namespace Snes
                             uint d6 = StaticRAM.vram[offset + 48U];
                             uint d7 = StaticRAM.vram[offset + 49U];
 
-                            return ((ConvertToBit(d0 & mask)) << 0)
-                                + ((ConvertToBit(d1 & mask)) << 1)
-                                + ((ConvertToBit(d2 & mask)) << 2)
-                                + ((ConvertToBit(d3 & mask)) << 3)
-                                + ((ConvertToBit(d4 & mask)) << 4)
-                                + ((ConvertToBit(d5 & mask)) << 5)
-                                + ((ConvertToBit(d6 & mask)) << 6)
-                                + ((ConvertToBit(d7 & mask)) << 7);
+                            return ((Bit.bit(d0 & mask)) << 0)
+                                + ((Bit.bit(d1 & mask)) << 1)
+                                + ((Bit.bit(d2 & mask)) << 2)
+                                + ((Bit.bit(d3 & mask)) << 3)
+                                + ((Bit.bit(d4 & mask)) << 4)
+                                + ((Bit.bit(d5 & mask)) << 5)
+                                + ((Bit.bit(d6 & mask)) << 6)
+                                + ((Bit.bit(d7 & mask)) << 7);
                         }
                     default:
                         throw new InvalidOperationException();
                 }
-            }
-
-            private static uint ConvertToBit(uint value)
-            {
-                return Convert.ToUInt32(Convert.ToBoolean(value));
             }
 
             public void reset()
@@ -351,8 +346,11 @@ namespace Snes
                 output.sub.priority = 0;
             }
 
-            public Background(PPU self, uint id)
+            public Background(PPU self_, uint id_)
             {
+                self = self_;
+                id = id_;
+
                 for (uint m = 0; m < 16; m++)
                 {
                     for (uint x = 0; x < 4096; x++)

@@ -7,15 +7,28 @@ namespace Snes
         {
             public class State
             {
-                uint x;
-                uint y;
+                public uint x;
+                public uint y;
 
-                uint item_count;
-                uint tile_count;
+                public uint item_count;
+                public uint tile_count;
 
-                bool active;
-                byte[,] item = new byte[2, 32];
-                TileItem[,] tile = new TileItem[2, 34];
+                public bool active;
+                public byte[][] item = new byte[2][];
+                public TileItem[][] tile = new TileItem[2][];
+
+                public State()
+                {
+                    for (int i = 0; i < item.Length; i++)
+                    {
+                        item[i] = new byte[32];
+                    }
+
+                    for (int i = 0; i < tile.Length; i++)
+                    {
+                        tile[i] = new TileItem[34];
+                    }
+                }
             }
         }
     }

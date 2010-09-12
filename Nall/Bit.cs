@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace Nall
 {
     public static class Bit
@@ -27,6 +28,11 @@ namespace Nall
             var b = 1U << (bits - 1);
             var m = (1U << bits) - 1;
             return (int)(((x & m) ^ b) - b);
+        }
+
+        public static uint bit(uint value)
+        {
+            return Convert.ToUInt32(Convert.ToBoolean(value));
         }
     }
 }

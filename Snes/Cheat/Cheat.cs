@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Text;
+using Nall;
 
 namespace Snes
 {
@@ -184,18 +185,18 @@ namespace Snes
                 //8421 8421 8421 8421 8421 8421
                 //abcd efgh ijkl mnop qrst uvwx
                 //ijkl qrst opab cduv wxef ghmn
-                addr = (NotNot(r & 0x002000) << 23) | (NotNot(r & 0x001000) << 22)
-                     | (NotNot(r & 0x000800) << 21) | (NotNot(r & 0x000400) << 20)
-                     | (NotNot(r & 0x000020) << 19) | (NotNot(r & 0x000010) << 18)
-                     | (NotNot(r & 0x000008) << 17) | (NotNot(r & 0x000004) << 16)
-                     | (NotNot(r & 0x800000) << 15) | (NotNot(r & 0x400000) << 14)
-                     | (NotNot(r & 0x200000) << 13) | (NotNot(r & 0x100000) << 12)
-                     | (NotNot(r & 0x000002) << 11) | (NotNot(r & 0x000001) << 10)
-                     | (NotNot(r & 0x008000) << 9) | (NotNot(r & 0x004000) << 8)
-                     | (NotNot(r & 0x080000) << 7) | (NotNot(r & 0x040000) << 6)
-                     | (NotNot(r & 0x020000) << 5) | (NotNot(r & 0x010000) << 4)
-                     | (NotNot(r & 0x000200) << 3) | (NotNot(r & 0x000100) << 2)
-                     | (NotNot(r & 0x000080) << 1) | (NotNot(r & 0x000040) << 0);
+                addr = (Bit.bit(r & 0x002000) << 23) | (Bit.bit(r & 0x001000) << 22)
+                     | (Bit.bit(r & 0x000800) << 21) | (Bit.bit(r & 0x000400) << 20)
+                     | (Bit.bit(r & 0x000020) << 19) | (Bit.bit(r & 0x000010) << 18)
+                     | (Bit.bit(r & 0x000008) << 17) | (Bit.bit(r & 0x000004) << 16)
+                     | (Bit.bit(r & 0x800000) << 15) | (Bit.bit(r & 0x400000) << 14)
+                     | (Bit.bit(r & 0x200000) << 13) | (Bit.bit(r & 0x100000) << 12)
+                     | (Bit.bit(r & 0x000002) << 11) | (Bit.bit(r & 0x000001) << 10)
+                     | (Bit.bit(r & 0x008000) << 9) | (Bit.bit(r & 0x004000) << 8)
+                     | (Bit.bit(r & 0x080000) << 7) | (Bit.bit(r & 0x040000) << 6)
+                     | (Bit.bit(r & 0x020000) << 5) | (Bit.bit(r & 0x010000) << 4)
+                     | (Bit.bit(r & 0x000200) << 3) | (Bit.bit(r & 0x000100) << 2)
+                     | (Bit.bit(r & 0x000080) << 1) | (Bit.bit(r & 0x000040) << 0);
                 data = (byte)(r >> 24);
                 return true;
             }
@@ -203,11 +204,6 @@ namespace Snes
             {
                 return false;
             }
-        }
-
-        public static uint NotNot(uint r)
-        {
-            return Convert.ToUInt32(Convert.ToBoolean(r));
         }
 
         public static bool encode(string s, uint addr, byte data, Type type)
@@ -223,18 +219,18 @@ namespace Snes
             {
                 uint r = addr;
                 //TODO: Unit test to verify values in C# match C++
-                addr = (NotNot(r & 0x008000) << 23) | (NotNot(r & 0x004000) << 22)
-                     | (NotNot(r & 0x002000) << 21) | (NotNot(r & 0x001000) << 20)
-                     | (NotNot(r & 0x000080) << 19) | (NotNot(r & 0x000040) << 18)
-                     | (NotNot(r & 0x000020) << 17) | (NotNot(r & 0x000010) << 16)
-                     | (NotNot(r & 0x000200) << 15) | (NotNot(r & 0x000100) << 14)
-                     | (NotNot(r & 0x800000) << 13) | (NotNot(r & 0x400000) << 12)
-                     | (NotNot(r & 0x200000) << 11) | (NotNot(r & 0x100000) << 10)
-                     | (NotNot(r & 0x000008) << 9) | (NotNot(r & 0x000004) << 8)
-                     | (NotNot(r & 0x000002) << 7) | (NotNot(r & 0x000001) << 6)
-                     | (NotNot(r & 0x080000) << 5) | (NotNot(r & 0x040000) << 4)
-                     | (NotNot(r & 0x020000) << 3) | (NotNot(r & 0x010000) << 2)
-                     | (NotNot(r & 0x000800) << 1) | (NotNot(r & 0x000400) << 0);
+                addr = (Bit.bit(r & 0x008000) << 23) | (Bit.bit(r & 0x004000) << 22)
+                     | (Bit.bit(r & 0x002000) << 21) | (Bit.bit(r & 0x001000) << 20)
+                     | (Bit.bit(r & 0x000080) << 19) | (Bit.bit(r & 0x000040) << 18)
+                     | (Bit.bit(r & 0x000020) << 17) | (Bit.bit(r & 0x000010) << 16)
+                     | (Bit.bit(r & 0x000200) << 15) | (Bit.bit(r & 0x000100) << 14)
+                     | (Bit.bit(r & 0x800000) << 13) | (Bit.bit(r & 0x400000) << 12)
+                     | (Bit.bit(r & 0x200000) << 11) | (Bit.bit(r & 0x100000) << 10)
+                     | (Bit.bit(r & 0x000008) << 9) | (Bit.bit(r & 0x000004) << 8)
+                     | (Bit.bit(r & 0x000002) << 7) | (Bit.bit(r & 0x000001) << 6)
+                     | (Bit.bit(r & 0x080000) << 5) | (Bit.bit(r & 0x040000) << 4)
+                     | (Bit.bit(r & 0x020000) << 3) | (Bit.bit(r & 0x010000) << 2)
+                     | (Bit.bit(r & 0x000800) << 1) | (Bit.bit(r & 0x000400) << 0);
                 s = data.ToString("X2") + (addr >> 16).ToString("X2") + "-" + (addr & 0xffff).ToString("X4");
                 transform(s, "0123456789abcdef", "df4709156bc8a23e");
                 return true;

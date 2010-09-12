@@ -7,11 +7,11 @@ namespace Snes
         {
             public class TileItem
             {
-                ushort x;
-                ushort priority;
-                ushort palette;
-                bool hflip;
-                byte d0, d1, d2, d3;
+                public ushort x;
+                public ushort priority;
+                public ushort palette;
+                public bool hflip;
+                public byte d0, d1, d2, d3;
             }
         }
     }
