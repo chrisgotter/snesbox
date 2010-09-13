@@ -2561,87 +2561,396 @@ namespace Snes
             regs.pc.w = ++rd.w;
         }
 
-        public void op_nop() { throw new NotImplementedException(); }
+        public void op_nop()
+        {
+            op_io_irq();
+        }
 
-        public void op_wdm() { throw new NotImplementedException(); }
+        public void op_wdm()
+        {
+            op_readpc();
+        }
 
-        public void op_xba() { throw new NotImplementedException(); }
+        public void op_xba()
+        {
+            op_io();
+            op_io();
+            regs.a.l ^= regs.a.h;
+            regs.a.h ^= regs.a.l;
+            regs.a.l ^= regs.a.h;
+            regs.p.n = Convert.ToBoolean(regs.a.l & 0x80);
+            regs.p.z = (regs.a.l == 0);
+        }
 
-        public void op_move_b(int adjust) { throw new NotImplementedException(); }
+        public void op_move_b(int adjust)
+        {
+            dp = op_readpc();
+            sp = op_readpc();
+            regs.db = dp;
+            rd.l = op_readlong((uint)((sp << 16) | regs.x.w));
+            op_writelong((uint)((dp << 16) | regs.y.w), rd.l);
+            op_io();
+            regs.x.l += (byte)adjust;
+            regs.y.l += (byte)adjust;
+            op_io();
+            if (Convert.ToBoolean(regs.a.w--))
+            {
+                regs.pc.w -= 3;
+            }
+        }
 
-        public void op_move_w(int adjust) { throw new NotImplementedException(); }
+        public void op_move_w(int adjust)
+        {
+            dp = op_readpc();
+            sp = op_readpc();
+            regs.db = dp;
+            rd.l = op_readlong((uint)((sp << 16) | regs.x.w));
+            op_writelong((uint)((dp << 16) | regs.y.w), rd.l);
+            op_io();
+            regs.x.w += (ushort)adjust;
+            regs.y.w += (ushort)adjust;
+            op_io();
+            if (Convert.ToBoolean(regs.a.w--))
+            {
+                regs.pc.w -= 3;
+            }
+        }
 
-        public void op_interrupt_e(int vectorE, int vectorN) { throw new NotImplementedException(); }
+        public void op_interrupt_e(int vectorE, int vectorN)
+        {
+            op_readpc();
+            op_writestack(regs.pc.h);
+            op_writestack(regs.pc.l);
+            op_writestack((byte)regs.p);
+            rd.l = op_readlong((uint)(vectorE + 0));
+            regs.pc.b = 0;
+            regs.p.i = Convert.ToBoolean(1);
+            regs.p.d = Convert.ToBoolean(0);
+            rd.h = op_readlong((uint)(vectorE + 1));
+            regs.pc.w = rd.w;
+        }
 
-        public void op_interrupt_n(int vectorE, int vectorN) { throw new NotImplementedException(); }
+        public void op_interrupt_n(int vectorE, int vectorN)
+        {
+            op_readpc();
+            op_writestack(regs.pc.b);
+            op_writestack(regs.pc.h);
+            op_writestack(regs.pc.l);
+            op_writestack((byte)regs.p);
+            rd.l = op_readlong((uint)(vectorN + 0));
+            regs.pc.b = 0x00;
+            regs.p.i = Convert.ToBoolean(1);
+            regs.p.d = Convert.ToBoolean(0);
+            rd.h = op_readlong((uint)(vectorN + 1));
+            regs.pc.w = rd.w;
+        }
 
-        public void op_stp() { throw new NotImplementedException(); }
+        public void op_stp()
+        {
+            regs.wai = true;
+            while (regs.wai)
+            {
+                op_io();
+            }
+        }
 
-        public void op_wai() { throw new NotImplementedException(); }
+        public void op_wai()
+        {
+            regs.wai = true;
+            while (regs.wai)
+            {
+                op_io();
+            }
+            op_io();
+        }
 
-        public void op_xce() { throw new NotImplementedException(); }
+        public void op_xce()
+        {
+            op_io_irq();
+            bool carry = regs.p.c;
+            regs.p.c = regs.e;
+            regs.e = carry;
+            if (regs.e)
+            {
+                regs.p.Assign((byte)(regs.p | 0x30));
+                regs.s.h = 0x01;
+            }
+            if (regs.p.x)
+            {
+                regs.x.h = 0x00;
+                regs.y.h = 0x00;
+            }
+            update_table();
+        }
 
-        public void op_flag(int mask, int value) { throw new NotImplementedException(); }
+        public void op_flag(int mask, int value)
+        {
+            op_io_irq();
+            regs.p.Assign((byte)(((uint)regs.p & ~mask) | (uint)value));
+        }
 
-        public void op_pflag_e(int mode) { throw new NotImplementedException(); }
+        public void op_pflag_e(int mode)
+        {
+            rd.l = op_readpc();
+            op_io();
+            regs.p.Assign((byte)(Convert.ToBoolean(mode) ? regs.p | rd.l : (uint)regs.p & ~rd.l));
+            regs.p.Assign((byte)(regs.p | 0x30));
+            if (regs.p.x)
+            {
+                regs.x.h = 0x00;
+                regs.y.h = 0x00;
+            }
+            update_table();
+        }
 
-        public void op_pflag_n(int mode) { throw new NotImplementedException(); }
+        public void op_pflag_n(int mode)
+        {
+            rd.l = op_readpc();
+            op_io();
+            regs.p.Assign((byte)(Convert.ToBoolean(mode) ? regs.p | rd.l : (uint)regs.p & ~rd.l));
+            if (regs.p.x)
+            {
+                regs.x.h = 0x00;
+                regs.y.h = 0x00;
+            }
+            update_table();
+        }
 
-        public void op_transfer_b(int from, int to) { throw new NotImplementedException(); }
+        public void op_transfer_b(int from, int to)
+        {
+            op_io_irq();
+            regs.r[to].l = regs.r[from].l;
+            regs.p.n = Convert.ToBoolean(regs.r[to].l & 0x80);
+            regs.p.z = (regs.r[to].l == 0);
+        }
 
-        public void op_transfer_w(int from, int to) { throw new NotImplementedException(); }
+        public void op_transfer_w(int from, int to)
+        {
+            op_io_irq();
+            regs.r[to].w = regs.r[from].w;
+            regs.p.n = Convert.ToBoolean(regs.r[to].w & 0x8000);
+            regs.p.z = (regs.r[to].w == 0);
+        }
 
-        public void op_tcs_e() { throw new NotImplementedException(); }
+        public void op_tcs_e()
+        {
+            op_io_irq();
+            regs.s.l = regs.a.l;
+        }
 
-        public void op_tcs_n() { throw new NotImplementedException(); }
+        public void op_tcs_n()
+        {
+            op_io_irq();
+            regs.s.w = regs.a.w;
+        }
 
-        public void op_tsx_b() { throw new NotImplementedException(); }
+        public void op_tsx_b()
+        {
+            op_io_irq();
+            regs.x.l = regs.s.l;
+            regs.p.n = Convert.ToBoolean(regs.x.l & 0x80);
+            regs.p.z = (regs.x.l == 0);
+        }
 
-        public void op_tsx_w() { throw new NotImplementedException(); }
+        public void op_tsx_w()
+        {
+            op_io_irq();
+            regs.x.w = regs.s.w;
+            regs.p.n = Convert.ToBoolean(regs.x.w & 0x8000);
+            regs.p.z = (regs.x.w == 0);
+        }
 
-        public void op_txs_e() { throw new NotImplementedException(); }
+        public void op_txs_e()
+        {
+            op_io_irq();
+            regs.s.l = regs.x.l;
+        }
 
-        public void op_txs_n() { throw new NotImplementedException(); }
+        public void op_txs_n()
+        {
+            op_io_irq();
+            regs.s.w = regs.x.w;
+        }
 
-        public void op_push_b(int n) { throw new NotImplementedException(); }
+        public void op_push_b(int n)
+        {
+            op_io();
+            op_writestack(regs.r[n].l);
+        }
 
-        public void op_push_w(int n) { throw new NotImplementedException(); }
+        public void op_push_w(int n)
+        {
+            op_io();
+            op_writestack(regs.r[n].h);
+            op_writestack(regs.r[n].l);
+        }
 
-        public void op_phd_e() { throw new NotImplementedException(); }
+        public void op_phd_e()
+        {
+            op_io();
+            op_writestackn(regs.d.h);
+            op_writestackn(regs.d.l);
+            regs.s.h = 0x01;
+        }
 
-        public void op_phd_n() { throw new NotImplementedException(); }
+        public void op_phd_n()
+        {
+            op_io();
+            op_writestackn(regs.d.h);
+            op_writestackn(regs.d.l);
+        }
 
-        public void op_phb() { throw new NotImplementedException(); }
+        public void op_phb()
+        {
+            op_io();
+            op_writestack(regs.db);
+        }
 
-        public void op_phk() { throw new NotImplementedException(); }
+        public void op_phk()
+        {
+            op_io();
+            op_writestack(regs.pc.b);
+        }
 
-        public void op_php() { throw new NotImplementedException(); }
+        public void op_php()
+        {
+            op_io();
+            op_writestack((byte)regs.p);
+        }
 
-        public void op_pull_b(int n) { throw new NotImplementedException(); }
+        public void op_pull_b(int n)
+        {
+            op_io();
+            op_io();
+            regs.r[n].l = op_readstack();
+            regs.p.n = Convert.ToBoolean(regs.r[n].l & 0x80);
+            regs.p.z = (regs.r[n].l == 0);
+        }
 
-        public void op_pull_w(int n) { throw new NotImplementedException(); }
+        public void op_pull_w(int n)
+        {
+            op_io();
+            op_io();
+            regs.r[n].l = op_readstack();
+            regs.r[n].h = op_readstack();
+            regs.p.n = Convert.ToBoolean(regs.r[n].w & 0x8000);
+            regs.p.z = (regs.r[n].w == 0);
+        }
 
-        public void op_pld_e() { throw new NotImplementedException(); }
+        public void op_pld_e()
+        {
+            op_io();
+            op_io();
+            regs.d.l = op_readstackn();
+            regs.d.h = op_readstackn();
+            regs.p.n = Convert.ToBoolean(regs.d.w & 0x8000);
+            regs.p.z = (regs.d.w == 0);
+            regs.s.h = 0x01;
+        }
 
-        public void op_pld_n() { throw new NotImplementedException(); }
+        public void op_pld_n()
+        {
+            op_io();
+            op_io();
+            regs.d.l = op_readstackn();
+            regs.d.h = op_readstackn();
+            regs.p.n = Convert.ToBoolean(regs.d.w & 0x8000);
+            regs.p.z = (regs.d.w == 0);
+        }
 
-        public void op_plb() { throw new NotImplementedException(); }
+        public void op_plb()
+        {
+            op_io();
+            op_io();
+            regs.db = op_readstack();
+            regs.p.n = Convert.ToBoolean(regs.db & 0x80);
+            regs.p.z = (regs.db == 0);
+        }
 
-        public void op_plp_e() { throw new NotImplementedException(); }
+        public void op_plp_e()
+        {
+            op_io();
+            op_io();
+            regs.p.Assign((byte)(op_readstack() | 0x30));
+            if (regs.p.x)
+            {
+                regs.x.h = 0x00;
+                regs.y.h = 0x00;
+            }
+            update_table();
+        }
 
-        public void op_plp_n() { throw new NotImplementedException(); }
+        public void op_plp_n()
+        {
+            op_io();
+            op_io();
+            regs.p.Assign(op_readstack());
+            if (regs.p.x)
+            {
+                regs.x.h = 0x00;
+                regs.y.h = 0x00;
+            }
+            update_table();
+        }
 
-        public void op_pea_e() { throw new NotImplementedException(); }
+        public void op_pea_e()
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            op_writestackn(aa.h);
+            op_writestackn(aa.l);
+            regs.s.h = 0x01;
+        }
 
-        public void op_pea_n() { throw new NotImplementedException(); }
+        public void op_pea_n()
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            op_writestackn(aa.h);
+            op_writestackn(aa.l);
+        }
 
-        public void op_pei_e() { throw new NotImplementedException(); }
+        public void op_pei_e()
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            aa.l = op_readdp(dp + 0U);
+            aa.h = op_readdp(dp + 1U);
+            op_writestackn(aa.h);
+            op_writestackn(aa.l);
+            regs.s.h = 0x01;
+        }
 
-        public void op_pei_n() { throw new NotImplementedException(); }
+        public void op_pei_n()
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            aa.l = op_readdp(dp + 0U);
+            aa.h = op_readdp(dp + 1U);
+            op_writestackn(aa.h);
+            op_writestackn(aa.l);
+        }
 
-        public void op_per_e() { throw new NotImplementedException(); }
+        public void op_per_e()
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            op_io();
+            rd.w = (ushort)(regs.pc.d + (short)aa.w);
+            op_writestackn(rd.h);
+            op_writestackn(rd.l);
+            regs.s.h = 0x01;
+        }
 
-        public void op_per_n() { throw new NotImplementedException(); }
+        public void op_per_n()
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            op_io();
+            rd.w = (ushort)(regs.pc.d + (short)aa.w);
+            op_writestackn(rd.h);
+            op_writestackn(rd.l);
+        }
 
         public CPUCoreOperation[] opcode_table;
         public CPUCoreOperation[] op_table = new CPUCoreOperation[256 * 5];
