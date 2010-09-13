@@ -42,23 +42,23 @@ namespace Snes
         {
             state.regs[addr] = data;
 
-            if ((addr & 0x0f) == (int)VoiceReg.v_envx)
+            if ((addr & 0x0f) == (int)VoiceReg.envx)
             {
                 state.envx_buf = data;
             }
-            else if ((addr & 0x0f) == (int)VoiceReg.v_outx)
+            else if ((addr & 0x0f) == (int)VoiceReg.outx)
             {
                 state.outx_buf = data;
             }
-            else if (addr == (int)GlobalReg.r_kon)
+            else if (addr == (int)GlobalReg.kon)
             {
                 state.new_kon = data;
             }
-            else if (addr == (int)GlobalReg.r_endx)
+            else if (addr == (int)GlobalReg.endx)
             {
                 //always cleared, regardless of data written
                 state.endx_buf = 0;
-                state.regs[(int)GlobalReg.r_endx] = 0;
+                state.regs[(int)GlobalReg.endx] = 0;
             }
         }
 
@@ -268,7 +268,7 @@ namespace Snes
                 voice[i].vbit = 1 << (int)i;
                 voice[i].vidx = (int)(i * 0x10);
                 voice[i].kon_delay = 0;
-                voice[i].env_mode = (int)EnvMode.env_release;
+                voice[i].env_mode = (int)EnvMode.release;
                 voice[i].env = 0;
                 voice[i].t_envx_out = 0;
                 voice[i].hidden_env = 0;
@@ -281,7 +281,7 @@ namespace Snes
         {
             create(Enter, System.system.apu_frequency);
 
-            state.regs[(int)GlobalReg.r_flg] = 0xe0;
+            state.regs[(int)GlobalReg.flg] = 0xe0;
 
             state.noise = 0x4000;
             state.echo_hist_pos = 0;
@@ -306,12 +306,12 @@ namespace Snes
             }
         }
 
-        private enum GlobalReg { r_mvoll = 0x0c, r_mvolr = 0x1c, r_evoll = 0x2c, r_evolr = 0x3c, r_kon = 0x4c, r_koff = 0x5c, r_flg = 0x6c, r_endx = 0x7c, r_efb = 0x0d, r_pmon = 0x2d, r_non = 0x3d, r_eon = 0x4d, r_dir = 0x5d, r_esa = 0x6d, r_edl = 0x7d, r_fir = 0x0f }
+        private enum GlobalReg { mvoll = 0x0c, mvolr = 0x1c, evoll = 0x2c, evolr = 0x3c, kon = 0x4c, koff = 0x5c, flg = 0x6c, endx = 0x7c, efb = 0x0d, pmon = 0x2d, non = 0x3d, eon = 0x4d, dir = 0x5d, esa = 0x6d, edl = 0x7d, fir = 0x0f }
         //voice registers
-        private enum VoiceReg { v_voll = 0x00, v_volr = 0x01, v_pitchl = 0x02, v_pitchh = 0x03, v_srcn = 0x04, v_adsr0 = 0x05, v_adsr1 = 0x06, v_gain = 0x07, v_envx = 0x08, v_outx = 0x09 }
+        private enum VoiceReg { voll = 0x00, volr = 0x01, pitchl = 0x02, pitchh = 0x03, srcn = 0x04, adsr0 = 0x05, adsr1 = 0x06, gain = 0x07, envx = 0x08, outx = 0x09 }
 
         //internal envelope modes
-        private enum EnvMode { env_release, env_attack, env_decay, env_sustain }
+        private enum EnvMode { release, attack, decay, sustain }
 
         //internal constants
         private static readonly int echo_hist_size = 8;
@@ -435,7 +435,7 @@ namespace Snes
         {
             int env = v.env;
 
-            if (v.env_mode == (int)EnvMode.env_release)
+            if (v.env_mode == (int)EnvMode.release)
             { //60%
                 env -= 0x8;
                 if (env < 0)
@@ -447,15 +447,15 @@ namespace Snes
             }
 
             int rate;
-            int env_data = state.regs[v.vidx + (int)VoiceReg.v_adsr1];
+            int env_data = state.regs[v.vidx + (int)VoiceReg.adsr1];
             if (Convert.ToBoolean(state.t_adsr0 & 0x80))
             { //99% ADSR
-                if (v.env_mode >= (int)EnvMode.env_decay)
+                if (v.env_mode >= (int)EnvMode.decay)
                 { //99%
                     env--;
                     env -= env >> 8;
                     rate = env_data & 0x1f;
-                    if (v.env_mode == (int)EnvMode.env_decay)
+                    if (v.env_mode == (int)EnvMode.decay)
                     { //1%
                         rate = ((state.t_adsr0 >> 3) & 0x0e) + 0x10;
                     }
@@ -468,7 +468,7 @@ namespace Snes
             }
             else
             { //GAIN
-                env_data = state.regs[v.vidx + (int)VoiceReg.v_gain];
+                env_data = state.regs[v.vidx + (int)VoiceReg.gain];
                 int mode = env_data >> 5;
                 if (mode < 4)
                 { //direct
@@ -499,9 +499,9 @@ namespace Snes
             }
 
             //sustain level
-            if ((env >> 8) == (env_data >> 5) && v.env_mode == (int)EnvMode.env_decay)
+            if ((env >> 8) == (env_data >> 5) && v.env_mode == (int)EnvMode.decay)
             {
-                v.env_mode = (int)EnvMode.env_sustain;
+                v.env_mode = (int)EnvMode.sustain;
             }
             v.hidden_env = env;
 
@@ -509,9 +509,9 @@ namespace Snes
             if ((uint)env > 0x7ff)
             {
                 env = (env < 0 ? 0 : 0x7ff);
-                if (v.env_mode == (int)EnvMode.env_attack)
+                if (v.env_mode == (int)EnvMode.attack)
                 {
-                    v.env_mode = (int)EnvMode.env_decay;
+                    v.env_mode = (int)EnvMode.decay;
                 }
             }
 
@@ -596,14 +596,14 @@ namespace Snes
         //misc
         private void misc_27()
         {
-            state.t_pmon = state.regs[(int)GlobalReg.r_pmon] & ~1; //voice 0 doesn't support PMON
+            state.t_pmon = state.regs[(int)GlobalReg.pmon] & ~1; //voice 0 doesn't support PMON
         }
 
         private void misc_28()
         {
-            state.t_non = state.regs[(int)GlobalReg.r_non];
-            state.t_eon = state.regs[(int)GlobalReg.r_eon];
-            state.t_dir = state.regs[(int)GlobalReg.r_dir];
+            state.t_non = state.regs[(int)GlobalReg.non];
+            state.t_eon = state.regs[(int)GlobalReg.eon];
+            state.t_dir = state.regs[(int)GlobalReg.dir];
         }
 
         private void misc_29()
@@ -620,13 +620,13 @@ namespace Snes
             if (state.every_other_sample)
             {
                 state.kon = state.new_kon;
-                state.t_koff = state.regs[(int)GlobalReg.r_koff];
+                state.t_koff = state.regs[(int)GlobalReg.koff];
             }
 
             counter_tick();
 
             //noise
-            if (counter_poll((uint)(state.regs[(int)GlobalReg.r_flg] & 0x1f)) == true)
+            if (counter_poll((uint)(state.regs[(int)GlobalReg.flg] & 0x1f)) == true)
             {
                 int feedback = (state.noise << 13) ^ (state.noise << 14);
                 state.noise = (feedback & 0x4000) ^ (state.noise >> 1);
@@ -636,7 +636,7 @@ namespace Snes
         //voice
         private void voice_output(Voice v, bool channel)
         {   //apply left/right volume
-            int amp = (state.t_output * (sbyte)(state.regs[v.vidx + (int)VoiceReg.v_voll] + Convert.ToInt32(channel))) >> 7;
+            int amp = (state.t_output * (sbyte)(state.regs[v.vidx + (int)VoiceReg.voll] + Convert.ToInt32(channel))) >> 7;
 
             //add to output total
             state.t_main_out[Convert.ToInt32(channel)] += amp;
@@ -653,7 +653,7 @@ namespace Snes
         private void voice_1(Voice v)
         {
             state.t_dir_addr = (state.t_dir << 8) + (state.t_srcn << 2);
-            state.t_srcn = state.regs[v.vidx + (int)VoiceReg.v_srcn];
+            state.t_srcn = state.regs[v.vidx + (int)VoiceReg.srcn];
         }
 
         private void voice_2(Voice v)
@@ -667,10 +667,10 @@ namespace Snes
             byte hi = StaticRAM.apuram[(ushort)(addr + 1)];
             state.t_brr_next_addr = ((hi << 8) + lo);
 
-            state.t_adsr0 = state.regs[v.vidx + (int)VoiceReg.v_adsr0];
+            state.t_adsr0 = state.regs[v.vidx + (int)VoiceReg.adsr0];
 
             //read pitch, spread over two clocks
-            state.t_pitch = state.regs[v.vidx + (int)VoiceReg.v_pitchl];
+            state.t_pitch = state.regs[v.vidx + (int)VoiceReg.pitchl];
         }
 
         private void voice_3(Voice v)
@@ -682,7 +682,7 @@ namespace Snes
 
         private void voice_3a(Voice v)
         {
-            state.t_pitch += (state.regs[v.vidx + (int)VoiceReg.v_pitchh] & 0x3f) << 8;
+            state.t_pitch += (state.regs[v.vidx + (int)VoiceReg.pitchh] & 0x3f) << 8;
         }
 
         private void voice_3b(Voice v)
@@ -740,9 +740,9 @@ namespace Snes
             v.t_envx_out = v.env >> 4;
 
             //immediate silence due to end of sample or soft reset
-            if (Convert.ToBoolean(state.regs[(int)GlobalReg.r_flg] & 0x80) || (state.t_brr_header & 3) == 1)
+            if (Convert.ToBoolean(state.regs[(int)GlobalReg.flg] & 0x80) || (state.t_brr_header & 3) == 1)
             {
-                v.env_mode = (int)EnvMode.env_release;
+                v.env_mode = (int)EnvMode.release;
                 v.env = 0;
             }
 
@@ -751,14 +751,14 @@ namespace Snes
                 //KOFF
                 if (Convert.ToBoolean(state.t_koff & v.vbit))
                 {
-                    v.env_mode = (int)EnvMode.env_release;
+                    v.env_mode = (int)EnvMode.release;
                 }
 
                 //KON
                 if (Convert.ToBoolean(state.kon & v.vbit))
                 {
                     v.kon_delay = 5;
-                    v.env_mode = (int)EnvMode.env_attack;
+                    v.env_mode = (int)EnvMode.attack;
                 }
             }
 
@@ -807,7 +807,7 @@ namespace Snes
             voice_output(v, Convert.ToBoolean(1));
 
             //ENDX, OUTX and ENVX won't update if you wrote to them 1-2 clocks earlier
-            state.endx_buf = state.regs[(int)GlobalReg.r_endx] | state.t_looped;
+            state.endx_buf = state.regs[(int)GlobalReg.endx] | state.t_looped;
 
             //clear bit in ENDX if KON just began
             if (v.kon_delay == 5)
@@ -823,18 +823,18 @@ namespace Snes
 
         private void voice_7(Voice v)
         {   //update ENDX
-            state.regs[(int)GlobalReg.r_endx] = (byte)state.endx_buf;
+            state.regs[(int)GlobalReg.endx] = (byte)state.endx_buf;
             state.envx_buf = v.t_envx_out;
         }
 
         private void voice_8(Voice v)
         {   //update OUTX
-            state.regs[v.vidx + (int)VoiceReg.v_outx] = (byte)state.outx_buf;
+            state.regs[v.vidx + (int)VoiceReg.outx] = (byte)state.outx_buf;
         }
 
         private void voice_9(Voice v)
         {   //update ENVX
-            state.regs[v.vidx + (int)VoiceReg.v_envx] = (byte)state.envx_buf;
+            state.regs[v.vidx + (int)VoiceReg.envx] = (byte)state.envx_buf;
         }
 
         //echo
@@ -842,14 +842,14 @@ namespace Snes
         {
             int s = state.echo_hist[Convert.ToInt32(channel)][state.echo_hist_pos + i + 1];
             //TODO: verify this matches the macro
-            return (s * (sbyte)(state.regs[(int)GlobalReg.r_fir + i * 0x10])) >> 6;
+            return (s * (sbyte)(state.regs[(int)GlobalReg.fir + i * 0x10])) >> 6;
         }
 
         private int echo_output(bool channel)
         {
             //TODO: verify this matches the macro
-            int output = (short)((state.t_main_out[Convert.ToInt32(channel)] * (sbyte)(state.regs[(int)GlobalReg.r_mvoll + Convert.ToInt32(channel) * 0x10])) >> 7)
-                + (short)((state.t_echo_in[Convert.ToInt32(channel)] * (sbyte)(state.regs[(int)GlobalReg.r_evoll + Convert.ToInt32(channel) * 0x10])) >> 7);
+            int output = (short)((state.t_main_out[Convert.ToInt32(channel)] * (sbyte)(state.regs[(int)GlobalReg.mvoll + Convert.ToInt32(channel) * 0x10])) >> 7)
+                + (short)((state.t_echo_in[Convert.ToInt32(channel)] * (sbyte)(state.regs[(int)GlobalReg.evoll + Convert.ToInt32(channel) * 0x10])) >> 7);
             return Bit.sclamp(16, output);
         }
 
@@ -935,8 +935,8 @@ namespace Snes
             state.t_main_out[0] = echo_output(Convert.ToBoolean(0));
 
             //echo feedback
-            int l = state.t_echo_out[0] + (short)((state.t_echo_in[0] * (sbyte)state.regs[(int)GlobalReg.r_efb]) >> 7);
-            int r = state.t_echo_out[1] + (short)((state.t_echo_in[1] * (sbyte)state.regs[(int)GlobalReg.r_efb]) >> 7);
+            int l = state.t_echo_out[0] + (short)((state.t_echo_in[0] * (sbyte)state.regs[(int)GlobalReg.efb]) >> 7);
+            int r = state.t_echo_out[1] + (short)((state.t_echo_in[1] * (sbyte)state.regs[(int)GlobalReg.efb]) >> 7);
 
             state.t_echo_out[0] = Bit.sclamp(16, l) & ~1;
             state.t_echo_out[1] = Bit.sclamp(16, r) & ~1;
@@ -951,7 +951,7 @@ namespace Snes
 
             //TODO: global muting isn't this simple
             //(turns DAC on and off or something, causing small ~37-sample pulse when first muted)
-            if (Convert.ToBoolean(state.regs[(int)GlobalReg.r_flg] & 0x40))
+            if (Convert.ToBoolean(state.regs[(int)GlobalReg.flg] & 0x40))
             {
                 outl = 0;
                 outr = 0;
@@ -963,16 +963,16 @@ namespace Snes
 
         private void echo_28()
         {
-            state.t_echo_disabled = state.regs[(int)GlobalReg.r_flg];
+            state.t_echo_disabled = state.regs[(int)GlobalReg.flg];
         }
 
         private void echo_29()
         {
-            state.t_esa = state.regs[(int)GlobalReg.r_esa];
+            state.t_esa = state.regs[(int)GlobalReg.esa];
 
             if (!Convert.ToBoolean(state.echo_offset))
             {
-                state.echo_length = (state.regs[(int)GlobalReg.r_edl] & 0x0f) << 11;
+                state.echo_length = (state.regs[(int)GlobalReg.edl] & 0x0f) << 11;
             }
 
             state.echo_offset += 4;
@@ -984,7 +984,7 @@ namespace Snes
             //write left echo
             echo_write(Convert.ToBoolean(0));
 
-            state.t_echo_disabled = state.regs[(int)GlobalReg.r_flg];
+            state.t_echo_disabled = state.regs[(int)GlobalReg.flg];
         }
 
         private void echo_30()

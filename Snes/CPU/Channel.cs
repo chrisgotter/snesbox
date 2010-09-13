@@ -1,4 +1,5 @@
-﻿using Nall;
+﻿using System.Runtime.InteropServices;
+using Nall;
 
 namespace Snes
 {
@@ -7,49 +8,54 @@ namespace Snes
         private class Channel
         {
             //$420b
-            bool dma_enabled;
+            public bool dma_enabled;
 
             //$420c
-            bool hdma_enabled;
+            public bool hdma_enabled;
 
             //$43x0
-            bool direction;
-            bool indirect;
-            bool unused;
-            bool reverse_transfer;
-            bool fixed_transfer;
-            uint3 transfer_mode;
+            public bool direction;
+            public bool indirect;
+            public bool unused;
+            public bool reverse_transfer;
+            public bool fixed_transfer;
+            public uint3 transfer_mode = new uint3();
 
             //$43x1
-            byte dest_addr;
+            public byte dest_addr;
 
             //$43x2-$43x3
-            ushort source_addr;
+            public ushort source_addr;
 
             //$43x4
-            byte source_bank;
+            public byte source_bank;
 
             //$43x5-$43x6
-            //union {
-            //ushort transfer_size;
-            //ushort indirect_addr;
-            //}
+            [StructLayout(LayoutKind.Explicit)]
+            public struct Union
+            {
+                [FieldOffset(0)]
+                public ushort transfer_size;
+                [FieldOffset(0)]
+                public ushort indirect_addr;
+            }
+            public Union union = new Union();
 
             //$43x7
-            private byte indirect_bank;
+            public byte indirect_bank;
 
             //$43x8-$43x9
-            private ushort hdma_addr;
+            public ushort hdma_addr;
 
             //$43xa
-            private byte line_counter;
+            public byte line_counter;
 
             //$43xb/$43xf
-            private byte unknown;
+            public byte unknown;
 
             //internal state
-            bool hdma_completed;
-            bool hdma_do_transfer;
+            public bool hdma_completed;
+            public bool hdma_do_transfer;
         }
     }
 }

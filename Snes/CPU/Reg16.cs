@@ -1,28 +1,27 @@
-﻿using Nall;
+﻿using System.Runtime.InteropServices;
 
 namespace Snes
 {
     partial class CPUCore
     {
+        [StructLayout(LayoutKind.Explicit)]
         public class Reg16
         {
+            [FieldOffset(0)]
             public ushort w;
 
-            public byte l
-            {
-                get
-                {
-                    return Bit.LSB2(w, 0);
-                }
-            }
-
-            public byte h
-            {
-                get
-                {
-                    return Bit.LSB2(w, 1);
-                }
-            }
+#if BIG_ENDIAN
+            [FieldOffset(1)]
+#else
+            [FieldOffset(0)]
+#endif
+            public byte l;
+#if BIG_ENDIAN
+            [FieldOffset(0)]
+#else
+            [FieldOffset(1)]
+#endif
+            public byte h;
 
             public static explicit operator uint(Reg16 reg16)
             {

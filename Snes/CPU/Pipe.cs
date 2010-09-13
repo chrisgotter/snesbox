@@ -5,9 +5,9 @@ namespace Snes
     {
         private class Pipe
         {
-            bool valid;
-            uint addr;
-            byte data;
+            public bool valid;
+            public uint addr;
+            public byte data;
         }
     }
 }

@@ -6,90 +6,90 @@ namespace Snes
     {
         private class Status
         {
-            bool interrupt_pending;
-            ushort interrupt_vector;
+            public bool interrupt_pending;
+            public ushort interrupt_vector;
 
-            uint clock_count;
-            uint line_clocks;
+            public uint clock_count;
+            public uint line_clocks;
 
             //timing
-            bool irq_lock;
+            public bool irq_lock;
 
-            uint dram_refresh_position;
-            bool dram_refreshed;
+            public uint dram_refresh_position;
+            public bool dram_refreshed;
 
-            uint hdma_init_position;
-            bool hdma_init_triggered;
+            public uint hdma_init_position;
+            public bool hdma_init_triggered;
 
-            uint hdma_position;
-            bool hdma_triggered;
+            public uint hdma_position;
+            public bool hdma_triggered;
 
-            bool nmi_valid;
-            bool nmi_line;
-            bool nmi_transition;
-            bool nmi_pending;
-            bool nmi_hold;
+            public bool nmi_valid;
+            public bool nmi_line;
+            public bool nmi_transition;
+            public bool nmi_pending;
+            public bool nmi_hold;
 
-            bool irq_valid;
-            bool irq_line;
-            bool irq_transition;
-            bool irq_pending;
-            bool irq_hold;
+            public bool irq_valid;
+            public bool irq_line;
+            public bool irq_transition;
+            public bool irq_pending;
+            public bool irq_hold;
 
-            bool reset_pending;
+            public bool reset_pending;
 
             //DMA
-            bool dma_active;
-            uint dma_counter;
-            uint dma_clocks;
-            bool dma_pending;
-            bool hdma_pending;
-            bool hdma_mode;  //0 = init, 1 = run
+            public bool dma_active;
+            public uint dma_counter;
+            public uint dma_clocks;
+            public bool dma_pending;
+            public bool hdma_pending;
+            public bool hdma_mode;  //0 = init, 1 = run
 
             //MMIO
             //$2140-217f
-            byte[] port = new byte[4];
+            public byte[] port = new byte[4];
 
             //$2181-$2183
-            uint17 wram_addr;
+            public uint17 wram_addr = new uint17();
 
             //$4016-$4017
-            bool joypad_strobe_latch;
-            uint joypad1_bits;
-            uint joypad2_bits;
+            public bool joypad_strobe_latch;
+            public uint joypad1_bits;
+            public uint joypad2_bits;
 
             //$4200
-            bool nmi_enabled;
-            bool hirq_enabled, virq_enabled;
-            bool auto_joypad_poll;
+            public bool nmi_enabled;
+            public bool hirq_enabled, virq_enabled;
+            public bool auto_joypad_poll;
 
             //$4201
-            byte pio;
+            public byte pio;
 
             //$4202-$4203
-            byte wrmpya;
-            byte wrmpyb;
+            public byte wrmpya;
+            public byte wrmpyb;
 
             //$4204-$4206
-            ushort wrdiva;
-            byte wrdivb;
+            public ushort wrdiva;
+            public byte wrdivb;
 
             //$4207-$420a
-            uint10 hirq_pos;
-            uint10 virq_pos;
+            public uint10 hirq_pos = new uint10();
+            public uint10 virq_pos = new uint10();
 
             //$420d
-            uint rom_speed;
+            public uint rom_speed;
 
             //$4214-$4217
-            ushort rddiv;
-            ushort rdmpy;
+            public ushort rddiv;
+            public ushort rdmpy;
 
             //$4218-$421f
-            byte joy1l, joy1h;
-            byte joy2l, joy2h;
-            byte joy3l, joy3h;
-            byte joy4l, joy4h;
+            public byte joy1l, joy1h;
+            public byte joy2l, joy2h;
+            public byte joy3l, joy3h;
+            public byte joy4l, joy4h;
         }
     }
 }

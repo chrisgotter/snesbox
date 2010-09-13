@@ -106,8 +106,8 @@ namespace Snes
         private byte r4841;  //RTC index/data port
         private byte r4842;  //RTC status
 
-        private enum RTC_State { RTCS_Inactive, RTCS_ModeSelect, RTCS_IndexSelect, RTCS_Write }
-        private enum RTC_Mode { RTCM_Linear = 0x03, RTCM_Indexed = 0x0c }
+        private enum RTC_State { Inactive, ModeSelect, IndexSelect, Write }
+        private enum RTC_Mode { Linear = 0x03, Indexed = 0x0c }
         private uint rtc_state;
         private uint rtc_mode;
         private uint rtc_index;

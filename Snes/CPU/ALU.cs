@@ -5,9 +5,9 @@ namespace Snes
     {
         private class ALU
         {
-            uint mpyctr;
-            uint divctr;
-            uint shift;
+            public uint mpyctr;
+            public uint divctr;
+            public uint shift;
         }
     }
 }

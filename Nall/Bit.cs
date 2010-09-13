@@ -44,19 +44,5 @@ namespace Nall
         {
             return BitConverter.ToUInt16(BitConverter.GetBytes(value), 0);
         }
-
-        public static byte LSB2(ushort value, int byteIndex)
-        {
-            var bits = BitConverter.GetBytes(value);
-            if (BitConverter.IsLittleEndian)
-            {
-                return bits[byteIndex];
-            }
-            else
-            {
-                Array.Reverse(bits);
-                return bits[byteIndex];
-            }
-        }
     }
 }

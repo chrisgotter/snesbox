@@ -22,7 +22,7 @@ namespace Snes
         public void op_writedp(uint addr, byte data) { throw new NotImplementedException(); }
         public void op_writesp(uint addr, byte data) { throw new NotImplementedException(); }
 
-        public enum OPTYPE { OPTYPE_DP = 0, OPTYPE_DPX, OPTYPE_DPY, OPTYPE_IDP, OPTYPE_IDPX, OPTYPE_IDPY, OPTYPE_ILDP, OPTYPE_ILDPY, OPTYPE_ADDR, OPTYPE_ADDRX, OPTYPE_ADDRY, OPTYPE_IADDRX, OPTYPE_ILADDR, OPTYPE_LONG, OPTYPE_LONGX, OPTYPE_SR, OPTYPE_ISRY, OPTYPE_ADDR_PC, OPTYPE_IADDR_PC, OPTYPE_RELB, OPTYPE_RELW }
+        public enum OPTYPE { DP = 0, DPX, DPY, IDP, IDPX, IDPY, ILDP, ILDPY, ADDR, ADDRX, ADDRY, IADDRX, ILADDR, LONG, LONGX, SR, ISRY, ADDR_PC, IADDR_PC, RELB, RELW }
 
         public void disassemble_opcode(string output, uint addr) { throw new NotImplementedException(); }
         public byte dreadb(uint addr) { throw new NotImplementedException(); }
@@ -31,8 +31,9 @@ namespace Snes
         public uint decode(byte offset_type, uint addr) { throw new NotImplementedException(); }
         public byte opcode_length() { throw new NotImplementedException(); }
 
-        public Regs regs;
-        public Reg24 aa, rd;
+        public Regs regs = new Regs();
+        public Reg24 aa = new Reg24();
+        public Reg24 rd = new Reg24();
         public byte sp, dp;
 
         public abstract void op_io();
@@ -231,7 +232,7 @@ namespace Snes
         public void initialize_opcode_table() { throw new NotImplementedException(); }
         public void update_table() { throw new NotImplementedException(); }
 
-        public enum Table { table_EM = 0, table_MX = 256, table_Mx = 512, table_mX = 768, table_mx = 1024 }
+        public enum Table { EM = 0, MX = 256, Mx = 512, mX = 768, mx = 1024 }
 
         public CPUCore() { throw new NotImplementedException(); }
     }
