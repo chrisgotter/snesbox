@@ -1656,7 +1656,7 @@ namespace Snes
 
         private void op_step()
         {
-            opcode_table[op_readpc()]();
+            opcode_table[op_readpc()].Invoke();
         }
 
         private Processor _processor = new Processor();

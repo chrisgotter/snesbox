@@ -175,6 +175,8 @@
     <Compile Include="CPU\Channel.cs" />
     <Compile Include="CPU\CPU.cs" />
     <Compile Include="CPU\CPUCore.cs" />
+    <Compile Include="CPU\CPUCoreOpArgument.cs" />
+    <Compile Include="CPU\CPUCoreOperation.cs" />
     <Compile Include="CPU\Flag.cs" />
     <Compile Include="CPU\Pipe.cs" />
     <Compile Include="CPU\Reg16.cs" />

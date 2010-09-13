@@ -1649,17 +1649,17 @@ namespace Snes
             rd.w |= regs.a.w;
         }
 
-        public void op_read_const_b(Operation op)
+        public void op_read_const_b(CPUCoreOperation op)
         {
             rd.l = op_readpc();
-            op();
+            op.Invoke();
         }
 
-        public void op_read_const_w(Operation op)
+        public void op_read_const_w(CPUCoreOperation op)
         {
             rd.l = op_readpc();
             rd.h = op_readpc();
-            op();
+            op.Invoke();
         }
 
         public void op_read_bit_const_b()
@@ -1675,146 +1675,146 @@ namespace Snes
             regs.p.z = ((rd.w & regs.a.w) == 0);
         }
 
-        public void op_read_addr_b(Operation op)
+        public void op_read_addr_b(CPUCoreOperation op)
         {
             aa.l = op_readpc();
             aa.h = op_readpc();
             rd.l = op_readdbr(aa.w);
-            op();
+            op.Invoke();
         }
 
-        public void op_read_addr_w(Operation op)
+        public void op_read_addr_w(CPUCoreOperation op)
         {
             aa.l = op_readpc();
             aa.h = op_readpc();
             rd.l = op_readdbr(aa.w + 0U);
             rd.h = op_readdbr(aa.w + 1U);
-            op();
+            op.Invoke();
         }
 
-        public void op_read_addrx_b(Operation op)
+        public void op_read_addrx_b(CPUCoreOperation op)
         {
             aa.l = op_readpc();
             aa.h = op_readpc();
             op_io_cond4(aa.w, (ushort)(aa.w + regs.x.w));
             rd.l = op_readdbr((uint)(aa.w + regs.x.w));
-            op();
+            op.Invoke();
         }
 
-        public void op_read_addrx_w(Operation op)
+        public void op_read_addrx_w(CPUCoreOperation op)
         {
             aa.l = op_readpc();
             aa.h = op_readpc();
             op_io_cond4(aa.w, (ushort)(aa.w + regs.x.w));
             rd.l = op_readdbr((uint)(aa.w + regs.x.w + 0));
             rd.h = op_readdbr((uint)(aa.w + regs.x.w + 1));
-            op();
+            op.Invoke();
         }
 
-        public void op_read_addry_b(Operation op)
+        public void op_read_addry_b(CPUCoreOperation op)
         {
             aa.l = op_readpc();
             aa.h = op_readpc();
             op_io_cond4(aa.w, (ushort)(aa.w + regs.y.w));
             rd.l = op_readdbr((uint)(aa.w + regs.y.w));
-            op();
+            op.Invoke();
         }
 
-        public void op_read_addry_w(Operation op)
+        public void op_read_addry_w(CPUCoreOperation op)
         {
             aa.l = op_readpc();
             aa.h = op_readpc();
             op_io_cond4(aa.w, (ushort)(aa.w + regs.y.w));
             rd.l = op_readdbr((uint)(aa.w + regs.y.w + 0));
             rd.h = op_readdbr((uint)(aa.w + regs.y.w + 1));
-            op();
+            op.Invoke();
         }
 
-        public void op_read_long_b(Operation op)
+        public void op_read_long_b(CPUCoreOperation op)
         {
             aa.l = op_readpc();
             aa.h = op_readpc();
             aa.b = op_readpc();
             rd.l = op_readlong(aa.d);
-            op();
+            op.Invoke();
         }
 
-        public void op_read_long_w(Operation op)
+        public void op_read_long_w(CPUCoreOperation op)
         {
             aa.l = op_readpc();
             aa.h = op_readpc();
             aa.b = op_readpc();
             rd.l = op_readlong(aa.d + 0);
             rd.h = op_readlong(aa.d + 1);
-            op();
+            op.Invoke();
         }
 
-        public void op_read_longx_b(Operation op)
+        public void op_read_longx_b(CPUCoreOperation op)
         {
             aa.l = op_readpc();
             aa.h = op_readpc();
             aa.b = op_readpc();
             rd.l = op_readlong(aa.d + regs.x.w);
-            op();
+            op.Invoke();
         }
 
-        public void op_read_longx_w(Operation op)
+        public void op_read_longx_w(CPUCoreOperation op)
         {
             aa.l = op_readpc();
             aa.h = op_readpc();
             aa.b = op_readpc();
             rd.l = op_readlong(aa.d + regs.x.w + 0);
             rd.h = op_readlong(aa.d + regs.x.w + 1);
-            op();
+            op.Invoke();
         }
 
-        public void op_read_dp_b(Operation op)
+        public void op_read_dp_b(CPUCoreOperation op)
         {
             dp = op_readpc();
             op_io_cond2();
             rd.l = op_readdp(dp);
-            op();
+            op.Invoke();
         }
 
-        public void op_read_dp_w(Operation op)
+        public void op_read_dp_w(CPUCoreOperation op)
         {
             dp = op_readpc();
             op_io_cond2();
             rd.l = op_readdp(dp + 0U);
             rd.h = op_readdp(dp + 1U);
-            op();
+            op.Invoke();
         }
 
-        public void op_read_dpr_b(Operation op, int n)
+        public void op_read_dpr_b(CPUCoreOperation op, int n)
         {
             dp = op_readpc();
             op_io_cond2();
             op_io();
             rd.l = op_readdp((uint)(dp + regs.r[n].w));
-            op();
+            op.Invoke();
         }
 
-        public void op_read_dpr_w(Operation op, int n)
+        public void op_read_dpr_w(CPUCoreOperation op, int n)
         {
             dp = op_readpc();
             op_io_cond2();
             op_io();
             rd.l = op_readdp((uint)(dp + regs.r[n].w + 0));
             rd.h = op_readdp((uint)(dp + regs.r[n].w + 1));
-            op();
+            op.Invoke();
         }
 
-        public void op_read_idp_b(Operation op)
+        public void op_read_idp_b(CPUCoreOperation op)
         {
             dp = op_readpc();
             op_io_cond2();
             aa.l = op_readdp(dp + 0U);
             aa.h = op_readdp(dp + 1U);
             rd.l = op_readdbr(aa.w);
-            op();
+            op.Invoke();
         }
 
-        public void op_read_idp_w(Operation op)
+        public void op_read_idp_w(CPUCoreOperation op)
         {
             dp = op_readpc();
             op_io_cond2();
@@ -1822,10 +1822,10 @@ namespace Snes
             aa.h = op_readdp(dp + 1U);
             rd.l = op_readdbr(aa.w + 0U);
             rd.h = op_readdbr(aa.w + 1U);
-            op();
+            op.Invoke();
         }
 
-        public void op_read_idpx_b(Operation op)
+        public void op_read_idpx_b(CPUCoreOperation op)
         {
             dp = op_readpc();
             op_io_cond2();
@@ -1833,10 +1833,10 @@ namespace Snes
             aa.l = op_readdp((uint)(dp + regs.x.w + 0));
             aa.h = op_readdp((uint)(dp + regs.x.w + 1));
             rd.l = op_readdbr(aa.w);
-            op();
+            op.Invoke();
         }
 
-        public void op_read_idpx_w(Operation op)
+        public void op_read_idpx_w(CPUCoreOperation op)
         {
             dp = op_readpc();
             op_io_cond2();
@@ -1845,10 +1845,10 @@ namespace Snes
             aa.h = op_readdp((uint)(dp + regs.x.w + 1));
             rd.l = op_readdbr(aa.w + 0U);
             rd.h = op_readdbr(aa.w + 1U);
-            op();
+            op.Invoke();
         }
 
-        public void op_read_idpy_b(Operation op)
+        public void op_read_idpy_b(CPUCoreOperation op)
         {
             dp = op_readpc();
             op_io_cond2();
@@ -1856,10 +1856,10 @@ namespace Snes
             aa.h = op_readdp(dp + 1U);
             op_io_cond4(aa.w, (ushort)(aa.w + regs.y.w));
             rd.l = op_readdbr((uint)(aa.w + regs.y.w));
-            op();
+            op.Invoke();
         }
 
-        public void op_read_idpy_w(Operation op)
+        public void op_read_idpy_w(CPUCoreOperation op)
         {
             dp = op_readpc();
             op_io_cond2();
@@ -1868,10 +1868,10 @@ namespace Snes
             op_io_cond4(aa.w, (ushort)(aa.w + regs.y.w));
             rd.l = op_readdbr((uint)(aa.w + regs.y.w + 0));
             rd.h = op_readdbr((uint)(aa.w + regs.y.w + 1));
-            op();
+            op.Invoke();
         }
 
-        public void op_read_ildp_b(Operation op)
+        public void op_read_ildp_b(CPUCoreOperation op)
         {
             dp = op_readpc();
             op_io_cond2();
@@ -1879,10 +1879,10 @@ namespace Snes
             aa.h = op_readdp(dp + 1U);
             aa.b = op_readdp(dp + 2U);
             rd.l = op_readlong(aa.d);
-            op();
+            op.Invoke();
         }
 
-        public void op_read_ildp_w(Operation op)
+        public void op_read_ildp_w(CPUCoreOperation op)
         {
             dp = op_readpc();
             op_io_cond2();
@@ -1891,10 +1891,10 @@ namespace Snes
             aa.b = op_readdp(dp + 2U);
             rd.l = op_readlong(aa.d + 0);
             rd.h = op_readlong(aa.d + 1);
-            op();
+            op.Invoke();
         }
 
-        public void op_read_ildpy_b(Operation op)
+        public void op_read_ildpy_b(CPUCoreOperation op)
         {
             dp = op_readpc();
             op_io_cond2();
@@ -1902,10 +1902,10 @@ namespace Snes
             aa.h = op_readdp(dp + 1U);
             aa.b = op_readdp(dp + 2U);
             rd.l = op_readlong(aa.d + regs.y.w);
-            op();
+            op.Invoke();
         }
 
-        public void op_read_ildpy_w(Operation op)
+        public void op_read_ildpy_w(CPUCoreOperation op)
         {
             dp = op_readpc();
             op_io_cond2();
@@ -1914,27 +1914,27 @@ namespace Snes
             aa.b = op_readdp(dp + 2U);
             rd.l = op_readlong(aa.d + regs.y.w + 0);
             rd.h = op_readlong(aa.d + regs.y.w + 1);
-            op();
+            op.Invoke();
         }
 
-        public void op_read_sr_b(Operation op)
+        public void op_read_sr_b(CPUCoreOperation op)
         {
             sp = op_readpc();
             op_io();
             rd.l = op_readsp(sp);
-            op();
+            op.Invoke();
         }
 
-        public void op_read_sr_w(Operation op)
+        public void op_read_sr_w(CPUCoreOperation op)
         {
             sp = op_readpc();
             op_io();
             rd.l = op_readsp(sp + 0U);
             rd.h = op_readsp(sp + 1U);
-            op();
+            op.Invoke();
         }
 
-        public void op_read_isry_b(Operation op)
+        public void op_read_isry_b(CPUCoreOperation op)
         {
             sp = op_readpc();
             op_io();
@@ -1942,10 +1942,10 @@ namespace Snes
             aa.h = op_readsp(sp + 1U);
             op_io();
             rd.l = op_readdbr((uint)(aa.w + regs.y.w));
-            op();
+            op.Invoke();
         }
 
-        public void op_read_isry_w(Operation op)
+        public void op_read_isry_w(CPUCoreOperation op)
         {
             sp = op_readpc();
             op_io();
@@ -1954,7 +1954,7 @@ namespace Snes
             op_io();
             rd.l = op_readdbr((uint)(aa.w + regs.y.w + 0));
             rd.h = op_readdbr((uint)(aa.w + regs.y.w + 1));
-            op();
+            op.Invoke();
         }
 
         public void op_write_addr_b(int n)
@@ -2269,21 +2269,21 @@ namespace Snes
             regs.p.z = (regs.a.w == 0);
         }
 
-        public void op_adjust_addr_b(Operation op) { throw new NotImplementedException(); }
+        public void op_adjust_addr_b(CPUCoreOperation op) { throw new NotImplementedException(); }
 
-        public void op_adjust_addr_w(Operation op) { throw new NotImplementedException(); }
+        public void op_adjust_addr_w(CPUCoreOperation op) { throw new NotImplementedException(); }
 
-        public void op_adjust_addrx_b(Operation op) { throw new NotImplementedException(); }
+        public void op_adjust_addrx_b(CPUCoreOperation op) { throw new NotImplementedException(); }
 
-        public void op_adjust_addrx_w(Operation op) { throw new NotImplementedException(); }
+        public void op_adjust_addrx_w(CPUCoreOperation op) { throw new NotImplementedException(); }
 
-        public void op_adjust_dp_b(Operation op) { throw new NotImplementedException(); }
+        public void op_adjust_dp_b(CPUCoreOperation op) { throw new NotImplementedException(); }
 
-        public void op_adjust_dp_w(Operation op) { throw new NotImplementedException(); }
+        public void op_adjust_dp_w(CPUCoreOperation op) { throw new NotImplementedException(); }
 
-        public void op_adjust_dpx_b(Operation op) { throw new NotImplementedException(); }
+        public void op_adjust_dpx_b(CPUCoreOperation op) { throw new NotImplementedException(); }
 
-        public void op_adjust_dpx_w(Operation op) { throw new NotImplementedException(); }
+        public void op_adjust_dpx_w(CPUCoreOperation op) { throw new NotImplementedException(); }
 
         public void op_branch(int bit, int val) { throw new NotImplementedException(); }
 
@@ -2403,37 +2403,128 @@ namespace Snes
 
         public void op_per_n() { throw new NotImplementedException(); }
 
-        public Operation[] opcode_table;
-        public Operation[] op_table = new Operation[256 * 5];
+        public CPUCoreOperation[] opcode_table;
+        public CPUCoreOperation[] op_table = new CPUCoreOperation[256 * 5];
 
-        public void initialize_opcode_table() { throw new NotImplementedException(); }
+        private void opA(byte id, CPUCoreOp op_name)
+        {
+            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.Mx + id] = op_table[(int)Table.mX + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(op_name, null);
+        }
+
+        private void opAII(byte id, CPUCoreOp op_name, int x, int y)
+        {
+            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.Mx + id] = op_table[(int)Table.mX + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(op_name, null);
+        }
+
+        private void opE(byte id, CPUCoreOp op_name_e, CPUCoreOp op_name_n)
+        {
+            op_table[(int)Table.EM + id] = new CPUCoreOperation(op_name_e, null);
+            op_table[(int)Table.MX + id] = op_table[(int)Table.Mx + id] = op_table[(int)Table.mX + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(op_name_n, null);
+        }
+
+        private void opEI(byte id, CPUCoreOp op_name_e, CPUCoreOp op_name_n, int x)
+        {
+            op_table[(int)Table.EM + id] = new CPUCoreOperation(op_name_e, null);
+            op_table[(int)Table.MX + id] = op_table[(int)Table.Mx + id] = op_table[(int)Table.mX + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(op_name_n, null);
+        }
+
+        private void opEII(byte id, CPUCoreOp op_name_e, CPUCoreOp op_name_n, int x, int y)
+        {
+            op_table[(int)Table.EM + id] = new CPUCoreOperation(op_name_e, null);
+            op_table[(int)Table.MX + id] = op_table[(int)Table.Mx + id] = op_table[(int)Table.mX + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(op_name_n, null);
+        }
+
+        private void opM(byte id, CPUCoreOp op_name_b, CPUCoreOp op_name_w)
+        {
+            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.Mx + id] = new CPUCoreOperation(op_name_b, null);
+            op_table[(int)Table.mX + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(op_name_w, null);
+        }
+
+        private void opMI(byte id, CPUCoreOp op_name_b, CPUCoreOp op_name_w, int x)
+        {
+            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.Mx + id] = new CPUCoreOperation(op_name_b, null);
+            op_table[(int)Table.mX + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(op_name_w, null);
+        }
+
+        private void opMII(byte id, CPUCoreOp op_name_b, CPUCoreOp op_name_w, int x, int y)
+        {
+            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.Mx + id] = new CPUCoreOperation(op_name_b, null);
+            op_table[(int)Table.mX + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(op_name_w, null);
+        }
+
+        private void opMF(byte id, CPUCoreOp op_name_b, CPUCoreOp op_fn_b, CPUCoreOp op_name_w, CPUCoreOp op_fn_w)
+        {
+            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.Mx + id] = new CPUCoreOperation(op_name_b, null);
+            op_table[(int)Table.mX + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(op_name_w, null);
+        }
+
+        private void opMFI(byte id, CPUCoreOp op_name_b, CPUCoreOp op_fn_b, CPUCoreOp op_name_w, CPUCoreOp op_fn_w, int x, int y)
+        {
+            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.Mx + id] = new CPUCoreOperation(op_name_b, null);
+            op_table[(int)Table.mX + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(op_name_w, null);
+        }
+
+        private void opX(byte id, CPUCoreOp op_name_b, CPUCoreOp op_name_w)
+        {
+            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.mX + id] = new CPUCoreOperation(op_name_b, null);
+            op_table[(int)Table.Mx + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(op_name_w, null);
+        }
+
+        private void opXI(byte id, CPUCoreOp op_name_b, CPUCoreOp op_name_w, int x)
+        {
+            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.mX + id] = new CPUCoreOperation(op_name_b, null);
+            op_table[(int)Table.Mx + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(op_name_w, null);
+        }
+
+        private void opXII(byte id, CPUCoreOp op_name_b, CPUCoreOp op_name_w, int x, int y)
+        {
+            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.mX + id] = new CPUCoreOperation(op_name_b, null);
+            op_table[(int)Table.Mx + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(op_name_w, null);
+        }
+
+        private void opXF(byte id, CPUCoreOp op_name_b, CPUCoreOp op_fn_b, CPUCoreOp op_name_w, CPUCoreOp op_fn_w)
+        {
+            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.mX + id] = new CPUCoreOperation(op_name_b, null);
+            op_table[(int)Table.Mx + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(op_name_w, null);
+        }
+
+        private void opXFI(byte id, CPUCoreOp op_name_b, CPUCoreOp op_fn_b, CPUCoreOp op_name_w, CPUCoreOp op_fn_w, int x)
+        {
+            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.mX + id] = new CPUCoreOperation(op_name_b, null);
+            op_table[(int)Table.Mx + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(op_name_w, null);
+        }
+
+        public void initialize_opcode_table()
+        {
+            { throw new NotImplementedException(); }
+        }
 
         public void update_table()
         {
             if (regs.e)
             {
-                opcode_table = new ArraySegment<Operation>(op_table, (int)Table.EM, op_table.Length - (int)Table.EM).Array;
+                opcode_table = new ArraySegment<CPUCoreOperation>(op_table, (int)Table.EM, op_table.Length - (int)Table.EM).Array;
             }
             else if (regs.p.m)
             {
                 if (regs.p.x)
                 {
-                    opcode_table = new ArraySegment<Operation>(op_table, (int)Table.MX, op_table.Length - (int)Table.MX).Array;
+                    opcode_table = new ArraySegment<CPUCoreOperation>(op_table, (int)Table.MX, op_table.Length - (int)Table.MX).Array;
                 }
                 else
                 {
-                    opcode_table = new ArraySegment<Operation>(op_table, (int)Table.Mx, op_table.Length - (int)Table.Mx).Array;
+                    opcode_table = new ArraySegment<CPUCoreOperation>(op_table, (int)Table.Mx, op_table.Length - (int)Table.Mx).Array;
                 }
             }
             else
             {
                 if (regs.p.x)
                 {
-                    opcode_table = new ArraySegment<Operation>(op_table, (int)Table.mX, op_table.Length - (int)Table.mX).Array;
+                    opcode_table = new ArraySegment<CPUCoreOperation>(op_table, (int)Table.mX, op_table.Length - (int)Table.mX).Array;
                 }
                 else
                 {
-                    opcode_table = new ArraySegment<Operation>(op_table, (int)Table.mx, op_table.Length - (int)Table.mx).Array;
+                    opcode_table = new ArraySegment<CPUCoreOperation>(op_table, (int)Table.mx, op_table.Length - (int)Table.mx).Array;
                 }
             }
         }
