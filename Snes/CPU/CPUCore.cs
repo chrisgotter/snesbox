@@ -2269,57 +2269,297 @@ namespace Snes
             regs.p.z = (regs.a.w == 0);
         }
 
-        public void op_adjust_addr_b(CPUCoreOperation op) { throw new NotImplementedException(); }
+        public void op_adjust_addr_b(CPUCoreOperation op)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            rd.l = op_readdbr(aa.w);
+            op_io();
+            op.Invoke();
+            op_writedbr(aa.w, rd.l);
+        }
 
-        public void op_adjust_addr_w(CPUCoreOperation op) { throw new NotImplementedException(); }
+        public void op_adjust_addr_w(CPUCoreOperation op)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            rd.l = op_readdbr(aa.w + 0U);
+            rd.h = op_readdbr(aa.w + 1U);
+            op_io();
+            op.Invoke();
+            op_writedbr(aa.w + 1U, rd.h);
+            op_writedbr(aa.w + 0U, rd.l);
+        }
 
-        public void op_adjust_addrx_b(CPUCoreOperation op) { throw new NotImplementedException(); }
+        public void op_adjust_addrx_b(CPUCoreOperation op)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            op_io();
+            rd.l = op_readdbr((uint)(aa.w + regs.x.w));
+            op_io();
+            op.Invoke();
+            op_writedbr((uint)(aa.w + regs.x.w), rd.l);
+        }
 
-        public void op_adjust_addrx_w(CPUCoreOperation op) { throw new NotImplementedException(); }
+        public void op_adjust_addrx_w(CPUCoreOperation op)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            op_io();
+            rd.l = op_readdbr((uint)(aa.w + regs.x.w + 0));
+            rd.h = op_readdbr((uint)(aa.w + regs.x.w + 1));
+            op_io();
+            op.Invoke();
+            op_writedbr((uint)(aa.w + regs.x.w + 1), rd.h);
+            op_writedbr((uint)(aa.w + regs.x.w + 0), rd.l);
+        }
 
-        public void op_adjust_dp_b(CPUCoreOperation op) { throw new NotImplementedException(); }
+        public void op_adjust_dp_b(CPUCoreOperation op)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            rd.l = op_readdp(dp);
+            op_io();
+            op.Invoke();
+            op_writedp(dp, rd.l);
+        }
 
-        public void op_adjust_dp_w(CPUCoreOperation op) { throw new NotImplementedException(); }
+        public void op_adjust_dp_w(CPUCoreOperation op)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            rd.l = op_readdp(dp + 0U);
+            rd.h = op_readdp(dp + 1U);
+            op_io();
+            op.Invoke();
+            op_writedp(dp + 1U, rd.h);
+            op_writedp(dp + 0U, rd.l);
+        }
 
-        public void op_adjust_dpx_b(CPUCoreOperation op) { throw new NotImplementedException(); }
+        public void op_adjust_dpx_b(CPUCoreOperation op)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            op_io();
+            rd.l = op_readdp((uint)(dp + regs.x.w));
+            op_io();
+            op.Invoke();
+            op_writedp((uint)(dp + regs.x.w), rd.l);
+        }
 
-        public void op_adjust_dpx_w(CPUCoreOperation op) { throw new NotImplementedException(); }
+        public void op_adjust_dpx_w(CPUCoreOperation op)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            op_io();
+            rd.l = op_readdp((uint)(dp + regs.x.w + 0));
+            rd.h = op_readdp((uint)(dp + regs.x.w + 1));
+            op_io();
+            op.Invoke();
+            op_writedp((uint)(dp + regs.x.w + 1), rd.h);
+            op_writedp((uint)(dp + regs.x.w + 0), rd.l);
+        }
 
-        public void op_branch(int bit, int val) { throw new NotImplementedException(); }
+        public void op_branch(int bit, int val)
+        {
+            if (Bit.bit(regs.p & (uint)bit) != val)
+            {
+                rd.l = op_readpc();
+            }
+            else
+            {
+                rd.l = op_readpc();
+                aa.w = (ushort)(regs.pc.d + (sbyte)rd.l);
+                op_io_cond6(aa.w);
+                op_io();
+                regs.pc.w = aa.w;
+            }
+        }
 
-        public void op_bra() { throw new NotImplementedException(); }
+        public void op_bra()
+        {
+            rd.l = op_readpc();
+            aa.w = (ushort)(regs.pc.d + (sbyte)rd.l);
+            op_io_cond6(aa.w);
+            op_io();
+            regs.pc.w = aa.w;
+        }
 
-        public void op_brl() { throw new NotImplementedException(); }
+        public void op_brl()
+        {
+            rd.l = op_readpc();
+            rd.h = op_readpc();
+            op_io();
+            regs.pc.w = (ushort)(regs.pc.d + (short)rd.w);
+        }
 
-        public void op_jmp_addr() { throw new NotImplementedException(); }
+        public void op_jmp_addr()
+        {
+            rd.l = op_readpc();
+            rd.h = op_readpc();
+            regs.pc.w = rd.w;
+        }
 
-        public void op_jmp_long() { throw new NotImplementedException(); }
+        public void op_jmp_long()
+        {
+            rd.l = op_readpc();
+            rd.h = op_readpc();
+            rd.b = op_readpc();
+            regs.pc.d = rd.d & 0xffffff;
+        }
 
-        public void op_jmp_iaddr() { throw new NotImplementedException(); }
+        public void op_jmp_iaddr()
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            rd.l = op_readaddr(aa.w + 0U);
+            rd.h = op_readaddr(aa.w + 1U);
+            regs.pc.w = rd.w;
+        }
 
-        public void op_jmp_iaddrx() { throw new NotImplementedException(); }
+        public void op_jmp_iaddrx()
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            op_io();
+            rd.l = op_readpbr((uint)(aa.w + regs.x.w + 0));
+            rd.h = op_readpbr((uint)(aa.w + regs.x.w + 1));
+            regs.pc.w = rd.w;
+        }
 
-        public void op_jmp_iladdr() { throw new NotImplementedException(); }
+        public void op_jmp_iladdr()
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            rd.l = op_readaddr(aa.w + 0U);
+            rd.h = op_readaddr(aa.w + 1U);
+            rd.b = op_readaddr(aa.w + 2U);
+            regs.pc.d = rd.d & 0xffffff;
+        }
 
-        public void op_jsr_addr() { throw new NotImplementedException(); }
+        public void op_jsr_addr()
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            op_io();
+            regs.pc.w--;
+            op_writestack(regs.pc.h);
+            op_writestack(regs.pc.l);
+            regs.pc.w = aa.w;
+        }
 
-        public void op_jsr_long_e() { throw new NotImplementedException(); }
+        public void op_jsr_long_e()
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            op_writestackn(regs.pc.b);
+            op_io();
+            aa.b = op_readpc();
+            regs.pc.w--;
+            op_writestackn(regs.pc.h);
+            op_writestackn(regs.pc.l);
+            regs.pc.d = aa.d & 0xffffff;
+            regs.s.h = 0x01;
+        }
 
-        public void op_jsr_long_n() { throw new NotImplementedException(); }
+        public void op_jsr_long_n()
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            op_writestackn(regs.pc.b);
+            op_io();
+            aa.b = op_readpc();
+            regs.pc.w--;
+            op_writestackn(regs.pc.h);
+            op_writestackn(regs.pc.l);
+            regs.pc.d = aa.d & 0xffffff;
+        }
 
-        public void op_jsr_iaddrx_e() { throw new NotImplementedException(); }
+        public void op_jsr_iaddrx_e()
+        {
+            aa.l = op_readpc();
+            op_writestackn(regs.pc.h);
+            op_writestackn(regs.pc.l);
+            aa.h = op_readpc();
+            op_io();
+            rd.l = op_readpbr((uint)(aa.w + regs.x.w + 0));
+            rd.h = op_readpbr((uint)(aa.w + regs.x.w + 1));
+            regs.pc.w = rd.w;
+            regs.s.h = 0x01;
+        }
 
-        public void op_jsr_iaddrx_n() { throw new NotImplementedException(); }
+        public void op_jsr_iaddrx_n()
+        {
+            aa.l = op_readpc();
+            op_writestackn(regs.pc.h);
+            op_writestackn(regs.pc.l);
+            aa.h = op_readpc();
+            op_io();
+            rd.l = op_readpbr((uint)(aa.w + regs.x.w + 0));
+            rd.h = op_readpbr((uint)(aa.w + regs.x.w + 1));
+            regs.pc.w = rd.w;
+        }
 
-        public void op_rti_e() { throw new NotImplementedException(); }
+        public void op_rti_e()
+        {
+            op_io();
+            op_io();
+            regs.p.Assign((byte)(op_readstack() | 0x30));
+            rd.l = op_readstack();
+            rd.h = op_readstack();
+            regs.pc.w = rd.w;
+        }
 
-        public void op_rti_n() { throw new NotImplementedException(); }
+        public void op_rti_n()
+        {
+            op_io();
+            op_io();
+            regs.p.Assign(op_readstack());
+            if (regs.p.x)
+            {
+                regs.x.h = 0x00;
+                regs.y.h = 0x00;
+            }
+            rd.l = op_readstack();
+            rd.h = op_readstack();
+            rd.b = op_readstack();
+            regs.pc.d = rd.d & 0xffffff;
+            update_table();
+        }
 
-        public void op_rts() { throw new NotImplementedException(); }
+        public void op_rts()
+        {
+            op_io();
+            op_io();
+            rd.l = op_readstack();
+            rd.h = op_readstack();
+            op_io();
+            regs.pc.w = ++rd.w;
+        }
 
-        public void op_rtl_e() { throw new NotImplementedException(); }
+        public void op_rtl_e()
+        {
+            op_io();
+            op_io();
+            rd.l = op_readstackn();
+            rd.h = op_readstackn();
+            rd.b = op_readstackn();
+            regs.pc.b = rd.b;
+            regs.pc.w = ++rd.w;
+            regs.s.h = 0x01;
+        }
 
-        public void op_rtl_n() { throw new NotImplementedException(); }
+        public void op_rtl_n()
+        {
+            op_io();
+            op_io();
+            rd.l = op_readstackn();
+            rd.h = op_readstackn();
+            rd.b = op_readstackn();
+            regs.pc.b = rd.b;
+            regs.pc.w = ++rd.w;
+        }
 
         public void op_nop() { throw new NotImplementedException(); }
 
