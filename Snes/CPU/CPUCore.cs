@@ -1165,29 +1165,29 @@ namespace Snes
         }
 
         private static readonly byte[] op_len_tbl = new byte[256] 
-        {
-            //0,1,2,3,  4,5,6,7,  8,9,a,b,  c,d,e,f
+		{
+			//0,1,2,3,  4,5,6,7,  8,9,a,b,  c,d,e,f
 
-            2,2,2,2,  2,2,2,2,  1,5,1,1,  3,3,3,4, //0x0n
-            2,2,2,2,  2,2,2,2,  1,3,1,1,  3,3,3,4, //0x1n
-            3,2,4,2,  2,2,2,2,  1,5,1,1,  3,3,3,4, //0x2n
-            2,2,2,2,  2,2,2,2,  1,3,1,1,  3,3,3,4, //0x3n
+			2,2,2,2,  2,2,2,2,  1,5,1,1,  3,3,3,4, //0x0n
+			2,2,2,2,  2,2,2,2,  1,3,1,1,  3,3,3,4, //0x1n
+			3,2,4,2,  2,2,2,2,  1,5,1,1,  3,3,3,4, //0x2n
+			2,2,2,2,  2,2,2,2,  1,3,1,1,  3,3,3,4, //0x3n
 
-            1,2,2,2,  3,2,2,2,  1,5,1,1,  3,3,3,4, //0x4n
-            2,2,2,2,  3,2,2,2,  1,3,1,1,  4,3,3,4, //0x5n
-            1,2,3,2,  2,2,2,2,  1,5,1,1,  3,3,3,4, //0x6n
-            2,2,2,2,  2,2,2,2,  1,3,1,1,  3,3,3,4, //0x7n
+			1,2,2,2,  3,2,2,2,  1,5,1,1,  3,3,3,4, //0x4n
+			2,2,2,2,  3,2,2,2,  1,3,1,1,  4,3,3,4, //0x5n
+			1,2,3,2,  2,2,2,2,  1,5,1,1,  3,3,3,4, //0x6n
+			2,2,2,2,  2,2,2,2,  1,3,1,1,  3,3,3,4, //0x7n
 
-            2,2,3,2,  2,2,2,2,  1,5,1,1,  3,3,3,4, //0x8n
-            2,2,2,2,  2,2,2,2,  1,3,1,1,  3,3,3,4, //0x9n
-            6,2,6,2,  2,2,2,2,  1,5,1,1,  3,3,3,4, //0xan
-            2,2,2,2,  2,2,2,2,  1,3,1,1,  3,3,3,4, //0xbn
+			2,2,3,2,  2,2,2,2,  1,5,1,1,  3,3,3,4, //0x8n
+			2,2,2,2,  2,2,2,2,  1,3,1,1,  3,3,3,4, //0x9n
+			6,2,6,2,  2,2,2,2,  1,5,1,1,  3,3,3,4, //0xan
+			2,2,2,2,  2,2,2,2,  1,3,1,1,  3,3,3,4, //0xbn
 
-            6,2,2,2,  2,2,2,2,  1,5,1,1,  3,3,3,4, //0xcn
-            2,2,2,2,  2,2,2,2,  1,3,1,1,  3,3,3,4, //0xdn
-            6,2,2,2,  2,2,2,2,  1,5,1,1,  3,3,3,4, //0xen
-            2,2,2,2,  3,2,2,2,  1,3,1,1,  3,3,3,4  //0xfn
-        };
+			6,2,2,2,  2,2,2,2,  1,5,1,1,  3,3,3,4, //0xcn
+			2,2,2,2,  2,2,2,2,  1,3,1,1,  3,3,3,4, //0xdn
+			6,2,2,2,  2,2,2,2,  1,5,1,1,  3,3,3,4, //0xen
+			2,2,2,2,  3,2,2,2,  1,3,1,1,  3,3,3,4  //0xfn
+		};
 
         public byte opcode_length()
         {
@@ -1217,225 +1217,1057 @@ namespace Snes
         public abstract void last_cycle();
         public abstract bool interrupt_pending();
 
-        public void op_io_irq() { throw new NotImplementedException(); }
-
-        public void op_io_cond2() { throw new NotImplementedException(); }
-
-        public void op_io_cond4(ushort x, ushort y) { throw new NotImplementedException(); }
-
-        public void op_io_cond6(ushort addr) { throw new NotImplementedException(); }
-
-        public void op_adc_b() { throw new NotImplementedException(); }
-
-        public void op_adc_w() { throw new NotImplementedException(); }
-
-        public void op_and_b() { throw new NotImplementedException(); }
-
-        public void op_and_w() { throw new NotImplementedException(); }
-
-        public void op_bit_b() { throw new NotImplementedException(); }
-
-        public void op_bit_w() { throw new NotImplementedException(); }
-
-        public void op_cmp_b() { throw new NotImplementedException(); }
-
-        public void op_cmp_w() { throw new NotImplementedException(); }
-
-        public void op_cpx_b() { throw new NotImplementedException(); }
-
-        public void op_cpx_w() { throw new NotImplementedException(); }
-
-        public void op_cpy_b() { throw new NotImplementedException(); }
-
-        public void op_cpy_w() { throw new NotImplementedException(); }
-
-        public void op_eor_b() { throw new NotImplementedException(); }
-
-        public void op_eor_w() { throw new NotImplementedException(); }
-
-        public void op_lda_b() { throw new NotImplementedException(); }
-
-        public void op_lda_w() { throw new NotImplementedException(); }
-
-        public void op_ldx_b() { throw new NotImplementedException(); }
-
-        public void op_ldx_w() { throw new NotImplementedException(); }
-
-        public void op_ldy_b() { throw new NotImplementedException(); }
-
-        public void op_ldy_w() { throw new NotImplementedException(); }
-
-        public void op_ora_b() { throw new NotImplementedException(); }
-
-        public void op_ora_w() { throw new NotImplementedException(); }
-
-        public void op_sbc_b() { throw new NotImplementedException(); }
-
-        public void op_sbc_w() { throw new NotImplementedException(); }
-
-        public void op_inc_b() { throw new NotImplementedException(); }
-
-        public void op_inc_w() { throw new NotImplementedException(); }
-
-        public void op_dec_b() { throw new NotImplementedException(); }
-
-        public void op_dec_w() { throw new NotImplementedException(); }
-
-        public void op_asl_b() { throw new NotImplementedException(); }
-
-        public void op_asl_w() { throw new NotImplementedException(); }
-
-        public void op_lsr_b() { throw new NotImplementedException(); }
-
-        public void op_lsr_w() { throw new NotImplementedException(); }
-
-        public void op_rol_b() { throw new NotImplementedException(); }
-
-        public void op_rol_w() { throw new NotImplementedException(); }
-
-        public void op_ror_b() { throw new NotImplementedException(); }
-
-        public void op_ror_w() { throw new NotImplementedException(); }
-
-        public void op_trb_b() { throw new NotImplementedException(); }
-
-        public void op_trb_w() { throw new NotImplementedException(); }
-
-        public void op_tsb_b() { throw new NotImplementedException(); }
-
-        public void op_tsb_w() { throw new NotImplementedException(); }
-
-        public void op_read_const_b(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_const_w(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_bit_const_b() { throw new NotImplementedException(); }
-
-        public void op_read_bit_const_w() { throw new NotImplementedException(); }
-
-        public void op_read_addr_b(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_addr_w(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_addrx_b(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_addrx_w(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_addry_b(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_addry_w(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_long_b(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_long_w(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_longx_b(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_longx_w(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_dp_b(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_dp_w(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_dpr_b(Operation op, int n) { throw new NotImplementedException(); }
-
-        public void op_read_dpr_w(Operation op, int n) { throw new NotImplementedException(); }
-
-        public void op_read_idp_b(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_idp_w(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_idpx_b(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_idpx_w(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_idpy_b(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_idpy_w(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_ildp_b(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_ildp_w(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_ildpy_b(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_ildpy_w(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_sr_b(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_sr_w(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_isry_b(Operation op) { throw new NotImplementedException(); }
-
-        public void op_read_isry_w(Operation op) { throw new NotImplementedException(); }
-
-        public void op_write_addr_b(int n) { throw new NotImplementedException(); }
-
-        public void op_write_addr_w(int n) { throw new NotImplementedException(); }
-
-        public void op_write_addrr_b(int n, int i) { throw new NotImplementedException(); }
-
-        public void op_write_addrr_w(int n, int i) { throw new NotImplementedException(); }
-
-        public void op_write_longr_b(int i) { throw new NotImplementedException(); }
-
-        public void op_write_longr_w(int n) { throw new NotImplementedException(); }
-
-        public void op_write_dp_b(int n) { throw new NotImplementedException(); }
-
-        public void op_write_dp_w(int n) { throw new NotImplementedException(); }
-
-        public void op_write_dpr_b(int n, int i) { throw new NotImplementedException(); }
-
-        public void op_write_dpr_w(int n, int i) { throw new NotImplementedException(); }
-
-        public void op_sta_idp_b() { throw new NotImplementedException(); }
-
-        public void op_sta_idp_w() { throw new NotImplementedException(); }
-
-        public void op_sta_ildp_b() { throw new NotImplementedException(); }
-
-        public void op_sta_ildp_w() { throw new NotImplementedException(); }
-
-        public void op_sta_idpx_b() { throw new NotImplementedException(); }
-
-        public void op_sta_idpx_w() { throw new NotImplementedException(); }
-
-        public void op_sta_idpy_b() { throw new NotImplementedException(); }
-
-        public void op_sta_idpy_w() { throw new NotImplementedException(); }
-
-        public void op_sta_ildpy_b() { throw new NotImplementedException(); }
-
-        public void op_sta_ildpy_w() { throw new NotImplementedException(); }
-
-        public void op_sta_sr_b() { throw new NotImplementedException(); }
-
-        public void op_sta_sr_w() { throw new NotImplementedException(); }
-
-        public void op_sta_isry_b() { throw new NotImplementedException(); }
-
-        public void op_sta_isry_w() { throw new NotImplementedException(); }
-
-        public void op_adjust_imm_b(int n, int adjust) { throw new NotImplementedException(); }
-
-        public void op_adjust_imm_w(int n, int adjust) { throw new NotImplementedException(); }
-
-        public void op_asl_imm_b() { throw new NotImplementedException(); }
-
-        public void op_asl_imm_w() { throw new NotImplementedException(); }
-
-        public void op_lsr_imm_b() { throw new NotImplementedException(); }
-
-        public void op_lsr_imm_w() { throw new NotImplementedException(); }
-
-        public void op_rol_imm_b() { throw new NotImplementedException(); }
-
-        public void op_rol_imm_w() { throw new NotImplementedException(); }
-
-        public void op_ror_imm_b() { throw new NotImplementedException(); }
-
-        public void op_ror_imm_w() { throw new NotImplementedException(); }
+        public void op_io_irq()
+        {
+            if (interrupt_pending())
+            {
+                //modify I/O cycle to bus read cycle, do not increment PC
+                op_read(regs.pc.d);
+            }
+            else
+            {
+                op_io();
+            }
+        }
+
+        public void op_io_cond2()
+        {
+            if (regs.d.l != 0x00)
+            {
+                op_io();
+            }
+        }
+
+        public void op_io_cond4(ushort x, ushort y)
+        {
+            if (!regs.p.x || (x & 0xff00) != (y & 0xff00))
+            {
+                op_io();
+            }
+        }
+
+        public void op_io_cond6(ushort addr)
+        {
+            if (regs.e && (regs.pc.w & 0xff00) != (addr & 0xff00))
+            {
+                op_io();
+            }
+        }
+
+        public void op_adc_b()
+        {
+            int result;
+
+            if (!regs.p.d)
+            {
+                result = regs.a.l + rd.l + Convert.ToInt32(regs.p.c);
+            }
+            else
+            {
+                result = (regs.a.l & 0x0f) + (rd.l & 0x0f) + (Convert.ToInt32(regs.p.c) << 0);
+                if (result > 0x09)
+                {
+                    result += 0x06;
+                }
+                regs.p.c = result > 0x0f;
+                result = (regs.a.l & 0xf0) + (rd.l & 0xf0) + (Convert.ToInt32(regs.p.c) << 4) + (result & 0x0f);
+            }
+
+            regs.p.v = Convert.ToBoolean(~(regs.a.l ^ rd.l) & (regs.a.l ^ result) & 0x80);
+            if (regs.p.d && result > 0x9f)
+            {
+                result += 0x60;
+            }
+            regs.p.c = result > 0xff;
+            regs.p.n = Convert.ToBoolean(result & 0x80);
+            regs.p.z = (byte)result == 0;
+
+            regs.a.l = (byte)result;
+        }
+
+        public void op_adc_w()
+        {
+            int result;
+
+            if (!regs.p.d)
+            {
+                result = regs.a.w + rd.w + Convert.ToInt32(regs.p.c);
+            }
+            else
+            {
+                result = (regs.a.w & 0x000f) + (rd.w & 0x000f) + (Convert.ToInt32(regs.p.c) << 0);
+                if (result > 0x0009)
+                {
+                    result += 0x0006;
+                }
+                regs.p.c = result > 0x000f;
+                result = (regs.a.w & 0x00f0) + (rd.w & 0x00f0) + (Convert.ToInt32(regs.p.c) << 4) + (result & 0x000f);
+                if (result > 0x009f)
+                {
+                    result += 0x0060;
+                }
+                regs.p.c = result > 0x00ff;
+                result = (regs.a.w & 0x0f00) + (rd.w & 0x0f00) + (Convert.ToInt32(regs.p.c) << 8) + (result & 0x00ff);
+                if (result > 0x09ff)
+                {
+                    result += 0x0600;
+                }
+                regs.p.c = result > 0x0fff;
+                result = (regs.a.w & 0xf000) + (rd.w & 0xf000) + (Convert.ToInt32(regs.p.c) << 12) + (result & 0x0fff);
+            }
+
+            regs.p.v = Convert.ToBoolean(~(regs.a.w ^ rd.w) & (regs.a.w ^ result) & 0x8000);
+            if (regs.p.d && result > 0x9fff) result += 0x6000;
+            regs.p.c = result > 0xffff;
+            regs.p.n = Convert.ToBoolean(result & 0x8000);
+            regs.p.z = (ushort)result == 0;
+
+            regs.a.w = (ushort)result;
+        }
+
+        public void op_and_b()
+        {
+            regs.a.l &= rd.l;
+            regs.p.n = Convert.ToBoolean(regs.a.l & 0x80);
+            regs.p.z = regs.a.l == 0;
+        }
+
+        public void op_and_w()
+        {
+            regs.a.w &= rd.w;
+            regs.p.n = Convert.ToBoolean(regs.a.w & 0x8000);
+            regs.p.z = regs.a.w == 0;
+        }
+
+        public void op_bit_b()
+        {
+            regs.p.n = Convert.ToBoolean(rd.l & 0x80);
+            regs.p.v = Convert.ToBoolean(rd.l & 0x40);
+            regs.p.z = (rd.l & regs.a.l) == 0;
+        }
+
+        public void op_bit_w()
+        {
+            regs.p.n = Convert.ToBoolean(rd.w & 0x8000);
+            regs.p.v = Convert.ToBoolean(rd.w & 0x4000);
+            regs.p.z = (rd.w & regs.a.w) == 0;
+        }
+
+        public void op_cmp_b()
+        {
+            int r = regs.a.l - rd.l;
+            regs.p.n = Convert.ToBoolean(r & 0x80);
+            regs.p.z = (byte)r == 0;
+            regs.p.c = r >= 0;
+        }
+
+        public void op_cmp_w()
+        {
+            int r = regs.a.w - rd.w;
+            regs.p.n = Convert.ToBoolean(r & 0x8000);
+            regs.p.z = (ushort)r == 0;
+            regs.p.c = r >= 0;
+        }
+
+        public void op_cpx_b()
+        {
+            int r = regs.x.l - rd.l;
+            regs.p.n = Convert.ToBoolean(r & 0x80);
+            regs.p.z = (byte)r == 0;
+            regs.p.c = r >= 0;
+        }
+
+        public void op_cpx_w()
+        {
+            int r = regs.x.w - rd.w;
+            regs.p.n = Convert.ToBoolean(r & 0x8000);
+            regs.p.z = (ushort)r == 0;
+            regs.p.c = r >= 0;
+        }
+
+        public void op_cpy_b()
+        {
+            int r = regs.y.l - rd.l;
+            regs.p.n = Convert.ToBoolean(r & 0x80);
+            regs.p.z = (byte)r == 0;
+            regs.p.c = r >= 0;
+        }
+
+        public void op_cpy_w()
+        {
+            int r = regs.y.w - rd.w;
+            regs.p.n = Convert.ToBoolean(r & 0x8000);
+            regs.p.z = (ushort)r == 0;
+            regs.p.c = r >= 0;
+        }
+
+        public void op_eor_b()
+        {
+            regs.a.l ^= rd.l;
+            regs.p.n = Convert.ToBoolean(regs.a.l & 0x80);
+            regs.p.z = regs.a.l == 0;
+        }
+
+        public void op_eor_w()
+        {
+            regs.a.w ^= rd.w;
+            regs.p.n = Convert.ToBoolean(regs.a.w & 0x8000);
+            regs.p.z = regs.a.w == 0;
+        }
+
+        public void op_lda_b()
+        {
+            regs.a.l = rd.l;
+            regs.p.n = Convert.ToBoolean(regs.a.l & 0x80);
+            regs.p.z = regs.a.l == 0;
+        }
+
+        public void op_lda_w()
+        {
+            regs.a.w = rd.w;
+            regs.p.n = Convert.ToBoolean(regs.a.w & 0x8000);
+            regs.p.z = regs.a.w == 0;
+        }
+
+        public void op_ldx_b()
+        {
+            regs.x.l = rd.l;
+            regs.p.n = Convert.ToBoolean(regs.x.l & 0x80);
+            regs.p.z = regs.x.l == 0;
+        }
+
+        public void op_ldx_w()
+        {
+            regs.x.w = rd.w;
+            regs.p.n = Convert.ToBoolean(regs.x.w & 0x8000);
+            regs.p.z = regs.x.w == 0;
+        }
+
+        public void op_ldy_b()
+        {
+            regs.y.l = rd.l;
+            regs.p.n = Convert.ToBoolean(regs.y.l & 0x80);
+            regs.p.z = regs.y.l == 0;
+        }
+
+        public void op_ldy_w()
+        {
+            regs.y.w = rd.w;
+            regs.p.n = Convert.ToBoolean(regs.y.w & 0x8000);
+            regs.p.z = regs.y.w == 0;
+        }
+
+        public void op_ora_b()
+        {
+            regs.a.l |= rd.l;
+            regs.p.n = Convert.ToBoolean(regs.a.l & 0x80);
+            regs.p.z = regs.a.l == 0;
+        }
+
+        public void op_ora_w()
+        {
+            regs.a.w |= rd.w;
+            regs.p.n = Convert.ToBoolean(regs.a.w & 0x8000);
+            regs.p.z = regs.a.w == 0;
+        }
+
+        public void op_sbc_b()
+        {
+            int result;
+            rd.l ^= 0xff;
+
+            if (!regs.p.d)
+            {
+                result = regs.a.l + rd.l + Convert.ToInt32(regs.p.c);
+            }
+            else
+            {
+                result = (regs.a.l & 0x0f) + (rd.l & 0x0f) + (Convert.ToInt32(regs.p.c) << 0);
+                if (result <= 0x0f) result -= 0x06;
+                regs.p.c = result > 0x0f;
+                result = (regs.a.l & 0xf0) + (rd.l & 0xf0) + (Convert.ToInt32(regs.p.c) << 4) + (result & 0x0f);
+            }
+
+            regs.p.v = Convert.ToBoolean(~(regs.a.l ^ rd.l) & (regs.a.l ^ result) & 0x80);
+            if (regs.p.d && result <= 0xff) result -= 0x60;
+            regs.p.c = result > 0xff;
+            regs.p.n = Convert.ToBoolean(result & 0x80);
+            regs.p.z = (byte)result == 0;
+
+            regs.a.l = (byte)result;
+        }
+
+        public void op_sbc_w()
+        {
+            int result;
+            rd.w ^= 0xffff;
+
+            if (!regs.p.d)
+            {
+                result = regs.a.w + rd.w + Convert.ToInt32(regs.p.c);
+            }
+            else
+            {
+                result = (regs.a.w & 0x000f) + (rd.w & 0x000f) + (Convert.ToInt32(regs.p.c) << 0);
+                if (result <= 0x000f) result -= 0x0006;
+                regs.p.c = result > 0x000f;
+                result = (regs.a.w & 0x00f0) + (rd.w & 0x00f0) + (Convert.ToInt32(regs.p.c) << 4) + (result & 0x000f);
+                if (result <= 0x00ff) result -= 0x0060;
+                regs.p.c = result > 0x00ff;
+                result = (regs.a.w & 0x0f00) + (rd.w & 0x0f00) + (Convert.ToInt32(regs.p.c) << 8) + (result & 0x00ff);
+                if (result <= 0x0fff) result -= 0x0600;
+                regs.p.c = result > 0x0fff;
+                result = (regs.a.w & 0xf000) + (rd.w & 0xf000) + (Convert.ToInt32(regs.p.c) << 12) + (result & 0x0fff);
+            }
+
+            regs.p.v = Convert.ToBoolean(~(regs.a.w ^ rd.w) & (regs.a.w ^ result) & 0x8000);
+            if (regs.p.d && result <= 0xffff) result -= 0x6000;
+            regs.p.c = result > 0xffff;
+            regs.p.n = Convert.ToBoolean(result & 0x8000);
+            regs.p.z = (ushort)result == 0;
+
+            regs.a.w = (ushort)result;
+        }
+
+        public void op_inc_b()
+        {
+            rd.l++;
+            regs.p.n = Convert.ToBoolean(rd.l & 0x80);
+            regs.p.z = rd.l == 0;
+        }
+
+        public void op_inc_w()
+        {
+            rd.w++;
+            regs.p.n = Convert.ToBoolean(rd.w & 0x8000);
+            regs.p.z = rd.w == 0;
+        }
+
+        public void op_dec_b()
+        {
+            rd.l--;
+            regs.p.n = Convert.ToBoolean(rd.l & 0x80);
+            regs.p.z = rd.l == 0;
+        }
+
+        public void op_dec_w()
+        {
+            rd.w--;
+            regs.p.n = Convert.ToBoolean(rd.w & 0x8000);
+            regs.p.z = rd.w == 0;
+        }
+
+        public void op_asl_b()
+        {
+            regs.p.c = Convert.ToBoolean(rd.l & 0x80);
+            rd.l <<= 1;
+            regs.p.n = Convert.ToBoolean(rd.l & 0x80);
+            regs.p.z = rd.l == 0;
+        }
+
+        public void op_asl_w()
+        {
+            regs.p.c = Convert.ToBoolean(rd.w & 0x8000);
+            rd.w <<= 1;
+            regs.p.n = Convert.ToBoolean(rd.w & 0x8000);
+            regs.p.z = rd.w == 0;
+        }
+
+        public void op_lsr_b()
+        {
+            regs.p.c = Convert.ToBoolean(rd.l & 1);
+            rd.l >>= 1;
+            regs.p.n = Convert.ToBoolean(rd.l & 0x80);
+            regs.p.z = rd.l == 0;
+        }
+
+        public void op_lsr_w()
+        {
+            regs.p.c = Convert.ToBoolean(rd.w & 1);
+            rd.w >>= 1;
+            regs.p.n = Convert.ToBoolean(rd.w & 0x8000);
+            regs.p.z = rd.w == 0;
+        }
+
+        public void op_rol_b()
+        {
+            uint carry = Convert.ToUInt32(regs.p.c);
+            regs.p.c = Convert.ToBoolean(rd.l & 0x80);
+            rd.l = (byte)((uint)(rd.l << 1) | carry);
+            regs.p.n = Convert.ToBoolean(rd.l & 0x80);
+            regs.p.z = rd.l == 0;
+        }
+
+        public void op_rol_w()
+        {
+            uint carry = Convert.ToUInt32(regs.p.c);
+            regs.p.c = Convert.ToBoolean(rd.w & 0x8000);
+            rd.w = (ushort)((uint)(rd.w << 1) | carry);
+            regs.p.n = Convert.ToBoolean(rd.w & 0x8000);
+            regs.p.z = rd.w == 0;
+        }
+
+        public void op_ror_b()
+        {
+            uint carry = Convert.ToUInt32(regs.p.c) << 7;
+            regs.p.c = Convert.ToBoolean(rd.l & 1);
+            rd.l = (byte)(carry | (uint)(rd.l >> 1));
+            regs.p.n = Convert.ToBoolean(rd.l & 0x80);
+            regs.p.z = rd.l == 0;
+        }
+
+        public void op_ror_w()
+        {
+            uint carry = Convert.ToUInt32(regs.p.c) << 15;
+            regs.p.c = Convert.ToBoolean(rd.w & 1);
+            rd.w = (ushort)(carry | (uint)(rd.w >> 1));
+            regs.p.n = Convert.ToBoolean(rd.w & 0x8000);
+            regs.p.z = rd.w == 0;
+        }
+
+        public void op_trb_b()
+        {
+            regs.p.z = (rd.l & regs.a.l) == 0;
+            rd.l &= (byte)(~regs.a.l);
+        }
+
+        public void op_trb_w()
+        {
+            regs.p.z = (rd.w & regs.a.w) == 0;
+            rd.w &= (ushort)(~regs.a.w);
+        }
+
+        public void op_tsb_b()
+        {
+            regs.p.z = (rd.l & regs.a.l) == 0;
+            rd.l |= regs.a.l;
+        }
+
+        public void op_tsb_w()
+        {
+            regs.p.z = (rd.w & regs.a.w) == 0;
+            rd.w |= regs.a.w;
+        }
+
+        public void op_read_const_b(Operation op)
+        {
+            rd.l = op_readpc();
+            op();
+        }
+
+        public void op_read_const_w(Operation op)
+        {
+            rd.l = op_readpc();
+            rd.h = op_readpc();
+            op();
+        }
+
+        public void op_read_bit_const_b()
+        {
+            rd.l = op_readpc();
+            regs.p.z = ((rd.l & regs.a.l) == 0);
+        }
+
+        public void op_read_bit_const_w()
+        {
+            rd.l = op_readpc();
+            rd.h = op_readpc();
+            regs.p.z = ((rd.w & regs.a.w) == 0);
+        }
+
+        public void op_read_addr_b(Operation op)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            rd.l = op_readdbr(aa.w);
+            op();
+        }
+
+        public void op_read_addr_w(Operation op)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            rd.l = op_readdbr(aa.w + 0U);
+            rd.h = op_readdbr(aa.w + 1U);
+            op();
+        }
+
+        public void op_read_addrx_b(Operation op)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            op_io_cond4(aa.w, (ushort)(aa.w + regs.x.w));
+            rd.l = op_readdbr((uint)(aa.w + regs.x.w));
+            op();
+        }
+
+        public void op_read_addrx_w(Operation op)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            op_io_cond4(aa.w, (ushort)(aa.w + regs.x.w));
+            rd.l = op_readdbr((uint)(aa.w + regs.x.w + 0));
+            rd.h = op_readdbr((uint)(aa.w + regs.x.w + 1));
+            op();
+        }
+
+        public void op_read_addry_b(Operation op)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            op_io_cond4(aa.w, (ushort)(aa.w + regs.y.w));
+            rd.l = op_readdbr((uint)(aa.w + regs.y.w));
+            op();
+        }
+
+        public void op_read_addry_w(Operation op)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            op_io_cond4(aa.w, (ushort)(aa.w + regs.y.w));
+            rd.l = op_readdbr((uint)(aa.w + regs.y.w + 0));
+            rd.h = op_readdbr((uint)(aa.w + regs.y.w + 1));
+            op();
+        }
+
+        public void op_read_long_b(Operation op)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            aa.b = op_readpc();
+            rd.l = op_readlong(aa.d);
+            op();
+        }
+
+        public void op_read_long_w(Operation op)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            aa.b = op_readpc();
+            rd.l = op_readlong(aa.d + 0);
+            rd.h = op_readlong(aa.d + 1);
+            op();
+        }
+
+        public void op_read_longx_b(Operation op)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            aa.b = op_readpc();
+            rd.l = op_readlong(aa.d + regs.x.w);
+            op();
+        }
+
+        public void op_read_longx_w(Operation op)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            aa.b = op_readpc();
+            rd.l = op_readlong(aa.d + regs.x.w + 0);
+            rd.h = op_readlong(aa.d + regs.x.w + 1);
+            op();
+        }
+
+        public void op_read_dp_b(Operation op)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            rd.l = op_readdp(dp);
+            op();
+        }
+
+        public void op_read_dp_w(Operation op)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            rd.l = op_readdp(dp + 0U);
+            rd.h = op_readdp(dp + 1U);
+            op();
+        }
+
+        public void op_read_dpr_b(Operation op, int n)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            op_io();
+            rd.l = op_readdp((uint)(dp + regs.r[n].w));
+            op();
+        }
+
+        public void op_read_dpr_w(Operation op, int n)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            op_io();
+            rd.l = op_readdp((uint)(dp + regs.r[n].w + 0));
+            rd.h = op_readdp((uint)(dp + regs.r[n].w + 1));
+            op();
+        }
+
+        public void op_read_idp_b(Operation op)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            aa.l = op_readdp(dp + 0U);
+            aa.h = op_readdp(dp + 1U);
+            rd.l = op_readdbr(aa.w);
+            op();
+        }
+
+        public void op_read_idp_w(Operation op)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            aa.l = op_readdp(dp + 0U);
+            aa.h = op_readdp(dp + 1U);
+            rd.l = op_readdbr(aa.w + 0U);
+            rd.h = op_readdbr(aa.w + 1U);
+            op();
+        }
+
+        public void op_read_idpx_b(Operation op)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            op_io();
+            aa.l = op_readdp((uint)(dp + regs.x.w + 0));
+            aa.h = op_readdp((uint)(dp + regs.x.w + 1));
+            rd.l = op_readdbr(aa.w);
+            op();
+        }
+
+        public void op_read_idpx_w(Operation op)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            op_io();
+            aa.l = op_readdp((uint)(dp + regs.x.w + 0));
+            aa.h = op_readdp((uint)(dp + regs.x.w + 1));
+            rd.l = op_readdbr(aa.w + 0U);
+            rd.h = op_readdbr(aa.w + 1U);
+            op();
+        }
+
+        public void op_read_idpy_b(Operation op)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            aa.l = op_readdp(dp + 0U);
+            aa.h = op_readdp(dp + 1U);
+            op_io_cond4(aa.w, (ushort)(aa.w + regs.y.w));
+            rd.l = op_readdbr((uint)(aa.w + regs.y.w));
+            op();
+        }
+
+        public void op_read_idpy_w(Operation op)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            aa.l = op_readdp(dp + 0U);
+            aa.h = op_readdp(dp + 1U);
+            op_io_cond4(aa.w, (ushort)(aa.w + regs.y.w));
+            rd.l = op_readdbr((uint)(aa.w + regs.y.w + 0));
+            rd.h = op_readdbr((uint)(aa.w + regs.y.w + 1));
+            op();
+        }
+
+        public void op_read_ildp_b(Operation op)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            aa.l = op_readdp(dp + 0U);
+            aa.h = op_readdp(dp + 1U);
+            aa.b = op_readdp(dp + 2U);
+            rd.l = op_readlong(aa.d);
+            op();
+        }
+
+        public void op_read_ildp_w(Operation op)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            aa.l = op_readdp(dp + 0U);
+            aa.h = op_readdp(dp + 1U);
+            aa.b = op_readdp(dp + 2U);
+            rd.l = op_readlong(aa.d + 0);
+            rd.h = op_readlong(aa.d + 1);
+            op();
+        }
+
+        public void op_read_ildpy_b(Operation op)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            aa.l = op_readdp(dp + 0U);
+            aa.h = op_readdp(dp + 1U);
+            aa.b = op_readdp(dp + 2U);
+            rd.l = op_readlong(aa.d + regs.y.w);
+            op();
+        }
+
+        public void op_read_ildpy_w(Operation op)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            aa.l = op_readdp(dp + 0U);
+            aa.h = op_readdp(dp + 1U);
+            aa.b = op_readdp(dp + 2U);
+            rd.l = op_readlong(aa.d + regs.y.w + 0);
+            rd.h = op_readlong(aa.d + regs.y.w + 1);
+            op();
+        }
+
+        public void op_read_sr_b(Operation op)
+        {
+            sp = op_readpc();
+            op_io();
+            rd.l = op_readsp(sp);
+            op();
+        }
+
+        public void op_read_sr_w(Operation op)
+        {
+            sp = op_readpc();
+            op_io();
+            rd.l = op_readsp(sp + 0U);
+            rd.h = op_readsp(sp + 1U);
+            op();
+        }
+
+        public void op_read_isry_b(Operation op)
+        {
+            sp = op_readpc();
+            op_io();
+            aa.l = op_readsp(sp + 0U);
+            aa.h = op_readsp(sp + 1U);
+            op_io();
+            rd.l = op_readdbr((uint)(aa.w + regs.y.w));
+            op();
+        }
+
+        public void op_read_isry_w(Operation op)
+        {
+            sp = op_readpc();
+            op_io();
+            aa.l = op_readsp(sp + 0U);
+            aa.h = op_readsp(sp + 1U);
+            op_io();
+            rd.l = op_readdbr((uint)(aa.w + regs.y.w + 0));
+            rd.h = op_readdbr((uint)(aa.w + regs.y.w + 1));
+            op();
+        }
+
+        public void op_write_addr_b(int n)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            op_writedbr(aa.w, (byte)regs.r[n]);
+        }
+
+        public void op_write_addr_w(int n)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            op_writedbr(aa.w + 0U, (byte)(regs.r[n] >> 0));
+            op_writedbr(aa.w + 1U, (byte)(regs.r[n] >> 8));
+        }
+
+        public void op_write_addrr_b(int n, int i)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            op_io();
+            op_writedbr(aa.w + (uint)regs.r[i], (byte)regs.r[n]);
+        }
+
+        public void op_write_addrr_w(int n, int i)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            op_io();
+            op_writedbr(aa.w + (uint)regs.r[i] + 0, (byte)(regs.r[n] >> 0));
+            op_writedbr(aa.w + (uint)regs.r[i] + 1, (byte)(regs.r[n] >> 8));
+        }
+
+        public void op_write_longr_b(int i)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            aa.b = op_readpc();
+            op_writelong(aa.d + (uint)regs.r[i], regs.a.l);
+        }
+
+        public void op_write_longr_w(int i)
+        {
+            aa.l = op_readpc();
+            aa.h = op_readpc();
+            aa.b = op_readpc();
+            op_writelong(aa.d + (uint)regs.r[i] + 0, regs.a.l);
+            op_writelong(aa.d + (uint)regs.r[i] + 1, regs.a.h);
+        }
+
+        public void op_write_dp_b(int n)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            op_writedp(dp, (byte)regs.r[n]);
+        }
+
+        public void op_write_dp_w(int n)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            op_writedp(dp + 0U, (byte)(regs.r[n] >> 0));
+            op_writedp(dp + 1U, (byte)(regs.r[n] >> 8));
+        }
+
+        public void op_write_dpr_b(int n, int i)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            op_io();
+            op_writedp(dp + (uint)regs.r[i], (byte)regs.r[n]);
+        }
+
+        public void op_write_dpr_w(int n, int i)
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            op_io();
+            op_writedp(dp + (uint)regs.r[i] + 0, (byte)(regs.r[n] >> 0));
+            op_writedp(dp + (uint)regs.r[i] + 1, (byte)(regs.r[n] >> 8));
+        }
+
+        public void op_sta_idp_b()
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            aa.l = op_readdp(dp + 0U);
+            aa.h = op_readdp(dp + 1U);
+            op_writedbr(aa.w, regs.a.l);
+        }
+
+        public void op_sta_idp_w()
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            aa.l = op_readdp(dp + 0U);
+            aa.h = op_readdp(dp + 1U);
+            op_writedbr(aa.w + 0U, regs.a.l);
+            op_writedbr(aa.w + 1U, regs.a.h);
+        }
+
+        public void op_sta_ildp_b()
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            aa.l = op_readdp(dp + 0U);
+            aa.h = op_readdp(dp + 1U);
+            aa.b = op_readdp(dp + 2U);
+            op_writelong(aa.d, regs.a.l);
+        }
+
+        public void op_sta_ildp_w()
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            aa.l = op_readdp(dp + 0U);
+            aa.h = op_readdp(dp + 1U);
+            aa.b = op_readdp(dp + 2U);
+            op_writelong(aa.d + 0, regs.a.l);
+            op_writelong(aa.d + 1, regs.a.h);
+        }
+
+        public void op_sta_idpx_b()
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            op_io();
+            aa.l = op_readdp((uint)(dp + regs.x.w + 0));
+            aa.h = op_readdp((uint)(dp + regs.x.w + 1));
+            op_writedbr(aa.w, regs.a.l);
+        }
+
+        public void op_sta_idpx_w()
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            op_io();
+            aa.l = op_readdp((uint)(dp + regs.x.w + 0));
+            aa.h = op_readdp((uint)(dp + regs.x.w + 1));
+            op_writedbr(aa.w + 0U, regs.a.l);
+            op_writedbr(aa.w + 1U, regs.a.h);
+        }
+
+        public void op_sta_idpy_b()
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            aa.l = op_readdp(dp + 0U);
+            aa.h = op_readdp(dp + 1U);
+            op_io();
+            op_writedbr((uint)(aa.w + regs.y.w), regs.a.l);
+        }
+
+        public void op_sta_idpy_w()
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            aa.l = op_readdp(dp + 0U);
+            aa.h = op_readdp(dp + 1U);
+            op_io();
+            op_writedbr((uint)(aa.w + regs.y.w + 0), regs.a.l);
+            op_writedbr((uint)(aa.w + regs.y.w + 1), regs.a.h);
+        }
+
+        public void op_sta_ildpy_b()
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            aa.l = op_readdp(dp + 0U);
+            aa.h = op_readdp(dp + 1U);
+            aa.b = op_readdp(dp + 2U);
+            op_writelong(aa.d + regs.y.w, regs.a.l);
+        }
+
+        public void op_sta_ildpy_w()
+        {
+            dp = op_readpc();
+            op_io_cond2();
+            aa.l = op_readdp(dp + 0U);
+            aa.h = op_readdp(dp + 1U);
+            aa.b = op_readdp(dp + 2U);
+            op_writelong(aa.d + regs.y.w + 0, regs.a.l);
+            op_writelong(aa.d + regs.y.w + 1, regs.a.h);
+        }
+
+        public void op_sta_sr_b()
+        {
+            sp = op_readpc();
+            op_io();
+            op_writesp(sp, regs.a.l);
+        }
+
+        public void op_sta_sr_w()
+        {
+            sp = op_readpc();
+            op_io();
+            op_writesp(sp + 0U, regs.a.l);
+            op_writesp(sp + 1U, regs.a.h);
+        }
+
+        public void op_sta_isry_b()
+        {
+            sp = op_readpc();
+            op_io();
+            aa.l = op_readsp(sp + 0U);
+            aa.h = op_readsp(sp + 1U);
+            op_io();
+            op_writedbr((uint)(aa.w + regs.y.w), regs.a.l);
+        }
+
+        public void op_sta_isry_w()
+        {
+            sp = op_readpc();
+            op_io();
+            aa.l = op_readsp(sp + 0U);
+            aa.h = op_readsp(sp + 1U);
+            op_io();
+            op_writedbr((uint)(aa.w + regs.y.w + 0), regs.a.l);
+            op_writedbr((uint)(aa.w + regs.y.w + 1), regs.a.h);
+        }
+
+        public void op_adjust_imm_b(int n, int adjust)
+        {
+            op_io_irq();
+            regs.r[n].l += (byte)adjust;
+            regs.p.n = Convert.ToBoolean(regs.r[n].l & 0x80);
+            regs.p.z = (regs.r[n].l == 0);
+        }
+
+        public void op_adjust_imm_w(int n, int adjust)
+        {
+            op_io_irq();
+            regs.r[n].w += (byte)adjust;
+            regs.p.n = Convert.ToBoolean(regs.r[n].w & 0x8000);
+            regs.p.z = (regs.r[n].w == 0);
+        }
+
+        public void op_asl_imm_b()
+        {
+            op_io_irq();
+            regs.p.c = Convert.ToBoolean(regs.a.l & 0x80);
+            regs.a.l <<= 1;
+            regs.p.n = Convert.ToBoolean(regs.a.l & 0x80);
+            regs.p.z = (regs.a.l == 0);
+        }
+
+        public void op_asl_imm_w()
+        {
+            op_io_irq();
+            regs.p.c = Convert.ToBoolean(regs.a.w & 0x8000);
+            regs.a.w <<= 1;
+            regs.p.n = Convert.ToBoolean(regs.a.w & 0x8000);
+            regs.p.z = (regs.a.w == 0);
+        }
+
+        public void op_lsr_imm_b()
+        {
+            op_io_irq();
+            regs.p.c = Convert.ToBoolean(regs.a.l & 0x01);
+            regs.a.l >>= 1;
+            regs.p.n = Convert.ToBoolean(regs.a.l & 0x80);
+            regs.p.z = (regs.a.l == 0);
+        }
+
+        public void op_lsr_imm_w()
+        {
+            op_io_irq();
+            regs.p.c = Convert.ToBoolean(regs.a.w & 0x0001);
+            regs.a.w >>= 1;
+            regs.p.n = Convert.ToBoolean(regs.a.w & 0x8000);
+            regs.p.z = (regs.a.w == 0);
+        }
+
+        public void op_rol_imm_b()
+        {
+            op_io_irq();
+            bool carry = regs.p.c;
+            regs.p.c = Convert.ToBoolean(regs.a.l & 0x80);
+            regs.a.l = (byte)((regs.a.l << 1) | Convert.ToInt32(carry));
+            regs.p.n = Convert.ToBoolean(regs.a.l & 0x80);
+            regs.p.z = (regs.a.l == 0);
+        }
+
+        public void op_rol_imm_w()
+        {
+            op_io_irq();
+            bool carry = regs.p.c;
+            regs.p.c = Convert.ToBoolean(regs.a.w & 0x8000);
+            regs.a.w = (byte)((regs.a.w << 1) | Convert.ToInt32(carry));
+            regs.p.n = Convert.ToBoolean(regs.a.w & 0x8000);
+            regs.p.z = (regs.a.w == 0);
+        }
+
+        public void op_ror_imm_b()
+        {
+            op_io_irq();
+            bool carry = regs.p.c;
+            regs.p.c = Convert.ToBoolean(regs.a.l & 0x01);
+            regs.a.l = (byte)((Convert.ToInt32(carry) << 7) | (regs.a.l >> 1));
+            regs.p.n = Convert.ToBoolean(regs.a.l & 0x80);
+            regs.p.z = (regs.a.l == 0);
+        }
+
+        public void op_ror_imm_w()
+        {
+            op_io_irq();
+            bool carry = regs.p.c;
+            regs.p.c = Convert.ToBoolean(regs.a.w & 0x0001);
+            regs.a.w = (byte)((Convert.ToInt32(carry) << 15) | (regs.a.w >> 1));
+            regs.p.n = Convert.ToBoolean(regs.a.w & 0x8000);
+            regs.p.z = (regs.a.w == 0);
+        }
 
         public void op_adjust_addr_b(Operation op) { throw new NotImplementedException(); }
 
