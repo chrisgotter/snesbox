@@ -1466,7 +1466,7 @@ namespace Snes
         public SMPCoreOpResult op_read_reg_const(SMPCoreOpArgument args)
         {
             rd = op_readpc();
-            regs.r[args.n] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.r[args.n], y_byte = (byte)rd }).result_byte;
+            regs.r[args.n] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.r[args.n], y_byte = (byte)rd }).result_byte;
             return null;
         }
 
@@ -1474,7 +1474,7 @@ namespace Snes
         {
             op_io();
             rd = op_readdp(regs.x[0]);
-            regs.a[0] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
+            regs.a[0] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
             return null;
         }
 
@@ -1482,7 +1482,7 @@ namespace Snes
         {
             dp = op_readpc();
             rd = op_readdp((byte)dp);
-            regs.r[args.n] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.r[args.n], y_byte = (byte)rd }).result_byte;
+            regs.r[args.n] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.r[args.n], y_byte = (byte)rd }).result_byte;
             return null;
         }
 
@@ -1491,7 +1491,7 @@ namespace Snes
             dp = op_readpc();
             op_io();
             rd = op_readdp((byte)(dp + regs.x[0]));
-            regs.a[0] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
+            regs.a[0] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
             return null;
         }
 
@@ -1500,7 +1500,7 @@ namespace Snes
             dp = (ushort)(op_readpc() << 0);
             dp |= (ushort)(op_readpc() << 8);
             rd = op_readaddr(dp);
-            regs.r[args.n] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.r[args.n], y_byte = (byte)rd }).result_byte;
+            regs.r[args.n] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.r[args.n], y_byte = (byte)rd }).result_byte;
             return null;
         }
 
@@ -1510,7 +1510,7 @@ namespace Snes
             dp |= (ushort)(op_readpc() << 8);
             op_io();
             rd = op_readaddr((ushort)(dp + regs.r[args.i]));
-            regs.a[0] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
+            regs.a[0] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
             return null;
         }
 
@@ -1521,7 +1521,7 @@ namespace Snes
             sp = (ushort)(op_readdp((byte)(dp + 0)) << 0);
             sp |= (ushort)(op_readdp((byte)(dp + 1)) << 8);
             rd = op_readaddr(sp);
-            regs.a[0] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
+            regs.a[0] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
             return null;
         }
 
@@ -1532,7 +1532,7 @@ namespace Snes
             sp = (ushort)(op_readdp((byte)(dp + 0)) << 0);
             sp |= (ushort)(op_readdp((byte)(dp + 1)) << 8);
             rd = op_readaddr((ushort)(sp + regs.y[0]));
-            regs.a[0] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
+            regs.a[0] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
             return null;
         }
 
@@ -1541,7 +1541,7 @@ namespace Snes
             op_io();
             rd = op_readdp(regs.y[0]);
             wr = op_readdp(regs.x[0]);
-            wr = args.op_func(new SMPCoreOpArgument() { x_byte = (byte)wr, y_byte = (byte)rd }).result_byte;
+            wr = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = (byte)wr, y_byte = (byte)rd }).result_byte;
             SMPCoreOp cmp = op_cmp;
             if (args.op_func != cmp)
             {
@@ -1560,7 +1560,7 @@ namespace Snes
             rd = op_readdp((byte)sp);
             dp = op_readpc();
             wr = op_readdp((byte)dp);
-            wr = args.op_func(new SMPCoreOpArgument() { x_byte = (byte)wr, y_byte = (byte)rd }).result_byte;
+            wr = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = (byte)wr, y_byte = (byte)rd }).result_byte;
             SMPCoreOp cmp = op_cmp;
             if (args.op_func != cmp)
             {
@@ -1578,7 +1578,7 @@ namespace Snes
             rd = op_readpc();
             dp = op_readpc();
             wr = op_readdp((byte)dp);
-            wr = args.op_func(new SMPCoreOpArgument() { x_byte = (byte)wr, y_byte = (byte)rd }).result_byte;
+            wr = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = (byte)wr, y_byte = (byte)rd }).result_byte;
             SMPCoreOp cmp = op_cmp;
             if (args.op_func != cmp)
             {
@@ -1597,7 +1597,7 @@ namespace Snes
             rd = (ushort)(op_readdp((byte)(dp + 0)) << 0);
             op_io();
             rd |= (ushort)(op_readdp((byte)(dp + 1)) << 8);
-            regs.ya.Assign(args.op_func(new SMPCoreOpArgument() { x_ushort = (ushort)regs.ya, y_ushort = rd }).result_ushort);
+            regs.ya.Assign(args.op_func.Invoke(new SMPCoreOpArgument() { x_ushort = (ushort)regs.ya, y_ushort = rd }).result_ushort);
             return null;
         }
 
@@ -1660,7 +1660,7 @@ namespace Snes
         public SMPCoreOpResult op_adjust_reg(SMPCoreOpArgument args)
         {
             op_io();
-            regs.r[args.n] = args.op_func(new SMPCoreOpArgument() { x_byte = regs.r[args.n] }).result_byte;
+            regs.r[args.n] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.r[args.n] }).result_byte;
             return null;
         }
 
@@ -1668,7 +1668,7 @@ namespace Snes
         {
             dp = op_readpc();
             rd = op_readdp((byte)dp);
-            rd = args.op_func(new SMPCoreOpArgument() { x_byte = (byte)rd }).result_byte;
+            rd = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = (byte)rd }).result_byte;
             op_writedp((byte)dp, (byte)rd);
             return null;
         }
@@ -1678,7 +1678,7 @@ namespace Snes
             dp = op_readpc();
             op_io();
             rd = op_readdp((byte)(dp + regs.x[0]));
-            rd = args.op_func(new SMPCoreOpArgument() { x_byte = (byte)rd }).result_byte;
+            rd = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = (byte)rd }).result_byte;
             op_writedp((byte)(dp + regs.x[0]), (byte)rd);
             return null;
         }
@@ -1688,7 +1688,7 @@ namespace Snes
             dp = (ushort)(op_readpc() << 0);
             dp |= (ushort)(op_readpc() << 8);
             rd = op_readaddr(dp);
-            rd = args.op_func(new SMPCoreOpArgument() { x_byte = (byte)rd }).result_byte;
+            rd = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = (byte)rd }).result_byte;
             op_writeaddr(dp, (byte)rd);
             return null;
         }

@@ -3,7 +3,7 @@ namespace Snes
 {
     public delegate void CPUCoreOp(CPUCoreOpArgument args);
 
-    class CPUCoreOperation
+    public class CPUCoreOperation
     {
         private CPUCoreOp op { get; set; }
         private CPUCoreOpArgument args { get; set; }
