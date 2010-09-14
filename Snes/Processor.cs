@@ -1,4 +1,5 @@
-﻿using Nall;
+﻿using System.Threading;
+using Nall;
 
 namespace Snes
 {
@@ -6,7 +7,7 @@ namespace Snes
 
     class Processor
     {
-        public Cothread thread;
+        public Thread thread;
         public uint frequency;
         public long clock;
 

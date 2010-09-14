@@ -1,4 +1,5 @@
-﻿using Nall;
+﻿using System.Threading;
+using Nall;
 
 namespace Snes
 {
@@ -12,8 +13,8 @@ namespace Snes
         public enum ExitReason : uint { UnknownEvent, FrameEvent, SynchronizeEvent, DebuggerEvent }
         public ExitReason exit_reason { get; private set; }
 
-        public Cothread host_thread; //program thread (used to exit emulation)
-        public Cothread thread; //active emulation thread (used to enter emulation)
+        public Thread host_thread; //program thread (used to exit emulation)
+        public Thread thread; //active emulation thread (used to enter emulation)
 
         public void enter()
         {
