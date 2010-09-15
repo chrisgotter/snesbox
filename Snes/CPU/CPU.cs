@@ -176,6 +176,11 @@ namespace Snes
         public CPU()
         {
             PPUCounter.Scanline = scanline;
+
+            for (int i = 0; i < channel.Length; i++)
+            {
+                channel[i] = new Channel();
+            }
         }
 
         private Channel[] channel = new Channel[8];

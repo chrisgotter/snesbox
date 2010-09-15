@@ -321,6 +321,11 @@ namespace Snes
             public Sprite(PPU self_)
             {
                 self = self_;
+
+                for (int i = 0; i < list.Length; i++)
+                {
+                    list[i] = new SpriteItem();
+                }
             }
 
             public bool on_scanline(SpriteItem sprite)

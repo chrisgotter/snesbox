@@ -5,7 +5,7 @@ namespace Snes
 {
     partial class CPU
     {
-        private struct Channel
+        private class Channel
         {
             //$420b
             public bool dma_enabled;
@@ -32,14 +32,14 @@ namespace Snes
 
             //$43x5-$43x6
             [StructLayout(LayoutKind.Explicit)]
-            public struct Union
+            public class Union
             {
                 [FieldOffset(0)]
                 public ushort transfer_size;
                 [FieldOffset(0)]
                 public ushort indirect_addr;
             }
-            public Union union;
+            public Union union = new Union();
 
             //$43x7
             public byte indirect_bank;

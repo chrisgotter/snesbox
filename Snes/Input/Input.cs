@@ -526,5 +526,13 @@ namespace Snes
         {
             get { return port; }
         }
+
+        public Input()
+        {
+            for (int i = 0; i < port.Length; i++)
+            {
+                port[i] = new Port();
+            }
+        }
     }
 }

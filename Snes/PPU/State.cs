@@ -27,6 +27,10 @@ namespace Snes
                     for (int i = 0; i < tile.Length; i++)
                     {
                         tile[i] = new TileItem[34];
+                        for (int j = 0; j < tile[i].Length; j++)
+                        {
+                            tile[i][j] = new TileItem();
+                        }
                     }
                 }
             }

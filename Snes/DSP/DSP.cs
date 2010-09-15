@@ -304,6 +304,11 @@ namespace Snes
                 Debug.Assert(Bit.sclamp(16, +0x8000) == +0x7fff);
                 Debug.Assert(Bit.sclamp(16, -0x8001) == -0x8000);
             }
+
+            for (int i = 0; i < voice.Length; i++)
+            {
+                voice[i] = new Voice();
+            }
         }
 
         private enum GlobalReg { mvoll = 0x0c, mvolr = 0x1c, evoll = 0x2c, evolr = 0x3c, kon = 0x4c, koff = 0x5c, flg = 0x6c, endx = 0x7c, efb = 0x0d, pmon = 0x2d, non = 0x3d, eon = 0x4d, dir = 0x5d, esa = 0x6d, edl = 0x7d, fir = 0x0f }

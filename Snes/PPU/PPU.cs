@@ -115,7 +115,7 @@ namespace Snes
         {
             Processor.create(Enter, System.system.cpu_frequency);
             base.reset();
-            Array.Clear(surface, 0, 512 * 512 * sizeof(ushort));
+            Array.Clear(surface, 0, surface.Length);
 
             mmio_reset();
             bg1.reset();

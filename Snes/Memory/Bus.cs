@@ -165,6 +165,14 @@ namespace Snes
 
         public Page[] page = new Page[65536];
 
+        public Bus()
+        {
+            for (int i = 0; i < page.Length; i++)
+            {
+                page[i] = new Page();
+            }
+        }
+
         private void map_reset()
         {
             map(MapMode.Direct, 0x00, 0xff, 0x0000, 0xffff, UnmappedMemory.memory_unmapped);
