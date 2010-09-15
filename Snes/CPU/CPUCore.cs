@@ -2626,7 +2626,7 @@ namespace Snes
             op_io_irq();
         }
 
-        public void op_wdm()
+        public void op_wdm(CPUCoreOpArgument args)
         {
             op_readpc();
         }
@@ -3035,7 +3035,7 @@ namespace Snes
 
         private CPUCoreOp GetCoreOp(string name, string modifier = "")
         {
-            return (CPUCoreOp)Delegate.CreateDelegate(this.GetType(), this, "op_" + name + modifier);
+            return (CPUCoreOp)Delegate.CreateDelegate(typeof(CPUCoreOp), this, "op_" + name + modifier);
         }
 
         private void opA(byte id, string name)
