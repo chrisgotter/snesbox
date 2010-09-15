@@ -8,7 +8,7 @@ namespace Snes
     {
         public static CPU cpu = new CPU();
 
-        public static readonly bool Threaded = true;
+        public const bool Threaded = true;
         public Collection<Processor> coprocessors = new Collection<Processor>();
 
         public void step(uint clocks)

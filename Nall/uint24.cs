@@ -4,7 +4,7 @@ namespace Nall
     public struct uint24
     {
         private uint data;
-        private static readonly int bits = 24;
+        private const int bits = 24;
 
         public static explicit operator uint(uint24 number)
         {

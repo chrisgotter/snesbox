@@ -14,7 +14,7 @@ namespace Snes
         private uint decomp_offset;
 
         //read() will spool chunks half the size of decomp_buffer_size
-        private static readonly int decomp_buffer_size = 64; //must be >= 64, and must be a power of two
+        private const int decomp_buffer_size = 64; //must be >= 64, and must be a power of two
         private byte[] decomp_buffer;
         private uint decomp_buffer_rdoffset;
         private uint decomp_buffer_wroffset;

@@ -4,7 +4,7 @@ namespace Nall
     public struct uint3
     {
         private uint data;
-        private static readonly int bits = 3;
+        private const int bits = 3;
 
         public static explicit operator uint(uint3 number)
         {

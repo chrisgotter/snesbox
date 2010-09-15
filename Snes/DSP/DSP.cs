@@ -8,7 +8,7 @@ namespace Snes
     {
         public static DSP dsp = new DSP();
 
-        public static readonly bool Threaded = true;
+        public const bool Threaded = true;
 
         public void step(uint clocks)
         {
@@ -319,9 +319,9 @@ namespace Snes
         private enum EnvMode { release, attack, decay, sustain }
 
         //internal constants
-        private static readonly int echo_hist_size = 8;
-        private static readonly int brr_buf_size = 12;
-        private static readonly int brr_block_size = 9;
+        private const int echo_hist_size = 8;
+        private const int brr_buf_size = 12;
+        private const int brr_block_size = 9;
 
         private State state = new State();
 
@@ -383,7 +383,7 @@ namespace Snes
         }
 
         //counter
-        private static readonly int counter_range = 2048 * 5 * 3; //30720 (0x7800)
+        private const int counter_range = 2048 * 5 * 3; //30720 (0x7800)
 
         private static readonly ushort[] counter_rate = new ushort[32]
         {

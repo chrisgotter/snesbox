@@ -7,7 +7,7 @@ namespace Snes
     {
         public static PPU ppu = new PPU();
 
-        public static readonly bool Threaded = true;
+        public const bool Threaded = true;
 
         public void step(uint clocks)
         {
