@@ -3,9 +3,9 @@ namespace Snes
 {
     partial class Input
     {
-        partial class Port
+        partial struct Port
         {
-            public class Justifier
+            public struct Justifier
             {
                 public bool active;
 

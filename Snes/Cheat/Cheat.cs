@@ -161,7 +161,7 @@ namespace Snes
                 }
 
                 type = Type.ProActionReplay;
-                uint r = uint.Parse(t);
+                uint r = Convert.ToUInt32(t, 16);
                 addr = r >> 8;
                 data = (byte)(r & 0xff);
                 return true;
@@ -181,7 +181,7 @@ namespace Snes
 
                 type = Type.GameGenie;
                 transform(t, "df4709156bc8a23e", "0123456789abcdef");
-                uint r = uint.Parse(t);
+                uint r = Convert.ToUInt32(t, 16);
                 //8421 8421 8421 8421 8421 8421
                 //abcd efgh ijkl mnop qrst uvwx
                 //ijkl qrst opab cduv wxef ghmn

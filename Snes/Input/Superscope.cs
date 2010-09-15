@@ -3,9 +3,9 @@ namespace Snes
 {
     partial class Input
     {
-        partial class Port
+        partial struct Port
         {
-            public class Superscope
+            public struct Superscope
             {
                 public int x, y;
 

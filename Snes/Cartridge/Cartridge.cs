@@ -262,71 +262,71 @@ namespace Snes
                 }
             }
 
-            foreach (var node in document.Elements("rom"))
+            foreach (var node in document.Descendants("rom"))
             {
                 xml_parse_rom(node);
             }
-            foreach (var node in document.Elements("ram"))
+            foreach (var node in document.Descendants("ram"))
             {
                 xml_parse_ram(node);
             }
-            foreach (var node in document.Elements("superfx"))
+            foreach (var node in document.Descendants("superfx"))
             {
                 xml_parse_superfx(node);
             }
-            foreach (var node in document.Elements("sa1"))
+            foreach (var node in document.Descendants("sa1"))
             {
                 xml_parse_sa1(node);
             }
-            foreach (var node in document.Elements("bsx"))
+            foreach (var node in document.Descendants("bsx"))
             {
                 xml_parse_bsx(node);
             }
-            foreach (var node in document.Elements("sufamiturbo"))
+            foreach (var node in document.Descendants("sufamiturbo"))
             {
                 xml_parse_sufamiturbo(node);
             }
-            foreach (var node in document.Elements("supergameboy"))
+            foreach (var node in document.Descendants("supergameboy"))
             {
                 xml_parse_supergameboy(node);
             }
-            foreach (var node in document.Elements("srtc"))
+            foreach (var node in document.Descendants("srtc"))
             {
                 xml_parse_srtc(node);
             }
-            foreach (var node in document.Elements("sdd1"))
+            foreach (var node in document.Descendants("sdd1"))
             {
                 xml_parse_sdd1(node);
             }
-            foreach (var node in document.Elements("spc7110"))
+            foreach (var node in document.Descendants("spc7110"))
             {
                 xml_parse_spc7110(node);
             }
-            foreach (var node in document.Elements("cx4"))
+            foreach (var node in document.Descendants("cx4"))
             {
                 xml_parse_cx4(node);
             }
-            foreach (var node in document.Elements("necdsp"))
+            foreach (var node in document.Descendants("necdsp"))
             {
                 xml_parse_necdsp(node);
             }
-            foreach (var node in document.Elements("obc1"))
+            foreach (var node in document.Descendants("obc1"))
             {
                 xml_parse_obc1(node);
             }
-            foreach (var node in document.Elements("setadsp"))
+            foreach (var node in document.Descendants("setadsp"))
             {
                 xml_parse_setadsp(node);
             }
-            foreach (var node in document.Elements("setarisc"))
+            foreach (var node in document.Descendants("setarisc"))
             {
                 xml_parse_setarisc(node);
             }
-            foreach (var node in document.Elements("msu1"))
+            foreach (var node in document.Descendants("msu1"))
             {
                 xml_parse_msu1(node);
             }
-            foreach (var node in document.Elements("serial"))
+            foreach (var node in document.Descendants("serial"))
             {
                 xml_parse_serial(node);
             }
@@ -361,7 +361,7 @@ namespace Snes
                 {
                     if (document.Element("cartridge").Element("ram").Attributes("size").Any())
                     {
-                        supergameboy_ram_size = uint.Parse(document.Element("cartridge").Element("ram").Attribute("size").Value);
+                        supergameboy_ram_size = Convert.ToUInt32(document.Element("cartridge").Element("ram").Attribute("size").Value, 16);
                     }
                 }
             }
@@ -382,11 +382,11 @@ namespace Snes
                 }
                 if (leaf.Attributes("offset").Any())
                 {
-                    m.offset = uint.Parse(leaf.Attribute("offset").Value);
+                    m.offset = Convert.ToUInt32(leaf.Attribute("offset").Value, 16);
                 }
                 if (leaf.Attributes("size").Any())
                 {
-                    m.size = uint.Parse(leaf.Attribute("size").Value);
+                    m.size = Convert.ToUInt32(leaf.Attribute("size").Value, 16);
                 }
                 mapping.Add(m);
             }
@@ -396,7 +396,7 @@ namespace Snes
         {
             if (root.Attributes("size").Any())
             {
-                ram_size = uint.Parse(root.Attribute("size").Value);
+                ram_size = Convert.ToUInt32(root.Attribute("size").Value, 16);
             }
 
             foreach (var leaf in root.Elements("map"))
@@ -412,11 +412,11 @@ namespace Snes
                 }
                 if (leaf.Attributes("offset").Any())
                 {
-                    m.offset = uint.Parse(leaf.Attribute("offset").Value);
+                    m.offset = Convert.ToUInt32(leaf.Attribute("offset").Value, 16);
                 }
                 if (leaf.Attributes("size").Any())
                 {
-                    m.size = uint.Parse(leaf.Attribute("size").Value);
+                    m.size = Convert.ToUInt32(leaf.Attribute("size").Value, 16);
                 }
                 mapping.Add(m);
             }
@@ -441,11 +441,11 @@ namespace Snes
                     }
                     if (leaf.Attributes("offset").Any())
                     {
-                        m.offset = uint.Parse(leaf.Attribute("offset").Value);
+                        m.offset = Convert.ToUInt32(leaf.Attribute("offset").Value, 16);
                     }
                     if (leaf.Attributes("size").Any())
                     {
-                        m.size = uint.Parse(leaf.Attribute("size").Value);
+                        m.size = Convert.ToUInt32(leaf.Attribute("size").Value, 16);
                     }
                     mapping.Add(m);
                 }
@@ -455,7 +455,7 @@ namespace Snes
             {
                 if (node.Attributes("size").Any())
                 {
-                    ram_size = uint.Parse(node.Attribute("size").Value);
+                    ram_size = Convert.ToUInt32(node.Attribute("size").Value, 16);
                 }
 
                 foreach (var leaf in node.Elements("map"))
@@ -471,11 +471,11 @@ namespace Snes
                     }
                     if (leaf.Attributes("offset").Any())
                     {
-                        m.offset = uint.Parse(leaf.Attribute("offset").Value);
+                        m.offset = Convert.ToUInt32(leaf.Attribute("offset").Value, 16);
                     }
                     if (leaf.Attributes("size").Any())
                     {
-                        m.size = uint.Parse(leaf.Attribute("size").Value);
+                        m.size = Convert.ToUInt32(leaf.Attribute("size").Value, 16);
                     }
                     mapping.Add(m);
                 }
@@ -514,11 +514,11 @@ namespace Snes
                     }
                     if (leaf.Attributes("offset").Any())
                     {
-                        m.offset = uint.Parse(leaf.Attribute("offset").Value);
+                        m.offset = Convert.ToUInt32(leaf.Attribute("offset").Value, 16);
                     }
                     if (leaf.Attributes("size").Any())
                     {
-                        m.size = uint.Parse(leaf.Attribute("size").Value);
+                        m.size = Convert.ToUInt32(leaf.Attribute("size").Value, 16);
                     }
                     mapping.Add(m);
                 }
@@ -539,11 +539,11 @@ namespace Snes
                     }
                     if (leaf.Attributes("offset").Any())
                     {
-                        m.offset = uint.Parse(leaf.Attribute("offset").Value);
+                        m.offset = Convert.ToUInt32(leaf.Attribute("offset").Value, 16);
                     }
                     if (leaf.Attributes("size").Any())
                     {
-                        m.size = uint.Parse(leaf.Attribute("size").Value);
+                        m.size = Convert.ToUInt32(leaf.Attribute("size").Value, 16);
                     }
                     mapping.Add(m);
                 }
@@ -553,7 +553,7 @@ namespace Snes
             {
                 if (node.Attributes("size").Any())
                 {
-                    ram_size = uint.Parse(node.Attribute("size").Value);
+                    ram_size = Convert.ToUInt32(node.Attribute("size").Value, 16);
                 }
 
                 foreach (var leaf in node.Elements("map"))
@@ -569,11 +569,11 @@ namespace Snes
                     }
                     if (leaf.Attributes("offset").Any())
                     {
-                        m.offset = uint.Parse(leaf.Attribute("offset").Value);
+                        m.offset = Convert.ToUInt32(leaf.Attribute("offset").Value, 16);
                     }
                     if (leaf.Attributes("size").Any())
                     {
-                        m.size = uint.Parse(leaf.Attribute("size").Value);
+                        m.size = Convert.ToUInt32(leaf.Attribute("size").Value, 16);
                     }
                     mapping.Add(m);
                 }
@@ -615,11 +615,11 @@ namespace Snes
                     }
                     if (leaf.Attributes("offset").Any())
                     {
-                        m.offset = uint.Parse(leaf.Attribute("offset").Value);
+                        m.offset = Convert.ToUInt32(leaf.Attribute("offset").Value, 16);
                     }
                     if (leaf.Attributes("size").Any())
                     {
-                        m.size = uint.Parse(leaf.Attribute("size").Value);
+                        m.size = Convert.ToUInt32(leaf.Attribute("size").Value, 16);
                     }
                     mapping.Add(m);
                 }
@@ -676,11 +676,11 @@ namespace Snes
                         }
                         if (leaf.Attributes("offset").Any())
                         {
-                            m.offset = uint.Parse(leaf.Attribute("offset").Value);
+                            m.offset = Convert.ToUInt32(leaf.Attribute("offset").Value, 16);
                         }
                         if (leaf.Attributes("size").Any())
                         {
-                            m.size = uint.Parse(leaf.Attribute("size").Value);
+                            m.size = Convert.ToUInt32(leaf.Attribute("size").Value, 16);
                         }
                         if (m.memory.size() > 0)
                         {
@@ -704,11 +704,11 @@ namespace Snes
                         }
                         if (leaf.Attributes("offset").Any())
                         {
-                            m.offset = uint.Parse(leaf.Attribute("offset").Value);
+                            m.offset = Convert.ToUInt32(leaf.Attribute("offset").Value, 16);
                         }
                         if (leaf.Attributes("size").Any())
                         {
-                            m.size = uint.Parse(leaf.Attribute("size").Value);
+                            m.size = Convert.ToUInt32(leaf.Attribute("size").Value, 16);
                         }
                         if (m.memory.size() > 0)
                         {
@@ -829,7 +829,7 @@ namespace Snes
                     }
                     if (leaf.Attributes("offset").Any())
                     {
-                        spc7110_data_rom_offset = uint.Parse(leaf.Attribute("offset").Value);
+                        spc7110_data_rom_offset = Convert.ToUInt32(leaf.Attribute("offset").Value, 16);
                     }
                     mapping.Add(m);
                 }
@@ -852,7 +852,7 @@ namespace Snes
             {
                 if (node.Attributes("size").Any())
                 {
-                    ram_size = uint.Parse(node.Attribute("size").Value);
+                    ram_size = Convert.ToUInt32(node.Attribute("size").Value, 16);
                 }
 
                 foreach (var leaf in node.Elements("map"))
@@ -869,11 +869,11 @@ namespace Snes
                     }
                     if (leaf.Attributes("offset").Any())
                     {
-                        m.offset = uint.Parse(leaf.Attribute("offset").Value);
+                        m.offset = Convert.ToUInt32(leaf.Attribute("offset").Value, 16);
                     }
                     if (leaf.Attributes("size").Any())
                     {
-                        m.size = uint.Parse(leaf.Attribute("size").Value);
+                        m.size = Convert.ToUInt32(leaf.Attribute("size").Value, 16);
                     }
                     mapping.Add(m);
                 }
@@ -1086,7 +1086,7 @@ namespace Snes
 
             if (root.Attributes("baud").Any())
             {
-                serial_baud_rate = uint.Parse(root.Attribute("baud").Value);
+                serial_baud_rate = Convert.ToUInt32(root.Attribute("baud").Value, 16);
             }
         }
 
@@ -1102,25 +1102,25 @@ namespace Snes
             var subpart = part[0].Split(new char[] { '-' });
             if (subpart.Length == 1)
             {
-                m.banklo = uint.Parse(subpart[0]);
+                m.banklo = Convert.ToUInt32(subpart[0], 16);
                 m.bankhi = m.banklo;
             }
             else if (subpart.Length == 2)
             {
-                m.banklo = uint.Parse(subpart[0]);
-                m.bankhi = uint.Parse(subpart[1]);
+                m.banklo = Convert.ToUInt32(subpart[0], 16);
+                m.bankhi = Convert.ToUInt32(subpart[1], 16);
             }
 
             subpart = part[1].Split(new char[] { '-' });
             if (subpart.Length == 1)
             {
-                m.addrlo = uint.Parse(subpart[0]);
+                m.addrlo = Convert.ToUInt32(subpart[0], 16);
                 m.addrhi = m.addrlo;
             }
             else if (subpart.Length == 2)
             {
-                m.addrlo = uint.Parse(subpart[0]);
-                m.addrhi = uint.Parse(subpart[1]);
+                m.addrlo = Convert.ToUInt32(subpart[0], 16);
+                m.addrhi = Convert.ToUInt32(subpart[1], 16);
             }
         }
 

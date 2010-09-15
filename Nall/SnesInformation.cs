@@ -117,7 +117,7 @@ namespace Nall
 
                 if (ram_size > 0)
                 {
-                    xml += "  <ram size='" + ram_size.ToString() + "'>\n";
+                    xml += "  <ram size='" + ram_size.ToString("X") + "'>\n";
                     xml += "    <map mode='linear' address='20-3f:6000-7fff'/>\n";
                     xml += "    <map mode='linear' address='a0-bf:6000-7fff'/>\n";
                     if ((rom_size > 0x200000) || (ram_size > 32 * 1024))
