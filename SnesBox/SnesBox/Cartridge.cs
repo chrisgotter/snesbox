@@ -1,4 +1,5 @@
 ﻿using System;
+using Snes;
 
 namespace SnesBox
 {
@@ -33,7 +34,7 @@ namespace SnesBox
 
         internal override void Load(Snes snes)
         {
-            //LibSnes.clr_snes_load_cartridge_normal(MakeUtf8Array(_romXml), _romData, (uint)_romData.Length);
+            LibSnes.snes_load_cartridge_normal(MakeUtf8Array(_romXml), _romData, (uint)_romData.Length);
         }
 
         internal override void Refresh()

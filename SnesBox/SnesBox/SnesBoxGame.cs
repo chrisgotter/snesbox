@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -66,55 +67,51 @@ namespace SnesBox
 
         void Snes_AudioUpdated(object sender, AudioUpdatedEventArgs e)
         {
-            //var audioBuffer = new byte[e.SampleCount * 4];
-            //unsafe
-            //{
-            //    var snesBuffer = (ushort*)e.AudioBuffer;
+            var audioBuffer = new byte[e.SampleCount * 4];
+            int bufferIndex = 0;
 
-            //    for (int i = 0; i < audioBuffer.Length; )
-            //    {
-            //        var samples = BitConverter.GetBytes(*snesBuffer++);
-            //        audioBuffer[i++] = samples[0];
-            //        audioBuffer[i++] = samples[1];
-            //    }
-            //}
+            for (int i = 0; i < e.AudioBuffer.Length; i++)
+            {
+                var samples = BitConverter.GetBytes(e.AudioBuffer[bufferIndex++]);
+                audioBuffer[i++] = samples[0];
+                audioBuffer[i++] = samples[1];
+            }
 
-            //if (audioBuffer.Length > 0)
-            //    _audioFrame.SubmitBuffer(audioBuffer, 0, audioBuffer.Length);
+            if (audioBuffer.Length > 0)
+            {
+                _audioFrame.SubmitBuffer(audioBuffer, 0, audioBuffer.Length);
+            }
         }
 
         void Snes_VideoUpdated(object sender, VideoUpdatedEventArgs e)
         {
-            //var videoBuffer = new uint[_videoFrame.Width * _videoFrame.Height];
-            //unsafe
-            //{
-            //    var snesBuffer = (ushort*)e.VideoBuffer;
-            //    _videoFrame.GetData<uint>(videoBuffer);
+            var videoBuffer = new uint[_videoFrame.Width * _videoFrame.Height];
+            int bufferIndex = 0;
+            _videoFrame.GetData<uint>(videoBuffer);
 
-            //    for (int y = 0; y < e.Height; y++)
-            //    {
-            //        for (int x = 0; x < e.Width; x++)
-            //        {
-            //            ushort color = *snesBuffer++;
-            //            int b;
+            for (int y = 0; y < e.Height; y++)
+            {
+                for (int x = 0; x < e.Width; x++)
+                {
+                    ushort color = e.VideoBuffer[bufferIndex];
+                    int b;
 
-            //            b = ((color >> 10) & 31) * 8;
-            //            var red = (byte)(b + b / 35);
-            //            b = ((color >> 5) & 31) * 8;
-            //            var green = (byte)(b + b / 35);
-            //            b = ((color >> 0) & 31) * 8;
-            //            var blue = (byte)(b + b / 35);
-            //            var alpha = (byte)255;
+                    b = ((color >> 10) & 31) * 8;
+                    var red = (byte)(b + b / 35);
+                    b = ((color >> 5) & 31) * 8;
+                    var green = (byte)(b + b / 35);
+                    b = ((color >> 0) & 31) * 8;
+                    var blue = (byte)(b + b / 35);
+                    var alpha = (byte)255;
 
-            //            videoBuffer[y * e.Width + x] = new Color() { R = red, G = green, B = blue, A = alpha }.PackedValue;
-            //        }
+                    videoBuffer[y * e.Width + x] = new Color() { R = red, G = green, B = blue, A = alpha }.PackedValue;
+                }
 
-            //        snesBuffer += e.Height > 256 ? 512 - e.Width : 1024 - e.Width;
-            //    }
+                bufferIndex += e.Height > 256 ? 512 - e.Width : 1024 - e.Width;
+            }
 
-            //    GraphicsDevice.Textures[0] = null;
-            //    _videoFrame.SetData<uint>(videoBuffer);
-            //}
+            GraphicsDevice.Textures[0] = null;
+            _videoFrame.SetData<uint>(videoBuffer);
         }
     }
 }
