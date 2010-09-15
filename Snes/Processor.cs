@@ -3,15 +3,13 @@ using Nall;
 
 namespace Snes
 {
-    public delegate void Operation();
-
     class Processor
     {
         public Thread thread;
         public uint frequency;
         public long clock;
 
-        public void create(EntryPoint entryPoint, uint frequency_)
+        public void create(ThreadStart entryPoint, uint frequency_)
         {
             if (!ReferenceEquals(thread, null))
                 Libco.Delete(thread);

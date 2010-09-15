@@ -2,8 +2,6 @@
 
 namespace Nall
 {
-    public delegate void EntryPoint();
-
     public static class Libco
     {
         private static Thread _active;
@@ -18,7 +16,7 @@ namespace Nall
             return _active;
         }
 
-        public static Thread Create(int size, EntryPoint entrypoint)
+        public static Thread Create(int size, ThreadStart entrypoint)
         {
             if (ReferenceEquals(_active, null))
             {
@@ -27,7 +25,7 @@ namespace Nall
 
             size += 256; /* allocate additional space for storage */
             size &= ~15; /* align stack to 16-byte boundary */
-            return new Thread(new ThreadStart(entrypoint), size);
+            return new Thread(entrypoint, size);
         }
 
         public static void Delete(Thread handle)

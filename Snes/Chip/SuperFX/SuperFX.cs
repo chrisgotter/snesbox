@@ -15,7 +15,7 @@ namespace Snes
         public byte rpix(byte x, byte y) { throw new NotImplementedException(); }
         public void pixelcache_flush(PixelCache cache) { throw new NotImplementedException(); }
 
-        public Operation[] opcode_table = new Operation[1024];
+        public Delegate[] opcode_table = new Delegate[1024];
         public void initialize_opcode_table() { throw new NotImplementedException(); }
 
         public void op_adc_i(int n) { throw new NotImplementedException(); }
