@@ -6,7 +6,7 @@ namespace Snes
     {
         public static ST0018 st0018 = new ST0018();
 
-        public void init() { throw new NotImplementedException(); }
+        public void init() { /*throw new NotImplementedException();*/ }
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }
         public void reset() { throw new NotImplementedException(); }

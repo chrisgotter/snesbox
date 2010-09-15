@@ -6,7 +6,7 @@ namespace Snes
     {
         public static SPC7110 spc7110 = new SPC7110();
 
-        public void init() { throw new NotImplementedException(); }
+        public void init() { /*throw new NotImplementedException();*/ }
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }
         public void reset() { throw new NotImplementedException(); }
@@ -29,7 +29,7 @@ namespace Snes
         public void decomp_init() { throw new NotImplementedException(); }
         public byte decomp_read() { throw new NotImplementedException(); }
 
-        public SPC7110() { throw new NotImplementedException(); }
+        public SPC7110() { /*throw new NotImplementedException();*/ }
 
         //==================
         //decompression unit

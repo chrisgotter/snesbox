@@ -6,7 +6,7 @@ namespace Snes
     {
         public static SDD1 sdd1 = new SDD1();
 
-        public void init() { throw new NotImplementedException(); }
+        public void init() { /*throw new NotImplementedException();*/ }
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }
         public void reset() { throw new NotImplementedException(); }
@@ -17,7 +17,7 @@ namespace Snes
         public override byte read(uint addr) { throw new NotImplementedException(); }
         public override void write(uint addr, byte data) { throw new NotImplementedException(); }
 
-        public SDD1() { throw new NotImplementedException(); }
+        public SDD1() { /*throw new NotImplementedException();*/ }
 
         private IMMIO[] cpu_mmio = new IMMIO[0x80];  //bus spying hooks to glean information for class dma[]
 

@@ -8,7 +8,7 @@ namespace Snes
     {
         public static DSP1 dsp1 = new DSP1();
 
-        public void init() { throw new NotImplementedException(); }
+        public void init() { /*throw new NotImplementedException();*/ }
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }
         public void reset() { throw new NotImplementedException(); }
@@ -30,7 +30,7 @@ namespace Snes
         //   0: Internal Data Register Transfer.
         //   1: External Data Register Transfer.
 
-        public DSP1() { throw new NotImplementedException(); }
+        public DSP1() { /*throw new NotImplementedException();*/ }
         public byte getSr() { throw new NotImplementedException(); } // return the status register's high byte
         public byte getDr() { throw new NotImplementedException(); }
         public void setDr(byte iDr) { throw new NotImplementedException(); }

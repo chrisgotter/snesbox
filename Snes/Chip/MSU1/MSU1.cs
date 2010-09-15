@@ -9,7 +9,7 @@ namespace Snes
 
         public static void Enter() { throw new NotImplementedException(); }
         public void enter() { throw new NotImplementedException(); }
-        public void init() { throw new NotImplementedException(); }
+        public void init() { /*throw new NotImplementedException();*/ }
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }
         public void reset() { throw new NotImplementedException(); }

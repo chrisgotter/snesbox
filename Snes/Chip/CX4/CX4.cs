@@ -7,7 +7,7 @@ namespace Snes
         public static CX4 cx4 = new CX4();
 
         public override uint size() { throw new NotImplementedException(); }
-        public void init() { throw new NotImplementedException(); }
+        public void init() { /*throw new NotImplementedException();*/ }
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }
         public void reset() { throw new NotImplementedException(); }

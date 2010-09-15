@@ -6,7 +6,7 @@ namespace Snes
     {
         public static SRTC srtc = new SRTC();
 
-        public void init() { throw new NotImplementedException(); }
+        public void init() { /*throw new NotImplementedException();*/ }
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }
         public void reset() { throw new NotImplementedException(); }
@@ -14,7 +14,7 @@ namespace Snes
         public byte mmio_read(uint addr) { throw new NotImplementedException(); }
         public void mmio_write(uint addr, byte data) { throw new NotImplementedException(); }
 
-        public SRTC() { throw new NotImplementedException(); }
+        public SRTC() { /*throw new NotImplementedException();*/ }
 
         private static readonly uint[] months = new uint[12];
         private enum RtcMode { RtcReady, RtcCommand, RtcRead, RtcWrite }

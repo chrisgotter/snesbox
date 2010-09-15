@@ -122,12 +122,12 @@ namespace Snes
         public override void last_cycle() { throw new NotImplementedException(); }
         public override bool interrupt_pending() { throw new NotImplementedException(); }
 
-        public void init() { throw new NotImplementedException(); }
+        public void init() { /*throw new NotImplementedException();*/ }
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }
         public void reset() { throw new NotImplementedException(); }
 
-        public SA1() { throw new NotImplementedException(); }
+        public SA1() { /*throw new NotImplementedException();*/ }
 
         public Coprocessor Coprocessor
         {

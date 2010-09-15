@@ -8,7 +8,7 @@ namespace Snes
 
         public Status status;
 
-        public void init() { throw new NotImplementedException(); }
+        public void init() { /*throw new NotImplementedException();*/ }
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }
         public void reset() { throw new NotImplementedException(); }
@@ -16,7 +16,7 @@ namespace Snes
         public byte read(uint addr) { throw new NotImplementedException(); }
         public void write(uint addr, byte data) { throw new NotImplementedException(); }
 
-        public DSP2() { throw new NotImplementedException(); }
+        public DSP2() { /*throw new NotImplementedException();*/ }
 
         protected void op01() { throw new NotImplementedException(); }
         protected void op03() { throw new NotImplementedException(); }
