@@ -30,7 +30,7 @@ namespace Nall
             return (int)(((x & m) ^ b) - b);
         }
 
-        public static uint bit(uint value)
+        public static uint ToBit(uint value)
         {
             return Convert.ToUInt32(Convert.ToBoolean(value));
         }

@@ -2419,7 +2419,7 @@ namespace Snes
         {
             int bit = args.x;
             int val = args.y;
-            if (Bit.bit(regs.p & (uint)bit) != val)
+            if (Bit.ToBit(regs.p & (uint)bit) != val)
             {
                 rd.l = op_readpc();
             }

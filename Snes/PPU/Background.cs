@@ -282,8 +282,8 @@ namespace Snes
                             uint d0 = StaticRAM.vram[offset + 0U];
                             uint d1 = StaticRAM.vram[offset + 1U];
 
-                            return ((Bit.bit(d0 & mask)) << 0)
-                                + ((Bit.bit(d1 & mask)) << 1);
+                            return ((Bit.ToBit(d0 & mask)) << 0)
+                                + ((Bit.ToBit(d1 & mask)) << 1);
                         }
                     case Background.Mode.BPP4:
                         {
@@ -294,10 +294,10 @@ namespace Snes
                             uint d2 = StaticRAM.vram[offset + 16U];
                             uint d3 = StaticRAM.vram[offset + 17U];
 
-                            return ((Bit.bit(d0 & mask)) << 0)
-                                + ((Bit.bit(d1 & mask)) << 1)
-                                + ((Bit.bit(d2 & mask)) << 2)
-                                + ((Bit.bit(d3 & mask)) << 3);
+                            return ((Bit.ToBit(d0 & mask)) << 0)
+                                + ((Bit.ToBit(d1 & mask)) << 1)
+                                + ((Bit.ToBit(d2 & mask)) << 2)
+                                + ((Bit.ToBit(d3 & mask)) << 3);
                         }
                     case Background.Mode.BPP8:
                         {
@@ -312,14 +312,14 @@ namespace Snes
                             uint d6 = StaticRAM.vram[offset + 48U];
                             uint d7 = StaticRAM.vram[offset + 49U];
 
-                            return ((Bit.bit(d0 & mask)) << 0)
-                                + ((Bit.bit(d1 & mask)) << 1)
-                                + ((Bit.bit(d2 & mask)) << 2)
-                                + ((Bit.bit(d3 & mask)) << 3)
-                                + ((Bit.bit(d4 & mask)) << 4)
-                                + ((Bit.bit(d5 & mask)) << 5)
-                                + ((Bit.bit(d6 & mask)) << 6)
-                                + ((Bit.bit(d7 & mask)) << 7);
+                            return ((Bit.ToBit(d0 & mask)) << 0)
+                                + ((Bit.ToBit(d1 & mask)) << 1)
+                                + ((Bit.ToBit(d2 & mask)) << 2)
+                                + ((Bit.ToBit(d3 & mask)) << 3)
+                                + ((Bit.ToBit(d4 & mask)) << 4)
+                                + ((Bit.ToBit(d5 & mask)) << 5)
+                                + ((Bit.ToBit(d6 & mask)) << 6)
+                                + ((Bit.ToBit(d7 & mask)) << 7);
                         }
                     default:
                         throw new InvalidOperationException();

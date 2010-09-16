@@ -139,10 +139,10 @@ namespace Snes
 
                     uint mask = (uint)(0x80 >> (tile.hflip == false ? px : 7 - px));
                     uint color;
-                    color = (Bit.bit(tile.d0 & mask)) << 0;
-                    color |= (Bit.bit(tile.d1 & mask)) << 1;
-                    color |= (Bit.bit(tile.d2 & mask)) << 2;
-                    color |= (Bit.bit(tile.d3 & mask)) << 3;
+                    color = (Bit.ToBit(tile.d0 & mask)) << 0;
+                    color |= (Bit.ToBit(tile.d1 & mask)) << 1;
+                    color |= (Bit.ToBit(tile.d2 & mask)) << 2;
+                    color |= (Bit.ToBit(tile.d3 & mask)) << 3;
 
                     if (Convert.ToBoolean(color))
                     {
