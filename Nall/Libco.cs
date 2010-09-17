@@ -4,23 +4,18 @@ namespace Nall
 {
     public static class Libco
     {
-        private static Thread _active;
-        private static Mutex _mutex = new Mutex(true);
+        private static Thread _main = null;
 
         public static Thread Active()
         {
-            if (ReferenceEquals(_active, null))
-            {
-                _active = Thread.CurrentThread;
-            }
-            return _active;
+            return Thread.CurrentThread;
         }
 
         public static Thread Create(int size, ThreadStart entrypoint)
         {
-            if (ReferenceEquals(_active, null))
+            if (ReferenceEquals(_main, null))
             {
-                _active = Thread.CurrentThread;
+                _main = Thread.CurrentThread;
             }
 
             size += 256; /* allocate additional space for storage */
@@ -36,10 +31,16 @@ namespace Nall
 
         public static void Switch(Thread handle)
         {
-            _mutex.ReleaseMutex();
-            handle.Start();
-            _mutex.WaitOne();
-            _active = handle;
+            if (!ReferenceEquals(Thread.CurrentThread, _main))
+            {
+                Thread.CurrentThread.Priority = ThreadPriority.Lowest;
+            }
+            handle.Priority = ThreadPriority.Normal;
+            if (handle.ThreadState == ThreadState.Unstarted)
+            {
+                handle.Start();
+            }
+            Thread.Yield();
         }
     }
 }

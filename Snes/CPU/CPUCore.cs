@@ -3082,14 +3082,14 @@ namespace Snes
 
         private void opMF(byte id, string name, string fn)
         {
-            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.Mx + id] = new CPUCoreOperation(GetCoreOp(name, "_b"), new CPUCoreOpArgument() { op = GetCoreOp(name, "_b") });
-            op_table[(int)Table.mX + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(GetCoreOp(name, "_w"), new CPUCoreOpArgument() { op = GetCoreOp(name, "_w") });
+            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.Mx + id] = new CPUCoreOperation(GetCoreOp(name, "_b"), new CPUCoreOpArgument() { op = GetCoreOp(fn, "_b") });
+            op_table[(int)Table.mX + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(GetCoreOp(name, "_w"), new CPUCoreOpArgument() { op = GetCoreOp(fn, "_w") });
         }
 
         private void opMFI(byte id, string name, string fn, int x)
         {
-            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.Mx + id] = new CPUCoreOperation(GetCoreOp(name, "_b"), new CPUCoreOpArgument() { op = GetCoreOp(name, "_b"), x = x });
-            op_table[(int)Table.mX + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(GetCoreOp(name, "_w"), new CPUCoreOpArgument() { op = GetCoreOp(name, "_w"), x = x });
+            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.Mx + id] = new CPUCoreOperation(GetCoreOp(name, "_b"), new CPUCoreOpArgument() { op = GetCoreOp(fn, "_b"), x = x });
+            op_table[(int)Table.mX + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(GetCoreOp(name, "_w"), new CPUCoreOpArgument() { op = GetCoreOp(fn, "_w"), x = x });
         }
 
         private void opX(byte id, string name)
@@ -3112,14 +3112,14 @@ namespace Snes
 
         private void opXF(byte id, string name, string fn)
         {
-            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.mX + id] = new CPUCoreOperation(GetCoreOp(name, "_b"), new CPUCoreOpArgument() { op = GetCoreOp(name, "_b") });
-            op_table[(int)Table.Mx + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(GetCoreOp(name, "_w"), new CPUCoreOpArgument() { op = GetCoreOp(name, "_w") });
+            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.mX + id] = new CPUCoreOperation(GetCoreOp(name, "_b"), new CPUCoreOpArgument() { op = GetCoreOp(fn, "_b") });
+            op_table[(int)Table.Mx + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(GetCoreOp(name, "_w"), new CPUCoreOpArgument() { op = GetCoreOp(fn, "_w") });
         }
 
         private void opXFI(byte id, string name, string fn, int x)
         {
-            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.mX + id] = new CPUCoreOperation(GetCoreOp(name, "_b"), new CPUCoreOpArgument() { op = GetCoreOp(name, "_b"), x = x });
-            op_table[(int)Table.Mx + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(GetCoreOp(name, "_w"), new CPUCoreOpArgument() { op = GetCoreOp(name, "_w"), x = x });
+            op_table[(int)Table.EM + id] = op_table[(int)Table.MX + id] = op_table[(int)Table.mX + id] = new CPUCoreOperation(GetCoreOp(name, "_b"), new CPUCoreOpArgument() { op = GetCoreOp(fn, "_b"), x = x });
+            op_table[(int)Table.Mx + id] = op_table[(int)Table.mx + id] = new CPUCoreOperation(GetCoreOp(name, "_w"), new CPUCoreOpArgument() { op = GetCoreOp(fn, "_w"), x = x });
         }
 
         public void initialize_opcode_table()
@@ -3223,7 +3223,7 @@ namespace Snes
             opA(0x60, "rts");
             opMF(0x61, "read_idpx", "adc");
             opE(0x62, "per");
-            opMF(0x63, "read_sr", " adc");
+            opMF(0x63, "read_sr", "adc");
             opMI(0x64, "write_dp", (int)OpCode.Z);
             opMF(0x65, "read_dp", "adc");
             opMF(0x66, "adjust_dp", "ror");
@@ -3234,7 +3234,7 @@ namespace Snes
             opE(0x6b, "rtl");
             opA(0x6c, "jmp_iaddr");
             opMF(0x6d, "read_addr", "adc");
-            opMF(0x6e, "adjust_addr", " ror");
+            opMF(0x6e, "adjust_addr", "ror");
             opMF(0x6f, "read_long", "adc");
             opAII(0x70, "branch", 0x40, Convert.ToInt32(true));
             opMF(0x71, "read_idpy", "adc");
