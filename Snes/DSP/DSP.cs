@@ -279,7 +279,7 @@ namespace Snes
 
         public void reset()
         {
-            create(Enter, System.system.apu_frequency);
+            base.create("DSP", Enter, System.system.apu_frequency);
 
             state.regs[(int)GlobalReg.flg] = 0xe0;
 

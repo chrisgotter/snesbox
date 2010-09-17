@@ -15,7 +15,7 @@ namespace Nall
             return _active;
         }
 
-        public static SnesThread Create(int size, ThreadStart entrypoint)
+        public static SnesThread Create(string name, int size, ThreadStart entrypoint)
         {
             if (ReferenceEquals(_active, null))
             {
@@ -24,7 +24,7 @@ namespace Nall
 
             size += 256; /* allocate additional space for storage */
             size &= ~15; /* align stack to 16-byte boundary */
-            return new SnesThread(entrypoint, size);
+            return new SnesThread(name, size, entrypoint);
         }
 
         public static void Delete(SnesThread handle)

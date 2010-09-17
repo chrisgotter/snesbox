@@ -9,12 +9,12 @@ namespace Snes
         public uint frequency;
         public long clock;
 
-        public void create(ThreadStart entryPoint, uint frequency_)
+        public void create(string name, ThreadStart entryPoint, uint frequency_)
         {
             if (!ReferenceEquals(thread, null))
                 Libco.Delete(thread);
 
-            thread = Libco.Create(65536 * sizeof(int), entryPoint);
+            thread = Libco.Create(name, 65536 * sizeof(int), entryPoint);
             frequency = frequency_;
             clock = 0;
         }

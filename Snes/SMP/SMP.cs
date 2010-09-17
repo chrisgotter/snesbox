@@ -85,7 +85,7 @@ namespace Snes
 
         public void reset()
         {
-            Processor.create(Enter, System.system.apu_frequency);
+            Processor.create("SMP", Enter, System.system.apu_frequency);
 
             regs.pc = 0xffc0;
             regs.a[0] = 0x00;

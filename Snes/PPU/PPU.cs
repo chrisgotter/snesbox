@@ -113,7 +113,7 @@ namespace Snes
 
         new public void reset()
         {
-            Processor.create(Enter, System.system.cpu_frequency);
+            Processor.create("PPU", Enter, System.system.cpu_frequency);
             base.reset();
             Array.Clear(surface, 0, surface.Length);
 

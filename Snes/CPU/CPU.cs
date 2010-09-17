@@ -151,7 +151,7 @@ namespace Snes
 
         public void reset()
         {
-            Processor.create(Enter, System.system.cpu_frequency);
+            Processor.create("CPU", Enter, System.system.cpu_frequency);
             coprocessors.Clear();
             PPUCounter.reset();
 

@@ -7,10 +7,12 @@ namespace Nall
     public class SnesThread : SuspendableThread
     {
         private ThreadStart Work { get; set; }
+        private string Name { get; set; }
 
-        public SnesThread(ThreadStart start, int maxStackSize)
+        public SnesThread(string name, int maxStackSize, ThreadStart start)
             : base()
         {
+            Name = name;
             Work = start;
         }
 
@@ -21,6 +23,11 @@ namespace Nall
 
         protected override void OnDoWork()
         {
+            if (!string.IsNullOrEmpty(Name))
+            {
+                _thread.Name = Name;
+            }
+
             try
             {
                 while (false == HasTerminateRequest())
