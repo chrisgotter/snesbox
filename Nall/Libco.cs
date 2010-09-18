@@ -24,7 +24,7 @@ namespace Nall
 
             size += 256; /* allocate additional space for storage */
             size &= ~15; /* align stack to 16-byte boundary */
-            return new Thread(entrypoint, size);
+            return new Thread(entrypoint, size) { Name = name };
         }
 
         public static void Delete(Thread handle)
@@ -43,6 +43,7 @@ namespace Nall
             }
             else
             {
+                while (_active.ThreadState != ThreadState.Suspended) { }
                 _active.Resume();
             }
             previous.Suspend();

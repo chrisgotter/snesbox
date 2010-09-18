@@ -478,7 +478,7 @@ namespace Snes
             /*fffb*/  0x1f, 0x00, 0x00,  //jmp   ($0000+x)
             /*fffe*/  0xc0, 0xff         //reset vector location ($ffc0)
         };
-        
+
         public static byte[] Iplrom
         {
             get { return SMP.iplrom; }
