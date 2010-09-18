@@ -1648,7 +1648,7 @@ namespace Snes
         public void op_read_const_b(CPUCoreOpArgument args)
         {
             CPUCoreOp op = args.op;
-            rd.l = op_readpc();
+            last_cycle(); rd.l = op_readpc();
             op.Invoke(null);
         }
 
@@ -1656,20 +1656,20 @@ namespace Snes
         {
             CPUCoreOp op = args.op;
             rd.l = op_readpc();
-            rd.h = op_readpc();
+            last_cycle(); rd.h = op_readpc();
             op.Invoke(null);
         }
 
         public void op_read_bit_const_b(CPUCoreOpArgument args)
         {
-            rd.l = op_readpc();
+            last_cycle(); rd.l = op_readpc();
             regs.p.z = ((rd.l & regs.a.l) == 0);
         }
 
         public void op_read_bit_const_w(CPUCoreOpArgument args)
         {
             rd.l = op_readpc();
-            rd.h = op_readpc();
+            last_cycle(); rd.h = op_readpc();
             regs.p.z = ((rd.w & regs.a.w) == 0);
         }
 
@@ -1678,7 +1678,7 @@ namespace Snes
             CPUCoreOp op = args.op;
             aa.l = op_readpc();
             aa.h = op_readpc();
-            rd.l = op_readdbr(aa.w);
+            last_cycle(); rd.l = op_readdbr(aa.w);
             op.Invoke(null);
         }
 
@@ -1688,7 +1688,7 @@ namespace Snes
             aa.l = op_readpc();
             aa.h = op_readpc();
             rd.l = op_readdbr(aa.w + 0U);
-            rd.h = op_readdbr(aa.w + 1U);
+            last_cycle(); rd.h = op_readdbr(aa.w + 1U);
             op.Invoke(null);
         }
 
@@ -1698,7 +1698,7 @@ namespace Snes
             aa.l = op_readpc();
             aa.h = op_readpc();
             op_io_cond4(aa.w, (ushort)(aa.w + regs.x.w));
-            rd.l = op_readdbr((uint)(aa.w + regs.x.w));
+            last_cycle(); rd.l = op_readdbr((uint)(aa.w + regs.x.w));
             op.Invoke(null);
         }
 
@@ -1709,7 +1709,7 @@ namespace Snes
             aa.h = op_readpc();
             op_io_cond4(aa.w, (ushort)(aa.w + regs.x.w));
             rd.l = op_readdbr((uint)(aa.w + regs.x.w + 0));
-            rd.h = op_readdbr((uint)(aa.w + regs.x.w + 1));
+            last_cycle(); rd.h = op_readdbr((uint)(aa.w + regs.x.w + 1));
             op.Invoke(null);
         }
 
@@ -1719,7 +1719,7 @@ namespace Snes
             aa.l = op_readpc();
             aa.h = op_readpc();
             op_io_cond4(aa.w, (ushort)(aa.w + regs.y.w));
-            rd.l = op_readdbr((uint)(aa.w + regs.y.w));
+            last_cycle(); rd.l = op_readdbr((uint)(aa.w + regs.y.w));
             op.Invoke(null);
         }
 
@@ -1730,7 +1730,7 @@ namespace Snes
             aa.h = op_readpc();
             op_io_cond4(aa.w, (ushort)(aa.w + regs.y.w));
             rd.l = op_readdbr((uint)(aa.w + regs.y.w + 0));
-            rd.h = op_readdbr((uint)(aa.w + regs.y.w + 1));
+            last_cycle(); rd.h = op_readdbr((uint)(aa.w + regs.y.w + 1));
             op.Invoke(null);
         }
 
@@ -1740,7 +1740,7 @@ namespace Snes
             aa.l = op_readpc();
             aa.h = op_readpc();
             aa.b = op_readpc();
-            rd.l = op_readlong(aa.d);
+            last_cycle(); rd.l = op_readlong(aa.d);
             op.Invoke(null);
         }
 
@@ -1751,7 +1751,7 @@ namespace Snes
             aa.h = op_readpc();
             aa.b = op_readpc();
             rd.l = op_readlong(aa.d + 0);
-            rd.h = op_readlong(aa.d + 1);
+            last_cycle(); rd.h = op_readlong(aa.d + 1);
             op.Invoke(null);
         }
 
@@ -1761,7 +1761,7 @@ namespace Snes
             aa.l = op_readpc();
             aa.h = op_readpc();
             aa.b = op_readpc();
-            rd.l = op_readlong(aa.d + regs.x.w);
+            last_cycle(); rd.l = op_readlong(aa.d + regs.x.w);
             op.Invoke(null);
         }
 
@@ -1772,7 +1772,7 @@ namespace Snes
             aa.h = op_readpc();
             aa.b = op_readpc();
             rd.l = op_readlong(aa.d + regs.x.w + 0);
-            rd.h = op_readlong(aa.d + regs.x.w + 1);
+            last_cycle(); rd.h = op_readlong(aa.d + regs.x.w + 1);
             op.Invoke(null);
         }
 
@@ -1781,7 +1781,7 @@ namespace Snes
             CPUCoreOp op = args.op;
             dp = op_readpc();
             op_io_cond2();
-            rd.l = op_readdp(dp);
+            last_cycle(); rd.l = op_readdp(dp);
             op.Invoke(null);
         }
 
@@ -1791,7 +1791,7 @@ namespace Snes
             dp = op_readpc();
             op_io_cond2();
             rd.l = op_readdp(dp + 0U);
-            rd.h = op_readdp(dp + 1U);
+            last_cycle(); rd.h = op_readdp(dp + 1U);
             op.Invoke(null);
         }
 
@@ -1802,7 +1802,7 @@ namespace Snes
             dp = op_readpc();
             op_io_cond2();
             op_io();
-            rd.l = op_readdp((uint)(dp + regs.r[n].w));
+            last_cycle(); rd.l = op_readdp((uint)(dp + regs.r[n].w));
             op.Invoke(null);
         }
 
@@ -1814,7 +1814,7 @@ namespace Snes
             op_io_cond2();
             op_io();
             rd.l = op_readdp((uint)(dp + regs.r[n].w + 0));
-            rd.h = op_readdp((uint)(dp + regs.r[n].w + 1));
+            last_cycle(); rd.h = op_readdp((uint)(dp + regs.r[n].w + 1));
             op.Invoke(null);
         }
 
@@ -1825,7 +1825,7 @@ namespace Snes
             op_io_cond2();
             aa.l = op_readdp(dp + 0U);
             aa.h = op_readdp(dp + 1U);
-            rd.l = op_readdbr(aa.w);
+            last_cycle(); rd.l = op_readdbr(aa.w);
             op.Invoke(null);
         }
 
@@ -1837,7 +1837,7 @@ namespace Snes
             aa.l = op_readdp(dp + 0U);
             aa.h = op_readdp(dp + 1U);
             rd.l = op_readdbr(aa.w + 0U);
-            rd.h = op_readdbr(aa.w + 1U);
+            last_cycle(); rd.h = op_readdbr(aa.w + 1U);
             op.Invoke(null);
         }
 
@@ -1849,7 +1849,7 @@ namespace Snes
             op_io();
             aa.l = op_readdp((uint)(dp + regs.x.w + 0));
             aa.h = op_readdp((uint)(dp + regs.x.w + 1));
-            rd.l = op_readdbr(aa.w);
+            last_cycle(); rd.l = op_readdbr(aa.w);
             op.Invoke(null);
         }
 
@@ -1862,7 +1862,7 @@ namespace Snes
             aa.l = op_readdp((uint)(dp + regs.x.w + 0));
             aa.h = op_readdp((uint)(dp + regs.x.w + 1));
             rd.l = op_readdbr(aa.w + 0U);
-            rd.h = op_readdbr(aa.w + 1U);
+            last_cycle(); rd.h = op_readdbr(aa.w + 1U);
             op.Invoke(null);
         }
 
@@ -1874,7 +1874,7 @@ namespace Snes
             aa.l = op_readdp(dp + 0U);
             aa.h = op_readdp(dp + 1U);
             op_io_cond4(aa.w, (ushort)(aa.w + regs.y.w));
-            rd.l = op_readdbr((uint)(aa.w + regs.y.w));
+            last_cycle(); rd.l = op_readdbr((uint)(aa.w + regs.y.w));
             op.Invoke(null);
         }
 
@@ -1887,7 +1887,7 @@ namespace Snes
             aa.h = op_readdp(dp + 1U);
             op_io_cond4(aa.w, (ushort)(aa.w + regs.y.w));
             rd.l = op_readdbr((uint)(aa.w + regs.y.w + 0));
-            rd.h = op_readdbr((uint)(aa.w + regs.y.w + 1));
+            last_cycle(); rd.h = op_readdbr((uint)(aa.w + regs.y.w + 1));
             op.Invoke(null);
         }
 
@@ -1899,7 +1899,7 @@ namespace Snes
             aa.l = op_readdp(dp + 0U);
             aa.h = op_readdp(dp + 1U);
             aa.b = op_readdp(dp + 2U);
-            rd.l = op_readlong(aa.d);
+            last_cycle(); rd.l = op_readlong(aa.d);
             op.Invoke(null);
         }
 
@@ -1912,7 +1912,7 @@ namespace Snes
             aa.h = op_readdp(dp + 1U);
             aa.b = op_readdp(dp + 2U);
             rd.l = op_readlong(aa.d + 0);
-            rd.h = op_readlong(aa.d + 1);
+            last_cycle(); rd.h = op_readlong(aa.d + 1);
             op.Invoke(null);
         }
 
@@ -1924,7 +1924,7 @@ namespace Snes
             aa.l = op_readdp(dp + 0U);
             aa.h = op_readdp(dp + 1U);
             aa.b = op_readdp(dp + 2U);
-            rd.l = op_readlong(aa.d + regs.y.w);
+            last_cycle(); rd.l = op_readlong(aa.d + regs.y.w);
             op.Invoke(null);
         }
 
@@ -1937,7 +1937,7 @@ namespace Snes
             aa.h = op_readdp(dp + 1U);
             aa.b = op_readdp(dp + 2U);
             rd.l = op_readlong(aa.d + regs.y.w + 0);
-            rd.h = op_readlong(aa.d + regs.y.w + 1);
+            last_cycle(); rd.h = op_readlong(aa.d + regs.y.w + 1);
             op.Invoke(null);
         }
 
@@ -1946,7 +1946,7 @@ namespace Snes
             CPUCoreOp op = args.op;
             sp = op_readpc();
             op_io();
-            rd.l = op_readsp(sp);
+            last_cycle(); rd.l = op_readsp(sp);
             op.Invoke(null);
         }
 
@@ -1956,7 +1956,7 @@ namespace Snes
             sp = op_readpc();
             op_io();
             rd.l = op_readsp(sp + 0U);
-            rd.h = op_readsp(sp + 1U);
+            last_cycle(); rd.h = op_readsp(sp + 1U);
             op.Invoke(null);
         }
 
@@ -1968,7 +1968,7 @@ namespace Snes
             aa.l = op_readsp(sp + 0U);
             aa.h = op_readsp(sp + 1U);
             op_io();
-            rd.l = op_readdbr((uint)(aa.w + regs.y.w));
+            last_cycle(); rd.l = op_readdbr((uint)(aa.w + regs.y.w));
             op.Invoke(null);
         }
 
@@ -1981,7 +1981,7 @@ namespace Snes
             aa.h = op_readsp(sp + 1U);
             op_io();
             rd.l = op_readdbr((uint)(aa.w + regs.y.w + 0));
-            rd.h = op_readdbr((uint)(aa.w + regs.y.w + 1));
+            last_cycle(); rd.h = op_readdbr((uint)(aa.w + regs.y.w + 1));
             op.Invoke(null);
         }
 
@@ -1990,7 +1990,7 @@ namespace Snes
             int n = args.x;
             aa.l = op_readpc();
             aa.h = op_readpc();
-            op_writedbr(aa.w, (byte)regs.r[n]);
+            last_cycle(); op_writedbr(aa.w, (byte)regs.r[n]);
         }
 
         public void op_write_addr_w(CPUCoreOpArgument args)
@@ -1999,7 +1999,7 @@ namespace Snes
             aa.l = op_readpc();
             aa.h = op_readpc();
             op_writedbr(aa.w + 0U, (byte)(regs.r[n] >> 0));
-            op_writedbr(aa.w + 1U, (byte)(regs.r[n] >> 8));
+            last_cycle(); op_writedbr(aa.w + 1U, (byte)(regs.r[n] >> 8));
         }
 
         public void op_write_addrr_b(CPUCoreOpArgument args)
@@ -2009,7 +2009,7 @@ namespace Snes
             aa.l = op_readpc();
             aa.h = op_readpc();
             op_io();
-            op_writedbr(aa.w + (uint)regs.r[i], (byte)regs.r[n]);
+            last_cycle(); op_writedbr(aa.w + (uint)regs.r[i], (byte)regs.r[n]);
         }
 
         public void op_write_addrr_w(CPUCoreOpArgument args)
@@ -2020,7 +2020,7 @@ namespace Snes
             aa.h = op_readpc();
             op_io();
             op_writedbr(aa.w + (uint)regs.r[i] + 0, (byte)(regs.r[n] >> 0));
-            op_writedbr(aa.w + (uint)regs.r[i] + 1, (byte)(regs.r[n] >> 8));
+            last_cycle(); op_writedbr(aa.w + (uint)regs.r[i] + 1, (byte)(regs.r[n] >> 8));
         }
 
         public void op_write_longr_b(CPUCoreOpArgument args)
@@ -2029,7 +2029,7 @@ namespace Snes
             aa.l = op_readpc();
             aa.h = op_readpc();
             aa.b = op_readpc();
-            op_writelong(aa.d + (uint)regs.r[i], regs.a.l);
+            last_cycle(); op_writelong(aa.d + (uint)regs.r[i], regs.a.l);
         }
 
         public void op_write_longr_w(CPUCoreOpArgument args)
@@ -2039,7 +2039,7 @@ namespace Snes
             aa.h = op_readpc();
             aa.b = op_readpc();
             op_writelong(aa.d + (uint)regs.r[i] + 0, regs.a.l);
-            op_writelong(aa.d + (uint)regs.r[i] + 1, regs.a.h);
+            last_cycle(); op_writelong(aa.d + (uint)regs.r[i] + 1, regs.a.h);
         }
 
         public void op_write_dp_b(CPUCoreOpArgument args)
@@ -2047,7 +2047,7 @@ namespace Snes
             int n = args.x;
             dp = op_readpc();
             op_io_cond2();
-            op_writedp(dp, (byte)regs.r[n]);
+            last_cycle(); op_writedp(dp, (byte)regs.r[n]);
         }
 
         public void op_write_dp_w(CPUCoreOpArgument args)
@@ -2056,7 +2056,7 @@ namespace Snes
             dp = op_readpc();
             op_io_cond2();
             op_writedp(dp + 0U, (byte)(regs.r[n] >> 0));
-            op_writedp(dp + 1U, (byte)(regs.r[n] >> 8));
+            last_cycle(); op_writedp(dp + 1U, (byte)(regs.r[n] >> 8));
         }
 
         public void op_write_dpr_b(CPUCoreOpArgument args)
@@ -2066,7 +2066,7 @@ namespace Snes
             dp = op_readpc();
             op_io_cond2();
             op_io();
-            op_writedp(dp + (uint)regs.r[i], (byte)regs.r[n]);
+            last_cycle(); op_writedp(dp + (uint)regs.r[i], (byte)regs.r[n]);
         }
 
         public void op_write_dpr_w(CPUCoreOpArgument args)
@@ -2077,7 +2077,7 @@ namespace Snes
             op_io_cond2();
             op_io();
             op_writedp(dp + (uint)regs.r[i] + 0, (byte)(regs.r[n] >> 0));
-            op_writedp(dp + (uint)regs.r[i] + 1, (byte)(regs.r[n] >> 8));
+            last_cycle(); op_writedp(dp + (uint)regs.r[i] + 1, (byte)(regs.r[n] >> 8));
         }
 
         public void op_sta_idp_b(CPUCoreOpArgument args)
@@ -2086,7 +2086,7 @@ namespace Snes
             op_io_cond2();
             aa.l = op_readdp(dp + 0U);
             aa.h = op_readdp(dp + 1U);
-            op_writedbr(aa.w, regs.a.l);
+            last_cycle(); op_writedbr(aa.w, regs.a.l);
         }
 
         public void op_sta_idp_w(CPUCoreOpArgument args)
@@ -2096,7 +2096,7 @@ namespace Snes
             aa.l = op_readdp(dp + 0U);
             aa.h = op_readdp(dp + 1U);
             op_writedbr(aa.w + 0U, regs.a.l);
-            op_writedbr(aa.w + 1U, regs.a.h);
+            last_cycle(); op_writedbr(aa.w + 1U, regs.a.h);
         }
 
         public void op_sta_ildp_b(CPUCoreOpArgument args)
@@ -2106,7 +2106,7 @@ namespace Snes
             aa.l = op_readdp(dp + 0U);
             aa.h = op_readdp(dp + 1U);
             aa.b = op_readdp(dp + 2U);
-            op_writelong(aa.d, regs.a.l);
+            last_cycle(); op_writelong(aa.d, regs.a.l);
         }
 
         public void op_sta_ildp_w(CPUCoreOpArgument args)
@@ -2117,7 +2117,7 @@ namespace Snes
             aa.h = op_readdp(dp + 1U);
             aa.b = op_readdp(dp + 2U);
             op_writelong(aa.d + 0, regs.a.l);
-            op_writelong(aa.d + 1, regs.a.h);
+            last_cycle(); op_writelong(aa.d + 1, regs.a.h);
         }
 
         public void op_sta_idpx_b(CPUCoreOpArgument args)
@@ -2127,7 +2127,7 @@ namespace Snes
             op_io();
             aa.l = op_readdp((uint)(dp + regs.x.w + 0));
             aa.h = op_readdp((uint)(dp + regs.x.w + 1));
-            op_writedbr(aa.w, regs.a.l);
+            last_cycle(); op_writedbr(aa.w, regs.a.l);
         }
 
         public void op_sta_idpx_w(CPUCoreOpArgument args)
@@ -2138,7 +2138,7 @@ namespace Snes
             aa.l = op_readdp((uint)(dp + regs.x.w + 0));
             aa.h = op_readdp((uint)(dp + regs.x.w + 1));
             op_writedbr(aa.w + 0U, regs.a.l);
-            op_writedbr(aa.w + 1U, regs.a.h);
+            last_cycle(); op_writedbr(aa.w + 1U, regs.a.h);
         }
 
         public void op_sta_idpy_b(CPUCoreOpArgument args)
@@ -2148,7 +2148,7 @@ namespace Snes
             aa.l = op_readdp(dp + 0U);
             aa.h = op_readdp(dp + 1U);
             op_io();
-            op_writedbr((uint)(aa.w + regs.y.w), regs.a.l);
+            last_cycle(); op_writedbr((uint)(aa.w + regs.y.w), regs.a.l);
         }
 
         public void op_sta_idpy_w(CPUCoreOpArgument args)
@@ -2159,7 +2159,7 @@ namespace Snes
             aa.h = op_readdp(dp + 1U);
             op_io();
             op_writedbr((uint)(aa.w + regs.y.w + 0), regs.a.l);
-            op_writedbr((uint)(aa.w + regs.y.w + 1), regs.a.h);
+            last_cycle(); op_writedbr((uint)(aa.w + regs.y.w + 1), regs.a.h);
         }
 
         public void op_sta_ildpy_b(CPUCoreOpArgument args)
@@ -2169,7 +2169,7 @@ namespace Snes
             aa.l = op_readdp(dp + 0U);
             aa.h = op_readdp(dp + 1U);
             aa.b = op_readdp(dp + 2U);
-            op_writelong(aa.d + regs.y.w, regs.a.l);
+            last_cycle(); op_writelong(aa.d + regs.y.w, regs.a.l);
         }
 
         public void op_sta_ildpy_w(CPUCoreOpArgument args)
@@ -2180,14 +2180,14 @@ namespace Snes
             aa.h = op_readdp(dp + 1U);
             aa.b = op_readdp(dp + 2U);
             op_writelong(aa.d + regs.y.w + 0, regs.a.l);
-            op_writelong(aa.d + regs.y.w + 1, regs.a.h);
+            last_cycle(); op_writelong(aa.d + regs.y.w + 1, regs.a.h);
         }
 
         public void op_sta_sr_b(CPUCoreOpArgument args)
         {
             sp = op_readpc();
             op_io();
-            op_writesp(sp, regs.a.l);
+            last_cycle(); op_writesp(sp, regs.a.l);
         }
 
         public void op_sta_sr_w(CPUCoreOpArgument args)
@@ -2195,7 +2195,7 @@ namespace Snes
             sp = op_readpc();
             op_io();
             op_writesp(sp + 0U, regs.a.l);
-            op_writesp(sp + 1U, regs.a.h);
+            last_cycle(); op_writesp(sp + 1U, regs.a.h);
         }
 
         public void op_sta_isry_b(CPUCoreOpArgument args)
@@ -2205,7 +2205,7 @@ namespace Snes
             aa.l = op_readsp(sp + 0U);
             aa.h = op_readsp(sp + 1U);
             op_io();
-            op_writedbr((uint)(aa.w + regs.y.w), regs.a.l);
+            last_cycle(); op_writedbr((uint)(aa.w + regs.y.w), regs.a.l);
         }
 
         public void op_sta_isry_w(CPUCoreOpArgument args)
@@ -2216,14 +2216,14 @@ namespace Snes
             aa.h = op_readsp(sp + 1U);
             op_io();
             op_writedbr((uint)(aa.w + regs.y.w + 0), regs.a.l);
-            op_writedbr((uint)(aa.w + regs.y.w + 1), regs.a.h);
+            last_cycle(); op_writedbr((uint)(aa.w + regs.y.w + 1), regs.a.h);
         }
 
         public void op_adjust_imm_b(CPUCoreOpArgument args)
         {
             int n = args.x;
             int adjust = args.y;
-            op_io_irq();
+            last_cycle(); op_io_irq();
             regs.r[n].l += (byte)adjust;
             regs.p.n = Convert.ToBoolean(regs.r[n].l & 0x80);
             regs.p.z = (regs.r[n].l == 0);
@@ -2233,7 +2233,7 @@ namespace Snes
         {
             int n = args.x;
             int adjust = args.y;
-            op_io_irq();
+            last_cycle(); op_io_irq();
             regs.r[n].w += (byte)adjust;
             regs.p.n = Convert.ToBoolean(regs.r[n].w & 0x8000);
             regs.p.z = (regs.r[n].w == 0);
@@ -2241,7 +2241,7 @@ namespace Snes
 
         public void op_asl_imm_b(CPUCoreOpArgument args)
         {
-            op_io_irq();
+            last_cycle(); op_io_irq();
             regs.p.c = Convert.ToBoolean(regs.a.l & 0x80);
             regs.a.l <<= 1;
             regs.p.n = Convert.ToBoolean(regs.a.l & 0x80);
@@ -2250,7 +2250,7 @@ namespace Snes
 
         public void op_asl_imm_w(CPUCoreOpArgument args)
         {
-            op_io_irq();
+            last_cycle(); op_io_irq();
             regs.p.c = Convert.ToBoolean(regs.a.w & 0x8000);
             regs.a.w <<= 1;
             regs.p.n = Convert.ToBoolean(regs.a.w & 0x8000);
@@ -2259,7 +2259,7 @@ namespace Snes
 
         public void op_lsr_imm_b(CPUCoreOpArgument args)
         {
-            op_io_irq();
+            last_cycle(); op_io_irq();
             regs.p.c = Convert.ToBoolean(regs.a.l & 0x01);
             regs.a.l >>= 1;
             regs.p.n = Convert.ToBoolean(regs.a.l & 0x80);
@@ -2268,7 +2268,7 @@ namespace Snes
 
         public void op_lsr_imm_w(CPUCoreOpArgument args)
         {
-            op_io_irq();
+            last_cycle(); op_io_irq();
             regs.p.c = Convert.ToBoolean(regs.a.w & 0x0001);
             regs.a.w >>= 1;
             regs.p.n = Convert.ToBoolean(regs.a.w & 0x8000);
@@ -2277,7 +2277,7 @@ namespace Snes
 
         public void op_rol_imm_b(CPUCoreOpArgument args)
         {
-            op_io_irq();
+            last_cycle(); op_io_irq();
             bool carry = regs.p.c;
             regs.p.c = Convert.ToBoolean(regs.a.l & 0x80);
             regs.a.l = (byte)((regs.a.l << 1) | Convert.ToInt32(carry));
@@ -2287,7 +2287,7 @@ namespace Snes
 
         public void op_rol_imm_w(CPUCoreOpArgument args)
         {
-            op_io_irq();
+            last_cycle(); op_io_irq();
             bool carry = regs.p.c;
             regs.p.c = Convert.ToBoolean(regs.a.w & 0x8000);
             regs.a.w = (byte)((regs.a.w << 1) | Convert.ToInt32(carry));
@@ -2297,7 +2297,7 @@ namespace Snes
 
         public void op_ror_imm_b(CPUCoreOpArgument args)
         {
-            op_io_irq();
+            last_cycle(); op_io_irq();
             bool carry = regs.p.c;
             regs.p.c = Convert.ToBoolean(regs.a.l & 0x01);
             regs.a.l = (byte)((Convert.ToInt32(carry) << 7) | (regs.a.l >> 1));
@@ -2307,7 +2307,7 @@ namespace Snes
 
         public void op_ror_imm_w(CPUCoreOpArgument args)
         {
-            op_io_irq();
+            last_cycle(); op_io_irq();
             bool carry = regs.p.c;
             regs.p.c = Convert.ToBoolean(regs.a.w & 0x0001);
             regs.a.w = (byte)((Convert.ToInt32(carry) << 15) | (regs.a.w >> 1));
@@ -2323,7 +2323,7 @@ namespace Snes
             rd.l = op_readdbr(aa.w);
             op_io();
             op.Invoke(null);
-            op_writedbr(aa.w, rd.l);
+            last_cycle(); op_writedbr(aa.w, rd.l);
         }
 
         public void op_adjust_addr_w(CPUCoreOpArgument args)
@@ -2336,7 +2336,7 @@ namespace Snes
             op_io();
             op.Invoke(null);
             op_writedbr(aa.w + 1U, rd.h);
-            op_writedbr(aa.w + 0U, rd.l);
+            last_cycle(); op_writedbr(aa.w + 0U, rd.l);
         }
 
         public void op_adjust_addrx_b(CPUCoreOpArgument args)
@@ -2348,7 +2348,7 @@ namespace Snes
             rd.l = op_readdbr((uint)(aa.w + regs.x.w));
             op_io();
             op.Invoke(null);
-            op_writedbr((uint)(aa.w + regs.x.w), rd.l);
+            last_cycle(); op_writedbr((uint)(aa.w + regs.x.w), rd.l);
         }
 
         public void op_adjust_addrx_w(CPUCoreOpArgument args)
@@ -2362,7 +2362,7 @@ namespace Snes
             op_io();
             op.Invoke(null);
             op_writedbr((uint)(aa.w + regs.x.w + 1), rd.h);
-            op_writedbr((uint)(aa.w + regs.x.w + 0), rd.l);
+            last_cycle(); op_writedbr((uint)(aa.w + regs.x.w + 0), rd.l);
         }
 
         public void op_adjust_dp_b(CPUCoreOpArgument args)
@@ -2373,7 +2373,7 @@ namespace Snes
             rd.l = op_readdp(dp);
             op_io();
             op.Invoke(null);
-            op_writedp(dp, rd.l);
+            last_cycle(); op_writedp(dp, rd.l);
         }
 
         public void op_adjust_dp_w(CPUCoreOpArgument args)
@@ -2386,7 +2386,7 @@ namespace Snes
             op_io();
             op.Invoke(null);
             op_writedp(dp + 1U, rd.h);
-            op_writedp(dp + 0U, rd.l);
+            last_cycle(); op_writedp(dp + 0U, rd.l);
         }
 
         public void op_adjust_dpx_b(CPUCoreOpArgument args)
@@ -2398,7 +2398,7 @@ namespace Snes
             rd.l = op_readdp((uint)(dp + regs.x.w));
             op_io();
             op.Invoke(null);
-            op_writedp((uint)(dp + regs.x.w), rd.l);
+            last_cycle(); op_writedp((uint)(dp + regs.x.w), rd.l);
         }
 
         public void op_adjust_dpx_w(CPUCoreOpArgument args)
@@ -2412,7 +2412,7 @@ namespace Snes
             op_io();
             op.Invoke(null);
             op_writedp((uint)(dp + regs.x.w + 1), rd.h);
-            op_writedp((uint)(dp + regs.x.w + 0), rd.l);
+            last_cycle(); op_writedp((uint)(dp + regs.x.w + 0), rd.l);
         }
 
         public void op_branch(CPUCoreOpArgument args)
@@ -2421,14 +2421,14 @@ namespace Snes
             int val = args.y;
             if (Bit.ToBit(regs.p & (uint)bit) != val)
             {
-                rd.l = op_readpc();
+                last_cycle(); rd.l = op_readpc();
             }
             else
             {
                 rd.l = op_readpc();
                 aa.w = (ushort)(regs.pc.d + (sbyte)rd.l);
                 op_io_cond6(aa.w);
-                op_io();
+                last_cycle(); op_io();
                 regs.pc.w = aa.w;
             }
         }
@@ -2438,7 +2438,7 @@ namespace Snes
             rd.l = op_readpc();
             aa.w = (ushort)(regs.pc.d + (sbyte)rd.l);
             op_io_cond6(aa.w);
-            op_io();
+            last_cycle(); op_io();
             regs.pc.w = aa.w;
         }
 
@@ -2446,14 +2446,14 @@ namespace Snes
         {
             rd.l = op_readpc();
             rd.h = op_readpc();
-            op_io();
+            last_cycle(); op_io();
             regs.pc.w = (ushort)(regs.pc.d + (short)rd.w);
         }
 
         public void op_jmp_addr(CPUCoreOpArgument args)
         {
             rd.l = op_readpc();
-            rd.h = op_readpc();
+            last_cycle(); rd.h = op_readpc();
             regs.pc.w = rd.w;
         }
 
@@ -2461,7 +2461,7 @@ namespace Snes
         {
             rd.l = op_readpc();
             rd.h = op_readpc();
-            rd.b = op_readpc();
+            last_cycle(); rd.b = op_readpc();
             regs.pc.d = rd.d & 0xffffff;
         }
 
@@ -2470,7 +2470,7 @@ namespace Snes
             aa.l = op_readpc();
             aa.h = op_readpc();
             rd.l = op_readaddr(aa.w + 0U);
-            rd.h = op_readaddr(aa.w + 1U);
+            last_cycle(); rd.h = op_readaddr(aa.w + 1U);
             regs.pc.w = rd.w;
         }
 
@@ -2480,7 +2480,7 @@ namespace Snes
             aa.h = op_readpc();
             op_io();
             rd.l = op_readpbr((uint)(aa.w + regs.x.w + 0));
-            rd.h = op_readpbr((uint)(aa.w + regs.x.w + 1));
+            last_cycle(); rd.h = op_readpbr((uint)(aa.w + regs.x.w + 1));
             regs.pc.w = rd.w;
         }
 
@@ -2490,7 +2490,7 @@ namespace Snes
             aa.h = op_readpc();
             rd.l = op_readaddr(aa.w + 0U);
             rd.h = op_readaddr(aa.w + 1U);
-            rd.b = op_readaddr(aa.w + 2U);
+            last_cycle(); rd.b = op_readaddr(aa.w + 2U);
             regs.pc.d = rd.d & 0xffffff;
         }
 
@@ -2501,7 +2501,7 @@ namespace Snes
             op_io();
             regs.pc.w--;
             op_writestack(regs.pc.h);
-            op_writestack(regs.pc.l);
+            last_cycle(); op_writestack(regs.pc.l);
             regs.pc.w = aa.w;
         }
 
@@ -2514,7 +2514,7 @@ namespace Snes
             aa.b = op_readpc();
             regs.pc.w--;
             op_writestackn(regs.pc.h);
-            op_writestackn(regs.pc.l);
+            last_cycle(); op_writestackn(regs.pc.l);
             regs.pc.d = aa.d & 0xffffff;
             regs.s.h = 0x01;
         }
@@ -2528,7 +2528,7 @@ namespace Snes
             aa.b = op_readpc();
             regs.pc.w--;
             op_writestackn(regs.pc.h);
-            op_writestackn(regs.pc.l);
+            last_cycle(); op_writestackn(regs.pc.l);
             regs.pc.d = aa.d & 0xffffff;
         }
 
@@ -2540,7 +2540,7 @@ namespace Snes
             aa.h = op_readpc();
             op_io();
             rd.l = op_readpbr((uint)(aa.w + regs.x.w + 0));
-            rd.h = op_readpbr((uint)(aa.w + regs.x.w + 1));
+            last_cycle(); rd.h = op_readpbr((uint)(aa.w + regs.x.w + 1));
             regs.pc.w = rd.w;
             regs.s.h = 0x01;
         }
@@ -2553,7 +2553,7 @@ namespace Snes
             aa.h = op_readpc();
             op_io();
             rd.l = op_readpbr((uint)(aa.w + regs.x.w + 0));
-            rd.h = op_readpbr((uint)(aa.w + regs.x.w + 1));
+            last_cycle(); rd.h = op_readpbr((uint)(aa.w + regs.x.w + 1));
             regs.pc.w = rd.w;
         }
 
@@ -2563,7 +2563,7 @@ namespace Snes
             op_io();
             regs.p.Assign((byte)(op_readstack() | 0x30));
             rd.l = op_readstack();
-            rd.h = op_readstack();
+            last_cycle(); rd.h = op_readstack();
             regs.pc.w = rd.w;
         }
 
@@ -2579,7 +2579,7 @@ namespace Snes
             }
             rd.l = op_readstack();
             rd.h = op_readstack();
-            rd.b = op_readstack();
+            last_cycle(); rd.b = op_readstack();
             regs.pc.d = rd.d & 0xffffff;
             update_table();
         }
@@ -2590,7 +2590,7 @@ namespace Snes
             op_io();
             rd.l = op_readstack();
             rd.h = op_readstack();
-            op_io();
+            last_cycle(); op_io();
             regs.pc.w = ++rd.w;
         }
 
@@ -2600,7 +2600,7 @@ namespace Snes
             op_io();
             rd.l = op_readstackn();
             rd.h = op_readstackn();
-            rd.b = op_readstackn();
+            last_cycle(); rd.b = op_readstackn();
             regs.pc.b = rd.b;
             regs.pc.w = ++rd.w;
             regs.s.h = 0x01;
@@ -2612,25 +2612,25 @@ namespace Snes
             op_io();
             rd.l = op_readstackn();
             rd.h = op_readstackn();
-            rd.b = op_readstackn();
+            last_cycle(); rd.b = op_readstackn();
             regs.pc.b = rd.b;
             regs.pc.w = ++rd.w;
         }
 
         public void op_nop(CPUCoreOpArgument args)
         {
-            op_io_irq();
+            last_cycle(); op_io_irq();
         }
 
         public void op_wdm(CPUCoreOpArgument args)
         {
-            op_readpc();
+            last_cycle(); op_readpc();
         }
 
         public void op_xba(CPUCoreOpArgument args)
         {
             op_io();
-            op_io();
+            last_cycle(); op_io();
             regs.a.l ^= regs.a.h;
             regs.a.h ^= regs.a.l;
             regs.a.l ^= regs.a.h;
@@ -2649,7 +2649,7 @@ namespace Snes
             op_io();
             regs.x.l += (byte)adjust;
             regs.y.l += (byte)adjust;
-            op_io();
+            last_cycle(); op_io();
             if (Convert.ToBoolean(regs.a.w--))
             {
                 regs.pc.w -= 3;
@@ -2667,7 +2667,7 @@ namespace Snes
             op_io();
             regs.x.w += (ushort)adjust;
             regs.y.w += (ushort)adjust;
-            op_io();
+            last_cycle(); op_io();
             if (Convert.ToBoolean(regs.a.w--))
             {
                 regs.pc.w -= 3;
@@ -2686,7 +2686,7 @@ namespace Snes
             regs.pc.b = 0;
             regs.p.i = Convert.ToBoolean(1);
             regs.p.d = Convert.ToBoolean(0);
-            rd.h = op_readlong((uint)(vectorE + 1));
+            last_cycle(); rd.h = op_readlong((uint)(vectorE + 1));
             regs.pc.w = rd.w;
         }
 
@@ -2703,7 +2703,7 @@ namespace Snes
             regs.pc.b = 0x00;
             regs.p.i = Convert.ToBoolean(1);
             regs.p.d = Convert.ToBoolean(0);
-            rd.h = op_readlong((uint)(vectorN + 1));
+            last_cycle(); rd.h = op_readlong((uint)(vectorN + 1));
             regs.pc.w = rd.w;
         }
 
@@ -2712,7 +2712,7 @@ namespace Snes
             regs.wai = true;
             while (regs.wai)
             {
-                op_io();
+                last_cycle(); op_io();
             }
         }
 
@@ -2721,14 +2721,14 @@ namespace Snes
             regs.wai = true;
             while (regs.wai)
             {
-                op_io();
+                last_cycle(); op_io();
             }
             op_io();
         }
 
         public void op_xce(CPUCoreOpArgument args)
         {
-            op_io_irq();
+            last_cycle(); op_io_irq();
             bool carry = regs.p.c;
             regs.p.c = regs.e;
             regs.e = carry;
@@ -2749,7 +2749,7 @@ namespace Snes
         {
             int mask = args.x;
             int value = args.y;
-            op_io_irq();
+            last_cycle(); op_io_irq();
             regs.p.Assign((byte)(((uint)regs.p & ~mask) | (uint)value));
         }
 
@@ -2757,7 +2757,7 @@ namespace Snes
         {
             int mode = args.x;
             rd.l = op_readpc();
-            op_io();
+            last_cycle(); op_io();
             regs.p.Assign((byte)(Convert.ToBoolean(mode) ? regs.p | rd.l : (uint)regs.p & ~rd.l));
             regs.p.Assign((byte)(regs.p | 0x30));
             if (regs.p.x)
@@ -2772,7 +2772,7 @@ namespace Snes
         {
             int mode = args.x;
             rd.l = op_readpc();
-            op_io();
+            last_cycle(); op_io();
             regs.p.Assign((byte)(Convert.ToBoolean(mode) ? regs.p | rd.l : (uint)regs.p & ~rd.l));
             if (regs.p.x)
             {
@@ -2786,7 +2786,7 @@ namespace Snes
         {
             int from = args.x;
             int to = args.y;
-            op_io_irq();
+            last_cycle(); op_io_irq();
             regs.r[to].l = regs.r[from].l;
             regs.p.n = Convert.ToBoolean(regs.r[to].l & 0x80);
             regs.p.z = (regs.r[to].l == 0);
@@ -2796,7 +2796,7 @@ namespace Snes
         {
             int from = args.x;
             int to = args.y;
-            op_io_irq();
+            last_cycle(); op_io_irq();
             regs.r[to].w = regs.r[from].w;
             regs.p.n = Convert.ToBoolean(regs.r[to].w & 0x8000);
             regs.p.z = (regs.r[to].w == 0);
@@ -2804,19 +2804,19 @@ namespace Snes
 
         public void op_tcs_e(CPUCoreOpArgument args)
         {
-            op_io_irq();
+            last_cycle(); op_io_irq();
             regs.s.l = regs.a.l;
         }
 
         public void op_tcs_n(CPUCoreOpArgument args)
         {
-            op_io_irq();
+            last_cycle(); op_io_irq();
             regs.s.w = regs.a.w;
         }
 
         public void op_tsx_b(CPUCoreOpArgument args)
         {
-            op_io_irq();
+            last_cycle(); op_io_irq();
             regs.x.l = regs.s.l;
             regs.p.n = Convert.ToBoolean(regs.x.l & 0x80);
             regs.p.z = (regs.x.l == 0);
@@ -2824,7 +2824,7 @@ namespace Snes
 
         public void op_tsx_w(CPUCoreOpArgument args)
         {
-            op_io_irq();
+            last_cycle(); op_io_irq();
             regs.x.w = regs.s.w;
             regs.p.n = Convert.ToBoolean(regs.x.w & 0x8000);
             regs.p.z = (regs.x.w == 0);
@@ -2832,13 +2832,13 @@ namespace Snes
 
         public void op_txs_e(CPUCoreOpArgument args)
         {
-            op_io_irq();
+            last_cycle(); op_io_irq();
             regs.s.l = regs.x.l;
         }
 
         public void op_txs_n(CPUCoreOpArgument args)
         {
-            op_io_irq();
+            last_cycle(); op_io_irq();
             regs.s.w = regs.x.w;
         }
 
@@ -2846,7 +2846,7 @@ namespace Snes
         {
             int n = args.x;
             op_io();
-            op_writestack(regs.r[n].l);
+            last_cycle(); op_writestack(regs.r[n].l);
         }
 
         public void op_push_w(CPUCoreOpArgument args)
@@ -2854,14 +2854,14 @@ namespace Snes
             int n = args.x;
             op_io();
             op_writestack(regs.r[n].h);
-            op_writestack(regs.r[n].l);
+            last_cycle(); op_writestack(regs.r[n].l);
         }
 
         public void op_phd_e(CPUCoreOpArgument args)
         {
             op_io();
             op_writestackn(regs.d.h);
-            op_writestackn(regs.d.l);
+            last_cycle(); op_writestackn(regs.d.l);
             regs.s.h = 0x01;
         }
 
@@ -2869,25 +2869,25 @@ namespace Snes
         {
             op_io();
             op_writestackn(regs.d.h);
-            op_writestackn(regs.d.l);
+            last_cycle(); op_writestackn(regs.d.l);
         }
 
         public void op_phb(CPUCoreOpArgument args)
         {
             op_io();
-            op_writestack(regs.db);
+            last_cycle(); op_writestack(regs.db);
         }
 
         public void op_phk(CPUCoreOpArgument args)
         {
             op_io();
-            op_writestack(regs.pc.b);
+            last_cycle(); op_writestack(regs.pc.b);
         }
 
         public void op_php(CPUCoreOpArgument args)
         {
             op_io();
-            op_writestack((byte)regs.p);
+            last_cycle(); op_writestack((byte)regs.p);
         }
 
         public void op_pull_b(CPUCoreOpArgument args)
@@ -2895,7 +2895,7 @@ namespace Snes
             int n = args.x;
             op_io();
             op_io();
-            regs.r[n].l = op_readstack();
+            last_cycle(); regs.r[n].l = op_readstack();
             regs.p.n = Convert.ToBoolean(regs.r[n].l & 0x80);
             regs.p.z = (regs.r[n].l == 0);
         }
@@ -2906,7 +2906,7 @@ namespace Snes
             op_io();
             op_io();
             regs.r[n].l = op_readstack();
-            regs.r[n].h = op_readstack();
+            last_cycle(); regs.r[n].h = op_readstack();
             regs.p.n = Convert.ToBoolean(regs.r[n].w & 0x8000);
             regs.p.z = (regs.r[n].w == 0);
         }
@@ -2916,7 +2916,7 @@ namespace Snes
             op_io();
             op_io();
             regs.d.l = op_readstackn();
-            regs.d.h = op_readstackn();
+            last_cycle(); regs.d.h = op_readstackn();
             regs.p.n = Convert.ToBoolean(regs.d.w & 0x8000);
             regs.p.z = (regs.d.w == 0);
             regs.s.h = 0x01;
@@ -2927,7 +2927,7 @@ namespace Snes
             op_io();
             op_io();
             regs.d.l = op_readstackn();
-            regs.d.h = op_readstackn();
+            last_cycle(); regs.d.h = op_readstackn();
             regs.p.n = Convert.ToBoolean(regs.d.w & 0x8000);
             regs.p.z = (regs.d.w == 0);
         }
@@ -2936,7 +2936,7 @@ namespace Snes
         {
             op_io();
             op_io();
-            regs.db = op_readstack();
+            last_cycle(); regs.db = op_readstack();
             regs.p.n = Convert.ToBoolean(regs.db & 0x80);
             regs.p.z = (regs.db == 0);
         }
@@ -2945,7 +2945,7 @@ namespace Snes
         {
             op_io();
             op_io();
-            regs.p.Assign((byte)(op_readstack() | 0x30));
+            last_cycle(); regs.p.Assign((byte)(op_readstack() | 0x30));
             if (regs.p.x)
             {
                 regs.x.h = 0x00;
@@ -2958,7 +2958,7 @@ namespace Snes
         {
             op_io();
             op_io();
-            regs.p.Assign(op_readstack());
+            last_cycle(); regs.p.Assign(op_readstack());
             if (regs.p.x)
             {
                 regs.x.h = 0x00;
@@ -2972,7 +2972,7 @@ namespace Snes
             aa.l = op_readpc();
             aa.h = op_readpc();
             op_writestackn(aa.h);
-            op_writestackn(aa.l);
+            last_cycle(); op_writestackn(aa.l);
             regs.s.h = 0x01;
         }
 
@@ -2981,7 +2981,7 @@ namespace Snes
             aa.l = op_readpc();
             aa.h = op_readpc();
             op_writestackn(aa.h);
-            op_writestackn(aa.l);
+            last_cycle(); op_writestackn(aa.l);
         }
 
         public void op_pei_e(CPUCoreOpArgument args)
@@ -2991,7 +2991,7 @@ namespace Snes
             aa.l = op_readdp(dp + 0U);
             aa.h = op_readdp(dp + 1U);
             op_writestackn(aa.h);
-            op_writestackn(aa.l);
+            last_cycle(); op_writestackn(aa.l);
             regs.s.h = 0x01;
         }
 
@@ -3002,7 +3002,7 @@ namespace Snes
             aa.l = op_readdp(dp + 0U);
             aa.h = op_readdp(dp + 1U);
             op_writestackn(aa.h);
-            op_writestackn(aa.l);
+            last_cycle(); op_writestackn(aa.l);
         }
 
         public void op_per_e(CPUCoreOpArgument args)
@@ -3012,7 +3012,7 @@ namespace Snes
             op_io();
             rd.w = (ushort)(regs.pc.d + (short)aa.w);
             op_writestackn(rd.h);
-            op_writestackn(rd.l);
+            last_cycle(); op_writestackn(rd.l);
             regs.s.h = 0x01;
         }
 
@@ -3023,7 +3023,7 @@ namespace Snes
             op_io();
             rd.w = (ushort)(regs.pc.d + (short)aa.w);
             op_writestackn(rd.h);
-            op_writestackn(rd.l);
+            last_cycle(); op_writestackn(rd.l);
         }
 
         public CPUCoreOperation[] opcode_table;
