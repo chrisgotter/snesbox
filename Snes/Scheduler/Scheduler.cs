@@ -13,8 +13,8 @@ namespace Snes
         public enum ExitReason : uint { UnknownEvent, FrameEvent, SynchronizeEvent, DebuggerEvent }
         public ExitReason exit_reason { get; private set; }
 
-        public SnesThread host_thread; //program thread (used to exit emulation)
-        public SnesThread thread; //active emulation thread (used to enter emulation)
+        public Thread host_thread; //program thread (used to exit emulation)
+        public Thread thread; //active emulation thread (used to enter emulation)
 
         public void enter()
         {

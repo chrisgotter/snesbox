@@ -4,40 +4,47 @@ namespace Nall
 {
     public static class Libco
     {
-        private static SnesThread _active;
+        private static Thread _active;
 
-        public static SnesThread Active()
+        public static Thread Active()
         {
             if (ReferenceEquals(_active, null))
             {
-                _active = new SnesThread(Thread.CurrentThread);
+                _active = Thread.CurrentThread;
             }
             return _active;
         }
 
-        public static SnesThread Create(string name, int size, ThreadStart entrypoint)
+        public static Thread Create(string name, int size, ThreadStart entrypoint)
         {
             if (ReferenceEquals(_active, null))
             {
-                _active = new SnesThread(Thread.CurrentThread);
+                _active = Thread.CurrentThread;
             }
 
             size += 256; /* allocate additional space for storage */
             size &= ~15; /* align stack to 16-byte boundary */
-            return new SnesThread(name, size, entrypoint);
+            return new Thread(entrypoint, size);
         }
 
-        public static void Delete(SnesThread handle)
+        public static void Delete(Thread handle)
         {
-            handle.Terminate();
+            handle.Abort();
             handle = null;
         }
 
-        public static void Switch(SnesThread handle)
+        public static void Switch(Thread handle)
         {
             var previous = _active;
             _active = handle;
-            _active.Resume();
+            if (_active.ThreadState == ThreadState.Unstarted)
+            {
+                _active.Start();
+            }
+            else
+            {
+                _active.Resume();
+            }
             previous.Suspend();
         }
     }

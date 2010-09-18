@@ -5,7 +5,7 @@ namespace Snes
 {
     class Processor
     {
-        public SnesThread thread;
+        public Thread thread;
         public uint frequency;
         public long clock;
 
