@@ -8,7 +8,6 @@ namespace Snes
     {
         public static CPU cpu = new CPU();
 
-        public const bool Threaded = true;
         public Collection<Processor> coprocessors = new Collection<Processor>();
 
         public void step(uint clocks)
@@ -24,38 +23,32 @@ namespace Snes
 
         public void synchronize_smp()
         {
-            if (SMP.Threaded == true)
+#if THREADED
+            if (SMP.smp.Processor.clock < 0)
             {
-                if (SMP.smp.Processor.clock < 0)
-                {
-                    Libco.Switch(SMP.smp.Processor.thread);
-                }
+                Libco.Switch(SMP.smp.Processor.thread);
             }
-            else
+#else
+            while (SMP.smp.Processor.clock < 0)
             {
-                while (SMP.smp.Processor.clock < 0)
-                {
-                    SMP.smp.enter();
-                }
+                SMP.smp.enter();
             }
+#endif
         }
 
         public void synchronize_ppu()
         {
-            if (PPU.Threaded == true)
+#if THREADED
+            if (PPU.ppu.Processor.clock < 0)
             {
-                if (PPU.ppu.Processor.clock < 0)
-                {
-                    Libco.Switch(PPU.ppu.Processor.thread);
-                }
+                Libco.Switch(PPU.ppu.Processor.thread);
             }
-            else
+#else
+            while (PPU.ppu.Processor.clock < 0)
             {
-                while (PPU.ppu.Processor.clock < 0)
-                {
-                    PPU.ppu.enter();
-                }
+                PPU.ppu.enter();
             }
+#endif
         }
 
         public void synchronize_coprocessor()

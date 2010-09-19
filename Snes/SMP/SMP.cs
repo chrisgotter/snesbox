@@ -7,8 +7,6 @@ namespace Snes
     {
         public static SMP smp = new SMP();
 
-        public const bool Threaded = true;
-
         public void step(uint clocks)
         {
             Processor.clock += (long)(clocks * (ulong)CPU.cpu.Processor.frequency);
@@ -17,38 +15,32 @@ namespace Snes
 
         public void synchronize_cpu()
         {
-            if (CPU.Threaded == true)
+#if THREADED
+            if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
-                if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
-                {
-                    Libco.Switch(CPU.cpu.Processor.thread);
-                }
+                Libco.Switch(CPU.cpu.Processor.thread);
             }
-            else
+#else
+            while (Processor.clock >= 0)
             {
-                while (Processor.clock >= 0)
-                {
-                    CPU.cpu.enter();
-                }
+                CPU.cpu.enter();
             }
+#endif
         }
 
         public void synchronize_dsp()
         {
-            if (DSP.Threaded == true)
+#if THREADED
+            if (DSP.dsp.Processor.clock < 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
-                if (DSP.dsp.Processor.clock < 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
-                {
-                    Libco.Switch(DSP.dsp.Processor.thread);
-                }
+                Libco.Switch(DSP.dsp.Processor.thread);
             }
-            else
+#else
+            while (DSP.dsp.Processor.clock < 0)
             {
-                while (DSP.dsp.Processor.clock < 0)
-                {
-                    DSP.dsp.enter();
-                }
+                DSP.dsp.enter();
             }
+#endif
         }
 
         public byte port_read(uint2 port)

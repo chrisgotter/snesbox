@@ -7,8 +7,6 @@ namespace Snes
     {
         public static PPU ppu = new PPU();
 
-        public const bool Threaded = true;
-
         public void step(uint clocks)
         {
             Processor.clock += clocks;
@@ -16,20 +14,17 @@ namespace Snes
 
         public void synchronize_cpu()
         {
-            if (CPU.Threaded == true)
+#if THREADED
+            if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
-                if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
-                {
-                    Libco.Switch(CPU.cpu.Processor.thread);
-                }
+                Libco.Switch(CPU.cpu.Processor.thread);
             }
-            else
+#else
+            while (Processor.clock >= 0)
             {
-                while (Processor.clock >= 0)
-                {
-                    CPU.cpu.enter();
-                }
+                CPU.cpu.enter();
             }
+#endif
         }
 
         public void latch_counters()

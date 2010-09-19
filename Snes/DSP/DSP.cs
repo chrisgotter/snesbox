@@ -8,8 +8,6 @@ namespace Snes
     {
         public static DSP dsp = new DSP();
 
-        public const bool Threaded = true;
-
         public void step(uint clocks)
         {
             Processor.clock += clocks;
@@ -17,20 +15,17 @@ namespace Snes
 
         public void synchronize_smp()
         {
-            if (SMP.Threaded == true)
+#if THREADED
+            if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
-                if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
-                {
-                    Libco.Switch(SMP.smp.Processor.thread);
-                }
+                Libco.Switch(SMP.smp.Processor.thread);
             }
-            else
+#else
+            while (Processor.clock >= 0)
             {
-                while (Processor.clock >= 0)
-                {
-                    SMP.smp.enter();
-                }
+                SMP.smp.enter();
             }
+#endif
         }
 
         public byte read(byte addr)

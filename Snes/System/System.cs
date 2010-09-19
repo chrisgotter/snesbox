@@ -24,29 +24,19 @@ namespace Snes
 
         public void runtosave()
         {
-            if (CPU.Threaded == true)
-            {
-                Scheduler.scheduler.sync = Scheduler.SynchronizeMode.CPU;
-                runthreadtosave();
-            }
+#if THREADED
+            Scheduler.scheduler.sync = Scheduler.SynchronizeMode.CPU;
+            runthreadtosave();
 
-            if (SMP.Threaded == true)
-            {
-                Scheduler.scheduler.thread = SMP.smp.Processor.thread;
-                runthreadtosave();
-            }
+            Scheduler.scheduler.thread = SMP.smp.Processor.thread;
+            runthreadtosave();
 
-            if (PPU.Threaded == true)
-            {
-                Scheduler.scheduler.thread = PPU.ppu.Processor.thread;
-                runthreadtosave();
-            }
+            Scheduler.scheduler.thread = PPU.ppu.Processor.thread;
+            runthreadtosave();
 
-            if (DSP.Threaded == true)
-            {
-                Scheduler.scheduler.thread = DSP.dsp.Processor.thread;
-                runthreadtosave();
-            }
+            Scheduler.scheduler.thread = DSP.dsp.Processor.thread;
+            runthreadtosave();
+#endif
 
             for (uint i = 0; i < CPU.cpu.coprocessors.Count; i++)
             {
