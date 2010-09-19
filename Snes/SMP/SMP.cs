@@ -12,7 +12,7 @@ namespace Snes
         public void step(uint clocks)
         {
             Processor.clock += (long)(clocks * (ulong)CPU.cpu.Processor.frequency);
-            DSP.dsp.clock -= clocks;
+            DSP.dsp.Processor.clock -= clocks;
         }
 
         public void synchronize_cpu()
@@ -37,14 +37,14 @@ namespace Snes
         {
             if (DSP.Threaded == true)
             {
-                if (DSP.dsp.clock < 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
+                if (DSP.dsp.Processor.clock < 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
                 {
-                    Libco.Switch(DSP.dsp.thread);
+                    Libco.Switch(DSP.dsp.Processor.thread);
                 }
             }
             else
             {
-                while (DSP.dsp.clock < 0)
+                while (DSP.dsp.Processor.clock < 0)
                 {
                     DSP.dsp.enter();
                 }

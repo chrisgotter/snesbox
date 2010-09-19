@@ -44,7 +44,7 @@ namespace Snes
 
             if (DSP.Threaded == true)
             {
-                Scheduler.scheduler.thread = DSP.dsp.thread;
+                Scheduler.scheduler.thread = DSP.dsp.Processor.thread;
                 runthreadtosave();
             }
 

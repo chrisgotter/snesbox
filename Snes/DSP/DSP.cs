@@ -4,7 +4,7 @@ using Nall;
 
 namespace Snes
 {
-    partial class DSP : Processor
+    partial class DSP : IProcessor
     {
         public static DSP dsp = new DSP();
 
@@ -12,21 +12,21 @@ namespace Snes
 
         public void step(uint clocks)
         {
-            clock += clocks;
+            Processor.clock += clocks;
         }
 
         public void synchronize_smp()
         {
             if (SMP.Threaded == true)
             {
-                if (clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
+                if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
                 {
                     Libco.Switch(SMP.smp.Processor.thread);
                 }
             }
             else
             {
-                while (clock >= 0)
+                while (Processor.clock >= 0)
                 {
                     SMP.smp.enter();
                 }
@@ -279,7 +279,7 @@ namespace Snes
 
         public void reset()
         {
-            base.create("DSP", Enter, System.system.apu_frequency);
+            Processor.create("DSP", Enter, System.system.apu_frequency);
 
             state.regs[(int)GlobalReg.flg] = 0xe0;
 
@@ -1007,6 +1007,15 @@ namespace Snes
         {
             step(3 * 8);
             synchronize_smp();
+        }
+
+        private Processor _processor = new Processor();
+        public Processor Processor
+        {
+            get
+            {
+                return _processor;
+            }
         }
     }
 }
