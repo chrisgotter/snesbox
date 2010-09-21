@@ -2,7 +2,7 @@
 
 namespace Snes
 {
-    partial class SuperFX : Coprocessor, IMMIO
+    partial class SuperFX : ICoprocessor, IMMIO
     {
         public static SuperFX superfx = new SuperFX();
 
@@ -148,5 +148,10 @@ namespace Snes
 
         private uint clockmode;
         private uint instruction_counter;
+
+        public Coprocessor Coprocessor
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace Snes
 
             public void scanline()
             {
-                if (self.vcounter() == 1)
+                if (self.PPUCounter.vcounter() == 1)
                 {
                     t.mosaic_y = 1;
                     t.mosaic_countdown = 0;
@@ -30,7 +30,7 @@ namespace Snes
                 {
                     if (!Convert.ToBoolean(regs.mosaic) || !Convert.ToBoolean(t.mosaic_countdown))
                     {
-                        t.mosaic_y = self.vcounter();
+                        t.mosaic_y = self.PPUCounter.vcounter();
                     }
                     if (!Convert.ToBoolean(t.mosaic_countdown))
                     {
@@ -46,7 +46,7 @@ namespace Snes
             {
                 bool hires = (self.regs.bgmode == 5 || self.regs.bgmode == 6);
 
-                if ((self.hcounter() & 2) == 0)
+                if ((self.PPUCounter.hcounter() & 2) == 0)
                 {
                     output.main.priority = 0;
                     output.sub.priority = 0;
@@ -103,7 +103,7 @@ namespace Snes
                     hscroll <<= 1;
                     if (self.regs.interlace)
                     {
-                        y = (uint)((y << 1) + Convert.ToInt32(self.field()));
+                        y = (uint)((y << 1) + Convert.ToInt32(self.PPUCounter.field()));
                     }
                 }
 

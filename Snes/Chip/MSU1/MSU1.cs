@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Snes
 {
-    partial class MSU1 : Coprocessor, IMMIO
+    partial class MSU1 : ICoprocessor, IMMIO
     {
         public static MSU1 msu1 = new MSU1();
 
@@ -22,5 +22,10 @@ namespace Snes
 
         private enum Flag { DataBusy = 0x80, AudioBusy = 0x40, AudioRepeating = 0x20, AudioPlaying = 0x10, Revision = 0x01 }
         private MMIO mmio;
+
+        public Coprocessor Coprocessor
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }

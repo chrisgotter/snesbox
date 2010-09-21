@@ -28,7 +28,7 @@ namespace Snes
             ushort[] data = PPU.ppu.Output;
             // TODO: verify array segments
             var dataSeg = new ArraySegment<ushort>(data);
-            if (PPU.ppu.interlace() && PPU.ppu.field())
+            if (PPU.ppu.interlace() && PPU.ppu.PPUCounter.field())
             {
                 // TODO: verify array segments
                 dataSeg = new ArraySegment<ushort>(data, 512, data.Length - 512);
@@ -115,7 +115,7 @@ namespace Snes
             ushort[] data = PPU.ppu.Output;
             // TODO: verify array segments
             var dataSeg = new ArraySegment<ushort>(data);
-            if (PPU.ppu.interlace() && PPU.ppu.field())
+            if (PPU.ppu.interlace() && PPU.ppu.PPUCounter.field())
             {
                 // TODO: verify array segments
                 dataSeg = new ArraySegment<ushort>(data, 512, data.Length - 512);

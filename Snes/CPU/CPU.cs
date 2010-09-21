@@ -8,7 +8,7 @@ namespace Snes
     {
         public static CPU cpu = new CPU();
 
-        public Collection<Processor> coprocessors = new Collection<Processor>();
+        public Collection<IProcessor> coprocessors = new Collection<IProcessor>();
 
         public void step(uint clocks)
         {
@@ -16,8 +16,8 @@ namespace Snes
             PPU.ppu.Processor.clock -= clocks;
             for (uint i = 0; i < coprocessors.Count; i++)
             {
-                Processor chip = coprocessors[(int)i];
-                chip.clock -= (long)(clocks * (ulong)chip.frequency);
+                IProcessor chip = coprocessors[(int)i];
+                chip.Processor.clock -= (long)(clocks * (ulong)chip.Processor.frequency);
             }
         }
 
@@ -55,10 +55,10 @@ namespace Snes
         {
             for (uint i = 0; i < coprocessors.Count; i++)
             {
-                Processor chip = coprocessors[(int)i];
-                if (chip.clock < 0)
+                IProcessor chip = coprocessors[(int)i];
+                if (chip.Processor.clock < 0)
                 {
-                    Libco.Switch(chip.thread);
+                    Libco.Switch(chip.Processor.thread);
                 }
             }
         }

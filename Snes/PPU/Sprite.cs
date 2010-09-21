@@ -70,7 +70,7 @@ namespace Snes
             public void scanline()
             {
                 t.x = 0;
-                t.y = self.vcounter();
+                t.y = self.PPUCounter.vcounter();
 
                 t.item_count = 0;
                 t.tile_count = 0;
@@ -200,7 +200,7 @@ namespace Snes
 
                     if (regs.interlace)
                     {
-                        y = (sprite.vflip == false ? y + Convert.ToInt32(self.field()) : y - Convert.ToInt32(self.field()));
+                        y = (sprite.vflip == false ? y + Convert.ToInt32(self.PPUCounter.field()) : y - Convert.ToInt32(self.PPUCounter.field()));
                     }
 
                     x &= 511;

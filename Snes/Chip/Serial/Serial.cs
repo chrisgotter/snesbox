@@ -2,7 +2,7 @@
 
 namespace Snes
 {
-    class Serial : Coprocessor, IMMIO
+    class Serial : ICoprocessor, IMMIO
     {
         public static Serial serial = new Serial();
 
@@ -23,5 +23,10 @@ namespace Snes
         public void mmio_write(uint addr, byte data) { throw new NotImplementedException(); }
 
         private IMMIO r4016, r4017;
+
+        public Coprocessor Coprocessor
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }

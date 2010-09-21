@@ -15,8 +15,8 @@ namespace Snes
 
             public void scanline()
             {
-                output = new ArraySegment<ushort>(self.output, self.vcounter() * 1024, self.output.Length - (self.vcounter() * 1024)).Array;
-                if (self.display.interlace && self.field())
+                output = new ArraySegment<ushort>(self.output, self.PPUCounter.vcounter() * 1024, self.output.Length - (self.PPUCounter.vcounter() * 1024)).Array;
+                if (self.display.interlace && self.PPUCounter.field())
                 {
                     outputIndex += 512;
                 }

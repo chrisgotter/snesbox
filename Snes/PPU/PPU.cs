@@ -3,7 +3,7 @@ using Nall;
 
 namespace Snes
 {
-    partial class PPU : PPUCounter, IProcessor, IMMIO
+    partial class PPU : IPPUCounter, IProcessor, IMMIO
     {
         public static PPU ppu = new PPU();
 
@@ -30,8 +30,8 @@ namespace Snes
         public void latch_counters()
         {
             CPU.cpu.synchronize_ppu();
-            regs.hcounter = hdot();
-            regs.vcounter = vcounter();
+            regs.hcounter = PPUCounter.hdot();
+            regs.vcounter = PPUCounter.vcounter();
             regs.counters_latched = true;
         }
 
@@ -62,7 +62,7 @@ namespace Snes
                 scanline();
                 add_clocks(88);
 
-                if (vcounter() <= (!regs.overscan ? 224 : 239))
+                if (PPUCounter.vcounter() <= (!regs.overscan ? 224 : 239))
                 {
                     for (uint n = 0; n < 256; n++)
                     {
@@ -90,7 +90,7 @@ namespace Snes
                     add_clocks(1024 + 22 + 136);
                 }
 
-                add_clocks(lineclocks() - 88U - 1024U - 22U - 136U);
+                add_clocks(PPUCounter.lineclocks() - 88U - 1024U - 22U - 136U);
             }
         }
 
@@ -109,7 +109,7 @@ namespace Snes
         new public void reset()
         {
             Processor.create("PPU", Enter, System.system.cpu_frequency);
-            base.reset();
+            PPUCounter.reset();
             Array.Clear(surface, 0, surface.Length);
 
             mmio_reset();
@@ -161,7 +161,7 @@ namespace Snes
 
         private byte vram_read(uint addr)
         {
-            if (regs.display_disabled || vcounter() >= (!regs.overscan ? 225 : 240))
+            if (regs.display_disabled || PPUCounter.vcounter() >= (!regs.overscan ? 225 : 240))
             {
                 return StaticRAM.vram[addr];
             }
@@ -170,7 +170,7 @@ namespace Snes
 
         private void vram_write(uint addr, byte data)
         {
-            if (regs.display_disabled || vcounter() >= (!regs.overscan ? 225 : 240))
+            if (regs.display_disabled || PPUCounter.vcounter() >= (!regs.overscan ? 225 : 240))
             {
                 StaticRAM.vram[addr] = data;
             }
@@ -178,7 +178,7 @@ namespace Snes
 
         private byte oam_read(uint addr)
         {
-            if (!regs.display_disabled && vcounter() < (!regs.overscan ? 225 : 240))
+            if (!regs.display_disabled && PPUCounter.vcounter() < (!regs.overscan ? 225 : 240))
             {
                 addr = regs.ioamaddr;
             }
@@ -191,7 +191,7 @@ namespace Snes
 
         private void oam_write(uint addr, byte data)
         {
-            if (!regs.display_disabled && vcounter() < (!regs.overscan ? 225 : 240))
+            if (!regs.display_disabled && PPUCounter.vcounter() < (!regs.overscan ? 225 : 240))
             {
                 addr = regs.ioamaddr;
             }
@@ -386,7 +386,7 @@ namespace Snes
 
         private void mmio_w2100(byte data)
         {
-            if (regs.display_disabled && vcounter() == (!regs.overscan ? 225 : 240))
+            if (regs.display_disabled && PPUCounter.vcounter() == (!regs.overscan ? 225 : 240))
             {
                 oam.address_reset();
             }
@@ -945,7 +945,7 @@ namespace Snes
             regs.latch_vcounter = Convert.ToBoolean(0);
 
             regs.ppu2_mdr &= 0x20;
-            regs.ppu2_mdr |= (byte)(Convert.ToInt32(field()) << 7);
+            regs.ppu2_mdr |= (byte)(Convert.ToInt32(PPUCounter.field()) << 7);
             if ((CPU.cpu.pio() & 0x80) == 0)
             {
                 regs.ppu2_mdr |= 0x40;
@@ -1294,7 +1294,7 @@ namespace Snes
             clocks >>= 1;
             while (Convert.ToBoolean(clocks--))
             {
-                tick(2);
+                PPUCounter.tick(2);
                 step(2);
                 synchronize_cpu();
             }
@@ -1302,7 +1302,7 @@ namespace Snes
 
         private void scanline()
         {
-            if (vcounter() == 0)
+            if (PPUCounter.vcounter() == 0)
             {
                 frame();
             }
@@ -1330,6 +1330,15 @@ namespace Snes
             get
             {
                 return _processor;
+            }
+        }
+
+        private PPUCounter _ppuCounter = new PPUCounter();
+        public PPUCounter PPUCounter
+        {
+            get
+            {
+                return _ppuCounter;
             }
         }
     }

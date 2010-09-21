@@ -40,8 +40,8 @@ namespace Snes
 
             for (uint i = 0; i < CPU.cpu.coprocessors.Count; i++)
             {
-                Processor chip = CPU.cpu.coprocessors[(int)i];
-                Scheduler.scheduler.thread = chip.thread;
+                IProcessor chip = CPU.cpu.coprocessors[(int)i];
+                Scheduler.scheduler.thread = chip.Processor.thread;
                 runthreadtosave();
             }
         }
@@ -295,7 +295,7 @@ namespace Snes
             }
             if (Cartridge.cartridge.has_superfx)
             {
-                CPU.cpu.coprocessors.Add(SuperFX.superfx);
+                CPU.cpu.coprocessors.Add(SuperFX.superfx.Coprocessor);
             }
             if (Cartridge.cartridge.has_sa1)
             {
@@ -303,11 +303,11 @@ namespace Snes
             }
             if (Cartridge.cartridge.has_msu1)
             {
-                CPU.cpu.coprocessors.Add(MSU1.msu1);
+                CPU.cpu.coprocessors.Add(MSU1.msu1.Coprocessor);
             }
             if (Cartridge.cartridge.has_serial)
             {
-                CPU.cpu.coprocessors.Add(Serial.serial);
+                CPU.cpu.coprocessors.Add(Serial.serial.Coprocessor);
             }
 
             Scheduler.scheduler.init();
@@ -413,7 +413,7 @@ namespace Snes
             }
             if (Cartridge.cartridge.has_superfx)
             {
-                CPU.cpu.coprocessors.Add(SuperFX.superfx);
+                CPU.cpu.coprocessors.Add(SuperFX.superfx.Coprocessor);
             }
             if (Cartridge.cartridge.has_sa1)
             {
@@ -421,11 +421,11 @@ namespace Snes
             }
             if (Cartridge.cartridge.has_msu1)
             {
-                CPU.cpu.coprocessors.Add(MSU1.msu1);
+                CPU.cpu.coprocessors.Add(MSU1.msu1.Coprocessor);
             }
             if (Cartridge.cartridge.has_serial)
             {
-                CPU.cpu.coprocessors.Add(Serial.serial);
+                CPU.cpu.coprocessors.Add(Serial.serial.Coprocessor);
             }
 
             Scheduler.scheduler.init();
