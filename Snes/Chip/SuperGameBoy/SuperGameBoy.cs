@@ -1,4 +1,5 @@
 ﻿using System;
+using Nall;
 
 namespace Snes
 {
@@ -22,6 +23,11 @@ namespace Snes
         public void power() { throw new NotImplementedException(); }
         public void reset() { throw new NotImplementedException(); }
         public void unload() { throw new NotImplementedException(); }
+
+        public void serialize(Serializer s)
+        {
+            throw new NotImplementedException();
+        }
 
         private uint[] samplebuffer = new uint[4096];
         private uint row;

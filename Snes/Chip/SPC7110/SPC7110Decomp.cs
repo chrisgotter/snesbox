@@ -1,4 +1,5 @@
 ﻿using System;
+using Nall;
 
 namespace Snes
 {
@@ -7,6 +8,11 @@ namespace Snes
         public byte read() { throw new NotImplementedException(); }
         public void init(uint mode, uint offset, uint index) { throw new NotImplementedException(); }
         public void reset() { throw new NotImplementedException(); }
+
+        public void serialize(Serializer s)
+        {
+            throw new NotImplementedException();
+        }
 
         public SPC7110Decomp() { throw new NotImplementedException(); }
 

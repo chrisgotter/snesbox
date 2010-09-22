@@ -1,4 +1,5 @@
 ﻿using System;
+using Nall;
 
 namespace Snes
 {
@@ -14,6 +15,11 @@ namespace Snes
 
         public override byte read(uint addr) { throw new NotImplementedException(); }
         public override void write(uint addr, byte data) { throw new NotImplementedException(); }
+
+        public void serialize(Serializer s)
+        {
+            throw new NotImplementedException();
+        }
 
         public OBC1() { /*throw new NotImplementedException();*/ }
 

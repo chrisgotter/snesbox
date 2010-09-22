@@ -560,55 +560,55 @@ namespace Snes
 
             if (Cartridge.cartridge.mode == Cartridge.Mode.SuperGameBoy)
             {
-                //supergameboy.serialize(s);
+                SuperGameBoy.supergameboy.serialize(s);
             }
             if (Cartridge.cartridge.has_superfx)
             {
-                //superfx.serialize(s);
+                SuperFX.superfx.serialize(s);
             }
             if (Cartridge.cartridge.has_sa1)
             {
-                //sa1.serialize(s);
+                SA1.sa1.serialize(s);
             }
             if (Cartridge.cartridge.has_srtc)
             {
-                //srtc.serialize(s);
+                SRTC.srtc.serialize(s);
             }
             if (Cartridge.cartridge.has_sdd1)
             {
-                //sdd1.serialize(s);
+                SDD1.sdd1.serialize(s);
             }
             if (Cartridge.cartridge.has_spc7110)
             {
-                //spc7110.serialize(s);
+                SPC7110.spc7110.serialize(s);
             }
             if (Cartridge.cartridge.has_cx4)
             {
-                //cx4.serialize(s);
+                CX4.cx4.serialize(s);
             }
             if (Cartridge.cartridge.has_dsp1)
             {
-                //dsp1.serialize(s);
+                DSP1.dsp1.serialize(s);
             }
             if (Cartridge.cartridge.has_dsp2)
             {
-                //dsp2.serialize(s);
+                DSP2.dsp2.serialize(s);
             }
             if (Cartridge.cartridge.has_obc1)
             {
-                //obc1.serialize(s);
+                OBC1.obc1.serialize(s);
             }
             if (Cartridge.cartridge.has_st0010)
             {
-                //st0010.serialize(s);
+                ST0010.st0010.serialize(s);
             }
             if (Cartridge.cartridge.has_msu1)
             {
-                //msu1.serialize(s);
+                MSU1.msu1.serialize(s);
             }
             if (Cartridge.cartridge.has_serial)
             {
-                //serial.serialize(s);
+                Serial.serial.serialize(s);
             }
         }
 

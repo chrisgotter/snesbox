@@ -1,4 +1,5 @@
 ﻿using System;
+using Nall;
 
 namespace Snes
 {
@@ -13,6 +14,11 @@ namespace Snes
 
         public override byte read(uint addr) { throw new NotImplementedException(); }
         public override void write(uint addr, byte data) { throw new NotImplementedException(); }
+
+        public void serialize(Serializer s)
+        {
+            throw new NotImplementedException();
+        }
 
         private byte[] ram = new byte[0x1000];
         private static readonly short[] sin_table = new short[256];

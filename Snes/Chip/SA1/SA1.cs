@@ -1,4 +1,5 @@
 ﻿using System;
+using Nall;
 
 namespace Snes
 {
@@ -126,6 +127,11 @@ namespace Snes
         public void enable() { throw new NotImplementedException(); }
         public void power() { throw new NotImplementedException(); }
         public void reset() { throw new NotImplementedException(); }
+
+        public void serialize(Serializer s)
+        {
+            throw new NotImplementedException();
+        }
 
         public SA1() { /*throw new NotImplementedException();*/ }
 

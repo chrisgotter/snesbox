@@ -1,4 +1,5 @@
 ﻿using System;
+using Nall;
 
 namespace Snes
 {
@@ -28,6 +29,11 @@ namespace Snes
         //spc7110decomp
         public void decomp_init() { throw new NotImplementedException(); }
         public byte decomp_read() { throw new NotImplementedException(); }
+
+        public void serialize(Serializer s)
+        {
+            throw new NotImplementedException();
+        }
 
         public SPC7110() { /*throw new NotImplementedException();*/ }
 
