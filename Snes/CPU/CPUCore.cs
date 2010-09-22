@@ -1313,7 +1313,10 @@ namespace Snes
             }
 
             regs.p.v = Convert.ToBoolean(~(regs.a.w ^ rd.w) & (regs.a.w ^ result) & 0x8000);
-            if (regs.p.d && result > 0x9fff) result += 0x6000;
+            if (regs.p.d && result > 0x9fff)
+            {
+                result += 0x6000;
+            }
             regs.p.c = result > 0xffff;
             regs.p.n = Convert.ToBoolean(result & 0x8000);
             regs.p.z = (ushort)result == 0;
@@ -1479,13 +1482,19 @@ namespace Snes
             else
             {
                 result = (regs.a.l & 0x0f) + (rd.l & 0x0f) + (Convert.ToInt32(regs.p.c) << 0);
-                if (result <= 0x0f) result -= 0x06;
+                if (result <= 0x0f)
+                {
+                    result -= 0x06;
+                }
                 regs.p.c = result > 0x0f;
                 result = (regs.a.l & 0xf0) + (rd.l & 0xf0) + (Convert.ToInt32(regs.p.c) << 4) + (result & 0x0f);
             }
 
             regs.p.v = Convert.ToBoolean(~(regs.a.l ^ rd.l) & (regs.a.l ^ result) & 0x80);
-            if (regs.p.d && result <= 0xff) result -= 0x60;
+            if (regs.p.d && result <= 0xff)
+            {
+                result -= 0x60;
+            }
             regs.p.c = result > 0xff;
             regs.p.n = Convert.ToBoolean(result & 0x80);
             regs.p.z = (byte)result == 0;
@@ -1505,19 +1514,31 @@ namespace Snes
             else
             {
                 result = (regs.a.w & 0x000f) + (rd.w & 0x000f) + (Convert.ToInt32(regs.p.c) << 0);
-                if (result <= 0x000f) result -= 0x0006;
+                if (result <= 0x000f)
+                {
+                    result -= 0x0006;
+                }
                 regs.p.c = result > 0x000f;
                 result = (regs.a.w & 0x00f0) + (rd.w & 0x00f0) + (Convert.ToInt32(regs.p.c) << 4) + (result & 0x000f);
-                if (result <= 0x00ff) result -= 0x0060;
+                if (result <= 0x00ff)
+                {
+                    result -= 0x0060;
+                }
                 regs.p.c = result > 0x00ff;
                 result = (regs.a.w & 0x0f00) + (rd.w & 0x0f00) + (Convert.ToInt32(regs.p.c) << 8) + (result & 0x00ff);
-                if (result <= 0x0fff) result -= 0x0600;
+                if (result <= 0x0fff)
+                {
+                    result -= 0x0600;
+                }
                 regs.p.c = result > 0x0fff;
                 result = (regs.a.w & 0xf000) + (rd.w & 0xf000) + (Convert.ToInt32(regs.p.c) << 12) + (result & 0x0fff);
             }
 
             regs.p.v = Convert.ToBoolean(~(regs.a.w ^ rd.w) & (regs.a.w ^ result) & 0x8000);
-            if (regs.p.d && result <= 0xffff) result -= 0x6000;
+            if (regs.p.d && result <= 0xffff)
+            {
+                result -= 0x6000;
+            }
             regs.p.c = result > 0xffff;
             regs.p.n = Convert.ToBoolean(result & 0x8000);
             regs.p.z = (ushort)result == 0;
@@ -3414,6 +3435,40 @@ namespace Snes
 
         public enum Table { EM = 0, MX = 256, Mx = 512, mX = 768, mx = 1024 }
         private enum OpCode { A = 0, X = 1, Y = 2, Z = 3, S = 4, D = 5 };
+
+        public void core_serialize(Serializer s)
+        {
+            s.integer(regs.pc.d);
+
+            s.integer(regs.a.w);
+            s.integer(regs.x.w);
+            s.integer(regs.y.w);
+            s.integer(regs.z.w);
+            s.integer(regs.s.w);
+            s.integer(regs.d.w);
+
+            s.integer(regs.p.n);
+            s.integer(regs.p.v);
+            s.integer(regs.p.m);
+            s.integer(regs.p.x);
+            s.integer(regs.p.d);
+            s.integer(regs.p.i);
+            s.integer(regs.p.z);
+            s.integer(regs.p.c);
+
+            s.integer(regs.db);
+            s.integer(regs.e);
+            s.integer(regs.irq);
+            s.integer(regs.wai);
+            s.integer(regs.mdr);
+
+            s.integer(aa.d);
+            s.integer(rd.d);
+            s.integer(sp);
+            s.integer(dp);
+
+            update_table();
+        }
 
         public CPUCore()
         {

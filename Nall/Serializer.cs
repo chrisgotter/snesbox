@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Nall
 {
@@ -80,11 +81,44 @@ namespace Nall
             }
         }
 
+        public void array(byte[] array)
+        {
+            for (uint n = 0; n < array.Length; n++)
+            {
+                integer(array[n]);
+            }
+        }
+
         public void array(byte[] array, uint size)
         {
             for (uint n = 0; n < size; n++)
             {
                 integer(array[n]);
+            }
+        }
+
+        public void array(bool[] array)
+        {
+            for (uint n = 0; n < array.Length; n++)
+            {
+                integer(array[n]);
+            }
+        }
+
+        public void array(ushort[] array)
+        {
+            for (uint n = 0; n < array.Length; n++)
+            {
+                integer(array[n]);
+            }
+        }
+
+        public void array(string array)
+        {
+            var newArray = new UTF8Encoding().GetBytes(array);
+            for (uint n = 0; n < array.Length; n++)
+            {
+                integer(newArray[n]);
             }
         }
 

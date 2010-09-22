@@ -7,7 +7,10 @@ namespace SnesBox
     {
         protected static byte[] MakeUtf8Array(string s)
         {
-            if (string.IsNullOrWhiteSpace(s)) { return null; }
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                return null;
+            }
 
             var utf8 = new byte[System.Text.Encoding.UTF8.GetByteCount(s) + 1];
             System.Text.Encoding.UTF8.GetBytes(s, 0, s.Length, utf8, 0);

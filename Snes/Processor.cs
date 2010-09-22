@@ -19,7 +19,7 @@ namespace Snes
             clock = 0;
         }
 
-        void serialize(Serializer s)
+        public void serialize(Serializer s)
         {
             s.integer(frequency);
             s.integer(clock);

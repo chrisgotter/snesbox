@@ -216,7 +216,7 @@ namespace Snes
             loaded = false;
         }
 
-        void serialize(Serializer s)
+        public void serialize(Serializer s)
         {
             if (MappedRAM.cartram.size() != 0 && MappedRAM.cartram.size() != Bit.ToUint32(~0))
             {

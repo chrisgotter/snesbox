@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Nall;
 
 namespace Snes
 {
@@ -462,6 +463,54 @@ namespace Snes
         public ExpansionPortDevice expansion { get; private set; }
         public uint cpu_frequency { get; private set; }
         public uint apu_frequency { get; private set; }
+        public uint serialize_size { get; private set; }
+
+        public Serializer serialize()
+        {
+            Serializer s = new Serializer(serialize_size);
+
+            uint signature = 0x31545342, version = Info.SerializerVersion, crc32 = Cartridge.cartridge.crc32;
+            string profile = string.Empty, description = string.Empty;
+            profile = Info.Profile;
+
+            s.integer(signature);
+            s.integer(version);
+            s.integer(crc32);
+            s.array(profile);
+            s.array(description);
+
+            serialize_all(s);
+            return s;
+        }
+
+        public bool unserialize(Serializer s)
+        {
+            uint signature = 0, version = 0, crc32 = 0;
+            string profile = string.Empty, description = string.Empty;
+
+            s.integer(signature);
+            s.integer(version);
+            s.integer(crc32);
+            s.array(profile);
+            s.array(description);
+
+            if (signature != 0x31545342)
+            {
+                return false;
+            }
+            if (version != Info.SerializerVersion)
+            {
+                return false;
+            }
+            if (profile != Info.Profile)
+            {
+                return false;
+            }
+
+            reset();
+            serialize_all(s);
+            return true;
+        }
 
         public System()
         {
@@ -491,6 +540,93 @@ namespace Snes
                     Video.video.update();
                 }
             }
+        }
+
+        private void serialize(Serializer s)
+        {
+            s.integer((uint)region);
+            s.integer((uint)expansion);
+        }
+
+        private void serialize_all(Serializer s)
+        {
+            //Bus.bus.serialize(s);
+            Cartridge.cartridge.serialize(s);
+            System.system.serialize(s);
+            CPU.cpu.serialize(s);
+            //SMP.smp.serialize(s);
+            //PPU.ppu.serialize(s);
+            DSP.dsp.serialize(s);
+
+            if (Cartridge.cartridge.mode == Cartridge.Mode.SuperGameBoy)
+            {
+                //supergameboy.serialize(s);
+            }
+            if (Cartridge.cartridge.has_superfx)
+            {
+                //superfx.serialize(s);
+            }
+            if (Cartridge.cartridge.has_sa1)
+            {
+                //sa1.serialize(s);
+            }
+            if (Cartridge.cartridge.has_srtc)
+            {
+                //srtc.serialize(s);
+            }
+            if (Cartridge.cartridge.has_sdd1)
+            {
+                //sdd1.serialize(s);
+            }
+            if (Cartridge.cartridge.has_spc7110)
+            {
+                //spc7110.serialize(s);
+            }
+            if (Cartridge.cartridge.has_cx4)
+            {
+                //cx4.serialize(s);
+            }
+            if (Cartridge.cartridge.has_dsp1)
+            {
+                //dsp1.serialize(s);
+            }
+            if (Cartridge.cartridge.has_dsp2)
+            {
+                //dsp2.serialize(s);
+            }
+            if (Cartridge.cartridge.has_obc1)
+            {
+                //obc1.serialize(s);
+            }
+            if (Cartridge.cartridge.has_st0010)
+            {
+                //st0010.serialize(s);
+            }
+            if (Cartridge.cartridge.has_msu1)
+            {
+                //msu1.serialize(s);
+            }
+            if (Cartridge.cartridge.has_serial)
+            {
+                //serial.serialize(s);
+            }
+        }
+
+        private void serialize_init()
+        {
+            Serializer s = new Serializer();
+
+            uint signature = 0, version = 0, crc32 = 0;
+            string profile = string.Empty, description = string.Empty;
+
+            s.integer(signature);
+            s.integer(version);
+            s.integer(crc32);
+            s.array(profile);
+            s.array(description);
+
+            serialize_all(s);
+            serialize_size = s.size();
         }
     }
 }

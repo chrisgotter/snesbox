@@ -108,6 +108,29 @@ namespace Snes
             System.system.run();
         }
 
+        public static uint snes_serialize_size()
+        {
+            return System.system.serialize_size;
+        }
+
+        public static bool snes_serialize(byte[] data, uint size)
+        {
+            System.system.runtosave();
+            Serializer s = System.system.serialize();
+            if (s.size() > size)
+            {
+                return false;
+            }
+            Array.Copy(s.data(), data, s.size());
+            return true;
+        }
+
+        public static bool snes_unserialize(byte[] data, uint size)
+        {
+            Serializer s = new Serializer(data, size);
+            return System.system.unserialize(s);
+        }
+
         public static void snes_cheat_reset()
         {
             Cheat.cheat.Clear();

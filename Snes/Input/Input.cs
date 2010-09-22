@@ -200,7 +200,7 @@ namespace Snes
                             }
 
                             //trigger is a button
-                            //if turbo is active, trigger is level sensitive; otherwise it is edge sensitive
+                            //if turbo is active, trigger is level sensitive, otherwise it is edge sensitive
                             p.superscope.trigger = false;
                             bool trigger = Convert.ToBoolean(System.system.Interface.input_poll(portnumber, p.device, 0, (uint)SuperScopeID.Trigger));
                             if (trigger && (p.superscope.turbo || !p.superscope.triggerlock))

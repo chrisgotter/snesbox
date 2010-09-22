@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\x86\Debug</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WINDOWS, CHEAT_SYSTEM, THREADED</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WINDOWS, CHEAT_SYSTEM, THREADED, ACCURACY</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoStdLib>true</NoStdLib>
@@ -34,7 +34,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\x86\Release</OutputPath>
-    <DefineConstants>TRACE;WINDOWS, CHEAT_SYSTEM, THREADED</DefineConstants>
+    <DefineConstants>TRACE;WINDOWS, CHEAT_SYSTEM, THREADED, ACCURACY</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoStdLib>true</NoStdLib>
@@ -186,6 +186,7 @@
     <Compile Include="DSP\DSP.cs" />
     <Compile Include="DSP\State.cs" />
     <Compile Include="DSP\Voice.cs" />
+    <Compile Include="Info\Info.cs" />
     <Compile Include="Input\Justifier.cs" />
     <Compile Include="Input\Port.cs" />
     <Compile Include="Input\Superscope.cs" />
