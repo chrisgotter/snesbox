@@ -124,6 +124,81 @@ namespace Snes
             frame();
         }
 
+        public void serialize(Serializer s)
+        {
+            Processor.serialize(s);
+            PPUCounter.serialize(s);
+
+            s.integer(ppu1_version);
+            s.integer(ppu2_version);
+
+            s.integer(display.interlace);
+            s.integer(display.overscan);
+
+            s.integer(regs.ppu1_mdr);
+            s.integer(regs.ppu2_mdr);
+
+            s.integer(regs.vram_readbuffer);
+            s.integer(regs.oam_latchdata);
+            s.integer(regs.cgram_latchdata);
+            s.integer(regs.bgofs_latchdata);
+            s.integer(regs.mode7_latchdata);
+            s.integer(regs.counters_latched);
+            s.integer(regs.latch_hcounter);
+            s.integer(regs.latch_vcounter);
+
+            s.integer(regs.ioamaddr);
+            s.integer(regs.icgramaddr);
+
+            s.integer(regs.display_disabled);
+            s.integer(regs.display_brightness);
+
+            s.integer(regs.oam_baseaddr);
+            s.integer(regs.oam_addr);
+            s.integer(regs.oam_priority);
+
+            s.integer(regs.bg3_priority);
+            s.integer(regs.bgmode);
+
+            s.integer(regs.mode7_hoffset);
+            s.integer(regs.mode7_voffset);
+
+            s.integer(regs.vram_incmode);
+            s.integer(regs.vram_mapping);
+            s.integer(regs.vram_incsize);
+
+            s.integer(regs.vram_addr);
+
+            s.integer(regs.mode7_repeat);
+            s.integer(regs.mode7_vflip);
+            s.integer(regs.mode7_hflip);
+
+            s.integer(regs.m7a);
+            s.integer(regs.m7b);
+            s.integer(regs.m7c);
+            s.integer(regs.m7d);
+            s.integer(regs.m7x);
+            s.integer(regs.m7y);
+
+            s.integer(regs.cgram_addr);
+
+            s.integer(regs.mode7_extbg);
+            s.integer(regs.pseudo_hires);
+            s.integer(regs.overscan);
+            s.integer(regs.interlace);
+
+            s.integer(regs.hcounter);
+            s.integer(regs.vcounter);
+
+            bg1.serialize(s);
+            bg2.serialize(s);
+            bg3.serialize(s);
+            bg4.serialize(s);
+            oam.serialize(s);
+            window.serialize(s);
+            screen.serialize(s);
+        }
+
         public PPU()
         {
             bg1 = new Background(this, (uint)Background.ID.BG1);

@@ -165,6 +165,15 @@ namespace Snes
 
         public Page[] page = new Page[65536];
 
+        public void serialize(Serializer s)
+        {
+            s.array(StaticRAM.wram.data(), StaticRAM.wram.size());
+            s.array(StaticRAM.apuram.data(), StaticRAM.apuram.size());
+            s.array(StaticRAM.vram.data(), StaticRAM.vram.size());
+            s.array(StaticRAM.oam.data(), StaticRAM.oam.size());
+            s.array(StaticRAM.cgram.data(), StaticRAM.cgram.size());
+        }
+
         public Bus()
         {
             for (int i = 0; i < page.Length; i++)

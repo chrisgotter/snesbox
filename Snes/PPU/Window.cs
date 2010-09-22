@@ -1,4 +1,5 @@
 ﻿using System;
+using Nall;
 
 namespace Snes
 {
@@ -191,6 +192,70 @@ namespace Snes
                 output.sub.color_enable = Convert.ToBoolean(0);
             }
 
+            public void serialize(Serializer s)
+            {
+                s.integer(t.x);
+
+                s.integer(regs.bg1_one_enable);
+                s.integer(regs.bg1_one_invert);
+                s.integer(regs.bg1_two_enable);
+                s.integer(regs.bg1_two_invert);
+
+                s.integer(regs.bg2_one_enable);
+                s.integer(regs.bg2_one_invert);
+                s.integer(regs.bg2_two_enable);
+                s.integer(regs.bg2_two_invert);
+
+                s.integer(regs.bg3_one_enable);
+                s.integer(regs.bg3_one_invert);
+                s.integer(regs.bg3_two_enable);
+                s.integer(regs.bg3_two_invert);
+
+                s.integer(regs.bg4_one_enable);
+                s.integer(regs.bg4_one_invert);
+                s.integer(regs.bg4_two_enable);
+                s.integer(regs.bg4_two_invert);
+
+                s.integer(regs.oam_one_enable);
+                s.integer(regs.oam_one_invert);
+                s.integer(regs.oam_two_enable);
+                s.integer(regs.oam_two_invert);
+
+                s.integer(regs.col_one_enable);
+                s.integer(regs.col_one_invert);
+                s.integer(regs.col_two_enable);
+                s.integer(regs.col_two_invert);
+
+                s.integer(regs.one_left);
+                s.integer(regs.one_right);
+                s.integer(regs.two_left);
+                s.integer(regs.two_right);
+
+                s.integer(regs.bg1_mask);
+                s.integer(regs.bg2_mask);
+                s.integer(regs.bg3_mask);
+                s.integer(regs.bg4_mask);
+                s.integer(regs.oam_mask);
+                s.integer(regs.col_mask);
+
+                s.integer(regs.bg1_main_enable);
+                s.integer(regs.bg1_sub_enable);
+                s.integer(regs.bg2_main_enable);
+                s.integer(regs.bg2_sub_enable);
+                s.integer(regs.bg3_main_enable);
+                s.integer(regs.bg3_sub_enable);
+                s.integer(regs.bg4_main_enable);
+                s.integer(regs.bg4_sub_enable);
+                s.integer(regs.oam_main_enable);
+                s.integer(regs.oam_sub_enable);
+
+                s.integer(regs.col_main_mask);
+                s.integer(regs.col_sub_mask);
+
+                s.integer(output.main.color_enable);
+                s.integer(output.sub.color_enable);
+            }
+
             public Window(PPU self_)
             {
                 self = self_;
@@ -219,17 +284,17 @@ namespace Snes
                     bool two = (x >= regs.two_left && x <= regs.two_right) ^ two_invert;
                     switch (mask)
                     {
-                        case 0: 
+                        case 0:
                             output = (one | two) == Convert.ToBoolean(1);
                             break;
                         case 1:
-                            output = (one & two) == Convert.ToBoolean(1); 
+                            output = (one & two) == Convert.ToBoolean(1);
                             break;
                         case 2:
                             output = (one ^ two) == Convert.ToBoolean(1);
                             break;
                         case 3:
-                            output = (one ^ two) == Convert.ToBoolean(0); 
+                            output = (one ^ two) == Convert.ToBoolean(0);
                             break;
                     }
                 }

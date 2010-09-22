@@ -318,6 +318,68 @@ namespace Snes
                 output.sub.priority = 0;
             }
 
+            public void serialize(Serializer s)
+            {
+                for (uint i = 0; i < 128; i++)
+                {
+                    s.integer(list[i].x);
+                    s.integer(list[i].y);
+                    s.integer(list[i].character);
+                    s.integer(list[i].nameselect);
+                    s.integer(list[i].vflip);
+                    s.integer(list[i].hflip);
+                    s.integer(list[i].priority);
+                    s.integer(list[i].palette);
+                    s.integer(list[i].size);
+                }
+
+                s.integer(t.x);
+                s.integer(t.y);
+
+                s.integer(t.item_count);
+                s.integer(t.tile_count);
+
+                s.integer(t.active);
+                for (uint n = 0; n < 2; n++)
+                {
+                    s.array(t.item[n]);
+                    for (uint i = 0; i < 34; i++)
+                    {
+                        s.integer(t.tile[n][i].x);
+                        s.integer(t.tile[n][i].priority);
+                        s.integer(t.tile[n][i].palette);
+                        s.integer(t.tile[n][i].hflip);
+                        s.integer(t.tile[n][i].d0);
+                        s.integer(t.tile[n][i].d1);
+                        s.integer(t.tile[n][i].d2);
+                        s.integer(t.tile[n][i].d3);
+                    }
+                }
+
+                s.integer(regs.main_enabled);
+                s.integer(regs.sub_enabled);
+                s.integer(regs.interlace);
+
+                s.integer(regs.base_size);
+                s.integer(regs.nameselect);
+                s.integer(regs.tiledata_addr);
+                s.integer(regs.first_sprite);
+
+                s.integer(regs.priority0);
+                s.integer(regs.priority1);
+                s.integer(regs.priority2);
+                s.integer(regs.priority3);
+
+                s.integer(regs.time_over);
+                s.integer(regs.range_over);
+
+                s.integer(output.main.priority);
+                s.integer(output.main.palette);
+
+                s.integer(output.sub.priority);
+                s.integer(output.sub.palette);
+            }
+
             public Sprite(PPU self_)
             {
                 self = self_;

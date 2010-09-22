@@ -349,6 +349,39 @@ namespace Snes
                 output.sub.priority = 0;
             }
 
+            public void serialize(Serializer s)
+            {
+                s.integer(id);
+
+                s.integer(t.x);
+                s.integer(t.mosaic_y);
+                s.integer(t.mosaic_countdown);
+
+                s.integer(regs.tiledata_addr);
+                s.integer(regs.screen_addr);
+                s.integer(regs.screen_size);
+                s.integer(regs.mosaic);
+                s.integer(regs.tile_size);
+
+                s.integer(regs.mode);
+                s.integer(regs.priority0);
+                s.integer(regs.priority1);
+
+                s.integer(regs.main_enabled);
+                s.integer(regs.sub_enabled);
+
+                s.integer(regs.hoffset);
+                s.integer(regs.voffset);
+
+                s.integer(output.main.priority);
+                s.integer(output.main.palette);
+                s.integer(output.main.tile);
+
+                s.integer(output.sub.priority);
+                s.integer(output.sub.palette);
+                s.integer(output.sub.tile);
+            }
+
             public Background(PPU self_, uint id_)
             {
                 self = self_;

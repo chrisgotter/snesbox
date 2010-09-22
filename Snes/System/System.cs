@@ -550,12 +550,12 @@ namespace Snes
 
         private void serialize_all(Serializer s)
         {
-            //Bus.bus.serialize(s);
+            Bus.bus.serialize(s);
             Cartridge.cartridge.serialize(s);
             System.system.serialize(s);
             CPU.cpu.serialize(s);
-            //SMP.smp.serialize(s);
-            //PPU.ppu.serialize(s);
+            SMP.smp.serialize(s);
+            PPU.ppu.serialize(s);
             DSP.dsp.serialize(s);
 
             if (Cartridge.cartridge.mode == Cartridge.Mode.SuperGameBoy)

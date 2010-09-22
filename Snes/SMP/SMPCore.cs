@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Nall;
 
 namespace Snes
 {
@@ -2161,6 +2162,30 @@ namespace Snes
             opcode_table[0xfd] = new SMPCoreOperation(op_mov_reg_reg, new SMPCoreOpArgument() { to = (int)OpCode.Y, from = (int)OpCode.A });
             opcode_table[0xfe] = new SMPCoreOperation(op_dbnz_y, null);
             opcode_table[0xff] = new SMPCoreOperation(op_wait, null);
+        }
+
+        public void core_serialize(Serializer s)
+        {
+            s.integer(regs.pc);
+            s.integer(regs.a[0]);
+            s.integer(regs.x[0]);
+            s.integer(regs.y[0]);
+            s.integer(regs.sp[0]);
+            s.integer(regs.p.n);
+            s.integer(regs.p.v);
+            s.integer(regs.p.p);
+            s.integer(regs.p.b);
+            s.integer(regs.p.h);
+            s.integer(regs.p.i);
+            s.integer(regs.p.z);
+            s.integer(regs.p.c);
+
+            s.integer(dp);
+            s.integer(sp);
+            s.integer(rd);
+            s.integer(wr);
+            s.integer(bit);
+            s.integer(ya);
         }
 
         public SMPCore()
