@@ -19,6 +19,12 @@ namespace Snes
             clock = 0;
         }
 
+        void serialize(Serializer s)
+        {
+            s.integer(frequency);
+            s.integer(clock);
+        }
+
         public Processor()
         {
             thread = null;

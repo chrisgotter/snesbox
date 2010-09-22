@@ -216,6 +216,49 @@ namespace Snes
             loaded = false;
         }
 
+        void serialize(Serializer s)
+        {
+            if (MappedRAM.cartram.size() != 0 && MappedRAM.cartram.size() != Bit.ToUint32(~0))
+            {
+                s.array(MappedRAM.cartram.data(), MappedRAM.cartram.size());
+            }
+
+            if (MappedRAM.cartrtc.size() != 0 && MappedRAM.cartrtc.size() != Bit.ToUint32(~0))
+            {
+                s.array(MappedRAM.cartrtc.data(), MappedRAM.cartrtc.size());
+            }
+
+            if (MappedRAM.bsxram.size() != 0 && MappedRAM.bsxram.size() != Bit.ToUint32(~0))
+            {
+                s.array(MappedRAM.bsxram.data(), MappedRAM.bsxram.size());
+            }
+
+            if (MappedRAM.bsxpram.size() != 0 && MappedRAM.bsxpram.size() != Bit.ToUint32(~0))
+            {
+                s.array(MappedRAM.bsxpram.data(), MappedRAM.bsxpram.size());
+            }
+
+            if (MappedRAM.stAram.size() != 0 && MappedRAM.stAram.size() != Bit.ToUint32(~0))
+            {
+                s.array(MappedRAM.stAram.data(), MappedRAM.stAram.size());
+            }
+
+            if (MappedRAM.stBram.size() != 0 && MappedRAM.stBram.size() != Bit.ToUint32(~0))
+            {
+                s.array(MappedRAM.stBram.data(), MappedRAM.stBram.size());
+            }
+
+            if (MappedRAM.gbram.size() != 0 && MappedRAM.gbram.size() != Bit.ToUint32(~0))
+            {
+                s.array(MappedRAM.gbram.data(), MappedRAM.gbram.size());
+            }
+
+            if (MappedRAM.gbrtc.size() != 0 && MappedRAM.gbrtc.size() != Bit.ToUint32(~0))
+            {
+                s.array(MappedRAM.gbrtc.data(), MappedRAM.gbrtc.size());
+            }
+        }
+
         public Cartridge()
         {
             loaded = false;

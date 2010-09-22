@@ -8,7 +8,7 @@ namespace Snes
         {
             public byte[] regs = new byte[128];
 
-            public ModuloArray<int>[] echo_hist = new ModuloArray<int>[2];  //echo history keeps most recent 8 samples
+            public ModuloArray[] echo_hist = new ModuloArray[2];  //echo history keeps most recent 8 samples
             public int echo_hist_pos;
 
             public bool every_other_sample;  //toggles every sample
@@ -58,7 +58,7 @@ namespace Snes
             {
                 for (int i = 0; i < echo_hist.Length; i++)
                 {
-                    echo_hist[i] = new ModuloArray<int>(echo_hist_size);
+                    echo_hist[i] = new ModuloArray(echo_hist_size);
                 }
             }
         }

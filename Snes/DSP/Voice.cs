@@ -6,7 +6,7 @@ namespace Snes
     {
         class Voice
         {
-            public ModuloArray<int> buffer = new ModuloArray<int>(brr_buf_size);  //decoded samples
+            public ModuloArray buffer = new ModuloArray(brr_buf_size);  //decoded samples
             public int buf_pos;     //place in buffer where next samples will be decoded
             public int interp_pos;  //relative fractional position in sample (0x1000 = 1.0)
             public int brr_addr;    //address of current BRR block

@@ -1,30 +1,35 @@
 ﻿
 namespace Nall
 {
-    public class ModuloArray<T>
+    public class ModuloArray
     {
-        public T this[int index]
+        public int this[int index]
         {
-            get { return buffer[_size + index]; }
+            get { return buffer[size + index]; }
         }
 
-        public T read(int index)
+        public int read(int index)
         {
-            return buffer[_size + index];
+            return buffer[size + index];
         }
 
-        public void write(uint index, T value)
+        public void write(uint index, int value)
         {
-            buffer[index] = buffer[index + _size] = buffer[index + _size + _size] = value;
+            buffer[index] = buffer[index + size] = buffer[index + size + size] = value;
         }
 
-        public ModuloArray(int size)
+        public void serialize(Serializer s)
         {
-            _size = size;
-            buffer = new T[_size * 3];
+            s.array(buffer, (uint)(size * 3));
         }
 
-        private int _size;
-        private T[] buffer;
+        public ModuloArray(int size_)
+        {
+            size = size_;
+            buffer = new int[size * 3];
+        }
+
+        private int size;
+        private int[] buffer;
     }
 }
