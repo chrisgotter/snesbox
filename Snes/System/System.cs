@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text;
 using Nall;
 
 namespace Snes
@@ -470,8 +471,8 @@ namespace Snes
             Serializer s = new Serializer(serialize_size);
 
             uint signature = 0x31545342, version = Info.SerializerVersion, crc32 = Cartridge.cartridge.crc32;
-            string profile = string.Empty, description = string.Empty;
-            profile = Info.Profile;
+            byte[] profile = new byte[0], description = new byte[0];
+            profile = new UTF8Encoding().GetBytes(Info.Profile);
 
             s.integer(signature);
             s.integer(version);
@@ -486,7 +487,7 @@ namespace Snes
         public bool unserialize(Serializer s)
         {
             uint signature = 0, version = 0, crc32 = 0;
-            string profile = string.Empty, description = string.Empty;
+            byte[] profile = new byte[0], description = new byte[0];
 
             s.integer(signature);
             s.integer(version);
@@ -502,7 +503,7 @@ namespace Snes
             {
                 return false;
             }
-            if (profile != Info.Profile)
+            if (new UTF8Encoding().GetString(profile) != Info.Profile)
             {
                 return false;
             }
@@ -617,7 +618,7 @@ namespace Snes
             Serializer s = new Serializer();
 
             uint signature = 0, version = 0, crc32 = 0;
-            string profile = string.Empty, description = string.Empty;
+            byte[] profile = new byte[0], description = new byte[0];
 
             s.integer(signature);
             s.integer(version);

@@ -113,15 +113,6 @@ namespace Nall
             }
         }
 
-        public void array(string array)
-        {
-            var newArray = new UTF8Encoding().GetBytes(array);
-            for (uint n = 0; n < array.Length; n++)
-            {
-                integer(newArray[n]);
-            }
-        }
-
         //copy
         public Serializer Copy(Serializer s)
         {
