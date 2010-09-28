@@ -613,6 +613,9 @@ namespace Snes
             }
         }
 
+        //called once upon cartridge load event: perform dry-run state save.
+        //determines exactly how many bytes are needed to save state for this cartridge,
+        //as amount varies per game (eg different RAM sizes, special chips, etc.)
         public void serialize_init()
         {
             Serializer s = new Serializer();
