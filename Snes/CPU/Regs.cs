@@ -37,7 +37,7 @@ namespace Snes
                 wai = false;
                 mdr = 0;
 
-                z = null;
+                z.Assign(0);
             }
         }
     }

@@ -613,7 +613,7 @@ namespace Snes
             }
         }
 
-        private void serialize_init()
+        public void serialize_init()
         {
             Serializer s = new Serializer();
 

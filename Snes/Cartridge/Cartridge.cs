@@ -189,6 +189,7 @@ namespace Snes
             sha256 = hash;
 
             Bus.bus.load_cart();
+            System.system.serialize_init();
             loaded = true;
         }
 
