@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 
 namespace Nall
 {
@@ -29,21 +28,31 @@ namespace Nall
 
         public void integer(int value)
         {
-            integer((ulong)value, sizeof(int));
+            uint size = sizeof(int);
+            if (imode == Mode.Save)
+            {
+                for (uint n = 0; n < size; n++)
+                {
+                    idata[isize++] = (byte)(value >> (int)(n << 3));
+                }
+            }
+            else if (imode == Mode.Load)
+            {
+                value = 0;
+                for (uint n = 0; n < size; n++)
+                {
+                    value |= (idata[isize++] << (int)(n << 3));
+                }
+            }
+            else if (imode == Mode.Size)
+            {
+                isize += size;
+            }
         }
 
-        public void integer(bool value)
+        public void integer(uint value)
         {
-            integer(Convert.ToUInt64(value), 1U);
-        }
-
-        public void integer(long value)
-        {
-            integer((ulong)value, sizeof(long));
-        }
-
-        private void integer(ulong value, uint size)
-        {
+            uint size = sizeof(uint);
             if (imode == Mode.Save)
             {
                 for (uint n = 0; n < size; n++)
@@ -57,6 +66,54 @@ namespace Nall
                 for (uint n = 0; n < size; n++)
                 {
                     value |= (uint)(idata[isize++] << (int)(n << 3));
+                }
+            }
+            else if (imode == Mode.Size)
+            {
+                isize += size;
+            }
+        }
+
+        public void integer(long value)
+        {
+            uint size = sizeof(int);
+            if (imode == Mode.Save)
+            {
+                for (uint n = 0; n < size; n++)
+                {
+                    idata[isize++] = (byte)(value >> (int)(n << 3));
+                }
+            }
+            else if (imode == Mode.Load)
+            {
+                value = 0;
+                for (uint n = 0; n < size; n++)
+                {
+                    value |= (uint)(idata[isize++] << (int)(n << 3));
+                }
+            }
+            else if (imode == Mode.Size)
+            {
+                isize += size;
+            }
+        }
+
+        public void integer(bool value)
+        {
+            uint size = 1U;
+            if (imode == Mode.Save)
+            {
+                for (uint n = 0; n < size; n++)
+                {
+                    idata[isize++] = (byte)(Convert.ToUInt32(value) >> (int)(n << 3));
+                }
+            }
+            else if (imode == Mode.Load)
+            {
+                value = Convert.ToBoolean(0);
+                for (uint n = 0; n < size; n++)
+                {
+                    value = Convert.ToBoolean(idata[isize++] << (int)(n << 3));
                 }
             }
             else if (imode == Mode.Size)
