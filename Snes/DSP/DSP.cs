@@ -331,8 +331,8 @@ namespace Snes
             s.integer(state.t_main_out[1], "state.t_main_out[1]");
             s.integer(state.t_echo_out[0], "state.t_echo_out[0]");
             s.integer(state.t_echo_out[1], "state.t_echo_out[1]");
-            s.integer(state.t_echo_in[0], "state.t_echo_in[0]");
-            s.integer(state.t_echo_in[1], "state.t_echo_in[1]");
+            s.integer(state.t_echo_in[0], "state.t_echo_in [0]");
+            s.integer(state.t_echo_in[1], "state.t_echo_in [1]");
 
             for (uint n = 0; n < 8; n++)
             {

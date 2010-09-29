@@ -221,37 +221,37 @@ namespace Snes
         {
             if (MappedRAM.cartram.size() != 0 && MappedRAM.cartram.size() != Bit.ToUint32(~0))
             {
-                s.array(MappedRAM.cartram.data(), MappedRAM.cartram.size(), "MappedRAM.cartram.data()");
+                s.array(MappedRAM.cartram.data(), MappedRAM.cartram.size(), "memory::cartram.data()");
             }
 
             if (MappedRAM.cartrtc.size() != 0 && MappedRAM.cartrtc.size() != Bit.ToUint32(~0))
             {
-                s.array(MappedRAM.cartrtc.data(), MappedRAM.cartrtc.size(), "MappedRAM.cartrtc.data()");
+                s.array(MappedRAM.cartrtc.data(), MappedRAM.cartrtc.size(), "memory::cartrtc.data()");
             }
 
             if (MappedRAM.bsxram.size() != 0 && MappedRAM.bsxram.size() != Bit.ToUint32(~0))
             {
-                s.array(MappedRAM.bsxram.data(), MappedRAM.bsxram.size(), "MappedRAM.bsxram.data()");
+                s.array(MappedRAM.bsxram.data(), MappedRAM.bsxram.size(), "memory::bsxram.data()");
             }
 
             if (MappedRAM.bsxpram.size() != 0 && MappedRAM.bsxpram.size() != Bit.ToUint32(~0))
             {
-                s.array(MappedRAM.bsxpram.data(), MappedRAM.bsxpram.size(), "MappedRAM.bsxpram.data()");
+                s.array(MappedRAM.bsxpram.data(), MappedRAM.bsxpram.size(), "memory::bsxpram.data()");
             }
 
             if (MappedRAM.stAram.size() != 0 && MappedRAM.stAram.size() != Bit.ToUint32(~0))
             {
-                s.array(MappedRAM.stAram.data(), MappedRAM.stAram.size(), "MappedRAM.stAram.data()");
+                s.array(MappedRAM.stAram.data(), MappedRAM.stAram.size(), "memory::stAram.data()");
             }
 
             if (MappedRAM.stBram.size() != 0 && MappedRAM.stBram.size() != Bit.ToUint32(~0))
             {
-                s.array(MappedRAM.stBram.data(), MappedRAM.stBram.size(), "MappedRAM.stBram.data()");
+                s.array(MappedRAM.stBram.data(), MappedRAM.stBram.size(), "memory::stBram.data()");
             }
 
             if (MappedRAM.gbram.size() != 0 && MappedRAM.gbram.size() != Bit.ToUint32(~0))
             {
-                s.array(MappedRAM.gbram.data(), MappedRAM.gbram.size(), "MappedRAM.gbram.data()");
+                s.array(MappedRAM.gbram.data(), MappedRAM.gbram.size(), "memory::gbram.data()");
             }
 
             if (MappedRAM.gbrtc.size() != 0 && MappedRAM.gbrtc.size() != Bit.ToUint32(~0))

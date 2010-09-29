@@ -2167,10 +2167,10 @@ namespace Snes
         public void core_serialize(Serializer s)
         {
             s.integer(regs.pc, "regs.pc");
-            s.integer(regs.a[0], "regs.a[0]");
-            s.integer(regs.x[0], "regs.x[0]");
-            s.integer(regs.y[0], "regs.y[0]");
-            s.integer(regs.sp[0], "regs.sp[0]");
+            s.integer(regs.a[0], "regs.a");
+            s.integer(regs.x[0], "regs.x");
+            s.integer(regs.y[0], "regs.y");
+            s.integer(regs.sp[0], "regs.sp");
             s.integer(regs.p.n, "regs.p.n");
             s.integer(regs.p.v, "regs.p.v");
             s.integer(regs.p.p, "regs.p.p");

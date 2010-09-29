@@ -554,8 +554,8 @@ namespace Snes
 
         private void serialize(Serializer s)
         {
-            s.integer((uint)region, "region");
-            s.integer((uint)expansion, "expansion");
+            s.integer((uint)region, "(unsigned&)region");
+            s.integer((uint)expansion, "(unsigned&)expansion");
         }
 
         private void serialize_all(Serializer s)
