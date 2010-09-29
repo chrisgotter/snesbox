@@ -18,6 +18,7 @@ namespace Snes
 #if THREADED
             if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
+                System.WriteStateToFile();
                 Libco.Switch(CPU.cpu.Processor.thread);
             }
 #else
@@ -33,6 +34,7 @@ namespace Snes
 #if THREADED
             if (DSP.dsp.Processor.clock < 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
+                System.WriteStateToFile();
                 Libco.Switch(DSP.dsp.Processor.thread);
             }
 #else
@@ -143,47 +145,47 @@ namespace Snes
             Processor.serialize(s);
             base.core_serialize(s);
 
-            s.integer(status.clock_counter);
-            s.integer(status.dsp_counter);
-            s.integer(status.timer_step);
+            s.integer(status.clock_counter, "status.clock_counter");
+            s.integer(status.dsp_counter, "status.dsp_counter");
+            s.integer(status.timer_step, "status.timer_step");
 
-            s.integer(status.clock_speed);
-            s.integer(status.timer_speed);
-            s.integer(status.timers_enabled);
-            s.integer(status.ram_disabled);
-            s.integer(status.ram_writable);
-            s.integer(status.timers_disabled);
+            s.integer(status.clock_speed, "status.clock_speed");
+            s.integer(status.timer_speed, "status.timer_speed");
+            s.integer(status.timers_enabled, "status.timers_enabled");
+            s.integer(status.ram_disabled, "status.ram_disabled");
+            s.integer(status.ram_writable, "status.ram_writable");
+            s.integer(status.timers_disabled, "status.timers_disabled");
 
-            s.integer(status.iplrom_enabled);
+            s.integer(status.iplrom_enabled, "status.iplrom_enabled");
 
-            s.integer(status.dsp_addr);
+            s.integer(status.dsp_addr, "status.dsp_addr");
 
-            s.integer(status.ram0);
-            s.integer(status.ram1);
+            s.integer(status.ram0, "status.ram0");
+            s.integer(status.ram1, "status.ram1");
 
-            s.integer(t0.stage0_ticks);
-            s.integer(t0.stage1_ticks);
-            s.integer(t0.stage2_ticks);
-            s.integer(t0.stage3_ticks);
-            s.integer(t0.current_line);
-            s.integer(t0.enabled);
-            s.integer(t0.target);
+            s.integer(t0.stage0_ticks, "t0.stage0_ticks");
+            s.integer(t0.stage1_ticks, "t0.stage1_ticks");
+            s.integer(t0.stage2_ticks, "t0.stage2_ticks");
+            s.integer(t0.stage3_ticks, "t0.stage3_ticks");
+            s.integer(t0.current_line, "t0.current_line");
+            s.integer(t0.enabled, "t0.enabled");
+            s.integer(t0.target, "t0.target");
 
-            s.integer(t1.stage0_ticks);
-            s.integer(t1.stage1_ticks);
-            s.integer(t1.stage2_ticks);
-            s.integer(t1.stage3_ticks);
-            s.integer(t1.current_line);
-            s.integer(t1.enabled);
-            s.integer(t1.target);
+            s.integer(t1.stage0_ticks, "t1.stage0_ticks");
+            s.integer(t1.stage1_ticks, "t1.stage1_ticks");
+            s.integer(t1.stage2_ticks, "t1.stage2_ticks");
+            s.integer(t1.stage3_ticks, "t1.stage3_ticks");
+            s.integer(t1.current_line, "t1.current_line");
+            s.integer(t1.enabled, "t1.enabled");
+            s.integer(t1.target, "t1.target");
 
-            s.integer(t2.stage0_ticks);
-            s.integer(t2.stage1_ticks);
-            s.integer(t2.stage2_ticks);
-            s.integer(t2.stage3_ticks);
-            s.integer(t2.current_line);
-            s.integer(t2.enabled);
-            s.integer(t2.target);
+            s.integer(t2.stage0_ticks, "t2.stage0_ticks");
+            s.integer(t2.stage1_ticks, "t2.stage1_ticks");
+            s.integer(t2.stage2_ticks, "t2.stage2_ticks");
+            s.integer(t2.stage3_ticks, "t2.stage3_ticks");
+            s.integer(t2.current_line, "t2.current_line");
+            s.integer(t2.enabled, "t2.enabled");
+            s.integer(t2.target, "t2.target");
         }
 
         public SMP() { }

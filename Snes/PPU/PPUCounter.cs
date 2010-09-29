@@ -115,15 +115,15 @@ namespace Snes
 
         public void serialize(Serializer s)
         {
-            s.integer(status.interlace);
-            s.integer(status.field);
-            s.integer(status.vcounter);
-            s.integer(status.hcounter);
+            s.integer(status.interlace, "status.interlace");
+            s.integer(status.field, "status.field");
+            s.integer(status.vcounter, "status.vcounter");
+            s.integer(status.hcounter, "status.hcounter");
 
-            s.array(history.field);
-            s.array(history.vcounter);
-            s.array(history.hcounter);
-            s.integer(history.index);
+            s.array(history.field, "history.field");
+            s.array(history.vcounter, "history.vcounter");
+            s.array(history.hcounter, "history.hcounter");
+            s.integer(history.index, "history.index");
         }
 
         private void vcounter_tick()

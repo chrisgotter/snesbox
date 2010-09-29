@@ -194,66 +194,66 @@ namespace Snes
 
             public void serialize(Serializer s)
             {
-                s.integer(t.x);
+                s.integer(t.x, "t.x");
 
-                s.integer(regs.bg1_one_enable);
-                s.integer(regs.bg1_one_invert);
-                s.integer(regs.bg1_two_enable);
-                s.integer(regs.bg1_two_invert);
+                s.integer(regs.bg1_one_enable, "regs.bg1_one_enable");
+                s.integer(regs.bg1_one_invert, "regs.bg1_one_invert");
+                s.integer(regs.bg1_two_enable, "regs.bg1_two_enable");
+                s.integer(regs.bg1_two_invert, "regs.bg1_two_invert");
 
-                s.integer(regs.bg2_one_enable);
-                s.integer(regs.bg2_one_invert);
-                s.integer(regs.bg2_two_enable);
-                s.integer(regs.bg2_two_invert);
+                s.integer(regs.bg2_one_enable, "regs.bg2_one_enable");
+                s.integer(regs.bg2_one_invert, "regs.bg2_one_invert");
+                s.integer(regs.bg2_two_enable, "regs.bg2_two_enable");
+                s.integer(regs.bg2_two_invert, "regs.bg2_two_invert");
 
-                s.integer(regs.bg3_one_enable);
-                s.integer(regs.bg3_one_invert);
-                s.integer(regs.bg3_two_enable);
-                s.integer(regs.bg3_two_invert);
+                s.integer(regs.bg3_one_enable, "regs.bg3_one_enable");
+                s.integer(regs.bg3_one_invert, "regs.bg3_one_invert");
+                s.integer(regs.bg3_two_enable, "regs.bg3_two_enable");
+                s.integer(regs.bg3_two_invert, "regs.bg3_two_invert");
 
-                s.integer(regs.bg4_one_enable);
-                s.integer(regs.bg4_one_invert);
-                s.integer(regs.bg4_two_enable);
-                s.integer(regs.bg4_two_invert);
+                s.integer(regs.bg4_one_enable, "regs.bg4_one_enable");
+                s.integer(regs.bg4_one_invert, "regs.bg4_one_invert");
+                s.integer(regs.bg4_two_enable, "regs.bg4_two_enable");
+                s.integer(regs.bg4_two_invert, "regs.bg4_two_invert");
 
-                s.integer(regs.oam_one_enable);
-                s.integer(regs.oam_one_invert);
-                s.integer(regs.oam_two_enable);
-                s.integer(regs.oam_two_invert);
+                s.integer(regs.oam_one_enable, "regs.oam_one_enable");
+                s.integer(regs.oam_one_invert, "regs.oam_one_invert");
+                s.integer(regs.oam_two_enable, "regs.oam_two_enable");
+                s.integer(regs.oam_two_invert, "regs.oam_two_invert");
 
-                s.integer(regs.col_one_enable);
-                s.integer(regs.col_one_invert);
-                s.integer(regs.col_two_enable);
-                s.integer(regs.col_two_invert);
+                s.integer(regs.col_one_enable, "regs.col_one_enable");
+                s.integer(regs.col_one_invert, "regs.col_one_invert");
+                s.integer(regs.col_two_enable, "regs.col_two_enable");
+                s.integer(regs.col_two_invert, "regs.col_two_invert");
 
-                s.integer(regs.one_left);
-                s.integer(regs.one_right);
-                s.integer(regs.two_left);
-                s.integer(regs.two_right);
+                s.integer(regs.one_left, "regs.one_left");
+                s.integer(regs.one_right, "regs.one_right");
+                s.integer(regs.two_left, "regs.two_left");
+                s.integer(regs.two_right, "regs.two_right");
 
-                s.integer(regs.bg1_mask);
-                s.integer(regs.bg2_mask);
-                s.integer(regs.bg3_mask);
-                s.integer(regs.bg4_mask);
-                s.integer(regs.oam_mask);
-                s.integer(regs.col_mask);
+                s.integer(regs.bg1_mask, "regs.bg1_mask");
+                s.integer(regs.bg2_mask, "regs.bg2_mask");
+                s.integer(regs.bg3_mask, "regs.bg3_mask");
+                s.integer(regs.bg4_mask, "regs.bg4_mask");
+                s.integer(regs.oam_mask, "regs.oam_mask");
+                s.integer(regs.col_mask, "regs.col_mask");
 
-                s.integer(regs.bg1_main_enable);
-                s.integer(regs.bg1_sub_enable);
-                s.integer(regs.bg2_main_enable);
-                s.integer(regs.bg2_sub_enable);
-                s.integer(regs.bg3_main_enable);
-                s.integer(regs.bg3_sub_enable);
-                s.integer(regs.bg4_main_enable);
-                s.integer(regs.bg4_sub_enable);
-                s.integer(regs.oam_main_enable);
-                s.integer(regs.oam_sub_enable);
+                s.integer(regs.bg1_main_enable, "regs.bg1_main_enable");
+                s.integer(regs.bg1_sub_enable, "regs.bg1_sub_enable");
+                s.integer(regs.bg2_main_enable, "regs.bg2_main_enable");
+                s.integer(regs.bg2_sub_enable, "regs.bg2_sub_enable");
+                s.integer(regs.bg3_main_enable, "regs.bg3_main_enable");
+                s.integer(regs.bg3_sub_enable, "regs.bg3_sub_enable");
+                s.integer(regs.bg4_main_enable, "regs.bg4_main_enable");
+                s.integer(regs.bg4_sub_enable, "regs.bg4_sub_enable");
+                s.integer(regs.oam_main_enable, "regs.oam_main_enable");
+                s.integer(regs.oam_sub_enable, "regs.oam_sub_enable");
 
-                s.integer(regs.col_main_mask);
-                s.integer(regs.col_sub_mask);
+                s.integer(regs.col_main_mask, "regs.col_main_mask");
+                s.integer(regs.col_sub_mask, "regs.col_sub_mask");
 
-                s.integer(output.main.color_enable);
-                s.integer(output.sub.color_enable);
+                s.integer(output.main.color_enable, "output.main.color_enable");
+                s.integer(output.sub.color_enable, "output.sub.color_enable");
             }
 
             public Window(PPU self_)

@@ -351,35 +351,35 @@ namespace Snes
 
             public void serialize(Serializer s)
             {
-                s.integer(id);
+                s.integer(id, "id");
 
-                s.integer(t.x);
-                s.integer(t.mosaic_y);
-                s.integer(t.mosaic_countdown);
+                s.integer(t.x, "t.x");
+                s.integer(t.mosaic_y, "t.mosaic_y");
+                s.integer(t.mosaic_countdown, "t.mosaic_countdown");
 
-                s.integer(regs.tiledata_addr);
-                s.integer(regs.screen_addr);
-                s.integer(regs.screen_size);
-                s.integer(regs.mosaic);
-                s.integer(regs.tile_size);
+                s.integer(regs.tiledata_addr, "regs.tiledata_addr");
+                s.integer(regs.screen_addr, "regs.screen_addr");
+                s.integer(regs.screen_size, "regs.screen_size");
+                s.integer(regs.mosaic, "regs.mosaic");
+                s.integer(regs.tile_size, "regs.tile_size");
 
-                s.integer(regs.mode);
-                s.integer(regs.priority0);
-                s.integer(regs.priority1);
+                s.integer(regs.mode, "regs.mode");
+                s.integer(regs.priority0, "regs.priority0");
+                s.integer(regs.priority1, "regs.priority1");
 
-                s.integer(regs.main_enabled);
-                s.integer(regs.sub_enabled);
+                s.integer(regs.main_enabled, "regs.main_enabled");
+                s.integer(regs.sub_enabled, "regs.sub_enabled");
 
-                s.integer(regs.hoffset);
-                s.integer(regs.voffset);
+                s.integer(regs.hoffset, "regs.hoffset");
+                s.integer(regs.voffset, "regs.voffset");
 
-                s.integer(output.main.priority);
-                s.integer(output.main.palette);
-                s.integer(output.main.tile);
+                s.integer(output.main.priority, "output.main.priority");
+                s.integer(output.main.palette, "output.main.palette");
+                s.integer(output.main.tile, "output.main.tile");
 
-                s.integer(output.sub.priority);
-                s.integer(output.sub.palette);
-                s.integer(output.sub.tile);
+                s.integer(output.sub.priority, "output.sub.priority");
+                s.integer(output.sub.palette, "output.sub.palette");
+                s.integer(output.sub.tile, "output.sub.tile");
             }
 
             public Background(PPU self_, uint id_)

@@ -20,7 +20,7 @@ namespace Nall
 
         public void serialize(Serializer s)
         {
-            s.array(buffer, (uint)(size * 3));
+            s.array(buffer, (uint)(size * 3), "buffer");
         }
 
         public ModuloArray(int size_)

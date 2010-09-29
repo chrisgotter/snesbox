@@ -21,8 +21,8 @@ namespace Snes
 
         public void serialize(Serializer s)
         {
-            s.integer(frequency);
-            s.integer(clock);
+            s.integer(frequency, "frequency");
+            s.integer(clock, "clock");
         }
 
         public Processor()

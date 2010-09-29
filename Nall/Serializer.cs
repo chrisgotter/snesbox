@@ -26,6 +26,29 @@ namespace Nall
             return icapacity;
         }
 
+        public void integer(bool value, string name)
+        {
+            if (imode == Mode.Save)
+            {
+                for (uint n = 0; n < name.Length; n++)
+                {
+                    idata[isize++] = (byte)name[(int)n];
+                }
+                idata[isize++] = (byte)':';
+                idata[isize++] = (byte)' ';
+            }
+            else if (imode == Mode.Size)
+            {
+                isize += (uint)name.Length + 3;
+            }
+
+            integer(value);
+            if (imode == Mode.Save)
+            {
+                idata[isize++] = (byte)'\n';
+            }
+        }
+
         public void integer(bool value)
         {
             uint size = 1U;
@@ -47,6 +70,29 @@ namespace Nall
             else if (imode == Mode.Size)
             {
                 isize += size;
+            }
+        }
+
+        public void integer(byte value, string name)
+        {
+            if (imode == Mode.Save)
+            {
+                for (uint n = 0; n < name.Length; n++)
+                {
+                    idata[isize++] = (byte)name[(int)n];
+                }
+                idata[isize++] = (byte)':';
+                idata[isize++] = (byte)' ';
+            }
+            else if (imode == Mode.Size)
+            {
+                isize += (uint)name.Length + 3;
+            }
+
+            integer(value);
+            if (imode == Mode.Save)
+            {
+                idata[isize++] = (byte)'\n';
             }
         }
 
@@ -74,6 +120,29 @@ namespace Nall
             }
         }
 
+        public void integer(ushort value, string name)
+        {
+            if (imode == Mode.Save)
+            {
+                for (uint n = 0; n < name.Length; n++)
+                {
+                    idata[isize++] = (byte)name[(int)n];
+                }
+                idata[isize++] = (byte)':';
+                idata[isize++] = (byte)' ';
+            }
+            else if (imode == Mode.Size)
+            {
+                isize += (uint)name.Length + 3;
+            }
+
+            integer(value);
+            if (imode == Mode.Save)
+            {
+                idata[isize++] = (byte)'\n';
+            }
+        }
+
         public void integer(ushort value)
         {
             uint size = sizeof(ushort);
@@ -95,6 +164,29 @@ namespace Nall
             else if (imode == Mode.Size)
             {
                 isize += size;
+            }
+        }
+
+        public void integer(uint value, string name)
+        {
+            if (imode == Mode.Save)
+            {
+                for (uint n = 0; n < name.Length; n++)
+                {
+                    idata[isize++] = (byte)name[(int)n];
+                }
+                idata[isize++] = (byte)':';
+                idata[isize++] = (byte)' ';
+            }
+            else if (imode == Mode.Size)
+            {
+                isize += (uint)name.Length + 3;
+            }
+
+            integer(value);
+            if (imode == Mode.Save)
+            {
+                idata[isize++] = (byte)'\n';
             }
         }
 
@@ -122,6 +214,29 @@ namespace Nall
             }
         }
 
+        public void integer(int value, string name)
+        {
+            if (imode == Mode.Save)
+            {
+                for (uint n = 0; n < name.Length; n++)
+                {
+                    idata[isize++] = (byte)name[(int)n];
+                }
+                idata[isize++] = (byte)':';
+                idata[isize++] = (byte)' ';
+            }
+            else if (imode == Mode.Size)
+            {
+                isize += (uint)name.Length + 3;
+            }
+
+            integer(value);
+            if (imode == Mode.Save)
+            {
+                idata[isize++] = (byte)'\n';
+            }
+        }
+
         public void integer(int value)
         {
             uint size = sizeof(int);
@@ -143,6 +258,29 @@ namespace Nall
             else if (imode == Mode.Size)
             {
                 isize += size;
+            }
+        }
+
+        public void integer(long value, string name)
+        {
+            if (imode == Mode.Save)
+            {
+                for (uint n = 0; n < name.Length; n++)
+                {
+                    idata[isize++] = (byte)name[(int)n];
+                }
+                idata[isize++] = (byte)':';
+                idata[isize++] = (byte)' ';
+            }
+            else if (imode == Mode.Size)
+            {
+                isize += (uint)name.Length + 3;
+            }
+
+            integer(value);
+            if (imode == Mode.Save)
+            {
+                idata[isize++] = (byte)'\n';
             }
         }
 
@@ -170,11 +308,57 @@ namespace Nall
             }
         }
 
+        public void array(int[] array_, string name)
+        {
+            if (imode == Mode.Save)
+            {
+                for (uint n = 0; n < name.Length; n++)
+                {
+                    idata[isize++] = (byte)name[(int)n];
+                }
+                idata[isize++] = (byte)':';
+                idata[isize++] = (byte)' ';
+            }
+            else if (imode == Mode.Size)
+            {
+                isize += (uint)name.Length + 3;
+            }
+
+            array(array_);
+            if (imode == Mode.Save)
+            {
+                idata[isize++] = (byte)'\n';
+            }
+        }
+
         public void array(int[] array)
         {
             for (uint n = 0; n < array.Length; n++)
             {
                 integer(array[n]);
+            }
+        }
+
+        public void array(int[] array_, uint size, string name)
+        {
+            if (imode == Mode.Save)
+            {
+                for (uint n = 0; n < name.Length; n++)
+                {
+                    idata[isize++] = (byte)name[(int)n];
+                }
+                idata[isize++] = (byte)':';
+                idata[isize++] = (byte)' ';
+            }
+            else if (imode == Mode.Size)
+            {
+                isize += (uint)name.Length + 3;
+            }
+
+            array(array_, size);
+            if (imode == Mode.Save)
+            {
+                idata[isize++] = (byte)'\n';
             }
         }
 
@@ -186,11 +370,57 @@ namespace Nall
             }
         }
 
+        public void array(byte[] array_, string name)
+        {
+            if (imode == Mode.Save)
+            {
+                for (uint n = 0; n < name.Length; n++)
+                {
+                    idata[isize++] = (byte)name[(int)n];
+                }
+                idata[isize++] = (byte)':';
+                idata[isize++] = (byte)' ';
+            }
+            else if (imode == Mode.Size)
+            {
+                isize += (uint)name.Length + 3;
+            }
+
+            array(array_);
+            if (imode == Mode.Save)
+            {
+                idata[isize++] = (byte)'\n';
+            }
+        }
+
         public void array(byte[] array)
         {
             for (uint n = 0; n < array.Length; n++)
             {
                 integer(array[n]);
+            }
+        }
+
+        public void array(byte[] array_, uint size, string name)
+        {
+            if (imode == Mode.Save)
+            {
+                for (uint n = 0; n < name.Length; n++)
+                {
+                    idata[isize++] = (byte)name[(int)n];
+                }
+                idata[isize++] = (byte)':';
+                idata[isize++] = (byte)' ';
+            }
+            else if (imode == Mode.Size)
+            {
+                isize += (uint)name.Length + 3;
+            }
+
+            array(array_, size);
+            if (imode == Mode.Save)
+            {
+                idata[isize++] = (byte)'\n';
             }
         }
 
@@ -202,11 +432,57 @@ namespace Nall
             }
         }
 
+        public void array(bool[] array_, string name)
+        {
+            if (imode == Mode.Save)
+            {
+                for (uint n = 0; n < name.Length; n++)
+                {
+                    idata[isize++] = (byte)name[(int)n];
+                }
+                idata[isize++] = (byte)':';
+                idata[isize++] = (byte)' ';
+            }
+            else if (imode == Mode.Size)
+            {
+                isize += (uint)name.Length + 3;
+            }
+
+            array(array_);
+            if (imode == Mode.Save)
+            {
+                idata[isize++] = (byte)'\n';
+            }
+        }
+
         public void array(bool[] array)
         {
             for (uint n = 0; n < array.Length; n++)
             {
                 integer(array[n]);
+            }
+        }
+
+        public void array(ushort[] array_, string name)
+        {
+            if (imode == Mode.Save)
+            {
+                for (uint n = 0; n < name.Length; n++)
+                {
+                    idata[isize++] = (byte)name[(int)n];
+                }
+                idata[isize++] = (byte)':';
+                idata[isize++] = (byte)' ';
+            }
+            else if (imode == Mode.Size)
+            {
+                isize += (uint)name.Length + 3;
+            }
+
+            array(array_);
+            if (imode == Mode.Save)
+            {
+                idata[isize++] = (byte)'\n';
             }
         }
 

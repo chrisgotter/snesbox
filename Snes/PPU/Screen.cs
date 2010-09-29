@@ -59,21 +59,21 @@ namespace Snes
 
             public void serialize(Serializer s)
             {
-                s.integer(regs.addsub_mode);
-                s.integer(regs.direct_color);
+                s.integer(regs.addsub_mode, "regs.addsub_mode");
+                s.integer(regs.direct_color, "regs.direct_color");
 
-                s.integer(regs.color_mode);
-                s.integer(regs.color_halve);
-                s.integer(regs.bg1_color_enable);
-                s.integer(regs.bg2_color_enable);
-                s.integer(regs.bg3_color_enable);
-                s.integer(regs.bg4_color_enable);
-                s.integer(regs.oam_color_enable);
-                s.integer(regs.back_color_enable);
+                s.integer(regs.color_mode, "regs.color_mode");
+                s.integer(regs.color_halve, "regs.color_halve");
+                s.integer(regs.bg1_color_enable, "regs.bg1_color_enable");
+                s.integer(regs.bg2_color_enable, "regs.bg2_color_enable");
+                s.integer(regs.bg3_color_enable, "regs.bg3_color_enable");
+                s.integer(regs.bg4_color_enable, "regs.bg4_color_enable");
+                s.integer(regs.oam_color_enable, "regs.oam_color_enable");
+                s.integer(regs.back_color_enable, "regs.back_color_enable");
 
-                s.integer(regs.color_b);
-                s.integer(regs.color_g);
-                s.integer(regs.color_r);
+                s.integer(regs.color_b, "regs.color_b");
+                s.integer(regs.color_g, "regs.color_g");
+                s.integer(regs.color_r, "regs.color_r");
             }
 
             public Screen(PPU self_)

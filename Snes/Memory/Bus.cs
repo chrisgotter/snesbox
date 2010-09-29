@@ -167,11 +167,11 @@ namespace Snes
 
         public void serialize(Serializer s)
         {
-            s.array(StaticRAM.wram.data(), StaticRAM.wram.size());
-            s.array(StaticRAM.apuram.data(), StaticRAM.apuram.size());
-            s.array(StaticRAM.vram.data(), StaticRAM.vram.size());
-            s.array(StaticRAM.oam.data(), StaticRAM.oam.size());
-            s.array(StaticRAM.cgram.data(), StaticRAM.cgram.size());
+            s.array(StaticRAM.wram.data(), StaticRAM.wram.size(), "StaticRAM.wram.data()");
+            s.array(StaticRAM.apuram.data(), StaticRAM.apuram.size(), "StaticRAM.apuram.data()");
+            s.array(StaticRAM.vram.data(), StaticRAM.vram.size(), "StaticRAM.vram.data()");
+            s.array(StaticRAM.oam.data(), StaticRAM.oam.size(), "StaticRAM.oam.data()");
+            s.array(StaticRAM.cgram.data(), StaticRAM.cgram.size(), "StaticRAM.cgram.data()");
         }
 
         public Bus()

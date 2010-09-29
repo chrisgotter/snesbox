@@ -26,6 +26,7 @@ namespace Snes
 #if THREADED
             if (SMP.smp.Processor.clock < 0)
             {
+                System.WriteStateToFile();
                 Libco.Switch(SMP.smp.Processor.thread);
             }
 #else
@@ -41,6 +42,7 @@ namespace Snes
 #if THREADED
             if (PPU.ppu.Processor.clock < 0)
             {
+                System.WriteStateToFile();
                 Libco.Switch(PPU.ppu.Processor.thread);
             }
 #else
@@ -58,6 +60,7 @@ namespace Snes
                 IProcessor chip = coprocessors[(int)i];
                 if (chip.Processor.clock < 0)
                 {
+                    System.WriteStateToFile();
                     Libco.Switch(chip.Processor.thread);
                 }
             }
@@ -171,113 +174,113 @@ namespace Snes
             Processor.serialize(s);
             base.core_serialize(s);
             PPUCounter.serialize(s);
-            s.integer(cpu_version);
+            s.integer(cpu_version, "cpu_version");
 
-            s.integer(status.interrupt_pending);
-            s.integer(status.interrupt_vector);
+            s.integer(status.interrupt_pending, "status.interrupt_pending");
+            s.integer(status.interrupt_vector, "status.interrupt_vector");
 
-            s.integer(status.clock_count);
-            s.integer(status.line_clocks);
+            s.integer(status.clock_count, "status.clock_count");
+            s.integer(status.line_clocks, "status.line_clocks");
 
-            s.integer(status.irq_lock);
+            s.integer(status.irq_lock, "status.irq_lock");
 
-            s.integer(status.dram_refresh_position);
-            s.integer(status.dram_refreshed);
+            s.integer(status.dram_refresh_position, "status.dram_refresh_position");
+            s.integer(status.dram_refreshed, "status.dram_refreshed");
 
-            s.integer(status.hdma_init_position);
-            s.integer(status.hdma_init_triggered);
+            s.integer(status.hdma_init_position, "status.hdma_init_position");
+            s.integer(status.hdma_init_triggered, "status.hdma_init_triggered");
 
-            s.integer(status.hdma_position);
-            s.integer(status.hdma_triggered);
+            s.integer(status.hdma_position, "status.hdma_position");
+            s.integer(status.hdma_triggered, "status.hdma_triggered");
 
-            s.integer(status.nmi_valid);
-            s.integer(status.nmi_line);
-            s.integer(status.nmi_transition);
-            s.integer(status.nmi_pending);
-            s.integer(status.nmi_hold);
+            s.integer(status.nmi_valid, "status.nmi_valid");
+            s.integer(status.nmi_line, "status.nmi_line");
+            s.integer(status.nmi_transition, "status.nmi_transition");
+            s.integer(status.nmi_pending, "status.nmi_pending");
+            s.integer(status.nmi_hold, "status.nmi_hold");
 
-            s.integer(status.irq_valid);
-            s.integer(status.irq_line);
-            s.integer(status.irq_transition);
-            s.integer(status.irq_pending);
-            s.integer(status.irq_hold);
+            s.integer(status.irq_valid, "status.irq_valid");
+            s.integer(status.irq_line, "status.irq_line");
+            s.integer(status.irq_transition, "status.irq_transition");
+            s.integer(status.irq_pending, "status.irq_pending");
+            s.integer(status.irq_hold, "status.irq_hold");
 
-            s.integer(status.reset_pending);
+            s.integer(status.reset_pending, "status.reset_pending");
 
-            s.integer(status.dma_active);
-            s.integer(status.dma_counter);
-            s.integer(status.dma_clocks);
-            s.integer(status.dma_pending);
-            s.integer(status.hdma_pending);
-            s.integer(status.hdma_mode);
+            s.integer(status.dma_active, "status.dma_active");
+            s.integer(status.dma_counter, "status.dma_counter");
+            s.integer(status.dma_clocks, "status.dma_clocks");
+            s.integer(status.dma_pending, "status.dma_pending");
+            s.integer(status.hdma_pending, "status.hdma_pending");
+            s.integer(status.hdma_mode, "status.hdma_mode");
 
-            s.array(status.port);
+            s.array(status.port, "status.port");
 
-            s.integer((uint)status.wram_addr);
+            s.integer((uint)status.wram_addr, "status.wram_addr");
 
-            s.integer(status.joypad_strobe_latch);
-            s.integer(status.joypad1_bits);
-            s.integer(status.joypad2_bits);
+            s.integer(status.joypad_strobe_latch, "status.joypad_strobe_latch");
+            s.integer(status.joypad1_bits, "status.joypad1_bits");
+            s.integer(status.joypad2_bits, "status.joypad2_bits");
 
-            s.integer(status.nmi_enabled);
-            s.integer(status.hirq_enabled);
-            s.integer(status.virq_enabled);
-            s.integer(status.auto_joypad_poll);
+            s.integer(status.nmi_enabled, "status.nmi_enabled");
+            s.integer(status.hirq_enabled, "status.hirq_enabled");
+            s.integer(status.virq_enabled, "status.virq_enabled");
+            s.integer(status.auto_joypad_poll, "status.auto_joypad_poll");
 
-            s.integer(status.pio);
+            s.integer(status.pio, "status.pio");
 
-            s.integer(status.wrmpya);
-            s.integer(status.wrmpyb);
+            s.integer(status.wrmpya, "status.wrmpya");
+            s.integer(status.wrmpyb, "status.wrmpyb");
 
-            s.integer(status.wrdiva);
-            s.integer(status.wrdivb);
+            s.integer(status.wrdiva, "status.wrdiva");
+            s.integer(status.wrdivb, "status.wrdivb");
 
-            s.integer((uint)status.hirq_pos);
-            s.integer((uint)status.virq_pos);
+            s.integer((uint)status.hirq_pos, "status.hirq_pos");
+            s.integer((uint)status.virq_pos, "status.virq_pos");
 
-            s.integer(status.rom_speed);
+            s.integer(status.rom_speed, "status.rom_speed");
 
-            s.integer(status.rddiv);
-            s.integer(status.rdmpy);
+            s.integer(status.rddiv, "status.rddiv");
+            s.integer(status.rdmpy, "status.rdmpy");
 
-            s.integer(status.joy1l);
-            s.integer(status.joy1h);
-            s.integer(status.joy2l);
-            s.integer(status.joy2h);
-            s.integer(status.joy3l);
-            s.integer(status.joy3h);
-            s.integer(status.joy4l);
-            s.integer(status.joy4h);
+            s.integer(status.joy1l, "status.joy1l");
+            s.integer(status.joy1h, "status.joy1h");
+            s.integer(status.joy2l, "status.joy2l");
+            s.integer(status.joy2h, "status.joy2h");
+            s.integer(status.joy3l, "status.joy3l");
+            s.integer(status.joy3h, "status.joy3h");
+            s.integer(status.joy4l, "status.joy4l");
+            s.integer(status.joy4h, "status.joy4h");
 
-            s.integer(alu.mpyctr);
-            s.integer(alu.divctr);
-            s.integer(alu.shift);
+            s.integer(alu.mpyctr, "alu.mpyctr");
+            s.integer(alu.divctr, "alu.divctr");
+            s.integer(alu.shift, "alu.shift");
 
             for (uint i = 0; i < 8; i++)
             {
-                s.integer(channel[i].dma_enabled);
-                s.integer(channel[i].hdma_enabled);
-                s.integer(channel[i].direction);
-                s.integer(channel[i].indirect);
-                s.integer(channel[i].unused);
-                s.integer(channel[i].reverse_transfer);
-                s.integer(channel[i].fixed_transfer);
-                s.integer((uint)channel[i].transfer_mode);
-                s.integer(channel[i].dest_addr);
-                s.integer(channel[i].source_addr);
-                s.integer(channel[i].source_bank);
-                s.integer(channel[i].union.transfer_size);
-                s.integer(channel[i].indirect_bank);
-                s.integer(channel[i].hdma_addr);
-                s.integer(channel[i].line_counter);
-                s.integer(channel[i].unknown);
-                s.integer(channel[i].hdma_completed);
-                s.integer(channel[i].hdma_do_transfer);
+                s.integer(channel[i].dma_enabled, "channel[i].dma_enabled");
+                s.integer(channel[i].hdma_enabled, "channel[i].hdma_enabled");
+                s.integer(channel[i].direction, "channel[i].direction");
+                s.integer(channel[i].indirect, "channel[i].indirect");
+                s.integer(channel[i].unused, "channel[i].unused");
+                s.integer(channel[i].reverse_transfer, "channel[i].reverse_transfer");
+                s.integer(channel[i].fixed_transfer, "channel[i].fixed_transfer");
+                s.integer((uint)channel[i].transfer_mode, "channel[i].transfer_mode");
+                s.integer(channel[i].dest_addr, "channel[i].dest_addr");
+                s.integer(channel[i].source_addr, "channel[i].source_addr");
+                s.integer(channel[i].source_bank, "channel[i].source_bank");
+                s.integer(channel[i].union.transfer_size, "channel[i].union.transfer_size");
+                s.integer(channel[i].indirect_bank, "channel[i].indirect_bank");
+                s.integer(channel[i].hdma_addr, "channel[i].hdma_addr");
+                s.integer(channel[i].line_counter, "channel[i].line_counter");
+                s.integer(channel[i].unknown, "channel[i].unknown");
+                s.integer(channel[i].hdma_completed, "channel[i].hdma_completed");
+                s.integer(channel[i].hdma_do_transfer, "channel[i].hdma_do_transfer");
             }
 
-            s.integer(pipe.valid);
-            s.integer(pipe.addr);
-            s.integer(pipe.data);
+            s.integer(pipe.valid, "pipe.valid");
+            s.integer(pipe.addr, "pipe.addr");
+            s.integer(pipe.data, "pipe.data");
         }
 
         public CPU()

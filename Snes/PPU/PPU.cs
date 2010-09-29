@@ -17,6 +17,7 @@ namespace Snes
 #if THREADED
             if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
+                System.WriteStateToFile();
                 Libco.Switch(CPU.cpu.Processor.thread);
             }
 #else
@@ -129,66 +130,66 @@ namespace Snes
             Processor.serialize(s);
             PPUCounter.serialize(s);
 
-            s.integer(ppu1_version);
-            s.integer(ppu2_version);
+            s.integer(ppu1_version, "ppu1_version");
+            s.integer(ppu2_version, "ppu2_version");
 
-            s.integer(display.interlace);
-            s.integer(display.overscan);
+            s.integer(display.interlace, "display.interlace");
+            s.integer(display.overscan, "display.overscan");
 
-            s.integer(regs.ppu1_mdr);
-            s.integer(regs.ppu2_mdr);
+            s.integer(regs.ppu1_mdr, "regs.ppu1_mdr");
+            s.integer(regs.ppu2_mdr, "regs.ppu2_mdr");
 
-            s.integer(regs.vram_readbuffer);
-            s.integer(regs.oam_latchdata);
-            s.integer(regs.cgram_latchdata);
-            s.integer(regs.bgofs_latchdata);
-            s.integer(regs.mode7_latchdata);
-            s.integer(regs.counters_latched);
-            s.integer(regs.latch_hcounter);
-            s.integer(regs.latch_vcounter);
+            s.integer(regs.vram_readbuffer, "regs.vram_readbuffer");
+            s.integer(regs.oam_latchdata, "regs.oam_latchdata");
+            s.integer(regs.cgram_latchdata, "regs.cgram_latchdata");
+            s.integer(regs.bgofs_latchdata, "regs.bgofs_latchdata");
+            s.integer(regs.mode7_latchdata, "regs.mode7_latchdata");
+            s.integer(regs.counters_latched, "regs.counters_latched");
+            s.integer(regs.latch_hcounter, "regs.latch_hcounter");
+            s.integer(regs.latch_vcounter, "regs.latch_vcounter");
 
-            s.integer(regs.ioamaddr);
-            s.integer(regs.icgramaddr);
+            s.integer(regs.ioamaddr, "regs.ioamaddr");
+            s.integer(regs.icgramaddr, "regs.icgramaddr");
 
-            s.integer(regs.display_disabled);
-            s.integer(regs.display_brightness);
+            s.integer(regs.display_disabled, "regs.display_disabled");
+            s.integer(regs.display_brightness, "regs.display_brightness");
 
-            s.integer(regs.oam_baseaddr);
-            s.integer(regs.oam_addr);
-            s.integer(regs.oam_priority);
+            s.integer(regs.oam_baseaddr, "regs.oam_baseaddr");
+            s.integer(regs.oam_addr, "regs.oam_addr");
+            s.integer(regs.oam_priority, "regs.oam_priority");
 
-            s.integer(regs.bg3_priority);
-            s.integer(regs.bgmode);
+            s.integer(regs.bg3_priority, "regs.bg3_priority");
+            s.integer(regs.bgmode, "regs.bgmode");
 
-            s.integer(regs.mode7_hoffset);
-            s.integer(regs.mode7_voffset);
+            s.integer(regs.mode7_hoffset, "regs.mode7_hoffset");
+            s.integer(regs.mode7_voffset, "regs.mode7_voffset");
 
-            s.integer(regs.vram_incmode);
-            s.integer(regs.vram_mapping);
-            s.integer(regs.vram_incsize);
+            s.integer(regs.vram_incmode, "regs.vram_incmode");
+            s.integer(regs.vram_mapping, "regs.vram_mapping");
+            s.integer(regs.vram_incsize, "regs.vram_incsize");
 
-            s.integer(regs.vram_addr);
+            s.integer(regs.vram_addr, "regs.vram_addr");
 
-            s.integer(regs.mode7_repeat);
-            s.integer(regs.mode7_vflip);
-            s.integer(regs.mode7_hflip);
+            s.integer(regs.mode7_repeat, "regs.mode7_repeat");
+            s.integer(regs.mode7_vflip, "regs.mode7_vflip");
+            s.integer(regs.mode7_hflip, "regs.mode7_hflip");
 
-            s.integer(regs.m7a);
-            s.integer(regs.m7b);
-            s.integer(regs.m7c);
-            s.integer(regs.m7d);
-            s.integer(regs.m7x);
-            s.integer(regs.m7y);
+            s.integer(regs.m7a, "regs.m7a");
+            s.integer(regs.m7b, "regs.m7b");
+            s.integer(regs.m7c, "regs.m7c");
+            s.integer(regs.m7d, "regs.m7d");
+            s.integer(regs.m7x, "regs.m7x");
+            s.integer(regs.m7y, "regs.m7y");
 
-            s.integer(regs.cgram_addr);
+            s.integer(regs.cgram_addr, "regs.cgram_addr");
 
-            s.integer(regs.mode7_extbg);
-            s.integer(regs.pseudo_hires);
-            s.integer(regs.overscan);
-            s.integer(regs.interlace);
+            s.integer(regs.mode7_extbg, "regs.mode7_extbg");
+            s.integer(regs.pseudo_hires, "regs.pseudo_hires");
+            s.integer(regs.overscan, "regs.overscan");
+            s.integer(regs.interlace, "regs.interlace");
 
-            s.integer(regs.hcounter);
-            s.integer(regs.vcounter);
+            s.integer(regs.hcounter, "regs.hcounter");
+            s.integer(regs.vcounter, "regs.vcounter");
 
             bg1.serialize(s);
             bg2.serialize(s);

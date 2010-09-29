@@ -48,6 +48,15 @@ namespace Snes
             }
         }
 
+        private static int _stateFileCount = 0;
+        public static void WriteStateToFile()
+        {
+            Serializer s = system.serialize();
+            var file = global::System.IO.File.Create(@"..\..\..\..\..\states\SnesBox\" + _stateFileCount++ + ".xst");
+            file.Write(s.data(), 0, (int)s.size());
+            file.Close();
+        }
+
         public void init(Interface interface_)
         {
             inter = interface_;
@@ -474,11 +483,11 @@ namespace Snes
             byte[] profile = new byte[16], description = new byte[512];
             new UTF8Encoding().GetBytes(Info.Profile).CopyTo(profile, 0);
 
-            s.integer(signature);
-            s.integer(version);
-            s.integer(crc32);
-            s.array(profile);
-            s.array(description);
+            s.integer(signature, "signature");
+            s.integer(version, "version");
+            s.integer(crc32, "crc32");
+            s.array(profile, "profile");
+            s.array(description, "description");
 
             serialize_all(s);
             return s;
@@ -489,11 +498,11 @@ namespace Snes
             uint signature = 0, version = 0, crc32 = 0;
             byte[] profile = new byte[16], description = new byte[512];
 
-            s.integer(signature);
-            s.integer(version);
-            s.integer(crc32);
-            s.array(profile);
-            s.array(description);
+            s.integer(signature, "signature");
+            s.integer(version, "version");
+            s.integer(crc32, "crc32");
+            s.array(profile, "profile");
+            s.array(description, "description");
 
             if (signature != 0x31545342)
             {
@@ -545,8 +554,8 @@ namespace Snes
 
         private void serialize(Serializer s)
         {
-            s.integer((uint)region);
-            s.integer((uint)expansion);
+            s.integer((uint)region, "region");
+            s.integer((uint)expansion, "expansion");
         }
 
         private void serialize_all(Serializer s)
@@ -623,11 +632,11 @@ namespace Snes
             uint signature = 0, version = 0, crc32 = 0;
             byte[] profile = new byte[16], description = new byte[512];
 
-            s.integer(signature);
-            s.integer(version);
-            s.integer(crc32);
-            s.array(profile);
-            s.array(description);
+            s.integer(signature, "signature");
+            s.integer(version, "version");
+            s.integer(crc32, "crc32");
+            s.array(profile, "profile");
+            s.array(description, "description");
 
             serialize_all(s);
             serialize_size = s.size();
