@@ -82,10 +82,10 @@ namespace Snes
             Processor.create("SMP", Enter, System.system.apu_frequency);
 
             regs.pc = 0xffc0;
-            regs.a[0] = 0x00;
-            regs.x[0] = 0x00;
-            regs.y[0] = 0x00;
-            regs.sp[0] = 0xef;
+            regs.a.Array[regs.a.Offset] = 0x00;
+            regs.x.Array[regs.x.Offset] = 0x00;
+            regs.y.Array[regs.y.Offset] = 0x00;
+            regs.sp.Array[regs.sp.Offset] = 0xef;
             regs.p.Assign(0x02);
 
             for (uint i = 0; i < StaticRAM.apuram.size(); i++)

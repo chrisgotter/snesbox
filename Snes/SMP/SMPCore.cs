@@ -13,12 +13,12 @@ namespace Snes
 
         public byte op_readstack()
         {
-            return op_read((ushort)(0x0100 | ++regs.sp[0]));
+            return op_read((ushort)(0x0100 | ++regs.sp.Array[regs.sp.Offset]));
         }
 
         public void op_writestack(byte data)
         {
-            op_write((ushort)(0x0100 | regs.sp[0]--), data);
+            op_write((ushort)(0x0100 | regs.sp.Array[regs.sp.Offset]--), data);
         }
 
         public byte op_readaddr(ushort addr)
@@ -835,7 +835,7 @@ namespace Snes
             s += t;
 
             t = string.Format("A:%.2x X:%.2x Y:%.2x SP:01%.2x YA:%.4x ",
-              regs.a[0], regs.x[0], regs.y[0], regs.sp[0], (ushort)regs.ya);
+              regs.a.Array[regs.a.Offset], regs.x.Array[regs.x.Offset], regs.y.Array[regs.y.Offset], regs.sp.Array[regs.sp.Offset], (ushort)regs.ya);
             s += t;
 
             t = string.Format("%c%c%c%c%c%c%c%c",
@@ -1040,19 +1040,19 @@ namespace Snes
         public SMPCoreOpResult op_mov_a_ix(SMPCoreOpArgument args)
         {
             op_io();
-            regs.a[0] = op_readdp(regs.x[0]);
-            regs.p.n = Convert.ToBoolean(regs.a[0] & 0x80);
-            regs.p.z = (regs.a[0] == 0);
+            regs.a.Array[regs.a.Offset] = op_readdp(regs.x.Array[regs.x.Offset]);
+            regs.p.n = Convert.ToBoolean(regs.a.Array[regs.a.Offset] & 0x80);
+            regs.p.z = (regs.a.Array[regs.a.Offset] == 0);
             return null;
         }
 
         public SMPCoreOpResult op_mov_a_ixinc(SMPCoreOpArgument args)
         {
             op_io();
-            regs.a[0] = op_readdp(regs.x[0]++);
+            regs.a.Array[regs.a.Offset] = op_readdp(regs.x.Array[regs.x.Offset]++);
             op_io();
-            regs.p.n = Convert.ToBoolean(regs.a[0] & 0x80);
-            regs.p.z = (regs.a[0] == 0);
+            regs.p.n = Convert.ToBoolean(regs.a.Array[regs.a.Offset] & 0x80);
+            regs.p.z = (regs.a.Array[regs.a.Offset] == 0);
             return null;
         }
 
@@ -1090,21 +1090,21 @@ namespace Snes
             sp = (ushort)(op_readpc() << 0);
             sp |= (ushort)(op_readpc() << 8);
             op_io();
-            regs.a[0] = op_readaddr((ushort)(sp + regs.r[args.i]));
-            regs.p.n = Convert.ToBoolean(regs.a[0] & 0x80);
-            regs.p.z = (regs.a[0] == 0);
+            regs.a.Array[regs.a.Offset] = op_readaddr((ushort)(sp + regs.r[args.i]));
+            regs.p.n = Convert.ToBoolean(regs.a.Array[regs.a.Offset] & 0x80);
+            regs.p.z = (regs.a.Array[regs.a.Offset] == 0);
             return null;
         }
 
         public SMPCoreOpResult op_mov_a_idpx(SMPCoreOpArgument args)
         {
-            dp = (ushort)(op_readpc() + regs.x[0]);
+            dp = (ushort)(op_readpc() + regs.x.Array[regs.x.Offset]);
             op_io();
             sp = (ushort)(op_readdp((byte)(dp + 0)) << 0);
             sp |= (ushort)(op_readdp((byte)(dp + 1)) << 8);
-            regs.a[0] = op_readaddr(sp);
-            regs.p.n = Convert.ToBoolean(regs.a[0] & 0x80);
-            regs.p.z = (regs.a[0] == 0);
+            regs.a.Array[regs.a.Offset] = op_readaddr(sp);
+            regs.p.n = Convert.ToBoolean(regs.a.Array[regs.a.Offset] & 0x80);
+            regs.p.z = (regs.a.Array[regs.a.Offset] == 0);
             return null;
         }
 
@@ -1114,9 +1114,9 @@ namespace Snes
             op_io();
             sp = (ushort)(op_readdp((byte)(dp + 0)) << 0);
             sp |= (ushort)(op_readdp((byte)(dp + 1)) << 8);
-            regs.a[0] = op_readaddr((byte)(sp + regs.y[0]));
-            regs.p.n = Convert.ToBoolean(regs.a[0] & 0x80);
-            regs.p.z = (regs.a[0] == 0);
+            regs.a.Array[regs.a.Offset] = op_readaddr((byte)(sp + regs.y.Array[regs.y.Offset]));
+            regs.p.n = Convert.ToBoolean(regs.a.Array[regs.a.Offset] & 0x80);
+            regs.p.z = (regs.a.Array[regs.a.Offset] == 0);
             return null;
         }
 
@@ -1141,8 +1141,8 @@ namespace Snes
         public SMPCoreOpResult op_mov_ix_a(SMPCoreOpArgument args)
         {
             op_io();
-            op_readdp(regs.x[0]);
-            op_writedp(regs.x[0], regs.a[0]);
+            op_readdp(regs.x.Array[regs.x.Offset]);
+            op_writedp(regs.x.Array[regs.x.Offset], regs.a.Array[regs.a.Offset]);
             return null;
         }
 
@@ -1150,7 +1150,7 @@ namespace Snes
         {
             op_io();
             op_io();
-            op_writedp(regs.x[0]++, regs.a[0]);
+            op_writedp(regs.x.Array[regs.x.Offset]++, regs.a.Array[regs.a.Offset]);
             return null;
         }
 
@@ -1188,7 +1188,7 @@ namespace Snes
             op_io();
             dp += regs.r[args.i];
             op_readaddr(dp);
-            op_writeaddr(dp, regs.a[0]);
+            op_writeaddr(dp, regs.a.Array[regs.a.Offset]);
             return null;
         }
 
@@ -1196,11 +1196,11 @@ namespace Snes
         {
             sp = op_readpc();
             op_io();
-            sp += regs.x[0];
+            sp += regs.x.Array[regs.x.Offset];
             dp = (ushort)(op_readdp((byte)(sp + 0)) << 0);
             dp |= (ushort)(op_readdp((byte)(sp + 1)) << 8);
             op_readaddr(dp);
-            op_writeaddr(dp, regs.a[0]);
+            op_writeaddr(dp, regs.a.Array[regs.a.Offset]);
             return null;
         }
 
@@ -1210,18 +1210,18 @@ namespace Snes
             dp = (ushort)(op_readdp((byte)(sp + 0)) << 0);
             dp |= (ushort)(op_readdp((byte)(sp + 1)) << 8);
             op_io();
-            dp += regs.y[0];
+            dp += regs.y.Array[regs.y.Offset];
             op_readaddr(dp);
-            op_writeaddr(dp, regs.a[0]);
+            op_writeaddr(dp, regs.a.Array[regs.a.Offset]);
             return null;
         }
 
         public SMPCoreOpResult op_movw_ya_dp(SMPCoreOpArgument args)
         {
             sp = op_readpc();
-            regs.a[0] = op_readdp((byte)(sp + 0));
+            regs.a.Array[regs.a.Offset] = op_readdp((byte)(sp + 0));
             op_io();
-            regs.y[0] = op_readdp((byte)(sp + 1));
+            regs.y.Array[regs.y.Offset] = op_readdp((byte)(sp + 1));
             regs.p.n = Convert.ToBoolean((ushort)regs.ya & 0x8000);
             regs.p.z = ((ushort)regs.ya == 0);
             return null;
@@ -1231,8 +1231,8 @@ namespace Snes
         {
             dp = op_readpc();
             op_readdp((byte)dp);
-            op_writedp((byte)(dp + 0), regs.a[0]);
-            op_writedp((byte)(dp + 1), regs.y[0]);
+            op_writedp((byte)(dp + 0), regs.a.Array[regs.a.Offset]);
+            op_writedp((byte)(dp + 1), regs.y.Array[regs.y.Offset]);
             return null;
         }
 
@@ -1311,7 +1311,7 @@ namespace Snes
             sp = op_readdp((byte)dp);
             rd = op_readpc();
             op_io();
-            if (regs.a[0] == sp)
+            if (regs.a.Array[regs.a.Offset] == sp)
             {
                 return null;
             }
@@ -1325,10 +1325,10 @@ namespace Snes
         {
             dp = op_readpc();
             op_io();
-            sp = op_readdp((byte)(dp + regs.x[0]));
+            sp = op_readdp((byte)(dp + regs.x.Array[regs.x.Offset]));
             rd = op_readpc();
             op_io();
-            if (regs.a[0] == sp)
+            if (regs.a.Array[regs.a.Offset] == sp)
             {
                 return null;
             }
@@ -1358,9 +1358,9 @@ namespace Snes
         {
             rd = op_readpc();
             op_io();
-            regs.y[0]--;
+            regs.y.Array[regs.y.Offset]--;
             op_io();
-            if (regs.y[0] == 0)
+            if (regs.y.Array[regs.y.Offset] == 0)
             {
                 return null;
             }
@@ -1383,7 +1383,7 @@ namespace Snes
             dp = (ushort)(op_readpc() << 0);
             dp |= (ushort)(op_readpc() << 8);
             op_io();
-            dp += regs.x[0];
+            dp += regs.x.Array[regs.x.Offset];
             rd = (ushort)(op_readaddr((ushort)(dp + 0)) << 0);
             rd |= (ushort)(op_readaddr((ushort)(dp + 1)) << 8);
             regs.pc = rd;
@@ -1474,8 +1474,8 @@ namespace Snes
         public SMPCoreOpResult op_read_a_ix(SMPCoreOpArgument args)
         {
             op_io();
-            rd = op_readdp(regs.x[0]);
-            regs.a[0] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
+            rd = op_readdp(regs.x.Array[regs.x.Offset]);
+            regs.a.Array[regs.a.Offset] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.a.Array[regs.a.Offset], y_byte = (byte)rd }).result_byte;
             return null;
         }
 
@@ -1491,8 +1491,8 @@ namespace Snes
         {
             dp = op_readpc();
             op_io();
-            rd = op_readdp((byte)(dp + regs.x[0]));
-            regs.a[0] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
+            rd = op_readdp((byte)(dp + regs.x.Array[regs.x.Offset]));
+            regs.a.Array[regs.a.Offset] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.a.Array[regs.a.Offset], y_byte = (byte)rd }).result_byte;
             return null;
         }
 
@@ -1511,18 +1511,18 @@ namespace Snes
             dp |= (ushort)(op_readpc() << 8);
             op_io();
             rd = op_readaddr((ushort)(dp + regs.r[args.i]));
-            regs.a[0] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
+            regs.a.Array[regs.a.Offset] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.a.Array[regs.a.Offset], y_byte = (byte)rd }).result_byte;
             return null;
         }
 
         public SMPCoreOpResult op_read_a_idpx(SMPCoreOpArgument args)
         {
-            dp = (ushort)(op_readpc() + regs.x[0]);
+            dp = (ushort)(op_readpc() + regs.x.Array[regs.x.Offset]);
             op_io();
             sp = (ushort)(op_readdp((byte)(dp + 0)) << 0);
             sp |= (ushort)(op_readdp((byte)(dp + 1)) << 8);
             rd = op_readaddr(sp);
-            regs.a[0] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
+            regs.a.Array[regs.a.Offset] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.a.Array[regs.a.Offset], y_byte = (byte)rd }).result_byte;
             return null;
         }
 
@@ -1532,21 +1532,21 @@ namespace Snes
             op_io();
             sp = (ushort)(op_readdp((byte)(dp + 0)) << 0);
             sp |= (ushort)(op_readdp((byte)(dp + 1)) << 8);
-            rd = op_readaddr((ushort)(sp + regs.y[0]));
-            regs.a[0] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.a[0], y_byte = (byte)rd }).result_byte;
+            rd = op_readaddr((ushort)(sp + regs.y.Array[regs.y.Offset]));
+            regs.a.Array[regs.a.Offset] = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = regs.a.Array[regs.a.Offset], y_byte = (byte)rd }).result_byte;
             return null;
         }
 
         public SMPCoreOpResult op_read_ix_iy(SMPCoreOpArgument args)
         {
             op_io();
-            rd = op_readdp(regs.y[0]);
-            wr = op_readdp(regs.x[0]);
+            rd = op_readdp(regs.y.Array[regs.y.Offset]);
+            wr = op_readdp(regs.x.Array[regs.x.Offset]);
             wr = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = (byte)wr, y_byte = (byte)rd }).result_byte;
             SMPCoreOp cmp = op_cmp;
             if (args.op_func != cmp)
             {
-                op_writedp(regs.x[0], (byte)wr);
+                op_writedp(regs.x.Array[regs.x.Offset], (byte)wr);
             }
             else
             {
@@ -1678,9 +1678,9 @@ namespace Snes
         {
             dp = op_readpc();
             op_io();
-            rd = op_readdp((byte)(dp + regs.x[0]));
+            rd = op_readdp((byte)(dp + regs.x.Array[regs.x.Offset]));
             rd = args.op_func.Invoke(new SMPCoreOpArgument() { x_byte = (byte)rd }).result_byte;
-            op_writedp((byte)(dp + regs.x[0]), (byte)rd);
+            op_writedp((byte)(dp + regs.x.Array[regs.x.Offset]), (byte)rd);
             return null;
         }
 
@@ -1699,10 +1699,10 @@ namespace Snes
             dp = (ushort)(op_readpc() << 0);
             dp |= (ushort)(op_readpc() << 8);
             rd = op_readaddr(dp);
-            regs.p.n = Convert.ToBoolean((regs.a[0] - rd) & 0x80);
-            regs.p.z = ((regs.a[0] - rd) == 0);
+            regs.p.n = Convert.ToBoolean((regs.a.Array[regs.a.Offset] - rd) & 0x80);
+            regs.p.z = ((regs.a.Array[regs.a.Offset] - rd) == 0);
             op_readaddr(dp);
-            op_writeaddr(dp, (byte)(Convert.ToBoolean(args.op) ? rd | regs.a[0] : rd & ~regs.a[0]));
+            op_writeaddr(dp, (byte)(Convert.ToBoolean(args.op) ? rd | regs.a.Array[regs.a.Offset] : rd & ~regs.a.Array[regs.a.Offset]));
             return null;
         }
 
@@ -1740,9 +1740,9 @@ namespace Snes
             op_io();
             op_io();
             op_io();
-            regs.a[0] = (byte)((regs.a[0] >> 4) | (regs.a[0] << 4));
-            regs.p.n = Convert.ToBoolean(regs.a[0] & 0x80);
-            regs.p.z = (regs.a[0] == 0);
+            regs.a.Array[regs.a.Offset] = (byte)((regs.a.Array[regs.a.Offset] >> 4) | (regs.a.Array[regs.a.Offset] << 4));
+            regs.p.n = Convert.ToBoolean(regs.a.Array[regs.a.Offset] & 0x80);
+            regs.p.z = (regs.a.Array[regs.a.Offset] == 0);
             return null;
         }
 
@@ -1750,18 +1750,18 @@ namespace Snes
         {
             op_io();
             op_io();
-            if (regs.p.c || (regs.a[0]) > 0x99)
+            if (regs.p.c || (regs.a.Array[regs.a.Offset]) > 0x99)
             {
-                regs.a[0] += 0x60;
+                regs.a.Array[regs.a.Offset] += 0x60;
                 regs.p.c = Convert.ToBoolean(1);
             }
-            if (regs.p.h || (regs.a[0] & 15) > 0x09)
+            if (regs.p.h || (regs.a.Array[regs.a.Offset] & 15) > 0x09)
             {
-                regs.a[0] += 0x06;
+                regs.a.Array[regs.a.Offset] += 0x06;
             }
             //TODO: See if this logic matches
-            regs.p.n = Convert.ToBoolean(Convert.ToInt32(Convert.ToBoolean(regs.a[0] & 0x80)));
-            regs.p.z = (regs.a[0] == 0);
+            regs.p.n = Convert.ToBoolean(Convert.ToInt32(Convert.ToBoolean(regs.a.Array[regs.a.Offset] & 0x80)));
+            regs.p.z = (regs.a.Array[regs.a.Offset] == 0);
             return null;
         }
 
@@ -1769,17 +1769,17 @@ namespace Snes
         {
             op_io();
             op_io();
-            if (!regs.p.c || (regs.a[0]) > 0x99)
+            if (!regs.p.c || (regs.a.Array[regs.a.Offset]) > 0x99)
             {
-                regs.a[0] -= 0x60;
+                regs.a.Array[regs.a.Offset] -= 0x60;
                 regs.p.c = Convert.ToBoolean(0);
             }
-            if (!regs.p.h || (regs.a[0] & 15) > 0x09)
+            if (!regs.p.h || (regs.a.Array[regs.a.Offset] & 15) > 0x09)
             {
-                regs.a[0] -= 0x06;
+                regs.a.Array[regs.a.Offset] -= 0x06;
             }
-            regs.p.n = Convert.ToBoolean(Convert.ToInt32(Convert.ToBoolean(regs.a[0] & 0x80)));
-            regs.p.z = (regs.a[0] == 0);
+            regs.p.n = Convert.ToBoolean(Convert.ToInt32(Convert.ToBoolean(regs.a.Array[regs.a.Offset] & 0x80)));
+            regs.p.z = (regs.a.Array[regs.a.Offset] == 0);
             return null;
         }
 
@@ -1857,12 +1857,12 @@ namespace Snes
             op_io();
             op_io();
             op_io();
-            ya = (ushort)(regs.y[0] * regs.a[0]);
-            regs.a[0] = (byte)ya;
-            regs.y[0] = (byte)(ya >> 8);
+            ya = (ushort)(regs.y.Array[regs.y.Offset] * regs.a.Array[regs.a.Offset]);
+            regs.a.Array[regs.a.Offset] = (byte)ya;
+            regs.y.Array[regs.y.Offset] = (byte)(ya >> 8);
             //result is set based on y (high-byte) only
-            regs.p.n = Convert.ToBoolean(Convert.ToInt32(Convert.ToBoolean(regs.y[0] & 0x80)));
-            regs.p.z = (regs.y[0] == 0);
+            regs.p.n = Convert.ToBoolean(Convert.ToInt32(Convert.ToBoolean(regs.y.Array[regs.y.Offset] & 0x80)));
+            regs.p.z = (regs.y.Array[regs.y.Offset] == 0);
             return null;
         }
 
@@ -1881,24 +1881,24 @@ namespace Snes
             op_io();
             ya = (ushort)regs.ya;
             //overflow set if quotient >= 256
-            regs.p.v = !!(regs.y[0] >= regs.x[0]);
-            regs.p.h = !!((regs.y[0] & 15) >= (regs.x[0] & 15));
-            if (regs.y[0] < (regs.x[0] << 1))
+            regs.p.v = !!(regs.y.Array[regs.y.Offset] >= regs.x.Array[regs.x.Offset]);
+            regs.p.h = !!((regs.y.Array[regs.y.Offset] & 15) >= (regs.x.Array[regs.x.Offset] & 15));
+            if (regs.y.Array[regs.y.Offset] < (regs.x.Array[regs.x.Offset] << 1))
             {
                 //if quotient is <= 511 (will fit into 9-bit result)
-                regs.a[0] = (byte)(ya / regs.x[0]);
-                regs.y[0] = (byte)(ya % regs.x[0]);
+                regs.a.Array[regs.a.Offset] = (byte)(ya / regs.x.Array[regs.x.Offset]);
+                regs.y.Array[regs.y.Offset] = (byte)(ya % regs.x.Array[regs.x.Offset]);
             }
             else
             {
                 //otherwise, the quotient won't fit into regs.p.v + regs.a
                 //this emulates the odd behavior of the S-SMP in this case
-                regs.a[0] = (byte)(255 - (ya - (regs.x[0] << 9)) / (256 - regs.x[0]));
-                regs.y[0] = (byte)(regs.x[0] + (ya - (regs.x[0] << 9)) % (256 - regs.x[0]));
+                regs.a.Array[regs.a.Offset] = (byte)(255 - (ya - (regs.x.Array[regs.x.Offset] << 9)) / (256 - regs.x.Array[regs.x.Offset]));
+                regs.y.Array[regs.y.Offset] = (byte)(regs.x.Array[regs.x.Offset] + (ya - (regs.x.Array[regs.x.Offset] << 9)) % (256 - regs.x.Array[regs.x.Offset]));
             }
             //result is set based on a (quotient) only
-            regs.p.n = Convert.ToBoolean(Convert.ToInt32(Convert.ToBoolean(regs.a[0] & 0x80)));
-            regs.p.z = (regs.a[0] == 0);
+            regs.p.n = Convert.ToBoolean(Convert.ToInt32(Convert.ToBoolean(regs.a.Array[regs.a.Offset] & 0x80)));
+            regs.p.z = (regs.a.Array[regs.a.Offset] == 0);
             return null;
         }
 
@@ -2167,10 +2167,10 @@ namespace Snes
         public void core_serialize(Serializer s)
         {
             s.integer(regs.pc, "regs.pc");
-            s.integer(regs.a[0], "regs.a");
-            s.integer(regs.x[0], "regs.x");
-            s.integer(regs.y[0], "regs.y");
-            s.integer(regs.sp[0], "regs.sp");
+            s.integer(regs.a.Array[regs.a.Offset], "regs.a");
+            s.integer(regs.x.Array[regs.x.Offset], "regs.x");
+            s.integer(regs.y.Array[regs.y.Offset], "regs.y");
+            s.integer(regs.sp.Array[regs.sp.Offset], "regs.sp");
             s.integer(regs.p.n, "regs.p.n");
             s.integer(regs.p.v, "regs.p.v");
             s.integer(regs.p.p, "regs.p.p");

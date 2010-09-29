@@ -52,7 +52,7 @@ namespace Snes
         public static void WriteStateToFile()
         {
             Serializer s = system.serialize();
-            var file = global::System.IO.File.Create(@"..\..\..\..\..\states\SnesBox\" + _stateFileCount++ + ".xst");
+            var file = global::System.IO.File.Create(@"..\..\..\..\..\states\SnesBox\" + _stateFileCount++ + ".bst");
             file.Write(s.data(), 0, (int)s.size());
             file.Close();
         }
