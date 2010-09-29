@@ -1,9 +1,10 @@
-﻿
+﻿using System;
+
 namespace Snes
 {
     interface Interface
     {
-        void video_refresh(ushort[] data, uint width, uint height);
+        void video_refresh(ArraySegment<ushort> data, uint width, uint height);
 
         void audio_sample(ushort l_sample, ushort r_sample);
 

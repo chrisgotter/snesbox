@@ -93,7 +93,7 @@ namespace SnesBox
             {
                 for (int x = 0; x < e.Width; x++)
                 {
-                    ushort color = e.VideoBuffer[bufferIndex];
+                    ushort color = e.VideoBuffer.Array[e.VideoBuffer.Offset + bufferIndex];
                     int b;
 
                     b = ((color >> 10) & 31) * 8;

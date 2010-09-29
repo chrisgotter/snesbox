@@ -3047,7 +3047,7 @@ namespace Snes
             last_cycle(); op_writestackn(rd.l);
         }
 
-        public CPUCoreOperation[] opcode_table;
+        public ArraySegment<CPUCoreOperation> opcode_table;
         public CPUCoreOperation[] op_table = new CPUCoreOperation[256 * 5];
 
         private CPUCoreOp GetCoreOp(string name, string modifier = "")
@@ -3407,28 +3407,28 @@ namespace Snes
         {
             if (regs.e)
             {
-                opcode_table = new ArraySegment<CPUCoreOperation>(op_table, (int)Table.EM, op_table.Length - (int)Table.EM).Array;
+                opcode_table = new ArraySegment<CPUCoreOperation>(op_table, (int)Table.EM, op_table.Length - (int)Table.EM);
             }
             else if (regs.p.m)
             {
                 if (regs.p.x)
                 {
-                    opcode_table = new ArraySegment<CPUCoreOperation>(op_table, (int)Table.MX, op_table.Length - (int)Table.MX).Array;
+                    opcode_table = new ArraySegment<CPUCoreOperation>(op_table, (int)Table.MX, op_table.Length - (int)Table.MX);
                 }
                 else
                 {
-                    opcode_table = new ArraySegment<CPUCoreOperation>(op_table, (int)Table.Mx, op_table.Length - (int)Table.Mx).Array;
+                    opcode_table = new ArraySegment<CPUCoreOperation>(op_table, (int)Table.Mx, op_table.Length - (int)Table.Mx);
                 }
             }
             else
             {
                 if (regs.p.x)
                 {
-                    opcode_table = new ArraySegment<CPUCoreOperation>(op_table, (int)Table.mX, op_table.Length - (int)Table.mX).Array;
+                    opcode_table = new ArraySegment<CPUCoreOperation>(op_table, (int)Table.mX, op_table.Length - (int)Table.mX);
                 }
                 else
                 {
-                    opcode_table = new ArraySegment<CPUCoreOperation>(op_table, (int)Table.mx, op_table.Length - (int)Table.mx).Array;
+                    opcode_table = new ArraySegment<CPUCoreOperation>(op_table, (int)Table.mx, op_table.Length - (int)Table.mx);
                 }
             }
         }

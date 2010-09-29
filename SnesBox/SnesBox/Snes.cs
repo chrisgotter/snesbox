@@ -30,7 +30,7 @@ namespace SnesBox
             LibSnes.snes_video_refresh += new LibSnes.SnesVideoRefresh(LibSnes_snes_video_refresh);
         }
 
-        void LibSnes_snes_video_refresh(ushort[] data, uint width, uint height)
+        void LibSnes_snes_video_refresh(ArraySegment<ushort> data, uint width, uint height)
         {
             VideoUpdated(this, new VideoUpdatedEventArgs(data, (int)width, (int)height));
             AudioUpdated(this, new AudioUpdatedEventArgs(audio_buffer.ToArray(), audio_buffer.Count));

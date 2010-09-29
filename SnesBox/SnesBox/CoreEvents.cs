@@ -19,18 +19,18 @@ namespace SnesBox
 
     public class VideoUpdatedEventArgs : EventArgs
     {
-        ushort[] _videoBuffer;
+        ArraySegment<ushort> _videoBuffer;
         int _width;
         int _height;
 
-        public VideoUpdatedEventArgs(ushort[] videoBuffer, int width, int height)
+        public VideoUpdatedEventArgs(ArraySegment<ushort> videoBuffer, int width, int height)
         {
             _videoBuffer = videoBuffer;
             _width = width;
             _height = height;
         }
 
-        public ushort[] VideoBuffer { get { return _videoBuffer; } }
+        public ArraySegment<ushort> VideoBuffer { get { return _videoBuffer; } }
         public int Width { get { return _width; } }
         public int Height { get { return _height; } }
     }

@@ -15,7 +15,7 @@ namespace Snes
         public enum SNES_REGION { NTSC = 0, PAL = 1 }
         public enum SNES_MEMORY { CARTRIDGE_RAM = 0, CARTRIDGE_RTC = 1, BSX_RAM = 2, BSX_PRAM = 3, SUFAMI_TURBO_A_RAM = 4, SUFAMI_TURBO_B_RAM = 5, GAME_BOY_RAM = 6, GAME_BOY_RTC = 7 }
 
-        public delegate void SnesVideoRefresh(ushort[] data, uint width, uint height);
+        public delegate void SnesVideoRefresh(ArraySegment<ushort> data, uint width, uint height);
         public delegate void SnesAudioSample(ushort left, ushort right);
         public delegate void SnesInputPoll();
         public delegate short SnesInputState(bool port, uint device, uint index, uint id);
@@ -43,7 +43,7 @@ namespace Snes
             LibSnesInterface.inter.pinput_state += new SnesInputState(Default_pinput_state);
         }
 
-        static void Default_pvideo_refresh(ushort[] data, uint width, uint height)
+        static void Default_pvideo_refresh(ArraySegment<ushort> data, uint width, uint height)
         {
             if (!ReferenceEquals(snes_video_refresh, null))
             {

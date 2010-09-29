@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace Snes
 {
     class LibSnesInterface : Interface
@@ -10,7 +11,7 @@ namespace Snes
         public event LibSnes.SnesInputPoll pinput_poll = null;
         public event LibSnes.SnesInputState pinput_state = null;
 
-        public void video_refresh(ushort[] data, uint width, uint height)
+        public void video_refresh(ArraySegment<ushort> data, uint width, uint height)
         {
             if (!ReferenceEquals(pvideo_refresh, null))
                 pvideo_refresh(data, width, height);
