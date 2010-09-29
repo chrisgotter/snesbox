@@ -143,7 +143,7 @@ namespace Snes
             MappedRAM.gbrtc.write_protect(false);
 
             uint checksum = Bit.ToUint32(~0);
-            foreach (var n in MappedRAM.cartram.data())
+            foreach (var n in MappedRAM.cartrom.data())
             {
                 checksum = CRC32.adjust(checksum, n);
             }
