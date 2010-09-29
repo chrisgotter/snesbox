@@ -14,12 +14,11 @@ namespace Snes
 
             public Regs()
             {
-                //TODO: Verify array segments simulate &byte
                 a = new ArraySegment<byte>(r, 0, 1);
                 x = new ArraySegment<byte>(r, 1, 1);
                 y = new ArraySegment<byte>(r, 2, 1);
                 sp = new ArraySegment<byte>(r, 3, 1);
-                ya = new RegYA(new ArraySegment<byte>(r, 2, 1).Array, new ArraySegment<byte>(r, 0, 1).Array);
+                ya = new RegYA(new ArraySegment<byte>(r, 2, 1), new ArraySegment<byte>(r, 0, 1));
             }
         }
     }
