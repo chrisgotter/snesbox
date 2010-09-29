@@ -8,14 +8,14 @@ namespace Snes
         private partial class Screen
         {
             public PPU self;
-            public ushort[] output;
+            public ArraySegment<ushort> output;
             private int outputIndex = 0;
 
             public Regs regs = new Regs();
 
             public void scanline()
             {
-                output = new ArraySegment<ushort>(self.output, self.PPUCounter.vcounter() * 1024, self.output.Length - (self.PPUCounter.vcounter() * 1024)).Array;
+                output = new ArraySegment<ushort>(self.output.Array, self.output.Offset + self.PPUCounter.vcounter() * 1024, self.output.Array.Length - (self.output.Offset + self.PPUCounter.vcounter() * 1024));
                 if (self.display.interlace && self.PPUCounter.field())
                 {
                     outputIndex += 512;
@@ -28,15 +28,15 @@ namespace Snes
                 if (self.regs.pseudo_hires == false && self.regs.bgmode != 5 && self.regs.bgmode != 6)
                 {
                     color = get_pixel(false);
-                    output[outputIndex++] = color;
-                    output[outputIndex++] = color;
+                    output.Array[output.Offset + outputIndex++] = color;
+                    output.Array[output.Offset + outputIndex++] = color;
                 }
                 else
                 {
                     color = get_pixel(true);
-                    output[outputIndex++] = color;
+                    output.Array[output.Offset + outputIndex++] = color;
                     color = get_pixel(false);
-                    output[outputIndex++] = color;
+                    output.Array[output.Offset + outputIndex++] = color;
                 }
             }
 

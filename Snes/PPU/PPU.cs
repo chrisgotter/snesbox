@@ -210,7 +210,7 @@ namespace Snes
             window = new Window(this);
             screen = new Screen(this);
             surface = new ushort[512 * 512];
-            output = new ArraySegment<ushort>(surface, 16 * 512, surface.Length - (16 * 512)).Array;
+            output = new ArraySegment<ushort>(surface, 16 * 512, surface.Length - (16 * 512));
         }
 
         private Regs regs = new Regs();
@@ -1349,8 +1349,8 @@ namespace Snes
         private Screen screen;
 
         private ushort[] surface;
-        private ushort[] output;
-        public ushort[] Output
+        private ArraySegment<ushort> output;
+        public ArraySegment<ushort> Output
         {
             get { return output; }
         }
