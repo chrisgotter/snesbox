@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Nall;
 
 namespace Snes
@@ -88,7 +87,10 @@ namespace Snes
                     return;
                 }
 
-                oam_item = Enumerable.Repeat<byte>(0xff, 32).ToArray();  //default to invalid
+                for (int i = 0; i < 32; i++)
+                {
+                    oam_item[i] = 0xff; //default to invalid
+                }
                 for (uint i = 0; i < 34; i++)
                 {
                     oam_tile[i].x = 0xffff;  //default to invalid
@@ -108,7 +110,12 @@ namespace Snes
                     oam_item[t.item_count - 1] = (byte)sprite;
                 }
 
-                if (t.item_count > 0 && oam_item[t.item_count - 1] != 0xff)
+                //TODO: Remove this hack
+                if (t.item_count > 0 && (t.item_count > oam_item.Length))
+                {
+                    ppu.regs.ioamaddr = (ushort)(0x0200 + (0 >> 2));
+                }
+                else if (t.item_count > 0 && oam_item[t.item_count - 1] != 0xff)
                 {
                     ppu.regs.ioamaddr = (ushort)(0x0200 + (oam_item[t.item_count - 1] >> 2));
                 }
