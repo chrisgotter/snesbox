@@ -1025,7 +1025,7 @@ namespace Snes
         public SMPCoreOpResult op_mov_sp_x(SMPCoreOpArgument args)
         {
             op_io();
-            regs.sp = regs.x;
+            regs.sp.Array[regs.sp.Offset] = regs.x.Array[regs.x.Offset];
             return null;
         }
 
