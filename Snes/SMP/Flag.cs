@@ -27,21 +27,6 @@ namespace Snes
                 return data;
             }
 
-            public static uint operator |(Flag flag, uint data)
-            {
-                return flag.Assign((byte)((uint)flag | data));
-            }
-
-            public static uint operator ^(Flag flag, uint data)
-            {
-                return flag.Assign((byte)((uint)flag ^ data));
-            }
-
-            public static uint operator &(Flag flag, uint data)
-            {
-                return flag.Assign((byte)((uint)flag & data));
-            }
-
             public Flag()
             {
                 n = v = p = b = h = i = z = c = false;

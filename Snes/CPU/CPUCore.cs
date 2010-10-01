@@ -2440,7 +2440,7 @@ namespace Snes
         {
             int bit = args.x;
             int val = args.y;
-            if (Bit.ToBit(regs.p & (uint)bit) != val)
+            if (Bit.ToBit((uint)regs.p & (uint)bit) != val)
             {
                 last_cycle(); rd.l = op_readpc();
             }
@@ -2755,7 +2755,7 @@ namespace Snes
             regs.e = carry;
             if (regs.e)
             {
-                regs.p.Assign((byte)(regs.p | 0x30));
+                regs.p.Assign((byte)((uint)regs.p | 0x30));
                 regs.s.h = 0x01;
             }
             if (regs.p.x)
@@ -2779,8 +2779,8 @@ namespace Snes
             int mode = args.x;
             rd.l = op_readpc();
             last_cycle(); op_io();
-            regs.p.Assign((byte)(Convert.ToBoolean(mode) ? regs.p | rd.l : (uint)regs.p & ~rd.l));
-            regs.p.Assign((byte)(regs.p | 0x30));
+            regs.p.Assign((byte)(Convert.ToBoolean(mode) ? (uint)regs.p | rd.l : (uint)regs.p & ~rd.l));
+            regs.p.Assign((byte)((uint)regs.p | 0x30));
             if (regs.p.x)
             {
                 regs.x.h = 0x00;
@@ -2794,7 +2794,7 @@ namespace Snes
             int mode = args.x;
             rd.l = op_readpc();
             last_cycle(); op_io();
-            regs.p.Assign((byte)(Convert.ToBoolean(mode) ? regs.p | rd.l : (uint)regs.p & ~rd.l));
+            regs.p.Assign((byte)(Convert.ToBoolean(mode) ? (uint)regs.p | rd.l : (uint)regs.p & ~rd.l));
             if (regs.p.x)
             {
                 regs.x.h = 0x00;
