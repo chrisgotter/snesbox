@@ -2255,7 +2255,7 @@ namespace Snes
             int n = args.x;
             int adjust = args.y;
             last_cycle(); op_io_irq();
-            regs.r[n].w += (byte)adjust;
+            regs.r[n].w += (ushort)adjust;
             regs.p.n = Convert.ToBoolean(regs.r[n].w & 0x8000);
             regs.p.z = (regs.r[n].w == 0);
         }
