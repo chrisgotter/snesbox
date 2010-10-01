@@ -19,7 +19,6 @@ namespace Snes
         public void enter()
         {
             host_thread = Libco.Active();
-            System.WriteStateToFile();
             Libco.Switch(thread);
         }
 

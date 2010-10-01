@@ -24,20 +24,22 @@ namespace Snes
             public void run()
             {
                 ushort color;
-                int outputIndex = 0;
+                int outputOffset = 0;
                 if (self.regs.pseudo_hires == false && self.regs.bgmode != 5 && self.regs.bgmode != 6)
                 {
                     color = get_pixel(false);
-                    output.Array[output.Offset + outputIndex++] = color;
-                    output.Array[output.Offset + outputIndex++] = color;
+                    output.Array[output.Offset + outputOffset++] = color;
+                    output.Array[output.Offset + outputOffset++] = color;
                 }
                 else
                 {
                     color = get_pixel(true);
-                    output.Array[output.Offset + outputIndex++] = color;
+                    output.Array[output.Offset + outputOffset++] = color;
                     color = get_pixel(false);
-                    output.Array[output.Offset + outputIndex++] = color;
+                    output.Array[output.Offset + outputOffset++] = color;
                 }
+
+                output = new ArraySegment<ushort>(output.Array, output.Offset + outputOffset, output.Array.Length - (output.Offset + outputOffset));
             }
 
             public void reset()
