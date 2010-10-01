@@ -26,7 +26,6 @@ namespace Snes
 #if THREADED
             if (SMP.smp.Processor.clock < 0)
             {
-                System.WriteStateToFile();
                 Libco.Switch(SMP.smp.Processor.thread);
             }
 #else
@@ -42,7 +41,6 @@ namespace Snes
 #if THREADED
             if (PPU.ppu.Processor.clock < 0)
             {
-                System.WriteStateToFile();
                 Libco.Switch(PPU.ppu.Processor.thread);
             }
 #else
@@ -60,7 +58,6 @@ namespace Snes
                 IProcessor chip = coprocessors[(int)i];
                 if (chip.Processor.clock < 0)
                 {
-                    System.WriteStateToFile();
                     Libco.Switch(chip.Processor.thread);
                 }
             }
