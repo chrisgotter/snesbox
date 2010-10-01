@@ -208,7 +208,8 @@ namespace Snes
             oam = new Sprite(this);
             window = new Window(this);
             screen = new Screen(this);
-            surface = new ushort[512 * 512];
+            //TODO: Remove this hack
+            surface = new ushort[1024 * 1024];
             output = new ArraySegment<ushort>(surface, 16 * 512, surface.Length - (16 * 512));
         }
 

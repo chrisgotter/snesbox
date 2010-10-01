@@ -24,7 +24,6 @@ namespace SnesBox
 
         protected override void Initialize()
         {
-            _videoFrame = new Texture2D(GraphicsDevice, 256, 224, false, SurfaceFormat.Color);
             _audioFrame = new DynamicSoundEffectInstance(32040, AudioChannels.Stereo);
 
             _snes.VideoUpdated += new VideoUpdatedEventHandler(Snes_VideoUpdated);
@@ -85,7 +84,12 @@ namespace SnesBox
 
         void Snes_VideoUpdated(object sender, VideoUpdatedEventArgs e)
         {
-            var videoBuffer = new uint[_videoFrame.Width * _videoFrame.Height];
+            if (ReferenceEquals(_videoFrame, null))
+            {
+                _videoFrame = new Texture2D(GraphicsDevice, e.Width, e.Height, false, SurfaceFormat.Color);
+            }
+
+            var videoBuffer = new uint[e.Width * e.Height];
             int bufferIndex = 0;
             _videoFrame.GetData<uint>(videoBuffer);
 
