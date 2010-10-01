@@ -61,52 +61,52 @@ namespace Snes
 
             public static uint operator |(Reg24 reg24, uint i)
             {
-                return reg24.d = Bit.uclip(24, reg24.d | i);
+                return Bit.uclip(24, reg24.d | i);
             }
 
             public static uint operator ^(Reg24 reg24, uint i)
             {
-                return reg24.d = Bit.uclip(24, reg24.d ^ i);
+                return Bit.uclip(24, reg24.d ^ i);
             }
 
             public static uint operator &(Reg24 reg24, uint i)
             {
-                return reg24.d = Bit.uclip(24, reg24.d & i);
+                return Bit.uclip(24, reg24.d & i);
             }
 
             public static uint operator <<(Reg24 reg24, int i)
             {
-                return reg24.d = Bit.uclip(24, reg24.d << i);
+                return Bit.uclip(24, reg24.d << i);
             }
 
             public static uint operator >>(Reg24 reg24, int i)
             {
-                return reg24.d = Bit.uclip(24, reg24.d >> i);
+                return Bit.uclip(24, reg24.d >> i);
             }
 
             public static uint operator +(Reg24 reg24, uint i)
             {
-                return reg24.d = Bit.uclip(24, reg24.d + i);
+                return Bit.uclip(24, reg24.d + i);
             }
 
             public static uint operator -(Reg24 reg24, uint i)
             {
-                return reg24.d = Bit.uclip(24, reg24.d - i);
+                return Bit.uclip(24, reg24.d - i);
             }
 
             public static uint operator *(Reg24 reg24, uint i)
             {
-                return reg24.d = Bit.uclip(24, reg24.d * i);
+                return Bit.uclip(24, reg24.d * i);
             }
 
             public static uint operator /(Reg24 reg24, uint i)
             {
-                return reg24.d = Bit.uclip(24, reg24.d / i);
+                return Bit.uclip(24, reg24.d / i);
             }
 
             public static uint operator %(Reg24 reg24, uint i)
             {
-                return reg24.d = Bit.uclip(24, reg24.d % i);
+                return Bit.uclip(24, reg24.d % i);
             }
 
             public Reg24()

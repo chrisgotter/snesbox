@@ -35,52 +35,52 @@ namespace Snes
 
             public static uint operator |(Reg16 reg16, uint i)
             {
-                return reg16.w |= (ushort)i;
+                return (uint)reg16.w | (ushort)i;
             }
 
             public static uint operator ^(Reg16 reg16, uint i)
             {
-                return reg16.w ^= (ushort)i;
+                return (uint)reg16.w ^ (ushort)i;
             }
 
             public static uint operator &(Reg16 reg16, uint i)
             {
-                return reg16.w &= (ushort)i;
+                return (uint)reg16.w & (ushort)i;
             }
 
             public static uint operator <<(Reg16 reg16, int i)
             {
-                return reg16.w <<= i;
+                return (uint)reg16.w << i;
             }
 
             public static uint operator >>(Reg16 reg16, int i)
             {
-                return reg16.w >>= i;
+                return (uint)reg16.w >> i;
             }
 
             public static uint operator +(Reg16 reg16, uint i)
             {
-                return reg16.w += (ushort)i;
+                return (uint)reg16.w + (ushort)i;
             }
 
             public static uint operator -(Reg16 reg16, uint i)
             {
-                return reg16.w -= (ushort)i;
+                return (uint)reg16.w - (ushort)i;
             }
 
             public static uint operator *(Reg16 reg16, uint i)
             {
-                return reg16.w *= (ushort)i;
+                return (uint)reg16.w * (ushort)i;
             }
 
             public static uint operator /(Reg16 reg16, uint i)
             {
-                return reg16.w /= (ushort)i;
+                return (uint)reg16.w / (ushort)i;
             }
 
             public static uint operator %(Reg16 reg16, uint i)
             {
-                return reg16.w %= (ushort)i;
+                return (uint)reg16.w % (ushort)i;
             }
 
             public Reg16()

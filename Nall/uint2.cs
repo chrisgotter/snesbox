@@ -28,52 +28,52 @@ namespace Nall
 
         public static uint operator |(uint2 number, uint i)
         {
-            return number.data = Bit.uclip(bits, number.data | i);
+            return Bit.uclip(bits, number.data | i);
         }
 
         public static uint operator ^(uint2 number, uint i)
         {
-            return number.data = Bit.uclip(bits, number.data ^ i);
+            return Bit.uclip(bits, number.data ^ i);
         }
 
         public static uint operator &(uint2 number, uint i)
         {
-            return number.data = Bit.uclip(bits, number.data & i);
+            return Bit.uclip(bits, number.data & i);
         }
 
         public static uint operator <<(uint2 number, int i)
         {
-            return number.data = Bit.uclip(bits, number.data << i);
+            return Bit.uclip(bits, number.data << i);
         }
 
         public static uint operator >>(uint2 number, int i)
         {
-            return number.data = Bit.uclip(bits, number.data >> i);
+            return Bit.uclip(bits, number.data >> i);
         }
 
         public static uint operator +(uint2 number, uint i)
         {
-            return number.data = Bit.uclip(bits, number.data + i);
+            return Bit.uclip(bits, number.data + i);
         }
 
         public static uint operator -(uint2 number, uint i)
         {
-            return number.data = Bit.uclip(bits, number.data - i);
+            return Bit.uclip(bits, number.data - i);
         }
 
         public static uint operator *(uint2 number, uint i)
         {
-            return number.data = Bit.uclip(bits, number.data * i);
+            return Bit.uclip(bits, number.data * i);
         }
 
         public static uint operator /(uint2 number, uint i)
         {
-            return number.data = Bit.uclip(bits, number.data / i);
+            return Bit.uclip(bits, number.data / i);
         }
 
         public static uint operator %(uint2 number, uint i)
         {
-            return number.data = Bit.uclip(bits, number.data % i);
+            return Bit.uclip(bits, number.data % i);
         }
 
         public uint2(uint i)

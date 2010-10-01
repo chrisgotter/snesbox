@@ -16,15 +16,30 @@ namespace Snes
 
             public uint Assign(byte data)
             {
-                n = Convert.ToBoolean(data & 0x80); 
+                n = Convert.ToBoolean(data & 0x80);
                 v = Convert.ToBoolean(data & 0x40);
-                m = Convert.ToBoolean(data & 0x20); 
+                m = Convert.ToBoolean(data & 0x20);
                 x = Convert.ToBoolean(data & 0x10);
-                d = Convert.ToBoolean(data & 0x08); 
-                i = Convert.ToBoolean(data & 0x04); 
+                d = Convert.ToBoolean(data & 0x08);
+                i = Convert.ToBoolean(data & 0x04);
                 z = Convert.ToBoolean(data & 0x02);
                 c = Convert.ToBoolean(data & 0x01);
                 return data;
+            }
+
+            public static uint operator |(Flag flag, uint data)
+            {
+                return (uint)flag | data;
+            }
+
+            public static uint operator ^(Flag flag, uint data)
+            {
+                return (uint)flag ^ data;
+            }
+
+            public static uint operator &(Flag flag, uint data)
+            {
+                return (uint)flag & data;
             }
 
             public Flag()
