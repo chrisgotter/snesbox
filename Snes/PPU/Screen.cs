@@ -9,7 +9,6 @@ namespace Snes
         {
             public PPU self;
             public ArraySegment<ushort> output;
-            private int outputIndex = 0;
 
             public Regs regs = new Regs();
 
@@ -18,13 +17,14 @@ namespace Snes
                 output = new ArraySegment<ushort>(self.output.Array, self.output.Offset + self.PPUCounter.vcounter() * 1024, self.output.Array.Length - (self.output.Offset + self.PPUCounter.vcounter() * 1024));
                 if (self.display.interlace && self.PPUCounter.field())
                 {
-                    outputIndex += 512;
+                    output = new ArraySegment<ushort>(output.Array, output.Offset + 512, output.Array.Length - (output.Offset + 512));
                 }
             }
 
             public void run()
             {
                 ushort color;
+                int outputIndex = 0;
                 if (self.regs.pseudo_hires == false && self.regs.bgmode != 5 && self.regs.bgmode != 6)
                 {
                     color = get_pixel(false);
