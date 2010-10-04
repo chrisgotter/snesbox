@@ -435,9 +435,9 @@ namespace Snes
             int output;
             output = (fwd.Array[fwd.Offset + 0] * v.buffer[offset + 0]) >> 11;
             output += (fwd.Array[fwd.Offset + 256] * v.buffer[offset + 1]) >> 11;
-            output += (rev.Array[fwd.Offset + 256] * v.buffer[offset + 2]) >> 11;
+            output += (rev.Array[rev.Offset + 256] * v.buffer[offset + 2]) >> 11;
             output = (short)output;
-            output += (rev.Array[fwd.Offset + 0] * v.buffer[offset + 3]) >> 11;
+            output += (rev.Array[rev.Offset + 0] * v.buffer[offset + 3]) >> 11;
             return Bit.sclamp(16, output) & ~1;
         }
 
