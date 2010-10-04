@@ -2116,7 +2116,7 @@ namespace Snes
             opcode_table[0xcf] = new SMPCoreOperation(op_mul_ya, null);
             opcode_table[0xd0] = new SMPCoreOperation(op_branch, new SMPCoreOpArgument() { flag = 0x02, value = Convert.ToInt32(false) });
             opcode_table[0xd1] = new SMPCoreOperation(op_tcall, new SMPCoreOpArgument() { n = 13 });
-            opcode_table[0xd2] = new SMPCoreOperation(op_setbit_dp, new SMPCoreOpArgument() { op = 1, value = 0x40 });
+            opcode_table[0xd2] = new SMPCoreOperation(op_setbit_dp, new SMPCoreOpArgument() { op = 0, value = 0x40 });
             opcode_table[0xd3] = new SMPCoreOperation(op_bitbranch, new SMPCoreOpArgument() { mask = 0x40, value = Convert.ToInt32(false) });
             opcode_table[0xd4] = new SMPCoreOperation(op_mov_dpr_reg, new SMPCoreOpArgument() { n = (int)OpCode.A, i = (int)OpCode.X });
             opcode_table[0xd5] = new SMPCoreOperation(op_mov_addrr_a, new SMPCoreOpArgument() { i = (int)OpCode.X });

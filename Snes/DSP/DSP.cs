@@ -905,13 +905,11 @@ namespace Snes
         private int calc_fir(int i, bool channel)
         {
             int s = state.echo_hist[Convert.ToInt32(channel)][state.echo_hist_pos + i + 1];
-            //TODO: verify this matches the macro
             return (s * (sbyte)(state.regs[(int)GlobalReg.fir + i * 0x10])) >> 6;
         }
 
         private int echo_output(bool channel)
         {
-            //TODO: verify this matches the macro
             int output = (short)((state.t_main_out[Convert.ToInt32(channel)] * (sbyte)(state.regs[(int)GlobalReg.mvoll + Convert.ToInt32(channel) * 0x10])) >> 7)
                 + (short)((state.t_echo_in[Convert.ToInt32(channel)] * (sbyte)(state.regs[(int)GlobalReg.evoll + Convert.ToInt32(channel) * 0x10])) >> 7);
             return Bit.sclamp(16, output);
