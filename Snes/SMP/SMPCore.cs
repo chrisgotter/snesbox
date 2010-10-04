@@ -1114,7 +1114,7 @@ namespace Snes
             op_io();
             sp = (ushort)(op_readdp((byte)(dp + 0)) << 0);
             sp |= (ushort)(op_readdp((byte)(dp + 1)) << 8);
-            regs.a.Array[regs.a.Offset] = op_readaddr((byte)(sp + regs.y.Array[regs.y.Offset]));
+            regs.a.Array[regs.a.Offset] = op_readaddr((ushort)(sp + regs.y.Array[regs.y.Offset]));
             regs.p.n = Convert.ToBoolean(regs.a.Array[regs.a.Offset] & 0x80);
             regs.p.z = (regs.a.Array[regs.a.Offset] == 0);
             return null;
