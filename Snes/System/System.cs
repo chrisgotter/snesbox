@@ -48,13 +48,19 @@ namespace Snes
             }
         }
 
-        private static int _stateFileCount = 0;
+        public static int _stateFileCount = 0;
         public static void WriteStateToFile()
         {
-            Serializer s = system.serialize();
-            var file = global::System.IO.File.Create(@"..\..\..\..\..\states\SnesBox\" + _stateFileCount++ + ".bst");
-            file.Write(s.data(), 0, (int)s.size());
-            file.Close();
+            //if (_stateFileCount >= 0)
+            //{
+                Serializer s = system.serialize();
+                var file = global::System.IO.File.Create(@"..\..\..\..\..\states\SnesBox\" + _stateFileCount + ".bst");
+                file.Write(s.data(), 0, (int)s.size());
+                file.Close();
+                //while (true) { }
+            //}
+
+            _stateFileCount++;
         }
 
         public void init(Interface interface_)
@@ -554,8 +560,8 @@ namespace Snes
 
         private void serialize(Serializer s)
         {
-            s.integer((uint)region, "(unsigned&)region");
-            s.integer((uint)expansion, "(unsigned&)expansion");
+            s.integer((uint)region, "(unsigned&) region");
+            s.integer((uint)expansion, "(unsigned&) expansion");
         }
 
         private void serialize_all(Serializer s)

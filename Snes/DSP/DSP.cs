@@ -700,7 +700,7 @@ namespace Snes
         //voice
         private void voice_output(Voice v, bool channel)
         {   //apply left/right volume
-            int amp = (state.t_output * (sbyte)(state.regs[v.vidx + (int)VoiceReg.voll] + Convert.ToInt32(channel))) >> 7;
+            int amp = (state.t_output * (sbyte)(state.regs[v.vidx + (int)VoiceReg.voll + Convert.ToInt32(channel)])) >> 7;
 
             //add to output total
             state.t_main_out[Convert.ToInt32(channel)] += amp;
