@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using Nall;
 
 namespace Snes
@@ -41,14 +40,12 @@ namespace Snes
             op_write((ushort)((Convert.ToUInt32(regs.p.p) << 8) + addr), data);
         }
 
-        public void disassemble_opcode(byte[] output, ushort addr)
+        public void disassemble_opcode(out string s, ushort addr)
         {
-            string s, t;
             byte opcode_table, op0, op1;
             ushort opw, opdp0, opdp1;
-            s = new UTF8Encoding().GetString(output);
 
-            s = string.Format("..%.4x ", addr);
+            s = string.Format("..{0:X4} ", addr);
 
             opcode_table = disassemble_read((ushort)(addr + 0));
             op0 = disassemble_read((ushort)(addr + 1));
@@ -57,788 +54,786 @@ namespace Snes
             opdp0 = (ushort)((Convert.ToUInt32(regs.p.p) << 8) + op0);
             opdp1 = (ushort)((Convert.ToUInt32(regs.p.p) << 8) + op1);
 
-            t = "                       ";
+            s += "                       ";
 
             switch (opcode_table)
             {
                 case 0x00:
-                    t = string.Format("nop");
+                    s += string.Format("nop");
                     break;
                 case 0x01:
-                    t = string.Format("tcall 0");
+                    s += string.Format("tcall 0");
                     break;
                 case 0x02:
-                    t = string.Format("set0  $%.3x", opdp0);
+                    s += string.Format("set0  ${0:X3}", opdp0);
                     break;
                 case 0x03:
-                    t = string.Format("bbs0  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("bbs0  ${0:X3},${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0x04:
-                    t = string.Format("or    a,$%.3x", opdp0);
+                    s += string.Format("or    a,${0:X3}", opdp0);
                     break;
                 case 0x05:
-                    t = string.Format("or    a,$%.4x", opw);
+                    s += string.Format("or    a,${0:X4}", opw);
                     break;
                 case 0x06:
-                    t = string.Format("or    a,(x)");
+                    s += string.Format("or    a,(x)");
                     break;
                 case 0x07:
-                    t = string.Format("or    a,($%.3x+x)", opdp0);
+                    s += string.Format("or    a,(${0:X3}+x)", opdp0);
                     break;
                 case 0x08:
-                    t = string.Format("or    a,#$%.2x", op0);
+                    s += string.Format("or    a,#${0:X2}", op0);
                     break;
                 case 0x09:
-                    t = string.Format("or    $%.3x,$%.3x", opdp1, opdp0);
+                    s += string.Format("or    ${0:X3},${1:X3}", opdp1, opdp0);
                     break;
                 case 0x0a:
-                    t = string.Format("or1   c,$%.4x:%d", opw & 0x1fff, opw >> 13);
+                    s += string.Format("or1   c,${0:X4}:%d", opw & 0x1fff, opw >> 13);
                     break;
                 case 0x0b:
-                    t = string.Format("asl   $%.3x", opdp0);
+                    s += string.Format("asl   ${0:X3}", opdp0);
                     break;
                 case 0x0c:
-                    t = string.Format("asl   $%.4x", opw);
+                    s += string.Format("asl   ${0:X4}", opw);
                     break;
                 case 0x0d:
-                    t = string.Format("push  p");
+                    s += string.Format("push  p");
                     break;
                 case 0x0e:
-                    t = string.Format("tset  $%.4x,a", opw);
+                    s += string.Format("tset  ${0:X4},a", opw);
                     break;
                 case 0x0f:
-                    t = string.Format("brk");
+                    s += string.Format("brk");
                     break;
                 case 0x10:
-                    t = string.Format("bpl   $%.4x", relb(op0, 2));
+                    s += string.Format("bpl   ${0:X4}", relb(op0, 2));
                     break;
                 case 0x11:
-                    t = string.Format("tcall 1");
+                    s += string.Format("tcall 1");
                     break;
                 case 0x12:
-                    t = string.Format("clr0  $%.3x", opdp0);
+                    s += string.Format("clr0  ${0:X3}", opdp0);
                     break;
                 case 0x13:
-                    t = string.Format("bbc0  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("bbc0  ${0:X3},${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0x14:
-                    t = string.Format("or    a,$%.3x+x", opdp0);
+                    s += string.Format("or    a,${0:X3}+x", opdp0);
                     break;
                 case 0x15:
-                    t = string.Format("or    a,$%.4x+x", opw);
+                    s += string.Format("or    a,${0:X4}+x", opw);
                     break;
                 case 0x16:
-                    t = string.Format("or    a,$%.4x+y", opw);
+                    s += string.Format("or    a,${0:X4}+y", opw);
                     break;
                 case 0x17:
-                    t = string.Format("or    a,($%.3x)+y", opdp0);
+                    s += string.Format("or    a,(${0:X3})+y", opdp0);
                     break;
                 case 0x18:
-                    t = string.Format("or    $%.3x,#$%.2x", opdp1, op0);
+                    s += string.Format("or    ${0:X3},#${1:X2}", opdp1, op0);
                     break;
                 case 0x19:
-                    t = string.Format("or    (x),(y)");
+                    s += string.Format("or    (x),(y)");
                     break;
                 case 0x1a:
-                    t = string.Format("decw  $%.3x", opdp0);
+                    s += string.Format("decw  ${0:X3}", opdp0);
                     break;
                 case 0x1b:
-                    t = string.Format("asl   $%.3x+x", opdp0);
+                    s += string.Format("asl   ${0:X3}+x", opdp0);
                     break;
                 case 0x1c:
-                    t = string.Format("asl   a");
+                    s += string.Format("asl   a");
                     break;
                 case 0x1d:
-                    t = string.Format("dec   x");
+                    s += string.Format("dec   x");
                     break;
                 case 0x1e:
-                    t = string.Format("cmp   x,$%.4x", opw);
+                    s += string.Format("cmp   x,${0:X4}", opw);
                     break;
                 case 0x1f:
-                    t = string.Format("jmp   ($%.4x+x)", opw);
+                    s += string.Format("jmp   (${0:X4}+x)", opw);
                     break;
                 case 0x20:
-                    t = string.Format("clrp");
+                    s += string.Format("clrp");
                     break;
                 case 0x21:
-                    t = string.Format("tcall 2");
+                    s += string.Format("tcall 2");
                     break;
                 case 0x22:
-                    t = string.Format("set1  $%.3x", opdp0);
+                    s += string.Format("set1  ${0:X3}", opdp0);
                     break;
                 case 0x23:
-                    t = string.Format("bbs1  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("bbs1  ${0:X3},${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0x24:
-                    t = string.Format("and   a,$%.3x", opdp0);
+                    s += string.Format("and   a,${0:X3}", opdp0);
                     break;
                 case 0x25:
-                    t = string.Format("and   a,$%.4x", opw);
+                    s += string.Format("and   a,${0:X4}", opw);
                     break;
                 case 0x26:
-                    t = string.Format("and   a,(x)");
+                    s += string.Format("and   a,(x)");
                     break;
                 case 0x27:
-                    t = string.Format("and   a,($%.3x+x)", opdp0);
+                    s += string.Format("and   a,(${0:X3}+x)", opdp0);
                     break;
                 case 0x28:
-                    t = string.Format("and   a,#$%.2x", op0);
+                    s += string.Format("and   a,#${0:X2}", op0);
                     break;
                 case 0x29:
-                    t = string.Format("and   $%.3x,$%.3x", opdp1, opdp0);
+                    s += string.Format("and   ${0:X3},${1:X3}", opdp1, opdp0);
                     break;
                 case 0x2a:
-                    t = string.Format("or1   c,!$%.4x:%d", opw & 0x1fff, opw >> 13);
+                    s += string.Format("or1   c,!${0:X4}:%d", opw & 0x1fff, opw >> 13);
                     break;
                 case 0x2b:
-                    t = string.Format("rol   $%.3x", opdp0);
+                    s += string.Format("rol   ${0:X3}", opdp0);
                     break;
                 case 0x2c:
-                    t = string.Format("rol   $%.4x", opw);
+                    s += string.Format("rol   ${0:X4}", opw);
                     break;
                 case 0x2d:
-                    t = string.Format("push  a");
+                    s += string.Format("push  a");
                     break;
                 case 0x2e:
-                    t = string.Format("cbne  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("cbne  ${0:X3},${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0x2f:
-                    t = string.Format("bra   $%.4x", relb(op0, 2));
+                    s += string.Format("bra   ${0:X4}", relb(op0, 2));
                     break;
                 case 0x30:
-                    t = string.Format("bmi   $%.4x", relb(op0, 2));
+                    s += string.Format("bmi   ${0:X4}", relb(op0, 2));
                     break;
                 case 0x31:
-                    t = string.Format("tcall 3");
+                    s += string.Format("tcall 3");
                     break;
                 case 0x32:
-                    t = string.Format("clr1  $%.3x", opdp0);
+                    s += string.Format("clr1  ${0:X3}", opdp0);
                     break;
                 case 0x33:
-                    t = string.Format("bbc1  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("bbc1  ${0:X3},${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0x34:
-                    t = string.Format("and   a,$%.3x+x", opdp0);
+                    s += string.Format("and   a,${0:X3}+x", opdp0);
                     break;
                 case 0x35:
-                    t = string.Format("and   a,$%.4x+x", opw);
+                    s += string.Format("and   a,${0:X4}+x", opw);
                     break;
                 case 0x36:
-                    t = string.Format("and   a,$%.4x+y", opw);
+                    s += string.Format("and   a,${0:X4}+y", opw);
                     break;
                 case 0x37:
-                    t = string.Format("and   a,($%.3x)+y", opdp0);
+                    s += string.Format("and   a,(${0:X3})+y", opdp0);
                     break;
                 case 0x38:
-                    t = string.Format("and   $%.3x,#$%.2x", opdp1, op0);
+                    s += string.Format("and   ${0:X3},#${1:X2}", opdp1, op0);
                     break;
                 case 0x39:
-                    t = string.Format("and   (x),(y)");
+                    s += string.Format("and   (x),(y)");
                     break;
                 case 0x3a:
-                    t = string.Format("incw  $%.3x", opdp0);
+                    s += string.Format("incw  ${0:X3}", opdp0);
                     break;
                 case 0x3b:
-                    t = string.Format("rol   $%.3x+x", opdp0);
+                    s += string.Format("rol   ${0:X3}+x", opdp0);
                     break;
                 case 0x3c:
-                    t = string.Format("rol   a");
+                    s += string.Format("rol   a");
                     break;
                 case 0x3d:
-                    t = string.Format("inc   x");
+                    s += string.Format("inc   x");
                     break;
                 case 0x3e:
-                    t = string.Format("cmp   x,$%.3x", opdp0);
+                    s += string.Format("cmp   x,${0:X3}", opdp0);
                     break;
                 case 0x3f:
-                    t = string.Format("call  $%.4x", opw);
+                    s += string.Format("call  ${0:X4}", opw);
                     break;
                 case 0x40:
-                    t = string.Format("setp");
+                    s += string.Format("setp");
                     break;
                 case 0x41:
-                    t = string.Format("tcall 4");
+                    s += string.Format("tcall 4");
                     break;
                 case 0x42:
-                    t = string.Format("set2  $%.3x", opdp0);
+                    s += string.Format("set2  ${0:X3}", opdp0);
                     break;
                 case 0x43:
-                    t = string.Format("bbs2  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("bbs2  ${0:X3},${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0x44:
-                    t = string.Format("eor   a,$%.3x", opdp0);
+                    s += string.Format("eor   a,${0:X3}", opdp0);
                     break;
                 case 0x45:
-                    t = string.Format("eor   a,$%.4x", opw);
+                    s += string.Format("eor   a,${0:X4}", opw);
                     break;
                 case 0x46:
-                    t = string.Format("eor   a,(x)");
+                    s += string.Format("eor   a,(x)");
                     break;
                 case 0x47:
-                    t = string.Format("eor   a,($%.3x+x)", opdp0);
+                    s += string.Format("eor   a,(${0:X3}+x)", opdp0);
                     break;
                 case 0x48:
-                    t = string.Format("eor   a,#$%.2x", op0);
+                    s += string.Format("eor   a,#${0:X2}", op0);
                     break;
                 case 0x49:
-                    t = string.Format("eor   $%.3x,$%.3x", opdp1, opdp0);
+                    s += string.Format("eor   ${0:X3},${1:X3}", opdp1, opdp0);
                     break;
                 case 0x4a:
-                    t = string.Format("and1  c,$%.4x:%d", opw & 0x1fff, opw >> 13);
+                    s += string.Format("and1  c,${0:X4}:%d", opw & 0x1fff, opw >> 13);
                     break;
                 case 0x4b:
-                    t = string.Format("lsr   $%.3x", opdp0);
+                    s += string.Format("lsr   ${0:X3}", opdp0);
                     break;
                 case 0x4c:
-                    t = string.Format("lsr   $%.4x", opw);
+                    s += string.Format("lsr   ${0:X4}", opw);
                     break;
                 case 0x4d:
-                    t = string.Format("push  x");
+                    s += string.Format("push  x");
                     break;
                 case 0x4e:
-                    t = string.Format("tclr  $%.4x,a", opw);
+                    s += string.Format("tclr  ${0:X4},a", opw);
                     break;
                 case 0x4f:
-                    t = string.Format("pcall $ff%.2x", op0);
+                    s += string.Format("pcall $ff{0:X2}", op0);
                     break;
                 case 0x50:
-                    t = string.Format("bvc   $%.4x", relb(op0, 2));
+                    s += string.Format("bvc   ${0:X4}", relb(op0, 2));
                     break;
                 case 0x51:
-                    t = string.Format("tcall 5");
+                    s += string.Format("tcall 5");
                     break;
                 case 0x52:
-                    t = string.Format("clr2  $%.3x", opdp0);
+                    s += string.Format("clr2  ${0:X3}", opdp0);
                     break;
                 case 0x53:
-                    t = string.Format("bbc2  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("bbc2  ${0:X3},${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0x54:
-                    t = string.Format("eor   a,$%.3x+x", opdp0);
+                    s += string.Format("eor   a,${0:X3}+x", opdp0);
                     break;
                 case 0x55:
-                    t = string.Format("eor   a,$%.4x+x", opw);
+                    s += string.Format("eor   a,${0:X4}+x", opw);
                     break;
                 case 0x56:
-                    t = string.Format("eor   a,$%.4x+y", opw);
+                    s += string.Format("eor   a,${0:X4}+y", opw);
                     break;
                 case 0x57:
-                    t = string.Format("eor   a,($%.3x)+y", opdp0);
+                    s += string.Format("eor   a,(${0:X3})+y", opdp0);
                     break;
                 case 0x58:
-                    t = string.Format("eor   $%.3x,#$%.2x", opdp1, op0);
+                    s += string.Format("eor   ${0:X3},#${1:X2}", opdp1, op0);
                     break;
                 case 0x59:
-                    t = string.Format("eor   (x),(y)");
+                    s += string.Format("eor   (x),(y)");
                     break;
                 case 0x5a:
-                    t = string.Format("cmpw  ya,$%.3x", opdp0);
+                    s += string.Format("cmpw  ya,${0:X3}", opdp0);
                     break;
                 case 0x5b:
-                    t = string.Format("lsr   $%.3x+x", opdp0);
+                    s += string.Format("lsr   ${0:X3}+x", opdp0);
                     break;
                 case 0x5c:
-                    t = string.Format("lsr   a");
+                    s += string.Format("lsr   a");
                     break;
                 case 0x5d:
-                    t = string.Format("mov   x,a");
+                    s += string.Format("mov   x,a");
                     break;
                 case 0x5e:
-                    t = string.Format("cmp   y,$%.4x", opw);
+                    s += string.Format("cmp   y,${0:X4}", opw);
                     break;
                 case 0x5f:
-                    t = string.Format("jmp   $%.4x", opw);
+                    s += string.Format("jmp   ${0:X4}", opw);
                     break;
                 case 0x60:
-                    t = string.Format("clrc");
+                    s += string.Format("clrc");
                     break;
                 case 0x61:
-                    t = string.Format("tcall 6");
+                    s += string.Format("tcall 6");
                     break;
                 case 0x62:
-                    t = string.Format("set3  $%.3x", opdp0);
+                    s += string.Format("set3  ${0:X3}", opdp0);
                     break;
                 case 0x63:
-                    t = string.Format("bbs3  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("bbs3  ${0:X3},${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0x64:
-                    t = string.Format("cmp   a,$%.3x", opdp0);
+                    s += string.Format("cmp   a,${0:X3}", opdp0);
                     break;
                 case 0x65:
-                    t = string.Format("cmp   a,$%.4x", opw);
+                    s += string.Format("cmp   a,${0:X4}", opw);
                     break;
                 case 0x66:
-                    t = string.Format("cmp   a,(x)");
+                    s += string.Format("cmp   a,(x)");
                     break;
                 case 0x67:
-                    t = string.Format("cmp   a,($%.3x+x)", opdp0);
+                    s += string.Format("cmp   a,(${0:X3}+x)", opdp0);
                     break;
                 case 0x68:
-                    t = string.Format("cmp   a,#$%.2x", op0);
+                    s += string.Format("cmp   a,#${0:X2}", op0);
                     break;
                 case 0x69:
-                    t = string.Format("cmp   $%.3x,$%.3x", opdp1, opdp0);
+                    s += string.Format("cmp   ${0:X3},${1:X3}", opdp1, opdp0);
                     break;
                 case 0x6a:
-                    t = string.Format("and1  c,!$%.4x:%d", opw & 0x1fff, opw >> 13);
+                    s += string.Format("and1  c,!${0:X4}:%d", opw & 0x1fff, opw >> 13);
                     break;
                 case 0x6b:
-                    t = string.Format("ror   $%.3x", opdp0);
+                    s += string.Format("ror   ${0:X3}", opdp0);
                     break;
                 case 0x6c:
-                    t = string.Format("ror   $%.4x", opw);
+                    s += string.Format("ror   ${0:X4}", opw);
                     break;
                 case 0x6d:
-                    t = string.Format("push  y");
+                    s += string.Format("push  y");
                     break;
                 case 0x6e:
-                    t = string.Format("dbnz  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("dbnz  ${0:X3},${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0x6f:
-                    t = string.Format("ret");
+                    s += string.Format("ret");
                     break;
                 case 0x70:
-                    t = string.Format("bvs   $%.4x", relb(op0, 2));
+                    s += string.Format("bvs   ${0:X4}", relb(op0, 2));
                     break;
                 case 0x71:
-                    t = string.Format("tcall 7");
+                    s += string.Format("tcall 7");
                     break;
                 case 0x72:
-                    t = string.Format("clr3  $%.3x", opdp0);
+                    s += string.Format("clr3  ${0:X3}", opdp0);
                     break;
                 case 0x73:
-                    t = string.Format("bbc3  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("bbc3  ${0:X3},${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0x74:
-                    t = string.Format("cmp   a,$%.3x+x", opdp0);
+                    s += string.Format("cmp   a,${0:X3}+x", opdp0);
                     break;
                 case 0x75:
-                    t = string.Format("cmp   a,$%.4x+x", opw);
+                    s += string.Format("cmp   a,${0:X4}+x", opw);
                     break;
                 case 0x76:
-                    t = string.Format("cmp   a,$%.4x+y", opw);
+                    s += string.Format("cmp   a,${0:X4}+y", opw);
                     break;
                 case 0x77:
-                    t = string.Format("cmp   a,($%.3x)+y", opdp0);
+                    s += string.Format("cmp   a,(${0:X3})+y", opdp0);
                     break;
                 case 0x78:
-                    t = string.Format("cmp   $%.3x,#$%.2x", opdp1, op0);
+                    s += string.Format("cmp   ${0:X3},#${1:X2}", opdp1, op0);
                     break;
                 case 0x79:
-                    t = string.Format("cmp   (x),(y)");
+                    s += string.Format("cmp   (x),(y)");
                     break;
                 case 0x7a:
-                    t = string.Format("addw  ya,$%.3x", opdp0);
+                    s += string.Format("addw  ya,${0:X3}", opdp0);
                     break;
                 case 0x7b:
-                    t = string.Format("ror   $%.3x+x", opdp0);
+                    s += string.Format("ror   ${0:X3}+x", opdp0);
                     break;
                 case 0x7c:
-                    t = string.Format("ror   a");
+                    s += string.Format("ror   a");
                     break;
                 case 0x7d:
-                    t = string.Format("mov   a,x");
+                    s += string.Format("mov   a,x");
                     break;
                 case 0x7e:
-                    t = string.Format("cmp   y,$%.3x", opdp0);
+                    s += string.Format("cmp   y,${0:X3}", opdp0);
                     break;
                 case 0x7f:
-                    t = string.Format("reti");
+                    s += string.Format("reti");
                     break;
                 case 0x80:
-                    t = string.Format("setc");
+                    s += string.Format("setc");
                     break;
                 case 0x81:
-                    t = string.Format("tcall 8");
+                    s += string.Format("tcall 8");
                     break;
                 case 0x82:
-                    t = string.Format("set4  $%.3x", opdp0);
+                    s += string.Format("set4  ${0:X3}", opdp0);
                     break;
                 case 0x83:
-                    t = string.Format("bbs4  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("bbs4  ${0:X3},${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0x84:
-                    t = string.Format("adc   a,$%.3x", opdp0);
+                    s += string.Format("adc   a,${0:X3}", opdp0);
                     break;
                 case 0x85:
-                    t = string.Format("adc   a,$%.4x", opw);
+                    s += string.Format("adc   a,${0:X4}", opw);
                     break;
                 case 0x86:
-                    t = string.Format("adc   a,(x)");
+                    s += string.Format("adc   a,(x)");
                     break;
                 case 0x87:
-                    t = string.Format("adc   a,($%.3x+x)", opdp0);
+                    s += string.Format("adc   a,(${0:X3}+x)", opdp0);
                     break;
                 case 0x88:
-                    t = string.Format("adc   a,#$%.2x", op0);
+                    s += string.Format("adc   a,#${0:X2}", op0);
                     break;
                 case 0x89:
-                    t = string.Format("adc   $%.3x,$%.3x", opdp1, opdp0);
+                    s += string.Format("adc   ${0:X3},${1:X3}", opdp1, opdp0);
                     break;
                 case 0x8a:
-                    t = string.Format("eor1  c,$%.4x:%d", opw & 0x1fff, opw >> 13);
+                    s += string.Format("eor1  c,${0:X4}:%d", opw & 0x1fff, opw >> 13);
                     break;
                 case 0x8b:
-                    t = string.Format("dec   $%.3x", opdp0);
+                    s += string.Format("dec   ${0:X3}", opdp0);
                     break;
                 case 0x8c:
-                    t = string.Format("dec   $%.4x", opw);
+                    s += string.Format("dec   ${0:X4}", opw);
                     break;
                 case 0x8d:
-                    t = string.Format("mov   y,#$%.2x", op0);
+                    s += string.Format("mov   y,#${0:X2}", op0);
                     break;
                 case 0x8e:
-                    t = string.Format("pop   p");
+                    s += string.Format("pop   p");
                     break;
                 case 0x8f:
-                    t = string.Format("mov   $%.3x,#$%.2x", opdp1, op0);
+                    s += string.Format("mov   ${0:X3},#${1:X2}", opdp1, op0);
                     break;
                 case 0x90:
-                    t = string.Format("bcc   $%.4x", relb(op0, 2));
+                    s += string.Format("bcc   ${0:X4}", relb(op0, 2));
                     break;
                 case 0x91:
-                    t = string.Format("tcall 9");
+                    s += string.Format("tcall 9");
                     break;
                 case 0x92:
-                    t = string.Format("clr4  $%.3x", opdp0);
+                    s += string.Format("clr4  ${0:X3}", opdp0);
                     break;
                 case 0x93:
-                    t = string.Format("bbc4  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("bbc4  ${0:X3},${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0x94:
-                    t = string.Format("adc   a,$%.3x+x", opdp0);
+                    s += string.Format("adc   a,${0:X3}+x", opdp0);
                     break;
                 case 0x95:
-                    t = string.Format("adc   a,$%.4x+x", opw);
+                    s += string.Format("adc   a,${0:X4}+x", opw);
                     break;
                 case 0x96:
-                    t = string.Format("adc   a,$%.4x+y", opw);
+                    s += string.Format("adc   a,${0:X4}+y", opw);
                     break;
                 case 0x97:
-                    t = string.Format("adc   a,($%.3x)+y", opdp0);
+                    s += string.Format("adc   a,(${0:X3})+y", opdp0);
                     break;
                 case 0x98:
-                    t = string.Format("adc   $%.3x,#$%.2x", opdp1, op0);
+                    s += string.Format("adc   ${0:X3},#${1:X2}", opdp1, op0);
                     break;
                 case 0x99:
-                    t = string.Format("adc   (x),(y)");
+                    s += string.Format("adc   (x),(y)");
                     break;
                 case 0x9a:
-                    t = string.Format("subw  ya,$%.3x", opdp0);
+                    s += string.Format("subw  ya,${0:X3}", opdp0);
                     break;
                 case 0x9b:
-                    t = string.Format("dec   $%.3x+x", opdp0);
+                    s += string.Format("dec   ${0:X3}+x", opdp0);
                     break;
                 case 0x9c:
-                    t = string.Format("dec   a");
+                    s += string.Format("dec   a");
                     break;
                 case 0x9d:
-                    t = string.Format("mov   x,sp");
+                    s += string.Format("mov   x,sp");
                     break;
                 case 0x9e:
-                    t = string.Format("div   ya,x");
+                    s += string.Format("div   ya,x");
                     break;
                 case 0x9f:
-                    t = string.Format("xcn   a");
+                    s += string.Format("xcn   a");
                     break;
                 case 0xa0:
-                    t = string.Format("ei");
+                    s += string.Format("ei");
                     break;
                 case 0xa1:
-                    t = string.Format("tcall 10");
+                    s += string.Format("tcall 10");
                     break;
                 case 0xa2:
-                    t = string.Format("set5  $%.3x", opdp0);
+                    s += string.Format("set5  ${0:X3}", opdp0);
                     break;
                 case 0xa3:
-                    t = string.Format("bbs5  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("bbs5  ${0:X3},${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0xa4:
-                    t = string.Format("sbc   a,$%.3x", opdp0);
+                    s += string.Format("sbc   a,${0:X3}", opdp0);
                     break;
                 case 0xa5:
-                    t = string.Format("sbc   a,$%.4x", opw);
+                    s += string.Format("sbc   a,${0:X4}", opw);
                     break;
                 case 0xa6:
-                    t = string.Format("sbc   a,(x)");
+                    s += string.Format("sbc   a,(x)");
                     break;
                 case 0xa7:
-                    t = string.Format("sbc   a,($%.3x+x)", opdp0);
+                    s += string.Format("sbc   a,(${0:X3}+x)", opdp0);
                     break;
                 case 0xa8:
-                    t = string.Format("sbc   a,#$%.2x", op0);
+                    s += string.Format("sbc   a,#${0:X2}", op0);
                     break;
                 case 0xa9:
-                    t = string.Format("sbc   $%.3x,$%.3x", opdp1, opdp0);
+                    s += string.Format("sbc   ${0:X3},${1:X3}", opdp1, opdp0);
                     break;
                 case 0xaa:
-                    t = string.Format("mov1  c,$%.4x:%d", opw & 0x1fff, opw >> 13);
+                    s += string.Format("mov1  c,${0:X4}:%d", opw & 0x1fff, opw >> 13);
                     break;
                 case 0xab:
-                    t = string.Format("inc   $%.3x", opdp0);
+                    s += string.Format("inc   ${0:X3}", opdp0);
                     break;
                 case 0xac:
-                    t = string.Format("inc   $%.4x", opw);
+                    s += string.Format("inc   ${0:X4}", opw);
                     break;
                 case 0xad:
-                    t = string.Format("cmp   y,#$%.2x", op0);
+                    s += string.Format("cmp   y,#${0:X2}", op0);
                     break;
                 case 0xae:
-                    t = string.Format("pop   a");
+                    s += string.Format("pop   a");
                     break;
                 case 0xaf:
-                    t = string.Format("mov   (x)+,a");
+                    s += string.Format("mov   (x)+,a");
                     break;
                 case 0xb0:
-                    t = string.Format("bcs   $%.4x", relb(op0, 2));
+                    s += string.Format("bcs   ${0:X4}", relb(op0, 2));
                     break;
                 case 0xb1:
-                    t = string.Format("tcall 11");
+                    s += string.Format("tcall 11");
                     break;
                 case 0xb2:
-                    t = string.Format("clr5  $%.3x", opdp0);
+                    s += string.Format("clr5  ${0:X3}", opdp0);
                     break;
                 case 0xb3:
-                    t = string.Format("bbc5  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("bbc5  ${0:X3},${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0xb4:
-                    t = string.Format("sbc   a,$%.3x+x", opdp0);
+                    s += string.Format("sbc   a,${0:X3}+x", opdp0);
                     break;
                 case 0xb5:
-                    t = string.Format("sbc   a,$%.4x+x", opw);
+                    s += string.Format("sbc   a,${0:X4}+x", opw);
                     break;
                 case 0xb6:
-                    t = string.Format("sbc   a,$%.4x+y", opw);
+                    s += string.Format("sbc   a,${0:X4}+y", opw);
                     break;
                 case 0xb7:
-                    t = string.Format("sbc   a,($%.3x)+y", opdp0);
+                    s += string.Format("sbc   a,(${0:X3})+y", opdp0);
                     break;
                 case 0xb8:
-                    t = string.Format("sbc   $%.3x,#$%.2x", opdp1, op0);
+                    s += string.Format("sbc   ${0:X3},#${1:X2}", opdp1, op0);
                     break;
                 case 0xb9:
-                    t = string.Format("sbc   (x),(y)");
+                    s += string.Format("sbc   (x),(y)");
                     break;
                 case 0xba:
-                    t = string.Format("movw  ya,$%.3x", opdp0);
+                    s += string.Format("movw  ya,${0:X3}", opdp0);
                     break;
                 case 0xbb:
-                    t = string.Format("inc   $%.3x+x", opdp0);
+                    s += string.Format("inc   ${0:X3}+x", opdp0);
                     break;
                 case 0xbc:
-                    t = string.Format("inc   a");
+                    s += string.Format("inc   a");
                     break;
                 case 0xbd:
-                    t = string.Format("mov   sp,x");
+                    s += string.Format("mov   sp,x");
                     break;
                 case 0xbe:
-                    t = string.Format("das   a");
+                    s += string.Format("das   a");
                     break;
                 case 0xbf:
-                    t = string.Format("mov   a,(x)+");
+                    s += string.Format("mov   a,(x)+");
                     break;
                 case 0xc0:
-                    t = string.Format("di");
+                    s += string.Format("di");
                     break;
                 case 0xc1:
-                    t = string.Format("tcall 12");
+                    s += string.Format("tcall 12");
                     break;
                 case 0xc2:
-                    t = string.Format("set6  $%.3x", opdp0);
+                    s += string.Format("set6  ${0:X3}", opdp0);
                     break;
                 case 0xc3:
-                    t = string.Format("bbs6  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("bbs6  ${0:X3},${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0xc4:
-                    t = string.Format("mov   $%.3x,a", opdp0);
+                    s += string.Format("mov   ${0:X3},a", opdp0);
                     break;
                 case 0xc5:
-                    t = string.Format("mov   $%.4x,a", opw);
+                    s += string.Format("mov   ${0:X4},a", opw);
                     break;
                 case 0xc6:
-                    t = string.Format("mov   (x),a");
+                    s += string.Format("mov   (x),a");
                     break;
                 case 0xc7:
-                    t = string.Format("mov   ($%.3x+x),a", opdp0);
+                    s += string.Format("mov   (${0:X3}+x),a", opdp0);
                     break;
                 case 0xc8:
-                    t = string.Format("cmp   x,#$%.2x", op0);
+                    s += string.Format("cmp   x,#${0:X2}", op0);
                     break;
                 case 0xc9:
-                    t = string.Format("mov   $%.4x,x", opw);
+                    s += string.Format("mov   ${0:X4},x", opw);
                     break;
                 case 0xca:
-                    t = string.Format("mov1  $%.4x:%d,c", opw & 0x1fff, opw >> 13);
+                    s += string.Format("mov1  ${0:X4}:%d,c", opw & 0x1fff, opw >> 13);
                     break;
                 case 0xcb:
-                    t = string.Format("mov   $%.3x,y", opdp0);
+                    s += string.Format("mov   ${0:X3},y", opdp0);
                     break;
                 case 0xcc:
-                    t = string.Format("mov   $%.4x,y", opw);
+                    s += string.Format("mov   ${0:X4},y", opw);
                     break;
                 case 0xcd:
-                    t = string.Format("mov   x,#$%.2x", op0);
+                    s += string.Format("mov   x,#${0:X2}", op0);
                     break;
                 case 0xce:
-                    t = string.Format("pop   x");
+                    s += string.Format("pop   x");
                     break;
                 case 0xcf:
-                    t = string.Format("mul   ya");
+                    s += string.Format("mul   ya");
                     break;
                 case 0xd0:
-                    t = string.Format("bne   $%.4x", relb(op0, 2));
+                    s += string.Format("bne   ${0:X4}", relb(op0, 2));
                     break;
                 case 0xd1:
-                    t = string.Format("tcall 13");
+                    s += string.Format("tcall 13");
                     break;
                 case 0xd2:
-                    t = string.Format("clr6  $%.3x", opdp0);
+                    s += string.Format("clr6  ${0:X3}", opdp0);
                     break;
                 case 0xd3:
-                    t = string.Format("bbc6  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("bbc6  ${0:X3},${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0xd4:
-                    t = string.Format("mov   $%.3x+x,a", opdp0);
+                    s += string.Format("mov   ${0:X3}+x,a", opdp0);
                     break;
                 case 0xd5:
-                    t = string.Format("mov   $%.4x+x,a", opw);
+                    s += string.Format("mov   ${0:X4}+x,a", opw);
                     break;
                 case 0xd6:
-                    t = string.Format("mov   $%.4x+y,a", opw);
+                    s += string.Format("mov   ${0:X4}+y,a", opw);
                     break;
                 case 0xd7:
-                    t = string.Format("mov   ($%.3x)+y,a", opdp0);
+                    s += string.Format("mov   (${0:X3})+y,a", opdp0);
                     break;
                 case 0xd8:
-                    t = string.Format("mov   $%.3x,x", opdp0);
+                    s += string.Format("mov   ${0:X3},x", opdp0);
                     break;
                 case 0xd9:
-                    t = string.Format("mov   $%.3x+y,x", opdp0);
+                    s += string.Format("mov   ${0:X3}+y,x", opdp0);
                     break;
                 case 0xda:
-                    t = string.Format("movw  $%.3x,ya", opdp0);
+                    s += string.Format("movw  ${0:X3},ya", opdp0);
                     break;
                 case 0xdb:
-                    t = string.Format("mov   $%.3x+x,y", opdp0);
+                    s += string.Format("mov   ${0:X3}+x,y", opdp0);
                     break;
                 case 0xdc:
-                    t = string.Format("dec   y");
+                    s += string.Format("dec   y");
                     break;
                 case 0xdd:
-                    t = string.Format("mov   a,y");
+                    s += string.Format("mov   a,y");
                     break;
                 case 0xde:
-                    t = string.Format("cbne  $%.3x+x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("cbne  ${0:X3}+x,${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0xdf:
-                    t = string.Format("daa   a");
+                    s += string.Format("daa   a");
                     break;
                 case 0xe0:
-                    t = string.Format("clrv");
+                    s += string.Format("clrv");
                     break;
                 case 0xe1:
-                    t = string.Format("tcall 14");
+                    s += string.Format("tcall 14");
                     break;
                 case 0xe2:
-                    t = string.Format("set7  $%.3x", opdp0);
+                    s += string.Format("set7  ${0:X3}", opdp0);
                     break;
                 case 0xe3:
-                    t = string.Format("bbs7  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("bbs7  ${0:X3},${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0xe4:
-                    t = string.Format("mov   a,$%.3x", opdp0);
+                    s += string.Format("mov   a,${0:X3}", opdp0);
                     break;
                 case 0xe5:
-                    t = string.Format("mov   a,$%.4x", opw);
+                    s += string.Format("mov   a,${0:X4}", opw);
                     break;
                 case 0xe6:
-                    t = string.Format("mov   a,(x)");
+                    s += string.Format("mov   a,(x)");
                     break;
                 case 0xe7:
-                    t = string.Format("mov   a,($%.3x+x)", opdp0);
+                    s += string.Format("mov   a,(${0:X3}+x)", opdp0);
                     break;
                 case 0xe8:
-                    t = string.Format("mov   a,#$%.2x", op0);
+                    s += string.Format("mov   a,#${0:X2}", op0);
                     break;
                 case 0xe9:
-                    t = string.Format("mov   x,$%.4x", opw);
+                    s += string.Format("mov   x,${0:X4}", opw);
                     break;
                 case 0xea:
-                    t = string.Format("not1  c,$%.4x:%d", opw & 0x1fff, opw >> 13);
+                    s += string.Format("not1  c,${0:X4}:%d", opw & 0x1fff, opw >> 13);
                     break;
                 case 0xeb:
-                    t = string.Format("mov   y,$%.3x", opdp0);
+                    s += string.Format("mov   y,${0:X3}", opdp0);
                     break;
                 case 0xec:
-                    t = string.Format("mov   y,$%.4x", opw);
+                    s += string.Format("mov   y,${0:X4}", opw);
                     break;
                 case 0xed:
-                    t = string.Format("notc");
+                    s += string.Format("notc");
                     break;
                 case 0xee:
-                    t = string.Format("pop   y");
+                    s += string.Format("pop   y");
                     break;
                 case 0xef:
-                    t = string.Format("sleep");
+                    s += string.Format("sleep");
                     break;
                 case 0xf0:
-                    t = string.Format("beq   $%.4x", relb(op0, 2));
+                    s += string.Format("beq   ${0:X4}", relb(op0, 2));
                     break;
                 case 0xf1:
-                    t = string.Format("tcall 15");
+                    s += string.Format("tcall 15");
                     break;
                 case 0xf2:
-                    t = string.Format("clr7  $%.3x", opdp0);
+                    s += string.Format("clr7  ${0:X3}", opdp0);
                     break;
                 case 0xf3:
-                    t = string.Format("bbc7  $%.3x,$%.4x", opdp0, relb(op1, 3));
+                    s += string.Format("bbc7  ${0:X3},${1:X4}", opdp0, relb(op1, 3));
                     break;
                 case 0xf4:
-                    t = string.Format("mov   a,$%.3x+x", opdp0);
+                    s += string.Format("mov   a,${0:X3}+x", opdp0);
                     break;
                 case 0xf5:
-                    t = string.Format("mov   a,$%.4x+x", opw);
+                    s += string.Format("mov   a,${0:X4}+x", opw);
                     break;
                 case 0xf6:
-                    t = string.Format("mov   a,$%.4x+y", opw);
+                    s += string.Format("mov   a,${0:X4}+y", opw);
                     break;
                 case 0xf7:
-                    t = string.Format("mov   a,($%.3x)+y", opdp0);
+                    s += string.Format("mov   a,(${0:X3})+y", opdp0);
                     break;
                 case 0xf8:
-                    t = string.Format("mov   x,$%.3x", opdp0);
+                    s += string.Format("mov   x,${0:X3}", opdp0);
                     break;
                 case 0xf9:
-                    t = string.Format("mov   x,$%.3x+y", opdp0);
+                    s += string.Format("mov   x,${0:X3}+y", opdp0);
                     break;
                 case 0xfa:
-                    t = string.Format("mov   $%.3x,$%.3x", opdp1, opdp0);
+                    s += string.Format("mov   ${0:X3},${1:X3}", opdp1, opdp0);
                     break;
                 case 0xfb:
-                    t = string.Format("mov   y,$%.3x+x", opdp0);
+                    s += string.Format("mov   y,${0:X3}+x", opdp0);
                     break;
                 case 0xfc:
-                    t = string.Format("inc   y");
+                    s += string.Format("inc   y");
                     break;
                 case 0xfd:
-                    t = string.Format("mov   y,a");
+                    s += string.Format("mov   y,a");
                     break;
                 case 0xfe:
-                    t = string.Format("dbnz  y,$%.4x", relb(op0, 2));
+                    s += string.Format("dbnz  y,${0:X4}", relb(op0, 2));
                     break;
                 case 0xff:
-                    t = string.Format("stop");
+                    s += string.Format("stop");
                     break;
             }
 
-            t += ' ';
-            s += t;
+            s += ' ';
 
-            t = string.Format("A:%.2x X:%.2x Y:%.2x SP:01%.2x YA:%.4x ",
+            s += string.Format("A:{0:X2} X:{1:X2} Y:{2:X2} SP:01{3:X2} YA:{0:X4} ",
               regs.a.Array[regs.a.Offset], regs.x.Array[regs.x.Offset], regs.y.Array[regs.y.Offset], regs.sp.Array[regs.sp.Offset], (ushort)regs.ya);
-            s += t;
 
-            t = string.Format("%c%c%c%c%c%c%c%c",
+            s += string.Format("{0}{1}{2}{3}{4}{5}{6}{7}",
               regs.p.n ? 'N' : 'n',
               regs.p.v ? 'V' : 'v',
               regs.p.p ? 'P' : 'p',
@@ -847,9 +842,6 @@ namespace Snes
               regs.p.i ? 'I' : 'i',
               regs.p.z ? 'Z' : 'z',
               regs.p.c ? 'C' : 'c');
-            s += t;
-
-            output = new UTF8Encoding().GetBytes(s);
         }
 
         public byte disassemble_read(ushort addr)
