@@ -2303,7 +2303,7 @@ namespace Snes
             last_cycle(); op_io_irq();
             bool carry = regs.p.c;
             regs.p.c = Convert.ToBoolean(regs.a.w & 0x8000);
-            regs.a.w = (byte)((regs.a.w << 1) | Convert.ToInt32(carry));
+            regs.a.w = (ushort)((regs.a.w << 1) | Convert.ToInt32(carry));
             regs.p.n = Convert.ToBoolean(regs.a.w & 0x8000);
             regs.p.z = (regs.a.w == 0);
         }
@@ -2323,7 +2323,7 @@ namespace Snes
             last_cycle(); op_io_irq();
             bool carry = regs.p.c;
             regs.p.c = Convert.ToBoolean(regs.a.w & 0x0001);
-            regs.a.w = (byte)((Convert.ToInt32(carry) << 15) | (regs.a.w >> 1));
+            regs.a.w = (ushort)((Convert.ToInt32(carry) << 15) | (regs.a.w >> 1));
             regs.p.n = Convert.ToBoolean(regs.a.w & 0x8000);
             regs.p.z = (regs.a.w == 0);
         }
