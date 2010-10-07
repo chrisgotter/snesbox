@@ -17,6 +17,7 @@ namespace SnesBox
 
         public SnesBoxGame()
         {
+            IsFixedTimeStep = false;
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 597;
             graphics.PreferredBackBufferHeight = 448;
@@ -76,7 +77,7 @@ namespace SnesBox
                 audioBuffer[i++] = samples[1];
             }
 
-            if (audioBuffer.Length > 0)
+            if (audioBuffer.Length > 0 && _audioFrame.PendingBufferCount <= 64)
             {
                 _audioFrame.SubmitBuffer(audioBuffer, 0, audioBuffer.Length);
             }
