@@ -26,7 +26,6 @@ namespace Snes
         {
             exit_reason = reason;
             thread = Libco.Active();
-            System.WriteStateToFile();
             Libco.Switch(host_thread);
         }
 

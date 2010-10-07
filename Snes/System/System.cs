@@ -51,15 +51,31 @@ namespace Snes
         public static int _stateFileCount = 0;
         public static void WriteStateToFile()
         {
-            //if (_stateFileCount >= 0)
-            //{
-                Serializer s = system.serialize();
-                var file = global::System.IO.File.Create(@"..\..\..\..\..\states\SnesBox\" + _stateFileCount + ".bst");
-                file.Write(s.data(), 0, (int)s.size());
-                file.Close();
-                //while (true) { }
-            //}
+            Serializer s = system.serialize();
+            var file = global::System.IO.File.Create(@"..\..\..\..\..\states\SnesBox\" + _stateFileCount + ".bst");
+            file.Write(s.data(), 0, (int)s.size());
+            file.Close();
+            _stateFileCount++;
+        }
 
+        public static void WriteStateToFile(ushort[] array)
+        {
+            var file = global::System.IO.File.Create(@"..\..\..\..\..\states\SnesBox\" + _stateFileCount + ".bst");
+            foreach (var element in array)
+            {
+                var bytes = BitConverter.GetBytes(element);
+                file.Write(bytes, 0, bytes.Length);
+            }
+            file.Close();
+            _stateFileCount++;
+        }
+
+        public static void WriteStateToFile(int array)
+        {
+            var file = global::System.IO.File.Create(@"..\..\..\..\..\states\SnesBox\" + _stateFileCount + ".bst");
+            var bytes = BitConverter.GetBytes(array);
+            file.Write(bytes, 0, bytes.Length);
+            file.Close();
             _stateFileCount++;
         }
 
