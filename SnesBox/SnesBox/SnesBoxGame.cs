@@ -90,6 +90,10 @@ namespace SnesBox
             }
 
             var videoBuffer = new uint[e.Width * e.Height];
+            bool interlace = (e.Height >= 240);
+            uint pitch = interlace ? 1024U : 2048U;
+            pitch >>= 1;
+
             int bufferIndex = 0;
             _videoFrame.GetData<uint>(videoBuffer);
 
@@ -97,7 +101,7 @@ namespace SnesBox
             {
                 for (int x = 0; x < e.Width; x++)
                 {
-                    ushort color = e.VideoBuffer.Array[e.VideoBuffer.Offset + bufferIndex];
+                    ushort color = e.VideoBuffer.Array[e.VideoBuffer.Offset + (y * pitch) + x];
                     int b;
 
                     b = ((color >> 10) & 31) * 8;
