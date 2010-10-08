@@ -4,16 +4,16 @@ namespace SnesBox
 {
     public class AudioUpdatedEventArgs : EventArgs
     {
-        ushort[] _audioBuffer;
+        uint[] _audioBuffer;
         int _sampleCount;
 
-        public AudioUpdatedEventArgs(ushort[] audioBuffer, int sampleCount)
+        public AudioUpdatedEventArgs(uint[] audioBuffer, int sampleCount)
         {
             _audioBuffer = audioBuffer;
             _sampleCount = sampleCount;
         }
 
-        public ushort[] AudioBuffer { get { return _audioBuffer; } }
+        public uint[] AudioBuffer { get { return _audioBuffer; } }
         public int SampleCount { get { return _sampleCount; } }
     }
 

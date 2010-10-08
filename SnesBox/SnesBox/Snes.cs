@@ -9,7 +9,7 @@ namespace SnesBox
     {
         public static readonly int VersionMajor;
         public static readonly int VersionMinor;
-        static Collection<ushort> audio_buffer = new Collection<ushort>();
+        static Collection<uint> audio_buffer = new Collection<uint>();
 
         static Snes()
         {
@@ -34,11 +34,12 @@ namespace SnesBox
         {
             VideoUpdated(this, new VideoUpdatedEventArgs(data, (int)width, (int)height));
             AudioUpdated(this, new AudioUpdatedEventArgs(audio_buffer.ToArray(), audio_buffer.Count));
+            audio_buffer.Clear();
         }
 
         void LibSnes_snes_audio_sample(ushort left, ushort right)
         {
-            audio_buffer.Add((ushort)((right << 16) | left));
+            audio_buffer.Add((uint)((right << 16) | left));
         }
 
         public Cartridge Cartridge

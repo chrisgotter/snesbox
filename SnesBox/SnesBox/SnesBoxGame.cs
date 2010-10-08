@@ -26,6 +26,7 @@ namespace SnesBox
         protected override void Initialize()
         {
             _audioFrame = new DynamicSoundEffectInstance(32040, AudioChannels.Stereo);
+            _audioFrame.Play();
 
             _snes.VideoUpdated += new VideoUpdatedEventHandler(Snes_VideoUpdated);
             _snes.AudioUpdated += new AudioUpdatedEventHandler(Snes_AudioUpdated);
@@ -48,7 +49,6 @@ namespace SnesBox
         protected override void Update(GameTime gameTime)
         {
             _snes.RunToFrame();
-            Window.Title = gameTime.IsRunningSlowly ? "Slow" : string.Empty;
 
             base.Update(gameTime);
         }
@@ -59,8 +59,6 @@ namespace SnesBox
             spriteBatch.Begin();
             spriteBatch.Draw(_videoFrame, new Rectangle(0, 0, vp.Width, vp.Height), Color.White);
             spriteBatch.End();
-
-            _audioFrame.Play();
 
             base.Draw(gameTime);
         }
@@ -75,9 +73,11 @@ namespace SnesBox
                 var samples = BitConverter.GetBytes(e.AudioBuffer[bufferIndex++]);
                 audioBuffer[i++] = samples[0];
                 audioBuffer[i++] = samples[1];
+                audioBuffer[i++] = samples[2];
+                audioBuffer[i++] = samples[3];
             }
 
-            if (audioBuffer.Length > 0 && _audioFrame.PendingBufferCount <= 64)
+            if (audioBuffer.Length > 0)
             {
                 _audioFrame.SubmitBuffer(audioBuffer, 0, audioBuffer.Length);
             }
