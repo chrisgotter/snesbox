@@ -19,8 +19,8 @@ namespace SnesBox
         {
             IsFixedTimeStep = false;
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 597;
-            graphics.PreferredBackBufferHeight = 448;
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 600;
         }
 
         protected override void Initialize()
@@ -70,11 +70,11 @@ namespace SnesBox
 
             for (int i = 0; i < e.AudioBuffer.Length; i++)
             {
-                var samples = BitConverter.GetBytes(e.AudioBuffer[bufferIndex++]);
-                audioBuffer[i++] = samples[0];
-                audioBuffer[i++] = samples[1];
-                audioBuffer[i++] = samples[2];
-                audioBuffer[i++] = samples[3];
+                var samples = BitConverter.GetBytes(e.AudioBuffer[i]);
+                audioBuffer[bufferIndex++] = samples[0];
+                audioBuffer[bufferIndex++] = samples[1];
+                audioBuffer[bufferIndex++] = samples[2];
+                audioBuffer[bufferIndex++] = samples[3];
             }
 
             if (audioBuffer.Length > 0)
@@ -95,7 +95,6 @@ namespace SnesBox
             uint pitch = interlace ? 1024U : 2048U;
             pitch >>= 1;
 
-            int bufferIndex = 0;
             _videoFrame.GetData<uint>(videoBuffer);
 
             for (int y = 0; y < e.Height; y++)
@@ -115,8 +114,6 @@ namespace SnesBox
 
                     videoBuffer[y * e.Width + x] = new Color() { R = red, G = green, B = blue, A = alpha }.PackedValue;
                 }
-
-                bufferIndex += e.Height > 256 ? 512 - e.Width : 1024 - e.Width;
             }
 
             GraphicsDevice.Textures[0] = null;
