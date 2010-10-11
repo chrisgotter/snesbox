@@ -10,7 +10,7 @@ namespace Snes.Fast
 
             // Echo history keeps most recent 8 samples (twice the size to simplify wrap handling)
             public int[][] echo_hist = new int[echo_hist_size * 2][];
-            public int[] echo_hist_pos; // &echo_hist [0 to 7]
+            public ArraySegment<int[]> echo_hist_pos; // &echo_hist [0 to 7]
 
             public int every_other_sample; // toggles every sample
             public int kon;                // KON value when last checked

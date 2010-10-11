@@ -121,7 +121,7 @@ namespace Snes.Fast
 
         public void V(string clock, int voice)
         {
-            this.GetType().GetMethod("voice_" + clock).Invoke(this, new object[] { m.voices[voice] });
+            this.GetType().GetMethod("voice_" + clock).Invoke(this, new object[] { new ArraySegment<Voice>(m.voices, voice, m.voices.Length - voice) });
         }
 
         public bool Phase(int n, int clocks_remain)
@@ -421,7 +421,7 @@ namespace Snes.Fast
                     m.echo_hist[i][j] = s; // write back at offset 0
                 }
             }
-            m.echo_hist_pos = m.echo_hist[0];
+            m.echo_hist_pos = new ArraySegment<int[]>(m.echo_hist, 0, m.echo_hist.Length);
             Array.Copy(m.echo_hist, m.echo_hist[echo_hist_size], echo_hist_size * m.echo_hist[0].Length);
 
             // Misc
@@ -738,70 +738,454 @@ namespace Snes.Fast
             }
         }
 
-        private void misc_27() { throw new NotImplementedException(); }
+        private void misc_27()
+        {
+            m.t_pmon = m.regs[(int)GlobalReg.pmon] & 0xFE; // voice 0 doesn't support PMON
+        }
 
-        private void misc_28() { throw new NotImplementedException(); }
+        private void misc_28()
+        {
+            m.t_non = m.regs[(int)GlobalReg.non];
+            m.t_eon = m.regs[(int)GlobalReg.eon];
+            m.t_dir = m.regs[(int)GlobalReg.dir];
+        }
 
-        private void misc_29() { throw new NotImplementedException(); }
+        private void misc_29()
+        {
+            if ((m.every_other_sample ^= 1) != 0)
+            {
+                m.new_kon &= ~m.kon; // clears KON 63 clocks after it was last read
+            }
+        }
 
-        private void misc_30() { throw new NotImplementedException(); }
+        private void misc_30()
+        {
+            if (Convert.ToBoolean(m.every_other_sample))
+            {
+                m.kon = m.new_kon;
+                m.t_koff = m.regs[(int)GlobalReg.koff] | m.mute_mask;
+            }
 
-        private void voice_output(Voice v, int ch) { throw new NotImplementedException(); }
+            run_counters();
 
-        private void voice_V1(Voice v) { throw new NotImplementedException(); }
+            // Noise
+            if (!Convert.ToBoolean(read_counter(m.regs[(int)GlobalReg.flg] & 0x1F)))
+            {
+                int feedback = (m.noise << 13) ^ (m.noise << 14);
+                m.noise = (feedback & 0x4000) ^ (m.noise >> 1);
+            }
+        }
 
-        private void voice_V2(Voice v) { throw new NotImplementedException(); }
+        private void voice_output(Voice v, int ch)
+        {	// Apply left/right volume
+            int amp = (m.t_output * (sbyte)v.regs.Array[v.regs.Offset + (int)VoiceReg.voll + ch]) >> 7;
 
-        private void voice_V3(Voice v) { throw new NotImplementedException(); }
+            // Add to output total
+            m.t_main_out[ch] += amp;
+            Clamp16(ref m.t_main_out[ch]);
 
-        private void voice_V3a(Voice v) { throw new NotImplementedException(); }
+            // Optionally add to echo total
+            if (Convert.ToBoolean(m.t_eon & v.vbit))
+            {
+                m.t_echo_out[ch] += amp;
+                Clamp16(ref m.t_echo_out[ch]);
+            }
+        }
 
-        private void voice_V3b(Voice v) { throw new NotImplementedException(); }
+        private void voice_V1(ArraySegment<Voice> v)
+        {
+            m.t_dir_addr = m.t_dir * 0x100 + m.t_srcn * 4;
+            m.t_srcn = v.Array[v.Offset].regs.Array[v.Array[v.Offset].regs.Offset + (int)VoiceReg.srcn];
+        }
 
-        private void voice_V3c(Voice v) { throw new NotImplementedException(); }
+        private void voice_V2(ArraySegment<Voice> v)
+        { 	// Read sample pointer (ignored if not needed)
+            byte entry = m.ram[m.t_dir_addr];
+            if (!Convert.ToBoolean(v.Array[v.Offset].kon_delay))
+            {
+                entry += 2;
+            }
+            m.t_brr_next_addr = (ushort)(entry);
 
-        private void voice_V4(Voice v) { throw new NotImplementedException(); }
+            m.t_adsr0 = v.Array[v.Offset].regs.Array[v.Array[v.Offset].regs.Offset + (int)VoiceReg.adsr0];
 
-        private void voice_V5(Voice v) { throw new NotImplementedException(); }
+            // Read pitch, spread over two clocks
+            m.t_pitch = v.Array[v.Offset].regs.Array[v.Array[v.Offset].regs.Offset + (int)VoiceReg.pitchl];
+        }
 
-        private void voice_V6(Voice v) { throw new NotImplementedException(); }
+        private void voice_V3(ArraySegment<Voice> v)
+        {
+            voice_V3a(v);
+            voice_V3b(v);
+            voice_V3c(v);
+        }
 
-        private void voice_V7(Voice v) { throw new NotImplementedException(); }
+        private void voice_V3a(ArraySegment<Voice> v)
+        {
+            m.t_pitch += (v.Array[v.Offset].regs.Array[v.Array[v.Offset].regs.Offset + (int)VoiceReg.pitchh] & 0x3F) << 8;
+        }
 
-        private void voice_V8(Voice v) { throw new NotImplementedException(); }
+        private void voice_V3b(ArraySegment<Voice> v)
+        { 	// Read BRR header and byte
+            m.t_brr_byte = m.ram[(v.Array[v.Offset].brr_addr + v.Array[v.Offset].brr_offset) & 0xFFFF];
+            m.t_brr_header = m.ram[v.Array[v.Offset].brr_addr]; // brr_addr doesn't need masking
+        }
 
-        private void voice_V9(Voice v) { throw new NotImplementedException(); }
+        private void voice_V3c(ArraySegment<Voice> v)
+        {
+            // Pitch modulation using previous voice's output
+            if (Convert.ToBoolean(m.t_pmon & v.Array[v.Offset].vbit))
+                m.t_pitch += ((m.t_output >> 5) * m.t_pitch) >> 10;
 
-        private void voice_V7_V4_V1(Voice v) { throw new NotImplementedException(); }
+            if (Convert.ToBoolean(v.Array[v.Offset].kon_delay))
+            {
+                // Get ready to start BRR decoding on next sample
+                if (v.Array[v.Offset].kon_delay == 5)
+                {
+                    v.Array[v.Offset].brr_addr = m.t_brr_next_addr;
+                    v.Array[v.Offset].brr_offset = 1;
+                    v.Array[v.Offset].buf_pos = 0;
+                    m.t_brr_header = 0; // header is ignored on this sample
+                    m.kon_check = true;
+                }
 
-        private void voice_V8_V5_V2(Voice v) { throw new NotImplementedException(); }
+                // Envelope is never run during KON
+                v.Array[v.Offset].env = 0;
+                v.Array[v.Offset].hidden_env = 0;
 
-        private void voice_V9_V6_V3(Voice v) { throw new NotImplementedException(); }
+                // Disable BRR decoding until last three samples
+                v.Array[v.Offset].interp_pos = 0;
+                if (Convert.ToBoolean(--v.Array[v.Offset].kon_delay & 3))
+                {
+                    v.Array[v.Offset].interp_pos = 0x4000;
+                }
 
-        private void echo_read(int ch) { throw new NotImplementedException(); }
+                // Pitch is never added during KON
+                m.t_pitch = 0;
+            }
 
-        private int echo_output(int ch) { throw new NotImplementedException(); }
+            // Gaussian interpolation
+            {
+                int output = interpolate(v.Array[v.Offset]);
 
-        private void echo_write(int ch) { throw new NotImplementedException(); }
+                // Noise
+                if (Convert.ToBoolean(m.t_non & v.Array[v.Offset].vbit))
+                {
+                    output = (short)(m.noise * 2);
+                }
 
-        private void echo_22() { throw new NotImplementedException(); }
+                // Apply envelope
+                m.t_output = (output * v.Array[v.Offset].env) >> 11 & ~1;
+                v.Array[v.Offset].t_envx_out = (byte)(v.Array[v.Offset].env >> 4);
+            }
 
-        private void echo_23() { throw new NotImplementedException(); }
+            // Immediate silence due to end of sample or soft reset
+            if (Convert.ToBoolean(m.regs[(int)GlobalReg.flg] & 0x80) || (m.t_brr_header & 3) == 1)
+            {
+                v.Array[v.Offset].env_mode = EnvMode.release;
+                v.Array[v.Offset].env = 0;
+            }
 
-        private void echo_24() { throw new NotImplementedException(); }
+            if (Convert.ToBoolean(m.every_other_sample))
+            {
+                // KOFF
+                if (Convert.ToBoolean(m.t_koff & v.Array[v.Offset].vbit))
+                {
+                    v.Array[v.Offset].env_mode = EnvMode.release;
+                }
 
-        private void echo_25() { throw new NotImplementedException(); }
+                // KON
+                if (Convert.ToBoolean(m.kon & v.Array[v.Offset].vbit))
+                {
+                    v.Array[v.Offset].kon_delay = 5;
+                    v.Array[v.Offset].env_mode = EnvMode.attack;
+                }
+            }
 
-        private void echo_26() { throw new NotImplementedException(); }
+            // Run envelope for next sample
+            if (!Convert.ToBoolean(v.Array[v.Offset].kon_delay))
+            {
+                run_envelope(v.Array[v.Offset]);
+            }
+        }
 
-        private void echo_27() { throw new NotImplementedException(); }
+        private void voice_V4(ArraySegment<Voice> v)
+        { 	// Decode BRR
+            m.t_looped = 0;
+            if (v.Array[v.Offset].interp_pos >= 0x4000)
+            {
+                decode_brr(v.Array[v.Offset]);
 
-        private void echo_28() { throw new NotImplementedException(); }
+                if ((v.Array[v.Offset].brr_offset += 2) >= brr_block_size)
+                {
+                    // Start decoding next BRR block
+                    Debug.Assert(v.Array[v.Offset].brr_offset == brr_block_size);
+                    v.Array[v.Offset].brr_addr = (v.Array[v.Offset].brr_addr + brr_block_size) & 0xFFFF;
+                    if (Convert.ToBoolean(m.t_brr_header & 1))
+                    {
+                        v.Array[v.Offset].brr_addr = m.t_brr_next_addr;
+                        m.t_looped = v.Array[v.Offset].vbit;
+                    }
+                    v.Array[v.Offset].brr_offset = 1;
+                }
+            }
 
-        private void echo_29() { throw new NotImplementedException(); }
+            // Apply pitch
+            v.Array[v.Offset].interp_pos = (v.Array[v.Offset].interp_pos & 0x3FFF) + m.t_pitch;
 
-        private void echo_30() { throw new NotImplementedException(); }
+            // Keep from getting too far ahead (when using pitch modulation)
+            if (v.Array[v.Offset].interp_pos > 0x7FFF)
+            {
+                v.Array[v.Offset].interp_pos = 0x7FFF;
+            }
 
-        private void soft_reset_common() { throw new NotImplementedException(); }
+            // Output left
+            voice_output(v.Array[v.Offset], 0);
+        }
+
+        private void voice_V5(ArraySegment<Voice> v)
+        { 	// Output right
+            voice_output(v.Array[v.Offset], 1);
+
+            // ENDX, OUTX, and ENVX won't update if you wrote to them 1-2 clocks earlier
+            int endx_buf = m.regs[(int)GlobalReg.endx] | m.t_looped;
+
+            // Clear bit in ENDX if KON just began
+            if (v.Array[v.Offset].kon_delay == 5)
+            {
+                endx_buf &= ~v.Array[v.Offset].vbit;
+            }
+            m.endx_buf = (byte)endx_buf;
+        }
+
+        private void voice_V6(ArraySegment<Voice> v)
+        {
+            m.outx_buf = (byte)(m.t_output >> 8);
+        }
+
+        private void voice_V7(ArraySegment<Voice> v)
+        { 	// Update ENDX
+            m.regs[(int)GlobalReg.endx] = m.endx_buf;
+
+            m.envx_buf = v.Array[v.Offset].t_envx_out;
+        }
+
+        private void voice_V8(ArraySegment<Voice> v)
+        { 	// Update OUTX
+            v.Array[v.Offset].regs.Array[v.Array[v.Offset].regs.Offset + (int)VoiceReg.outx] = m.outx_buf;
+        }
+
+        private void voice_V9(ArraySegment<Voice> v)
+        { 	// Update ENVX
+            v.Array[v.Offset].regs.Array[v.Array[v.Offset].regs.Offset + (int)VoiceReg.envx] = m.envx_buf;
+        }
+
+        private void voice_V7_V4_V1(ArraySegment<Voice> v)
+        {
+            voice_V7(v);
+            voice_V1(new ArraySegment<Voice>(v.Array, v.Offset + 3, v.Count - 3));
+            voice_V4(new ArraySegment<Voice>(v.Array, v.Offset + 1, v.Count - 1));
+        }
+
+        private void voice_V8_V5_V2(ArraySegment<Voice> v)
+        {
+            voice_V8(v);
+            voice_V5(new ArraySegment<Voice>(v.Array, v.Offset + 1, v.Count - 1));
+            voice_V2(new ArraySegment<Voice>(v.Array, v.Offset + 2, v.Count - 2));
+        }
+
+        private void voice_V9_V6_V3(ArraySegment<Voice> v)
+        {
+            voice_V9(v);
+            voice_V6(new ArraySegment<Voice>(v.Array, v.Offset + 1, v.Count - 1));
+            voice_V3(new ArraySegment<Voice>(v.Array, v.Offset + 2, v.Count - 2));
+        }
+
+        private void echo_read(int ch)
+        {
+            int s = (short)m.ram[m.t_echo_ptr + ch * 2];
+            // second copy simplifies wrap-around handling
+            m.echo_hist_pos.Array[m.echo_hist_pos.Offset + 0][ch] = m.echo_hist_pos.Array[m.echo_hist_pos.Offset + 8][ch] = s >> 1;
+        }
+
+        private int echo_output(int ch)
+        {
+            int _out = (short)((m.t_main_out[ch] * (sbyte)m.regs[(int)GlobalReg.mvoll + ch * 0x10]) >> 7) +
+                (short)((m.t_echo_in[ch] * (sbyte)m.regs[(int)GlobalReg.evoll + ch * 0x10]) >> 7);
+            Clamp16(ref _out);
+            return _out;
+        }
+
+        private void echo_write(int ch)
+        {
+            if (!Convert.ToBoolean(m.t_echo_enabled & 0x20))
+            {
+                m.ram[m.t_echo_ptr + ch * 2] = (byte)m.t_echo_out[ch];
+            }
+            m.t_echo_out[ch] = 0;
+        }
+
+        private int CalcFir(int i, int ch)
+        {
+            return ((m.echo_hist_pos.Array[m.echo_hist_pos.Offset + i + 1][ch] * (sbyte)m.regs[(int)GlobalReg.fir + i * 0x10]) >> 6);
+        }
+
+        private void echo_22()
+        { 	// History
+            if (m.echo_hist_pos.Offset + 1 >= m.echo_hist.Length)
+            {
+                m.echo_hist_pos = new ArraySegment<int[]>(m.echo_hist, 0, m.echo_hist.Length);
+            }
+            m.echo_hist_pos = new ArraySegment<int[]>(m.echo_hist_pos.Array, m.echo_hist_pos.Offset + 1, m.echo_hist_pos.Count - 1);
+
+            m.t_echo_ptr = (m.t_esa * 0x100 + m.echo_offset) & 0xFFFF;
+            echo_read(0);
+
+            // FIR (using l and r temporaries below helps compiler optimize)
+            int l = CalcFir(0, 0);
+            int r = CalcFir(0, 1);
+
+            m.t_echo_in[0] = l;
+            m.t_echo_in[1] = r;
+        }
+
+        private void echo_23()
+        {
+            int l = CalcFir(1, 0) + CalcFir(2, 0);
+            int r = CalcFir(1, 1) + CalcFir(2, 1);
+
+            m.t_echo_in[0] += l;
+            m.t_echo_in[1] += r;
+
+            echo_read(1);
+        }
+
+        private void echo_24()
+        {
+            int l = CalcFir(3, 0) + CalcFir(4, 0) + CalcFir(5, 0);
+            int r = CalcFir(3, 1) + CalcFir(4, 1) + CalcFir(5, 1);
+
+            m.t_echo_in[0] += l;
+            m.t_echo_in[1] += r;
+        }
+
+        private void echo_25()
+        {
+            int l = m.t_echo_in[0] + CalcFir(6, 0);
+            int r = m.t_echo_in[1] + CalcFir(6, 1);
+
+            l = (short)l;
+            r = (short)r;
+
+            l += (short)CalcFir(7, 0);
+            r += (short)CalcFir(7, 1);
+
+            Clamp16(ref l);
+            Clamp16(ref r);
+
+            m.t_echo_in[0] = l & ~1;
+            m.t_echo_in[1] = r & ~1;
+        }
+
+        private void echo_26()
+        { 	// Left output volumes
+            // (save sample for next clock so we can output both together)
+            m.t_main_out[0] = echo_output(0);
+
+            // Echo feedback
+            int l = m.t_echo_out[0] + (short)((m.t_echo_in[0] * (sbyte)m.regs[(int)GlobalReg.efb]) >> 7);
+            int r = m.t_echo_out[1] + (short)((m.t_echo_in[1] * (sbyte)m.regs[(int)GlobalReg.efb]) >> 7);
+
+            Clamp16(ref l);
+            Clamp16(ref r);
+
+            m.t_echo_out[0] = l & ~1;
+            m.t_echo_out[1] = r & ~1;
+        }
+
+        private void WRITE_SAMPLES(int l, int r, ArraySegment<short> _out)
+        {
+            _out.Array[_out.Offset + 0] = (short)l;
+            _out.Array[_out.Offset + 1] = (short)r;
+            _out = new ArraySegment<short>(_out.Array, _out.Offset + 2, _out.Array.Length - (_out.Offset + 2));
+            if (_out.Offset + 2 >= m._out.Array.Length)
+            {
+                //TODO: fix these asserts
+                //Debug.Assert(_out.Offset == m._out.Array.Length);
+                //Debug.Assert(m._out.Offset != m.extra[extra_size] ||
+                //    (m.extra <= m.out_begin && m.extra < &m.extra[extra_size]));
+                _out = new ArraySegment<short>(m.extra, 0, m.extra.Length);
+                m._out = new ArraySegment<short>(m.extra, extra_size, m.extra.Length - extra_size);
+            }
+        }
+
+        private void echo_27()
+        {	// Output
+            int l = m.t_main_out[0];
+            int r = echo_output(1);
+            m.t_main_out[0] = 0;
+            m.t_main_out[1] = 0;
+
+            // global muting isn't this simple (turns DAC on and off
+            // or something, causing small ~37-sample pulse when first muted)
+            if (Convert.ToBoolean(m.regs[(int)GlobalReg.flg] & 0x40))
+            {
+                l = 0;
+                r = 0;
+            }
+
+            // Output sample to DAC
+#if SPC_DSP_OUT_HOOK
+		SPC_DSP_OUT_HOOK( l, r );
+#else
+            var _out = m._out;
+            WRITE_SAMPLES(l, r, _out);
+            m._out = _out;
+#endif
+        }
+
+        private void echo_28()
+        {
+            m.t_echo_enabled = m.regs[(int)GlobalReg.flg];
+        }
+
+        private void echo_29()
+        {
+            m.t_esa = m.regs[(int)GlobalReg.esa];
+
+            if (!Convert.ToBoolean(m.echo_offset))
+            {
+                m.echo_length = (m.regs[(int)GlobalReg.edl] & 0x0F) * 0x800;
+            }
+
+            m.echo_offset += 4;
+            if (m.echo_offset >= m.echo_length)
+            {
+                m.echo_offset = 0;
+            }
+
+            // Write left echo
+            echo_write(0);
+
+            m.t_echo_enabled = m.regs[(int)GlobalReg.flg];
+        }
+
+        private void echo_30()
+        { 	// Write right echo
+            echo_write(1);
+        }
+
+        private void soft_reset_common()
+        {
+            Debug.Assert(!ReferenceEquals(m.ram, null)); // init() must have been called already
+
+            m.noise = 0x4000;
+            m.echo_hist_pos = new ArraySegment<int[]>(m.echo_hist, 0, m.echo_hist.Length);
+            m.every_other_sample = 1;
+            m.echo_offset = 0;
+            m.phase = 0;
+
+            init_counter();
+        }
     }
 }
