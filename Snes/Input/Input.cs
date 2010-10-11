@@ -519,7 +519,7 @@ namespace Snes
         }
 
         private bool iobit;
-        private short latchx, latchy;
+        public short latchx, latchy;
 
         private Port[] port = new Port[2];
         public Port[] Ports

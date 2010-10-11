@@ -6,19 +6,19 @@ namespace Snes.Fast
     {
         private class Channel
         {
-            bool dma_enabled;
-            bool hdma_enabled;
+            public bool dma_enabled;
+            public bool hdma_enabled;
 
-            bool direction;
-            bool indirect;
-            bool unused;
-            bool reverse_transfer;
-            bool fixed_transfer;
-            byte transfer_mode;
+            public bool direction;
+            public bool indirect;
+            public bool unused;
+            public bool reverse_transfer;
+            public bool fixed_transfer;
+            public byte transfer_mode;
 
-            byte dest_addr;
-            ushort source_addr;
-            byte source_bank;
+            public byte dest_addr;
+            public ushort source_addr;
+            public byte source_bank;
 
             [StructLayout(LayoutKind.Explicit)]
             public class Union
@@ -30,13 +30,13 @@ namespace Snes.Fast
             }
             public Union union = new Union();
 
-            byte indirect_bank;
-            ushort hdma_addr;
-            byte line_counter;
-            byte unknown;
+            public byte indirect_bank;
+            public ushort hdma_addr;
+            public byte line_counter;
+            public byte unknown;
 
-            bool hdma_completed;
-            bool hdma_do_transfer;
+            public bool hdma_completed;
+            public bool hdma_do_transfer;
         }
     }
 }

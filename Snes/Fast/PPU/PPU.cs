@@ -5,6 +5,8 @@ namespace Snes.Fast
 {
     partial class PPU : IPPUCounter, IProcessor, IMMIO
     {
+        public static PPU ppu = new PPU();
+
         public void step(uint clocks) { throw new NotImplementedException(); }
         public void synchronize_cpu() { throw new NotImplementedException(); }
 

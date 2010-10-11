@@ -282,7 +282,7 @@ namespace Snes
 
         public CPU()
         {
-            PPUCounter.Scanline = scanline;
+            PPUCounter.Scanline = this.scanline;
 
             for (int i = 0; i < channel.Length; i++)
             {

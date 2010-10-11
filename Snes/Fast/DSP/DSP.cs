@@ -5,6 +5,8 @@ namespace Snes.Fast
 {
     class DSP : IProcessor
     {
+        public static DSP dsp = new DSP();
+
         public void step(uint clocks) { throw new NotImplementedException(); }
         public void synchronize_smp() { throw new NotImplementedException(); }
 
