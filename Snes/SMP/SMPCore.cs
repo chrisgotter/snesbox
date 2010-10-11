@@ -1751,7 +1751,6 @@ namespace Snes
             {
                 regs.a.Array[regs.a.Offset] += 0x06;
             }
-            //TODO: See if this logic matches
             regs.p.n = Convert.ToBoolean(Convert.ToInt32(Convert.ToBoolean(regs.a.Array[regs.a.Offset] & 0x80)));
             regs.p.z = (regs.a.Array[regs.a.Offset] == 0);
             return null;

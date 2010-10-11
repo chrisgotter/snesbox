@@ -191,6 +191,7 @@
     <Compile Include="Fast\CPU\Status.cs" />
     <Compile Include="Fast\DSP\DSP.cs" />
     <Compile Include="Fast\DSP\SPCDSP.cs" />
+    <Compile Include="Fast\DSP\SPCStateCopier.cs" />
     <Compile Include="Fast\DSP\State.cs" />
     <Compile Include="Fast\DSP\Voice.cs" />
     <Compile Include="Fast\PPU\BackgroundInfo.cs" />

@@ -494,6 +494,38 @@ namespace Nall
             }
         }
 
+        public void array(short[] array_, string name)
+        {
+            if (imode == Mode.Save)
+            {
+                for (uint n = 0; n < name.Length; n++)
+                {
+                    idata[isize++] = (byte)name[(int)n];
+                }
+                idata[isize++] = (byte)':';
+                idata[isize++] = (byte)' ';
+            }
+            else if (imode == Mode.Size)
+            {
+                isize += (uint)name.Length + 3;
+            }
+
+            array(array_);
+            if (imode == Mode.Save)
+            {
+                idata[isize++] = (byte)'\n';
+            }
+        }
+
+        public void array(short[] array)
+        {
+            for (uint n = 0; n < array.Length; n++)
+            {
+                integer(array[n]);
+            }
+        }
+
+
         //copy
         public Serializer Copy(Serializer s)
         {

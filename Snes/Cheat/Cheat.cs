@@ -218,7 +218,6 @@ namespace Snes
             else if (type == Type.GameGenie)
             {
                 uint r = addr;
-                //TODO: Unit test to verify values in C# match C++
                 addr = (Bit.ToBit(r & 0x008000) << 23) | (Bit.ToBit(r & 0x004000) << 22)
                      | (Bit.ToBit(r & 0x002000) << 21) | (Bit.ToBit(r & 0x001000) << 20)
                      | (Bit.ToBit(r & 0x000080) << 19) | (Bit.ToBit(r & 0x000040) << 18)

@@ -352,6 +352,7 @@ namespace Snes
 
         public DSP()
         {
+#if DEBUG
             unchecked
             {
                 Debug.Assert(sizeof(int) >= 32 / 8, "int >= 32-bits");
@@ -364,6 +365,7 @@ namespace Snes
                 Debug.Assert(Bit.sclamp(16, +0x8000) == +0x7fff);
                 Debug.Assert(Bit.sclamp(16, -0x8001) == -0x8000);
             }
+#endif
 
             for (int i = 0; i < voice.Length; i++)
             {
