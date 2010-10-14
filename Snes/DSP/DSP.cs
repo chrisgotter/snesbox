@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !FAST_DSP
+using System;
 using System.Diagnostics;
 using Nall;
 
@@ -1078,3 +1079,4 @@ namespace Snes
         }
     }
 }
+#endif

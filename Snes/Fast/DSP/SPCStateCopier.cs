@@ -1,7 +1,8 @@
-﻿using System;
+﻿#if FAST_DSP
+using System;
 using System.IO;
 
-namespace Snes.Fast
+namespace Snes
 {
     class SPCStateCopier
     {
@@ -57,3 +58,4 @@ namespace Snes.Fast
         }
     }
 }
+#endif

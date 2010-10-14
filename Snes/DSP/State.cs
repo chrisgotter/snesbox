@@ -1,4 +1,5 @@
-﻿using Nall;
+﻿#if !FAST_DSP
+using Nall;
 
 namespace Snes
 {
@@ -64,3 +65,4 @@ namespace Snes
         }
     }
 }
+#endif

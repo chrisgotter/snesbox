@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !FAST_PPU
+using System;
 using Nall;
 
 namespace Snes
@@ -14,7 +15,7 @@ namespace Snes
 
             public void scanline()
             {
-                output = new ArraySegment<ushort>(self.Output.Array, self.Output.Offset + self.PPUCounter.vcounter() * 1024, self.Output.Array.Length - (self.Output.Offset + self.PPUCounter.vcounter() * 1024));
+                output = new ArraySegment<ushort>(self.output.Array, self.output.Offset + self.PPUCounter.vcounter() * 1024, self.output.Array.Length - (self.output.Offset + self.PPUCounter.vcounter() * 1024));
                 if (self.display.interlace && self.PPUCounter.field())
                 {
                     output = new ArraySegment<ushort>(output.Array, output.Offset + 512, output.Array.Length - (output.Offset + 512));
@@ -317,3 +318,4 @@ namespace Snes
         }
     }
 }
+#endif

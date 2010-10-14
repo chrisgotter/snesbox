@@ -1,5 +1,5 @@
-﻿
-namespace Snes.Fast
+﻿#if FAST_PPU
+namespace Snes
 {
     partial class PPU
     {
@@ -18,3 +18,4 @@ namespace Snes.Fast
         }
     }
 }
+#endif

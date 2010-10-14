@@ -3,7 +3,7 @@ namespace Snes
 {
     partial class PPU
     {
-        private class Display
+        public class Display
         {
             public bool interlace;
             public bool overscan;

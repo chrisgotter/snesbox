@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !FAST_PPU
+using System;
 using Nall;
 
 namespace Snes
@@ -1349,11 +1350,7 @@ namespace Snes
         private Screen screen;
 
         private ushort[] surface;
-        private ArraySegment<ushort> output;
-        public ArraySegment<ushort> Output
-        {
-            get { return output; }
-        }
+        public ArraySegment<ushort> output;
 
         private byte ppu1_version;
         private byte ppu2_version;
@@ -1419,3 +1416,4 @@ namespace Snes
         }
     }
 }
+#endif

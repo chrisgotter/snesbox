@@ -1,8 +1,9 @@
-﻿using System.IO;
+﻿#if FAST_DSP
+using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Nall;
 
-namespace Snes.Fast
+namespace Snes
 {
     class DSP : IProcessor
     {
@@ -118,3 +119,4 @@ namespace Snes.Fast
         }
     }
 }
+#endif

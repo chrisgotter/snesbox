@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !FAST_PPU
+using System;
 
 namespace Snes
 {
@@ -54,3 +55,4 @@ namespace Snes
         }
     }
 }
+#endif

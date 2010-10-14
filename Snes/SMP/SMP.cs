@@ -243,7 +243,11 @@ namespace Snes
                     case 0xf7:
                         {  //CPUIO3
                             synchronize_cpu();
+#if FAST_CPU
+                            r = CPU.cpu.port_read((byte)addr);
+#else
                             r = CPU.cpu.port_read(new uint2(addr));
+#endif
                         }
                         break;
                     case 0xf8:
@@ -327,13 +331,23 @@ namespace Snes
                                 synchronize_cpu();
                                 if (Convert.ToBoolean(data & 0x20))
                                 {
+#if FAST_CPU
+                                    CPU.cpu.port_write(2, 0x00);
+                                    CPU.cpu.port_write(3, 0x00);
+#else
                                     CPU.cpu.port_write(new uint2(2), 0x00);
                                     CPU.cpu.port_write(new uint2(3), 0x00);
+#endif
                                 }
                                 if (Convert.ToBoolean(data & 0x10))
                                 {
+#if FAST_CPU
+                                    CPU.cpu.port_write(0, 0x00);
+                                    CPU.cpu.port_write(1, 0x00);
+#else
                                     CPU.cpu.port_write(new uint2(0), 0x00);
                                     CPU.cpu.port_write(new uint2(1), 0x00);
+#endif
                                 }
                             }
 

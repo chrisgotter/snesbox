@@ -1,12 +1,13 @@
-﻿
-namespace Snes.Fast
+﻿#if FAST_PPU
+namespace Snes
 {
     partial class PPU
     {
         public class OamTileItem
         {
-            ushort x, y, pri, pal, tile;
-            bool hflip;
+            public ushort x, y, pri, pal, tile;
+            public bool hflip;
         }
     }
 }
+#endif

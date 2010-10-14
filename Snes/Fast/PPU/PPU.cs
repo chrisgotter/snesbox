@@ -1,7 +1,8 @@
-﻿using System;
+﻿#if FAST_PPU
+using System;
 using Nall;
 
-namespace Snes.Fast
+namespace Snes
 {
     partial class PPU : IPPUCounter, IProcessor, IMMIO
     {
@@ -696,7 +697,7 @@ namespace Snes.Fast
             {
                 for (uint i = 0; i < 4096; i++)
                 {
-                    mosaic_table[l,i] = (ushort)((i / (l + 1)) * (l + 1));
+                    mosaic_table[l, i] = (ushort)((i / (l + 1)) * (l + 1));
                 }
             }
 
@@ -712,7 +713,7 @@ namespace Snes.Fast
                             uint ar = (uint)(luma * r + 0.5);
                             uint ag = (uint)(luma * g + 0.5);
                             uint ab = (uint)(luma * b + 0.5);
-                            light_table[l,(r << 10) + (g << 5) + b] = (ushort)((ab << 10) + (ag << 5) + ar);
+                            light_table[l, (r << 10) + (g << 5) + b] = (ushort)((ab << 10) + (ag << 5) + ar);
                         }
                     }
                 }
@@ -738,3 +739,4 @@ namespace Snes.Fast
         }
     }
 }
+#endif

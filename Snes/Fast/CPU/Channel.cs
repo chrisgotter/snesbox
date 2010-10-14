@@ -1,6 +1,7 @@
-﻿using System.Runtime.InteropServices;
+﻿#if FAST_CPU
+using System.Runtime.InteropServices;
 
-namespace Snes.Fast
+namespace Snes
 {
     partial class CPU
     {
@@ -40,3 +41,4 @@ namespace Snes.Fast
         }
     }
 }
+#endif

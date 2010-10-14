@@ -25,7 +25,7 @@ namespace Snes
                     break;
             }
 
-            var data = PPU.ppu.Output;
+            var data = PPU.ppu.output;
             if (PPU.ppu.interlace() && PPU.ppu.PPUCounter.field())
             {
                 data = new ArraySegment<ushort>(data.Array, data.Offset + 512, data.Array.Length - (data.Offset + 512));
@@ -56,7 +56,7 @@ namespace Snes
                 height <<= 1;
             }
 
-            System.system.Interface.video_refresh(new ArraySegment<ushort>(PPU.ppu.Output.Array, PPU.ppu.Output.Offset + 1024, PPU.ppu.Output.Array.Length - (PPU.ppu.Output.Offset + 1024)), width, height);
+            System.system.Interface.video_refresh(new ArraySegment<ushort>(PPU.ppu.output.Array, PPU.ppu.output.Offset + 1024, PPU.ppu.output.Array.Length - (PPU.ppu.output.Offset + 1024)), width, height);
 
             frame_hires = false;
             frame_interlace = false;
@@ -107,7 +107,7 @@ namespace Snes
 
         private void draw_cursor(ushort color, int x, int y)
         {
-            var data = PPU.ppu.Output;
+            var data = PPU.ppu.output;
             if (PPU.ppu.interlace() && PPU.ppu.PPUCounter.field())
             {
                 data = new ArraySegment<ushort>(data.Array, data.Offset + 512, data.Array.Length - (data.Offset + 512));

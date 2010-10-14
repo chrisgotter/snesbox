@@ -1,6 +1,7 @@
-﻿using System;
+﻿#if FAST_DSP
+using System;
 
-namespace Snes.Fast
+namespace Snes
 {
     partial class SPCDSP
     {
@@ -21,3 +22,4 @@ namespace Snes.Fast
         }
     }
 }
+#endif

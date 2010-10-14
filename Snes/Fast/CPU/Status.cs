@@ -1,5 +1,5 @@
-﻿
-namespace Snes.Fast
+﻿#if FAST_CPU
+namespace Snes
 {
     partial class CPU
     {
@@ -49,3 +49,4 @@ namespace Snes.Fast
         }
     }
 }
+#endif

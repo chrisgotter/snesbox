@@ -1,8 +1,9 @@
-﻿using System;
+﻿#if FAST_CPU
+using System;
 using System.Collections.ObjectModel;
 using Nall;
 
-namespace Snes.Fast
+namespace Snes
 {
     partial class CPU : CPUCore, IPPUCounter, IProcessor, IMMIO
     {
@@ -1209,3 +1210,4 @@ namespace Snes.Fast
         }
     }
 }
+#endif

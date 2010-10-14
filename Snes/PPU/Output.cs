@@ -1,7 +1,7 @@
-﻿
+﻿#if !FAST_PPU
 namespace Snes
 {
-    partial class PPU
+  partial class PPU
     {
         partial class Background
         {
@@ -52,3 +52,4 @@ namespace Snes
         }
     }
 }
+#endif

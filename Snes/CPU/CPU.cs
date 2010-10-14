@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !FAST_CPU
+using System;
 using System.Collections.ObjectModel;
 using Nall;
 
@@ -1805,3 +1806,4 @@ namespace Snes
         }
     }
 }
+#endif

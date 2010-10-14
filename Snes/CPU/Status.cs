@@ -1,4 +1,5 @@
-﻿using Nall;
+﻿#if !FAST_CPU
+using Nall;
 
 namespace Snes
 {
@@ -93,3 +94,4 @@ namespace Snes
         }
     }
 }
+#endif

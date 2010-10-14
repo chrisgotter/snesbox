@@ -1,4 +1,4 @@
-﻿
+﻿#if !FAST_PPU
 namespace Snes
 {
     partial class PPU
@@ -37,3 +37,4 @@ namespace Snes
         }
     }
 }
+#endif

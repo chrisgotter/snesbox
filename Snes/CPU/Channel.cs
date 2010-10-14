@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿#if !FAST_CPU
+using System.Runtime.InteropServices;
 using Nall;
 
 namespace Snes
@@ -59,3 +60,4 @@ namespace Snes
         }
     }
 }
+#endif
