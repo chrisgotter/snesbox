@@ -28,7 +28,7 @@ namespace Snes
             var data = PPU.ppu.output;
             if (PPU.ppu.interlace() && PPU.ppu.PPUCounter.field())
             {
-                data = new ArraySegment<ushort>(data.Array, data.Offset + 512, data.Array.Length - (data.Offset + 512));
+                data = new ArraySegment<ushort>(data.Array, data.Offset + 512, data.Count - 512);
             }
             uint width = 256;
             uint height = !PPU.ppu.overscan() ? 224U : 239U;
@@ -43,7 +43,7 @@ namespace Snes
                     {
                         continue;
                     }
-                    var buffer = new ArraySegment<ushort>(data.Array, data.Offset + (int)(y * 1024), data.Array.Length - (data.Offset + (int)(y * 1024)));
+                    var buffer = new ArraySegment<ushort>(data.Array, data.Offset + (int)(y * 1024), data.Count - (int)(y * 1024));
                     for (int x = 255; x >= 0; x--)
                     {
                         buffer.Array[buffer.Offset + ((x * 2) + 0)] = buffer.Array[buffer.Offset + ((x * 2) + 1)] = buffer.Array[buffer.Offset + x];
@@ -56,7 +56,7 @@ namespace Snes
                 height <<= 1;
             }
 
-            System.system.Interface.video_refresh(new ArraySegment<ushort>(PPU.ppu.output.Array, PPU.ppu.output.Offset + 1024, PPU.ppu.output.Array.Length - (PPU.ppu.output.Offset + 1024)), width, height);
+            System.system.Interface.video_refresh(new ArraySegment<ushort>(PPU.ppu.output.Array, PPU.ppu.output.Offset + 1024, PPU.ppu.output.Count - 1024), width, height);
 
             frame_hires = false;
             frame_interlace = false;
@@ -110,7 +110,7 @@ namespace Snes
             var data = PPU.ppu.output;
             if (PPU.ppu.interlace() && PPU.ppu.PPUCounter.field())
             {
-                data = new ArraySegment<ushort>(data.Array, data.Offset + 512, data.Array.Length - (data.Offset + 512));
+                data = new ArraySegment<ushort>(data.Array, data.Offset + 512, data.Count - 512);
             }
 
             for (int cy = 0; cy < 15; cy++)

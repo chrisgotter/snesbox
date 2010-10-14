@@ -694,7 +694,7 @@ namespace Snes
             }
 
             // Decode four samples
-            for (end = new ArraySegment<int>(pos.Array, pos.Offset + 4, pos.Count - 4); pos.Offset < end.Offset; pos = new ArraySegment<int>(pos.Array, pos.Offset + 1, pos.Offset - 1), nybbles <<= 4)
+            for (end = new ArraySegment<int>(pos.Array, pos.Offset + 4, pos.Count - 4); pos.Offset < end.Offset; pos = new ArraySegment<int>(pos.Array, pos.Offset + 1, pos.Count - 1), nybbles <<= 4)
             {
                 // Extract nybble and sign-extend
                 int s = (short)nybbles >> 12;
@@ -1108,7 +1108,7 @@ namespace Snes
         {
             _out.Array[_out.Offset + 0] = (short)l;
             _out.Array[_out.Offset + 1] = (short)r;
-            _out = new ArraySegment<short>(_out.Array, _out.Offset + 2, _out.Array.Length - (_out.Offset + 2));
+            _out = new ArraySegment<short>(_out.Array, _out.Offset + 2, _out.Count - 2);
             if (_out.Offset + 2 >= m._out.Array.Length)
             {
                 //TODO: fix these asserts

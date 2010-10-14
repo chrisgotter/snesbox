@@ -15,10 +15,10 @@ namespace Snes
 
             public void scanline()
             {
-                output = new ArraySegment<ushort>(self.output.Array, self.output.Offset + self.PPUCounter.vcounter() * 1024, self.output.Array.Length - (self.output.Offset + self.PPUCounter.vcounter() * 1024));
+                output = new ArraySegment<ushort>(self.output.Array, self.output.Offset + self.PPUCounter.vcounter() * 1024, self.output.Count - self.PPUCounter.vcounter() * 1024);
                 if (self.display.interlace && self.PPUCounter.field())
                 {
-                    output = new ArraySegment<ushort>(output.Array, output.Offset + 512, output.Array.Length - (output.Offset + 512));
+                    output = new ArraySegment<ushort>(output.Array, output.Offset + 512, output.Count - 512);
                 }
             }
 
@@ -40,7 +40,7 @@ namespace Snes
                     output.Array[output.Offset + outputOffset++] = color;
                 }
 
-                output = new ArraySegment<ushort>(output.Array, output.Offset + outputOffset, output.Array.Length - (output.Offset + outputOffset));
+                output = new ArraySegment<ushort>(output.Array, output.Offset + outputOffset, output.Count - outputOffset);
             }
 
             public void reset()
