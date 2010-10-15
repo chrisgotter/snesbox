@@ -6,14 +6,14 @@ namespace Snes
 {
     public static class LibSnes
     {
-        public enum SNES_PORT { ONE = 0, TWO = 1 }
-        public enum SNES_DEVICE { NONE = 0, JOYPAD = 1, MULTITAP = 2, MOUSE = 3, SUPER_SCOPE = 4, JUSTIFIER = 5, JUSTIFIERS = 6 }
-        public enum SNES_DEVICE_ID_JOYPAD { B = 0, Y = 1, SELECT = 2, START = 3, UP = 4, DOWN = 5, LEFT = 6, RIGHT = 7, A = 8, X = 9, L = 10, R = 11 }
-        public enum SNES_DEVICE_ID_MOUSE { X = 0, Y = 1, LEFT = 2, RIGHT = 3 }
-        public enum SNES_DEVICE_ID_SUPER_SCOPE { X = 0, Y = 1, TRIGGER = 2, CURSOR = 3, TURBO = 4, PAUSE = 5 }
-        public enum SNES_DEVICE_ID_JUSTIFIER { X = 0, Y = 1, TRIGGER = 2, START = 3 }
-        public enum SNES_REGION { NTSC = 0, PAL = 1 }
-        public enum SNES_MEMORY { CARTRIDGE_RAM = 0, CARTRIDGE_RTC = 1, BSX_RAM = 2, BSX_PRAM = 3, SUFAMI_TURBO_A_RAM = 4, SUFAMI_TURBO_B_RAM = 5, GAME_BOY_RAM = 6, GAME_BOY_RTC = 7 }
+        public enum SnesPort { ONE = 0, TWO = 1 }
+        public enum SnesDevice { NONE = 0, JOYPAD = 1, MULTITAP = 2, MOUSE = 3, SUPER_SCOPE = 4, JUSTIFIER = 5, JUSTIFIERS = 6 }
+        public enum SnesDeviceIdJoypad { B = 0, Y = 1, SELECT = 2, START = 3, UP = 4, DOWN = 5, LEFT = 6, RIGHT = 7, A = 8, X = 9, L = 10, R = 11 }
+        public enum SnesDeviceIdMouse { X = 0, Y = 1, LEFT = 2, RIGHT = 3 }
+        public enum SnesDeviceIdSuperScope { X = 0, Y = 1, TRIGGER = 2, CURSOR = 3, TURBO = 4, PAUSE = 5 }
+        public enum SnesDeviceIdJustifier { X = 0, Y = 1, TRIGGER = 2, START = 3 }
+        public enum SnesRegion { NTSC = 0, PAL = 1 }
+        public enum SnesMemory { CARTRIDGE_RAM = 0, CARTRIDGE_RTC = 1, BSX_RAM = 2, BSX_PRAM = 3, SUFAMI_TURBO_A_RAM = 4, SUFAMI_TURBO_B_RAM = 5, GAME_BOY_RAM = 6, GAME_BOY_RTC = 7 }
 
         public delegate void SnesVideoRefresh(ArraySegment<ushort> data, uint width, uint height);
         public delegate void SnesAudioSample(ushort left, ushort right);
@@ -251,44 +251,44 @@ namespace Snes
                 return null;
             }
 
-            switch ((SNES_MEMORY)id)
+            switch ((SnesMemory)id)
             {
-                case SNES_MEMORY.CARTRIDGE_RAM:
+                case SnesMemory.CARTRIDGE_RAM:
                     return MappedRAM.cartram.data();
-                case SNES_MEMORY.CARTRIDGE_RTC:
+                case SnesMemory.CARTRIDGE_RTC:
                     return MappedRAM.cartrtc.data();
-                case SNES_MEMORY.BSX_RAM:
+                case SnesMemory.BSX_RAM:
                     if (Cartridge.cartridge.mode != Cartridge.Mode.Bsx)
                     {
                         break;
                     }
                     return MappedRAM.bsxram.data();
-                case SNES_MEMORY.BSX_PRAM:
+                case SnesMemory.BSX_PRAM:
                     if (Cartridge.cartridge.mode != Cartridge.Mode.Bsx)
                     {
                         break;
                     }
                     return MappedRAM.bsxpram.data();
-                case SNES_MEMORY.SUFAMI_TURBO_A_RAM:
+                case SnesMemory.SUFAMI_TURBO_A_RAM:
                     if (Cartridge.cartridge.mode != Cartridge.Mode.SufamiTurbo)
                     {
                         break;
                     }
                     return MappedRAM.stAram.data();
-                case SNES_MEMORY.SUFAMI_TURBO_B_RAM:
+                case SnesMemory.SUFAMI_TURBO_B_RAM:
                     if (Cartridge.cartridge.mode != Cartridge.Mode.SufamiTurbo)
                     {
                         break;
                     }
                     return MappedRAM.stBram.data();
-                case SNES_MEMORY.GAME_BOY_RAM:
+                case SnesMemory.GAME_BOY_RAM:
                     if (Cartridge.cartridge.mode != Cartridge.Mode.SuperGameBoy)
                     {
                         break;
                     }
                     SuperGameBoy.supergameboy.save();
                     return MappedRAM.gbram.data();
-                case SNES_MEMORY.GAME_BOY_RTC:
+                case SnesMemory.GAME_BOY_RTC:
                     if (Cartridge.cartridge.mode != Cartridge.Mode.SuperGameBoy)
                     {
                         break;
@@ -308,50 +308,50 @@ namespace Snes
             }
             uint size = 0;
 
-            switch ((SNES_MEMORY)id)
+            switch ((SnesMemory)id)
             {
-                case SNES_MEMORY.CARTRIDGE_RAM:
+                case SnesMemory.CARTRIDGE_RAM:
                     size = MappedRAM.cartram.size();
                     break;
-                case SNES_MEMORY.CARTRIDGE_RTC:
+                case SnesMemory.CARTRIDGE_RTC:
                     size = MappedRAM.cartrtc.size();
                     break;
-                case SNES_MEMORY.BSX_RAM:
+                case SnesMemory.BSX_RAM:
                     if (Cartridge.cartridge.mode != Cartridge.Mode.Bsx)
                     {
                         break;
                     }
                     size = MappedRAM.bsxram.size();
                     break;
-                case SNES_MEMORY.BSX_PRAM:
+                case SnesMemory.BSX_PRAM:
                     if (Cartridge.cartridge.mode != Cartridge.Mode.Bsx)
                     {
                         break;
                     }
                     size = MappedRAM.bsxpram.size();
                     break;
-                case SNES_MEMORY.SUFAMI_TURBO_A_RAM:
+                case SnesMemory.SUFAMI_TURBO_A_RAM:
                     if (Cartridge.cartridge.mode != Cartridge.Mode.SufamiTurbo)
                     {
                         break;
                     }
                     size = MappedRAM.stAram.size();
                     break;
-                case SNES_MEMORY.SUFAMI_TURBO_B_RAM:
+                case SnesMemory.SUFAMI_TURBO_B_RAM:
                     if (Cartridge.cartridge.mode != Cartridge.Mode.SufamiTurbo)
                     {
                         break;
                     }
                     size = MappedRAM.stBram.size();
                     break;
-                case SNES_MEMORY.GAME_BOY_RAM:
+                case SnesMemory.GAME_BOY_RAM:
                     if (Cartridge.cartridge.mode != Cartridge.Mode.SuperGameBoy)
                     {
                         break;
                     }
                     size = MappedRAM.gbram.size();
                     break;
-                case SNES_MEMORY.GAME_BOY_RTC:
+                case SnesMemory.GAME_BOY_RTC:
                     if (Cartridge.cartridge.mode != Cartridge.Mode.SuperGameBoy)
                     {
                         break;

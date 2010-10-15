@@ -121,7 +121,7 @@ namespace Snes
             op_write((regs.s + (addr & 0xffff)) & 0xffff, data);
         }
 
-        public enum OPTYPE { DP = 0, DPX, DPY, IDP, IDPX, IDPY, ILDP, ILDPY, ADDR, ADDRX, ADDRY, IADDRX, ILADDR, LONG, LONGX, SR, ISRY, ADDR_PC, IADDR_PC, RELB, RELW }
+        public enum OpType { DP = 0, DPX, DPY, IDP, IDPX, IDPY, ILDP, ILDPY, ADDR, ADDRX, ADDRY, IADDRX, ILADDR, LONG, LONGX, SR, ISRY, ADDR_PC, IADDR_PC, RELB, RELW }
 
         private static Reg24 pc = new Reg24();
 
@@ -169,25 +169,25 @@ namespace Snes
                     s += string.Format("brk #${0:X2}              ", op8(op0));
                     break;
                 case 0x01:
-                    s += string.Format("ora (${0:X2},x)   [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDPX, op8(op0)));
+                    s += string.Format("ora (${0:X2},x)   [{1:X6}]", op8(op0), decode((byte)OpType.IDPX, op8(op0)));
                     break;
                 case 0x02:
                     s += string.Format("cop #${0:X2}              ", op8(op0));
                     break;
                 case 0x03:
-                    s += string.Format("ora ${0:X2},s     [{1:X6}]", op8(op0), decode((byte)OPTYPE.SR, op8(op0)));
+                    s += string.Format("ora ${0:X2},s     [{1:X6}]", op8(op0), decode((byte)OpType.SR, op8(op0)));
                     break;
                 case 0x04:
-                    s += string.Format("tsb ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("tsb ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0x05:
-                    s += string.Format("ora ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("ora ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0x06:
-                    s += string.Format("asl ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("asl ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0x07:
-                    s += string.Format("ora [${0:X2}]     [{1:X6}]", op8(op0), decode((byte)OPTYPE.ILDP, op8(op0)));
+                    s += string.Format("ora [${0:X2}]     [{1:X6}]", op8(op0), decode((byte)OpType.ILDP, op8(op0)));
                     break;
                 case 0x08:
                     s += string.Format("php                   ");
@@ -209,46 +209,46 @@ namespace Snes
                     s += string.Format("phd                   ");
                     break;
                 case 0x0c:
-                    s += string.Format("tsb ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("tsb ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0x0d:
-                    s += string.Format("ora ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("ora ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0x0e:
-                    s += string.Format("asl ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("asl ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0x0f:
-                    s += string.Format("ora ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OPTYPE.LONG, op24(op0, op1, op2)));
+                    s += string.Format("ora ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OpType.LONG, op24(op0, op1, op2)));
                     break;
                 case 0x10:
-                    s += string.Format("bpl ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OPTYPE.RELB, op8(op0))), decode((byte)OPTYPE.RELB, op8(op0)));
+                    s += string.Format("bpl ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OpType.RELB, op8(op0))), decode((byte)OpType.RELB, op8(op0)));
                     break;
                 case 0x11:
-                    s += string.Format("ora (${0:X2}),y   [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDPY, op8(op0)));
+                    s += string.Format("ora (${0:X2}),y   [{1:X6}]", op8(op0), decode((byte)OpType.IDPY, op8(op0)));
                     break;
                 case 0x12:
-                    s += string.Format("ora (${0:X2})     [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDP, op8(op0)));
+                    s += string.Format("ora (${0:X2})     [{1:X6}]", op8(op0), decode((byte)OpType.IDP, op8(op0)));
                     break;
                 case 0x13:
-                    s += string.Format("ora (${0:X2},s),y [{1:X6}]", op8(op0), decode((byte)OPTYPE.ISRY, op8(op0)));
+                    s += string.Format("ora (${0:X2},s),y [{1:X6}]", op8(op0), decode((byte)OpType.ISRY, op8(op0)));
                     break;
                 case 0x14:
-                    s += string.Format("trb ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("trb ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0x15:
-                    s += string.Format("ora ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPX, op8(op0)));
+                    s += string.Format("ora ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OpType.DPX, op8(op0)));
                     break;
                 case 0x16:
-                    s += string.Format("asl ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPX, op8(op0)));
+                    s += string.Format("asl ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OpType.DPX, op8(op0)));
                     break;
                 case 0x17:
-                    s += string.Format("ora [${0:X2}],y   [{1:X6}]", op8(op0), decode((byte)OPTYPE.ILDPY, op8(op0)));
+                    s += string.Format("ora [${0:X2}],y   [{1:X6}]", op8(op0), decode((byte)OpType.ILDPY, op8(op0)));
                     break;
                 case 0x18:
                     s += string.Format("clc                   ");
                     break;
                 case 0x19:
-                    s += string.Format("ora ${0:X4},y   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRY, op16(op0, op1)));
+                    s += string.Format("ora ${0:X4},y   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRY, op16(op0, op1)));
                     break;
                 case 0x1a:
                     s += string.Format("inc                   ");
@@ -257,40 +257,40 @@ namespace Snes
                     s += string.Format("tcs                   ");
                     break;
                 case 0x1c:
-                    s += string.Format("trb ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("trb ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0x1d:
-                    s += string.Format("ora ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRX, op16(op0, op1)));
+                    s += string.Format("ora ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRX, op16(op0, op1)));
                     break;
                 case 0x1e:
-                    s += string.Format("asl ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRX, op16(op0, op1)));
+                    s += string.Format("asl ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRX, op16(op0, op1)));
                     break;
                 case 0x1f:
-                    s += string.Format("ora ${0:X6},x [{1:X6}]", op24(op0, op1, op2), decode((byte)OPTYPE.LONGX, op24(op0, op1, op2)));
+                    s += string.Format("ora ${0:X6},x [{1:X6}]", op24(op0, op1, op2), decode((byte)OpType.LONGX, op24(op0, op1, op2)));
                     break;
                 case 0x20:
-                    s += string.Format("jsr ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR_PC, op16(op0, op1)));
+                    s += string.Format("jsr ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR_PC, op16(op0, op1)));
                     break;
                 case 0x21:
-                    s += string.Format("and (${0:X2},x)   [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDPX, op8(op0)));
+                    s += string.Format("and (${0:X2},x)   [{1:X6}]", op8(op0), decode((byte)OpType.IDPX, op8(op0)));
                     break;
                 case 0x22:
-                    s += string.Format("jsl ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OPTYPE.LONG, op24(op0, op1, op2)));
+                    s += string.Format("jsl ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OpType.LONG, op24(op0, op1, op2)));
                     break;
                 case 0x23:
-                    s += string.Format("and ${0:X2},s     [{1:X6}]", op8(op0), decode((byte)OPTYPE.SR, op8(op0)));
+                    s += string.Format("and ${0:X2},s     [{1:X6}]", op8(op0), decode((byte)OpType.SR, op8(op0)));
                     break;
                 case 0x24:
-                    s += string.Format("bit ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("bit ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0x25:
-                    s += string.Format("and ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("and ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0x26:
-                    s += string.Format("rol ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("rol ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0x27:
-                    s += string.Format("and [${0:X2}]     [{1:X6}]", op8(op0), decode((byte)OPTYPE.ILDP, op8(op0)));
+                    s += string.Format("and [${0:X2}]     [{1:X6}]", op8(op0), decode((byte)OpType.ILDP, op8(op0)));
                     break;
                 case 0x28:
                     s += string.Format("plp                   ");
@@ -312,46 +312,46 @@ namespace Snes
                     s += string.Format("pld                   ");
                     break;
                 case 0x2c:
-                    s += string.Format("bit ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("bit ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0x2d:
-                    s += string.Format("and ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("and ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0x2e:
-                    s += string.Format("rol ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("rol ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0x2f:
-                    s += string.Format("and ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OPTYPE.LONG, op24(op0, op1, op2)));
+                    s += string.Format("and ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OpType.LONG, op24(op0, op1, op2)));
                     break;
                 case 0x30:
-                    s += string.Format("bmi ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OPTYPE.RELB, op8(op0))), decode((byte)OPTYPE.RELB, op8(op0)));
+                    s += string.Format("bmi ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OpType.RELB, op8(op0))), decode((byte)OpType.RELB, op8(op0)));
                     break;
                 case 0x31:
-                    s += string.Format("and (${0:X2}),y   [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDPY, op8(op0)));
+                    s += string.Format("and (${0:X2}),y   [{1:X6}]", op8(op0), decode((byte)OpType.IDPY, op8(op0)));
                     break;
                 case 0x32:
-                    s += string.Format("and (${0:X2})     [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDP, op8(op0)));
+                    s += string.Format("and (${0:X2})     [{1:X6}]", op8(op0), decode((byte)OpType.IDP, op8(op0)));
                     break;
                 case 0x33:
-                    s += string.Format("and (${0:X2},s),y [{1:X6}]", op8(op0), decode((byte)OPTYPE.ISRY, op8(op0)));
+                    s += string.Format("and (${0:X2},s),y [{1:X6}]", op8(op0), decode((byte)OpType.ISRY, op8(op0)));
                     break;
                 case 0x34:
-                    s += string.Format("bit ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPX, op8(op0)));
+                    s += string.Format("bit ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OpType.DPX, op8(op0)));
                     break;
                 case 0x35:
-                    s += string.Format("and ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPX, op8(op0)));
+                    s += string.Format("and ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OpType.DPX, op8(op0)));
                     break;
                 case 0x36:
-                    s += string.Format("rol ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPX, op8(op0)));
+                    s += string.Format("rol ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OpType.DPX, op8(op0)));
                     break;
                 case 0x37:
-                    s += string.Format("and [${0:X2}],y   [{1:X6}]", op8(op0), decode((byte)OPTYPE.ILDPY, op8(op0)));
+                    s += string.Format("and [${0:X2}],y   [{1:X6}]", op8(op0), decode((byte)OpType.ILDPY, op8(op0)));
                     break;
                 case 0x38:
                     s += string.Format("sec                   ");
                     break;
                 case 0x39:
-                    s += string.Format("and ${0:X4},y   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRY, op16(op0, op1)));
+                    s += string.Format("and ${0:X4},y   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRY, op16(op0, op1)));
                     break;
                 case 0x3a:
                     s += string.Format("dec                   ");
@@ -360,40 +360,40 @@ namespace Snes
                     s += string.Format("tsc                   ");
                     break;
                 case 0x3c:
-                    s += string.Format("bit ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRX, op16(op0, op1)));
+                    s += string.Format("bit ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRX, op16(op0, op1)));
                     break;
                 case 0x3d:
-                    s += string.Format("and ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRX, op16(op0, op1)));
+                    s += string.Format("and ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRX, op16(op0, op1)));
                     break;
                 case 0x3e:
-                    s += string.Format("rol ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRX, op16(op0, op1)));
+                    s += string.Format("rol ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRX, op16(op0, op1)));
                     break;
                 case 0x3f:
-                    s += string.Format("and ${0:X6},x [{1:X6}]", op24(op0, op1, op2), decode((byte)OPTYPE.LONGX, op24(op0, op1, op2)));
+                    s += string.Format("and ${0:X6},x [{1:X6}]", op24(op0, op1, op2), decode((byte)OpType.LONGX, op24(op0, op1, op2)));
                     break;
                 case 0x40:
                     s += string.Format("rti                   ");
                     break;
                 case 0x41:
-                    s += string.Format("eor (${0:X2},x)   [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDPX, op8(op0)));
+                    s += string.Format("eor (${0:X2},x)   [{1:X6}]", op8(op0), decode((byte)OpType.IDPX, op8(op0)));
                     break;
                 case 0x42:
                     s += string.Format("wdm                   ");
                     break;
                 case 0x43:
-                    s += string.Format("eor ${0:X2},s     [{1:X6}]", op8(op0), decode((byte)OPTYPE.SR, op8(op0)));
+                    s += string.Format("eor ${0:X2},s     [{1:X6}]", op8(op0), decode((byte)OpType.SR, op8(op0)));
                     break;
                 case 0x44:
                     s += string.Format("mvp ${0:X2},${1:X2}           ", op1, op8(op0));
                     break;
                 case 0x45:
-                    s += string.Format("eor ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("eor ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0x46:
-                    s += string.Format("lsr ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("lsr ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0x47:
-                    s += string.Format("eor [${0:X2}]     [{1:X6}]", op8(op0), decode((byte)OPTYPE.ILDP, op8(op0)));
+                    s += string.Format("eor [${0:X2}]     [{1:X6}]", op8(op0), decode((byte)OpType.ILDP, op8(op0)));
                     break;
                 case 0x48:
                     s += string.Format("pha                   ");
@@ -415,46 +415,46 @@ namespace Snes
                     s += string.Format("phk                   ");
                     break;
                 case 0x4c:
-                    s += string.Format("jmp ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR_PC, op16(op0, op1)));
+                    s += string.Format("jmp ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR_PC, op16(op0, op1)));
                     break;
                 case 0x4d:
-                    s += string.Format("eor ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("eor ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0x4e:
-                    s += string.Format("lsr ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("lsr ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0x4f:
-                    s += string.Format("eor ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OPTYPE.LONG, op24(op0, op1, op2)));
+                    s += string.Format("eor ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OpType.LONG, op24(op0, op1, op2)));
                     break;
                 case 0x50:
-                    s += string.Format("bvc ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OPTYPE.RELB, op8(op0))), decode((byte)OPTYPE.RELB, op8(op0)));
+                    s += string.Format("bvc ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OpType.RELB, op8(op0))), decode((byte)OpType.RELB, op8(op0)));
                     break;
                 case 0x51:
-                    s += string.Format("eor (${0:X2}),y   [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDPY, op8(op0)));
+                    s += string.Format("eor (${0:X2}),y   [{1:X6}]", op8(op0), decode((byte)OpType.IDPY, op8(op0)));
                     break;
                 case 0x52:
-                    s += string.Format("eor (${0:X2})     [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDP, op8(op0)));
+                    s += string.Format("eor (${0:X2})     [{1:X6}]", op8(op0), decode((byte)OpType.IDP, op8(op0)));
                     break;
                 case 0x53:
-                    s += string.Format("eor (${0:X2},s),y [{1:X6}]", op8(op0), decode((byte)OPTYPE.ISRY, op8(op0)));
+                    s += string.Format("eor (${0:X2},s),y [{1:X6}]", op8(op0), decode((byte)OpType.ISRY, op8(op0)));
                     break;
                 case 0x54:
                     s += string.Format("mvn ${0:X2},${1:X2}           ", op1, op8(op0));
                     break;
                 case 0x55:
-                    s += string.Format("eor ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPX, op8(op0)));
+                    s += string.Format("eor ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OpType.DPX, op8(op0)));
                     break;
                 case 0x56:
-                    s += string.Format("lsr ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPX, op8(op0)));
+                    s += string.Format("lsr ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OpType.DPX, op8(op0)));
                     break;
                 case 0x57:
-                    s += string.Format("eor [${0:X2}],y   [{1:X6}]", op8(op0), decode((byte)OPTYPE.ILDPY, op8(op0)));
+                    s += string.Format("eor [${0:X2}],y   [{1:X6}]", op8(op0), decode((byte)OpType.ILDPY, op8(op0)));
                     break;
                 case 0x58:
                     s += string.Format("cli                   ");
                     break;
                 case 0x59:
-                    s += string.Format("eor ${0:X4},y   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRY, op16(op0, op1)));
+                    s += string.Format("eor ${0:X4},y   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRY, op16(op0, op1)));
                     break;
                 case 0x5a:
                     s += string.Format("phy                   ");
@@ -463,40 +463,40 @@ namespace Snes
                     s += string.Format("tcd                   ");
                     break;
                 case 0x5c:
-                    s += string.Format("jml ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OPTYPE.LONG, op24(op0, op1, op2)));
+                    s += string.Format("jml ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OpType.LONG, op24(op0, op1, op2)));
                     break;
                 case 0x5d:
-                    s += string.Format("eor ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRX, op16(op0, op1)));
+                    s += string.Format("eor ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRX, op16(op0, op1)));
                     break;
                 case 0x5e:
-                    s += string.Format("lsr ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRX, op16(op0, op1)));
+                    s += string.Format("lsr ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRX, op16(op0, op1)));
                     break;
                 case 0x5f:
-                    s += string.Format("eor ${0:X6},x [{1:X6}]", op24(op0, op1, op2), decode((byte)OPTYPE.LONGX, op24(op0, op1, op2)));
+                    s += string.Format("eor ${0:X6},x [{1:X6}]", op24(op0, op1, op2), decode((byte)OpType.LONGX, op24(op0, op1, op2)));
                     break;
                 case 0x60:
                     s += string.Format("rts                   ");
                     break;
                 case 0x61:
-                    s += string.Format("adc (${0:X2},x)   [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDPX, op8(op0)));
+                    s += string.Format("adc (${0:X2},x)   [{1:X6}]", op8(op0), decode((byte)OpType.IDPX, op8(op0)));
                     break;
                 case 0x62:
-                    s += string.Format("per ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("per ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0x63:
-                    s += string.Format("adc ${0:X2},s     [{1:X6}]", op8(op0), decode((byte)OPTYPE.SR, op8(op0)));
+                    s += string.Format("adc ${0:X2},s     [{1:X6}]", op8(op0), decode((byte)OpType.SR, op8(op0)));
                     break;
                 case 0x64:
-                    s += string.Format("stz ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("stz ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0x65:
-                    s += string.Format("adc ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("adc ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0x66:
-                    s += string.Format("ror ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("ror ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0x67:
-                    s += string.Format("adc [${0:X2}]     [{1:X6}]", op8(op0), decode((byte)OPTYPE.ILDP, op8(op0)));
+                    s += string.Format("adc [${0:X2}]     [{1:X6}]", op8(op0), decode((byte)OpType.ILDP, op8(op0)));
                     break;
                 case 0x68:
                     s += string.Format("pla                   ");
@@ -518,46 +518,46 @@ namespace Snes
                     s += string.Format("rtl                   ");
                     break;
                 case 0x6c:
-                    s += string.Format("jmp (${0:X4})   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.IADDR_PC, op16(op0, op1)));
+                    s += string.Format("jmp (${0:X4})   [{1:X6}]", op16(op0, op1), decode((byte)OpType.IADDR_PC, op16(op0, op1)));
                     break;
                 case 0x6d:
-                    s += string.Format("adc ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("adc ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0x6e:
-                    s += string.Format("ror ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("ror ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0x6f:
-                    s += string.Format("adc ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OPTYPE.LONG, op24(op0, op1, op2)));
+                    s += string.Format("adc ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OpType.LONG, op24(op0, op1, op2)));
                     break;
                 case 0x70:
-                    s += string.Format("bvs ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OPTYPE.RELB, op8(op0))), decode((byte)OPTYPE.RELB, op8(op0)));
+                    s += string.Format("bvs ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OpType.RELB, op8(op0))), decode((byte)OpType.RELB, op8(op0)));
                     break;
                 case 0x71:
-                    s += string.Format("adc (${0:X2}),y   [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDPY, op8(op0)));
+                    s += string.Format("adc (${0:X2}),y   [{1:X6}]", op8(op0), decode((byte)OpType.IDPY, op8(op0)));
                     break;
                 case 0x72:
-                    s += string.Format("adc (${0:X2})     [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDP, op8(op0)));
+                    s += string.Format("adc (${0:X2})     [{1:X6}]", op8(op0), decode((byte)OpType.IDP, op8(op0)));
                     break;
                 case 0x73:
-                    s += string.Format("adc (${0:X2},s),y [{1:X6}]", op8(op0), decode((byte)OPTYPE.ISRY, op8(op0)));
+                    s += string.Format("adc (${0:X2},s),y [{1:X6}]", op8(op0), decode((byte)OpType.ISRY, op8(op0)));
                     break;
                 case 0x74:
-                    s += string.Format("stz ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPX, op8(op0)));
+                    s += string.Format("stz ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OpType.DPX, op8(op0)));
                     break;
                 case 0x75:
-                    s += string.Format("adc ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPX, op8(op0)));
+                    s += string.Format("adc ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OpType.DPX, op8(op0)));
                     break;
                 case 0x76:
-                    s += string.Format("ror ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPX, op8(op0)));
+                    s += string.Format("ror ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OpType.DPX, op8(op0)));
                     break;
                 case 0x77:
-                    s += string.Format("adc [${0:X2}],y   [{1:X6}]", op8(op0), decode((byte)OPTYPE.ILDPY, op8(op0)));
+                    s += string.Format("adc [${0:X2}],y   [{1:X6}]", op8(op0), decode((byte)OpType.ILDPY, op8(op0)));
                     break;
                 case 0x78:
                     s += string.Format("sei                   ");
                     break;
                 case 0x79:
-                    s += string.Format("adc ${0:X4},y   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRY, op16(op0, op1)));
+                    s += string.Format("adc ${0:X4},y   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRY, op16(op0, op1)));
                     break;
                 case 0x7a:
                     s += string.Format("ply                   ");
@@ -566,40 +566,40 @@ namespace Snes
                     s += string.Format("tdc                   ");
                     break;
                 case 0x7c:
-                    s += string.Format("jmp (${0:X4},x) [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.IADDRX, op16(op0, op1)));
+                    s += string.Format("jmp (${0:X4},x) [{1:X6}]", op16(op0, op1), decode((byte)OpType.IADDRX, op16(op0, op1)));
                     break;
                 case 0x7d:
-                    s += string.Format("adc ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRX, op16(op0, op1)));
+                    s += string.Format("adc ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRX, op16(op0, op1)));
                     break;
                 case 0x7e:
-                    s += string.Format("ror ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRX, op16(op0, op1)));
+                    s += string.Format("ror ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRX, op16(op0, op1)));
                     break;
                 case 0x7f:
-                    s += string.Format("adc ${0:X6},x [{1:X6}]", op24(op0, op1, op2), decode((byte)OPTYPE.LONGX, op24(op0, op1, op2)));
+                    s += string.Format("adc ${0:X6},x [{1:X6}]", op24(op0, op1, op2), decode((byte)OpType.LONGX, op24(op0, op1, op2)));
                     break;
                 case 0x80:
-                    s += string.Format("bra ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OPTYPE.RELB, op8(op0))), decode((byte)OPTYPE.RELB, op8(op0)));
+                    s += string.Format("bra ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OpType.RELB, op8(op0))), decode((byte)OpType.RELB, op8(op0)));
                     break;
                 case 0x81:
-                    s += string.Format("sta (${0:X2},x)   [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDPX, op8(op0)));
+                    s += string.Format("sta (${0:X2},x)   [{1:X6}]", op8(op0), decode((byte)OpType.IDPX, op8(op0)));
                     break;
                 case 0x82:
-                    s += string.Format("brl ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OPTYPE.RELW, op16(op0, op1))), decode((byte)OPTYPE.RELW, op16(op0, op1)));
+                    s += string.Format("brl ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OpType.RELW, op16(op0, op1))), decode((byte)OpType.RELW, op16(op0, op1)));
                     break;
                 case 0x83:
-                    s += string.Format("sta ${0:X2},s     [{1:X6}]", op8(op0), decode((byte)OPTYPE.SR, op8(op0)));
+                    s += string.Format("sta ${0:X2},s     [{1:X6}]", op8(op0), decode((byte)OpType.SR, op8(op0)));
                     break;
                 case 0x84:
-                    s += string.Format("sty ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("sty ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0x85:
-                    s += string.Format("sta ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("sta ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0x86:
-                    s += string.Format("stx ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("stx ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0x87:
-                    s += string.Format("sta [${0:X2}]     [{1:X6}]", op8(op0), decode((byte)OPTYPE.ILDP, op8(op0)));
+                    s += string.Format("sta [${0:X2}]     [{1:X6}]", op8(op0), decode((byte)OpType.ILDP, op8(op0)));
                     break;
                 case 0x88:
                     s += string.Format("dey                   ");
@@ -621,46 +621,46 @@ namespace Snes
                     s += string.Format("phb                   ");
                     break;
                 case 0x8c:
-                    s += string.Format("sty ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("sty ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0x8d:
-                    s += string.Format("sta ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("sta ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0x8e:
-                    s += string.Format("stx ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("stx ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0x8f:
-                    s += string.Format("sta ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OPTYPE.LONG, op24(op0, op1, op2)));
+                    s += string.Format("sta ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OpType.LONG, op24(op0, op1, op2)));
                     break;
                 case 0x90:
-                    s += string.Format("bcc ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OPTYPE.RELB, op8(op0))), decode((byte)OPTYPE.RELB, op8(op0)));
+                    s += string.Format("bcc ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OpType.RELB, op8(op0))), decode((byte)OpType.RELB, op8(op0)));
                     break;
                 case 0x91:
-                    s += string.Format("sta (${0:X2}),y   [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDPY, op8(op0)));
+                    s += string.Format("sta (${0:X2}),y   [{1:X6}]", op8(op0), decode((byte)OpType.IDPY, op8(op0)));
                     break;
                 case 0x92:
-                    s += string.Format("sta (${0:X2})     [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDP, op8(op0)));
+                    s += string.Format("sta (${0:X2})     [{1:X6}]", op8(op0), decode((byte)OpType.IDP, op8(op0)));
                     break;
                 case 0x93:
-                    s += string.Format("sta (${0:X2},s),y [{1:X6}]", op8(op0), decode((byte)OPTYPE.ISRY, op8(op0)));
+                    s += string.Format("sta (${0:X2},s),y [{1:X6}]", op8(op0), decode((byte)OpType.ISRY, op8(op0)));
                     break;
                 case 0x94:
-                    s += string.Format("sty ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPX, op8(op0)));
+                    s += string.Format("sty ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OpType.DPX, op8(op0)));
                     break;
                 case 0x95:
-                    s += string.Format("sta ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPX, op8(op0)));
+                    s += string.Format("sta ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OpType.DPX, op8(op0)));
                     break;
                 case 0x96:
-                    s += string.Format("stx ${0:X2},y     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPY, op8(op0)));
+                    s += string.Format("stx ${0:X2},y     [{1:X6}]", op8(op0), decode((byte)OpType.DPY, op8(op0)));
                     break;
                 case 0x97:
-                    s += string.Format("sta [${0:X2}],y   [{1:X6}]", op8(op0), decode((byte)OPTYPE.ILDPY, op8(op0)));
+                    s += string.Format("sta [${0:X2}],y   [{1:X6}]", op8(op0), decode((byte)OpType.ILDPY, op8(op0)));
                     break;
                 case 0x98:
                     s += string.Format("tya                   ");
                     break;
                 case 0x99:
-                    s += string.Format("sta ${0:X4},y   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRY, op16(op0, op1)));
+                    s += string.Format("sta ${0:X4},y   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRY, op16(op0, op1)));
                     break;
                 case 0x9a:
                     s += string.Format("txs                   ");
@@ -669,16 +669,16 @@ namespace Snes
                     s += string.Format("txy                   ");
                     break;
                 case 0x9c:
-                    s += string.Format("stz ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("stz ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0x9d:
-                    s += string.Format("sta ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRX, op16(op0, op1)));
+                    s += string.Format("sta ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRX, op16(op0, op1)));
                     break;
                 case 0x9e:
-                    s += string.Format("stz ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRX, op16(op0, op1)));
+                    s += string.Format("stz ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRX, op16(op0, op1)));
                     break;
                 case 0x9f:
-                    s += string.Format("sta ${0:X6},x [{1:X6}]", op24(op0, op1, op2), decode((byte)OPTYPE.LONGX, op24(op0, op1, op2)));
+                    s += string.Format("sta ${0:X6},x [{1:X6}]", op24(op0, op1, op2), decode((byte)OpType.LONGX, op24(op0, op1, op2)));
                     break;
                 case 0xa0:
                     if (x8(regs))
@@ -691,7 +691,7 @@ namespace Snes
                     }
                     break;
                 case 0xa1:
-                    s += string.Format("lda (${0:X2},x)   [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDPX, op8(op0)));
+                    s += string.Format("lda (${0:X2},x)   [{1:X6}]", op8(op0), decode((byte)OpType.IDPX, op8(op0)));
                     break;
                 case 0xa2:
                     if (x8(regs))
@@ -704,19 +704,19 @@ namespace Snes
                     }
                     break;
                 case 0xa3:
-                    s += string.Format("lda ${0:X2},s     [{1:X6}]", op8(op0), decode((byte)OPTYPE.SR, op8(op0)));
+                    s += string.Format("lda ${0:X2},s     [{1:X6}]", op8(op0), decode((byte)OpType.SR, op8(op0)));
                     break;
                 case 0xa4:
-                    s += string.Format("ldy ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("ldy ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0xa5:
-                    s += string.Format("lda ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("lda ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0xa6:
-                    s += string.Format("ldx ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("ldx ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0xa7:
-                    s += string.Format("lda [${0:X2}]     [{1:X6}]", op8(op0), decode((byte)OPTYPE.ILDP, op8(op0)));
+                    s += string.Format("lda [${0:X2}]     [{1:X6}]", op8(op0), decode((byte)OpType.ILDP, op8(op0)));
                     break;
                 case 0xa8:
                     s += string.Format("tay                   ");
@@ -738,46 +738,46 @@ namespace Snes
                     s += string.Format("plb                   ");
                     break;
                 case 0xac:
-                    s += string.Format("ldy ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("ldy ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0xad:
-                    s += string.Format("lda ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("lda ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0xae:
-                    s += string.Format("ldx ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("ldx ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0xaf:
-                    s += string.Format("lda ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OPTYPE.LONG, op24(op0, op1, op2)));
+                    s += string.Format("lda ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OpType.LONG, op24(op0, op1, op2)));
                     break;
                 case 0xb0:
-                    s += string.Format("bcs ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OPTYPE.RELB, op8(op0))), decode((byte)OPTYPE.RELB, op8(op0)));
+                    s += string.Format("bcs ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OpType.RELB, op8(op0))), decode((byte)OpType.RELB, op8(op0)));
                     break;
                 case 0xb1:
-                    s += string.Format("lda (${0:X2}),y   [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDPY, op8(op0)));
+                    s += string.Format("lda (${0:X2}),y   [{1:X6}]", op8(op0), decode((byte)OpType.IDPY, op8(op0)));
                     break;
                 case 0xb2:
-                    s += string.Format("lda (${0:X2})     [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDP, op8(op0)));
+                    s += string.Format("lda (${0:X2})     [{1:X6}]", op8(op0), decode((byte)OpType.IDP, op8(op0)));
                     break;
                 case 0xb3:
-                    s += string.Format("lda (${0:X2},s),y [{1:X6}]", op8(op0), decode((byte)OPTYPE.ISRY, op8(op0)));
+                    s += string.Format("lda (${0:X2},s),y [{1:X6}]", op8(op0), decode((byte)OpType.ISRY, op8(op0)));
                     break;
                 case 0xb4:
-                    s += string.Format("ldy ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPX, op8(op0)));
+                    s += string.Format("ldy ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OpType.DPX, op8(op0)));
                     break;
                 case 0xb5:
-                    s += string.Format("lda ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPX, op8(op0)));
+                    s += string.Format("lda ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OpType.DPX, op8(op0)));
                     break;
                 case 0xb6:
-                    s += string.Format("ldx ${0:X2},y     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPY, op8(op0)));
+                    s += string.Format("ldx ${0:X2},y     [{1:X6}]", op8(op0), decode((byte)OpType.DPY, op8(op0)));
                     break;
                 case 0xb7:
-                    s += string.Format("lda [${0:X2}],y   [{1:X6}]", op8(op0), decode((byte)OPTYPE.ILDPY, op8(op0)));
+                    s += string.Format("lda [${0:X2}],y   [{1:X6}]", op8(op0), decode((byte)OpType.ILDPY, op8(op0)));
                     break;
                 case 0xb8:
                     s += string.Format("clv                   ");
                     break;
                 case 0xb9:
-                    s += string.Format("lda ${0:X4},y   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRY, op16(op0, op1)));
+                    s += string.Format("lda ${0:X4},y   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRY, op16(op0, op1)));
                     break;
                 case 0xba:
                     s += string.Format("tsx                   ");
@@ -786,16 +786,16 @@ namespace Snes
                     s += string.Format("tyx                   ");
                     break;
                 case 0xbc:
-                    s += string.Format("ldy ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRX, op16(op0, op1)));
+                    s += string.Format("ldy ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRX, op16(op0, op1)));
                     break;
                 case 0xbd:
-                    s += string.Format("lda ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRX, op16(op0, op1)));
+                    s += string.Format("lda ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRX, op16(op0, op1)));
                     break;
                 case 0xbe:
-                    s += string.Format("ldx ${0:X4},y   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRY, op16(op0, op1)));
+                    s += string.Format("ldx ${0:X4},y   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRY, op16(op0, op1)));
                     break;
                 case 0xbf:
-                    s += string.Format("lda ${0:X6},x [{1:X6}]", op24(op0, op1, op2), decode((byte)OPTYPE.LONGX, op24(op0, op1, op2)));
+                    s += string.Format("lda ${0:X6},x [{1:X6}]", op24(op0, op1, op2), decode((byte)OpType.LONGX, op24(op0, op1, op2)));
                     break;
                 case 0xc0:
                     if (x8(regs))
@@ -808,25 +808,25 @@ namespace Snes
                     }
                     break;
                 case 0xc1:
-                    s += string.Format("cmp (${0:X2},x)   [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDPX, op8(op0)));
+                    s += string.Format("cmp (${0:X2},x)   [{1:X6}]", op8(op0), decode((byte)OpType.IDPX, op8(op0)));
                     break;
                 case 0xc2:
                     s += string.Format("rep #${0:X2}              ", op8(op0));
                     break;
                 case 0xc3:
-                    s += string.Format("cmp ${0:X2},s     [{1:X6}]", op8(op0), decode((byte)OPTYPE.SR, op8(op0)));
+                    s += string.Format("cmp ${0:X2},s     [{1:X6}]", op8(op0), decode((byte)OpType.SR, op8(op0)));
                     break;
                 case 0xc4:
-                    s += string.Format("cpy ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("cpy ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0xc5:
-                    s += string.Format("cmp ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("cmp ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0xc6:
-                    s += string.Format("dec ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("dec ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0xc7:
-                    s += string.Format("cmp [${0:X2}]     [{1:X6}]", op8(op0), decode((byte)OPTYPE.ILDP, op8(op0)));
+                    s += string.Format("cmp [${0:X2}]     [{1:X6}]", op8(op0), decode((byte)OpType.ILDP, op8(op0)));
                     break;
                 case 0xc8:
                     s += string.Format("iny                   ");
@@ -848,46 +848,46 @@ namespace Snes
                     s += string.Format("wai                   ");
                     break;
                 case 0xcc:
-                    s += string.Format("cpy ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("cpy ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0xcd:
-                    s += string.Format("cmp ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("cmp ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0xce:
-                    s += string.Format("dec ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("dec ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0xcf:
-                    s += string.Format("cmp ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OPTYPE.LONG, op24(op0, op1, op2)));
+                    s += string.Format("cmp ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OpType.LONG, op24(op0, op1, op2)));
                     break;
                 case 0xd0:
-                    s += string.Format("bne ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OPTYPE.RELB, op8(op0))), decode((byte)OPTYPE.RELB, op8(op0)));
+                    s += string.Format("bne ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OpType.RELB, op8(op0))), decode((byte)OpType.RELB, op8(op0)));
                     break;
                 case 0xd1:
-                    s += string.Format("cmp (${0:X2}),y   [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDPY, op8(op0)));
+                    s += string.Format("cmp (${0:X2}),y   [{1:X6}]", op8(op0), decode((byte)OpType.IDPY, op8(op0)));
                     break;
                 case 0xd2:
-                    s += string.Format("cmp (${0:X2})     [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDP, op8(op0)));
+                    s += string.Format("cmp (${0:X2})     [{1:X6}]", op8(op0), decode((byte)OpType.IDP, op8(op0)));
                     break;
                 case 0xd3:
-                    s += string.Format("cmp (${0:X2},s),y [{1:X6}]", op8(op0), decode((byte)OPTYPE.ISRY, op8(op0)));
+                    s += string.Format("cmp (${0:X2},s),y [{1:X6}]", op8(op0), decode((byte)OpType.ISRY, op8(op0)));
                     break;
                 case 0xd4:
-                    s += string.Format("pei (${0:X2})     [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDP, op8(op0)));
+                    s += string.Format("pei (${0:X2})     [{1:X6}]", op8(op0), decode((byte)OpType.IDP, op8(op0)));
                     break;
                 case 0xd5:
-                    s += string.Format("cmp ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPX, op8(op0)));
+                    s += string.Format("cmp ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OpType.DPX, op8(op0)));
                     break;
                 case 0xd6:
-                    s += string.Format("dec ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPX, op8(op0)));
+                    s += string.Format("dec ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OpType.DPX, op8(op0)));
                     break;
                 case 0xd7:
-                    s += string.Format("cmp [${0:X2}],y   [{1:X6}]", op8(op0), decode((byte)OPTYPE.ILDPY, op8(op0)));
+                    s += string.Format("cmp [${0:X2}],y   [{1:X6}]", op8(op0), decode((byte)OpType.ILDPY, op8(op0)));
                     break;
                 case 0xd8:
                     s += string.Format("cld                   ");
                     break;
                 case 0xd9:
-                    s += string.Format("cmp ${0:X4},y   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRY, op16(op0, op1)));
+                    s += string.Format("cmp ${0:X4},y   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRY, op16(op0, op1)));
                     break;
                 case 0xda:
                     s += string.Format("phx                   ");
@@ -896,16 +896,16 @@ namespace Snes
                     s += string.Format("stp                   ");
                     break;
                 case 0xdc:
-                    s += string.Format("jmp [${0:X4}]   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ILADDR, op16(op0, op1)));
+                    s += string.Format("jmp [${0:X4}]   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ILADDR, op16(op0, op1)));
                     break;
                 case 0xdd:
-                    s += string.Format("cmp ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRX, op16(op0, op1)));
+                    s += string.Format("cmp ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRX, op16(op0, op1)));
                     break;
                 case 0xde:
-                    s += string.Format("dec ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRX, op16(op0, op1)));
+                    s += string.Format("dec ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRX, op16(op0, op1)));
                     break;
                 case 0xdf:
-                    s += string.Format("cmp ${0:X6},x [{1:X6}]", op24(op0, op1, op2), decode((byte)OPTYPE.LONGX, op24(op0, op1, op2)));
+                    s += string.Format("cmp ${0:X6},x [{1:X6}]", op24(op0, op1, op2), decode((byte)OpType.LONGX, op24(op0, op1, op2)));
                     break;
                 case 0xe0:
                     if (x8(regs))
@@ -918,25 +918,25 @@ namespace Snes
                     }
                     break;
                 case 0xe1:
-                    s += string.Format("sbc (${0:X2},x)   [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDPX, op8(op0)));
+                    s += string.Format("sbc (${0:X2},x)   [{1:X6}]", op8(op0), decode((byte)OpType.IDPX, op8(op0)));
                     break;
                 case 0xe2:
                     s += string.Format("sep #${0:X2}              ", op8(op0));
                     break;
                 case 0xe3:
-                    s += string.Format("sbc ${0:X2},s     [{1:X6}]", op8(op0), decode((byte)OPTYPE.SR, op8(op0)));
+                    s += string.Format("sbc ${0:X2},s     [{1:X6}]", op8(op0), decode((byte)OpType.SR, op8(op0)));
                     break;
                 case 0xe4:
-                    s += string.Format("cpx ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("cpx ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0xe5:
-                    s += string.Format("sbc ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("sbc ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0xe6:
-                    s += string.Format("inc ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OPTYPE.DP, op8(op0)));
+                    s += string.Format("inc ${0:X2}       [{1:X6}]", op8(op0), decode((byte)OpType.DP, op8(op0)));
                     break;
                 case 0xe7:
-                    s += string.Format("sbc [${0:X2}]     [{1:X6}]", op8(op0), decode((byte)OPTYPE.ILDP, op8(op0)));
+                    s += string.Format("sbc [${0:X2}]     [{1:X6}]", op8(op0), decode((byte)OpType.ILDP, op8(op0)));
                     break;
                 case 0xe8:
                     s += string.Format("inx                   ");
@@ -958,46 +958,46 @@ namespace Snes
                     s += string.Format("xba                   ");
                     break;
                 case 0xec:
-                    s += string.Format("cpx ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("cpx ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0xed:
-                    s += string.Format("sbc ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("sbc ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0xee:
-                    s += string.Format("inc ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("inc ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0xef:
-                    s += string.Format("sbc ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OPTYPE.LONG, op24(op0, op1, op2)));
+                    s += string.Format("sbc ${0:X6}   [{1:X6}]", op24(op0, op1, op2), decode((byte)OpType.LONG, op24(op0, op1, op2)));
                     break;
                 case 0xf0:
-                    s += string.Format("beq ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OPTYPE.RELB, op8(op0))), decode((byte)OPTYPE.RELB, op8(op0)));
+                    s += string.Format("beq ${0:X4}     [{1:X6}]", (ushort)(decode((byte)OpType.RELB, op8(op0))), decode((byte)OpType.RELB, op8(op0)));
                     break;
                 case 0xf1:
-                    s += string.Format("sbc (${0:X2}),y   [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDPY, op8(op0)));
+                    s += string.Format("sbc (${0:X2}),y   [{1:X6}]", op8(op0), decode((byte)OpType.IDPY, op8(op0)));
                     break;
                 case 0xf2:
-                    s += string.Format("sbc (${0:X2})     [{1:X6}]", op8(op0), decode((byte)OPTYPE.IDP, op8(op0)));
+                    s += string.Format("sbc (${0:X2})     [{1:X6}]", op8(op0), decode((byte)OpType.IDP, op8(op0)));
                     break;
                 case 0xf3:
-                    s += string.Format("sbc (${0:X2},s),y [{1:X6}]", op8(op0), decode((byte)OPTYPE.ISRY, op8(op0)));
+                    s += string.Format("sbc (${0:X2},s),y [{1:X6}]", op8(op0), decode((byte)OpType.ISRY, op8(op0)));
                     break;
                 case 0xf4:
-                    s += string.Format("pea ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDR, op16(op0, op1)));
+                    s += string.Format("pea ${0:X4}     [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDR, op16(op0, op1)));
                     break;
                 case 0xf5:
-                    s += string.Format("sbc ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPX, op8(op0)));
+                    s += string.Format("sbc ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OpType.DPX, op8(op0)));
                     break;
                 case 0xf6:
-                    s += string.Format("inc ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OPTYPE.DPX, op8(op0)));
+                    s += string.Format("inc ${0:X2},x     [{1:X6}]", op8(op0), decode((byte)OpType.DPX, op8(op0)));
                     break;
                 case 0xf7:
-                    s += string.Format("sbc [${0:X2}],y   [{1:X6}]", op8(op0), decode((byte)OPTYPE.ILDPY, op8(op0)));
+                    s += string.Format("sbc [${0:X2}],y   [{1:X6}]", op8(op0), decode((byte)OpType.ILDPY, op8(op0)));
                     break;
                 case 0xf8:
                     s += string.Format("sed                   ");
                     break;
                 case 0xf9:
-                    s += string.Format("sbc ${0:X4},y   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRY, op16(op0, op1)));
+                    s += string.Format("sbc ${0:X4},y   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRY, op16(op0, op1)));
                     break;
                 case 0xfa:
                     s += string.Format("plx                   ");
@@ -1006,16 +1006,16 @@ namespace Snes
                     s += string.Format("xce                   ");
                     break;
                 case 0xfc:
-                    s += string.Format("jsr (${0:X4},x) [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.IADDRX, op16(op0, op1)));
+                    s += string.Format("jsr (${0:X4},x) [{1:X6}]", op16(op0, op1), decode((byte)OpType.IADDRX, op16(op0, op1)));
                     break;
                 case 0xfd:
-                    s += string.Format("sbc ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRX, op16(op0, op1)));
+                    s += string.Format("sbc ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRX, op16(op0, op1)));
                     break;
                 case 0xfe:
-                    s += string.Format("inc ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OPTYPE.ADDRX, op16(op0, op1)));
+                    s += string.Format("inc ${0:X4},x   [{1:X6}]", op16(op0, op1), decode((byte)OpType.ADDRX, op16(op0, op1)));
                     break;
                 case 0xff:
-                    s += string.Format("sbc ${0:X6},x [{1:X6}]", op24(op0, op1, op2), decode((byte)OPTYPE.LONGX, op24(op0, op1, op2)));
+                    s += string.Format("sbc ${0:X6},x [{1:X6}]", op24(op0, op1, op2), decode((byte)OpType.LONGX, op24(op0, op1, op2)));
                     break;
             }
 
@@ -1078,76 +1078,76 @@ namespace Snes
         {
             uint r = 0;
 
-            switch ((OPTYPE)offset_type)
+            switch ((OpType)offset_type)
             {
-                case OPTYPE.DP:
+                case OpType.DP:
                     r = (regs.d + (addr & 0xffff)) & 0xffff;
                     break;
-                case OPTYPE.DPX:
+                case OpType.DPX:
                     r = ((uint)regs.d + (uint)regs.x + (addr & 0xffff)) & 0xffff;
                     break;
-                case OPTYPE.DPY:
+                case OpType.DPY:
                     r = ((uint)regs.d + (uint)regs.y + (addr & 0xffff)) & 0xffff;
                     break;
-                case OPTYPE.IDP:
+                case OpType.IDP:
                     addr = (regs.d + (addr & 0xffff)) & 0xffff;
                     r = (uint)((regs.db << 16) + dreadw(addr));
                     break;
-                case OPTYPE.IDPX:
+                case OpType.IDPX:
                     addr = ((uint)regs.d + (uint)regs.x + (addr & 0xffff)) & 0xffff;
                     r = (uint)((regs.db << 16) + dreadw(addr));
                     break;
-                case OPTYPE.IDPY:
+                case OpType.IDPY:
                     addr = (regs.d + (addr & 0xffff)) & 0xffff;
                     r = (uint)((regs.db << 16) + dreadw(addr) + (uint)regs.y);
                     break;
-                case OPTYPE.ILDP:
+                case OpType.ILDP:
                     addr = (regs.d + (addr & 0xffff)) & 0xffff;
                     r = dreadl(addr);
                     break;
-                case OPTYPE.ILDPY:
+                case OpType.ILDPY:
                     addr = (regs.d + (addr & 0xffff)) & 0xffff;
                     r = dreadl(addr) + (uint)regs.y;
                     break;
-                case OPTYPE.ADDR:
+                case OpType.ADDR:
                     r = (uint)((regs.db << 16) + (addr & 0xffff));
                     break;
-                case OPTYPE.ADDR_PC:
+                case OpType.ADDR_PC:
                     r = (uint)((regs.pc.b << 16) + (addr & 0xffff));
                     break;
-                case OPTYPE.ADDRX:
+                case OpType.ADDRX:
                     r = (uint)((regs.db << 16) + (addr & 0xffff) + (uint)regs.x);
                     break;
-                case OPTYPE.ADDRY:
+                case OpType.ADDRY:
                     r = (uint)((regs.db << 16) + (addr & 0xffff) + (uint)regs.y);
                     break;
-                case OPTYPE.IADDR_PC:
+                case OpType.IADDR_PC:
                     r = (uint)((regs.pc.b << 16) + (addr & 0xffff));
                     break;
-                case OPTYPE.IADDRX:
+                case OpType.IADDRX:
                     r = (uint)((regs.pc.b << 16) + ((addr + (uint)regs.x) & 0xffff));
                     break;
-                case OPTYPE.ILADDR:
+                case OpType.ILADDR:
                     r = addr;
                     break;
-                case OPTYPE.LONG:
+                case OpType.LONG:
                     r = addr;
                     break;
-                case OPTYPE.LONGX:
+                case OpType.LONGX:
                     r = (addr + (uint)regs.x);
                     break;
-                case OPTYPE.SR:
+                case OpType.SR:
                     r = (regs.s + (addr & 0xff)) & 0xffff;
                     break;
-                case OPTYPE.ISRY:
+                case OpType.ISRY:
                     addr = (regs.s + (addr & 0xff)) & 0xffff;
                     r = (uint)((regs.db << 16) + dreadw(addr) + (uint)regs.y);
                     break;
-                case OPTYPE.RELB:
+                case OpType.RELB:
                     r = (uint)((regs.pc.b << 16) + ((regs.pc.w + 2) & 0xffff));
                     r += (uint)((sbyte)(addr));
                     break;
-                case OPTYPE.RELW:
+                case OpType.RELW:
                     r = (uint)((regs.pc.b << 16) + ((regs.pc.w + 3) & 0xffff));
                     r += (uint)((short)(addr));
                     break;

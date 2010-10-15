@@ -754,7 +754,10 @@ namespace Snes
                     }
                     bool irq_valid = status.irq_valid;
                     status.irq_valid = cpu_time <= irq_time && cpu_time + clocks > irq_time;
-                    if (!irq_valid && status.irq_valid) status.irq_line = true;
+                    if (!irq_valid && status.irq_valid)
+                    {
+                        status.irq_line = true;
+                    }
                 }
                 else
                 {
@@ -827,7 +830,10 @@ namespace Snes
             if (!nmi_valid && status.nmi_valid)
             {
                 status.nmi_line = true;
-                if (status.nmi_enabled) status.nmi_transition = true;
+                if (status.nmi_enabled)
+                {
+                    status.nmi_transition = true;
+                }
             }
             else if (nmi_valid && !status.nmi_valid)
             {

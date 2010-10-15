@@ -28,75 +28,473 @@ namespace Snes
 #endif
         }
 
-        public ushort get_vram_address() { throw new NotImplementedException(); }
+        public ushort get_vram_address()
+        {
+            ushort addr = regs.vram_addr;
+            switch (regs.vram_mapping)
+            {
+                case 0:
+                    break;  //direct mapping
+                case 1:
+                    addr = (ushort)((addr & 0xff00) | ((addr & 0x001f) << 3) | ((addr >> 5) & 7));
+                    break;
+                case 2:
+                    addr = (ushort)((addr & 0xfe00) | ((addr & 0x003f) << 3) | ((addr >> 6) & 7));
+                    break;
+                case 3:
+                    addr = (ushort)((addr & 0xfc00) | ((addr & 0x007f) << 3) | ((addr >> 7) & 7));
+                    break;
+            }
+            return (ushort)(addr << 1);
+        }
 
-        public byte vram_mmio_read(ushort addr) { throw new NotImplementedException(); }
+        public byte vram_mmio_read(ushort addr)
+        {
+            byte data;
 
-        public void vram_mmio_write(ushort addr, byte data) { throw new NotImplementedException(); }
+            if (regs.display_disabled == true)
+            {
+                data = StaticRAM.vram[addr];
+            }
+            else
+            {
+                ushort v = CPU.cpu.PPUCounter.vcounter();
+                ushort h = CPU.cpu.PPUCounter.hcounter();
+                ushort ls = (ushort)(((System.system.region == System.Region.NTSC ? 525 : 625) >> 1) - 1);
+                if (interlace() && !CPU.cpu.PPUCounter.field())
+                {
+                    ls++;
+                }
 
-        public byte oam_mmio_read(ushort addr) { throw new NotImplementedException(); }
+                if (v == ls && h == 1362)
+                {
+                    data = 0x00;
+                }
+                else if (v < (!overscan() ? 224 : 239))
+                {
+                    data = 0x00;
+                }
+                else if (v == (!overscan() ? 224 : 239))
+                {
+                    if (h == 1362)
+                    {
+                        data = StaticRAM.vram[addr];
+                    }
+                    else
+                    {
+                        data = 0x00;
+                    }
+                }
+                else
+                {
+                    data = StaticRAM.vram[addr];
+                }
+            }
 
-        public void oam_mmio_write(ushort addr, byte data) { throw new NotImplementedException(); }
+            return data;
+        }
 
-        public byte cgram_mmio_read(ushort addr) { throw new NotImplementedException(); }
+        public void vram_mmio_write(ushort addr, byte data)
+        {
+            if (regs.display_disabled == true)
+            {
+                StaticRAM.vram[addr] = data;
+            }
+            else
+            {
+                ushort v = CPU.cpu.PPUCounter.vcounter();
+                ushort h = CPU.cpu.PPUCounter.hcounter();
+                if (v == 0)
+                {
+                    if (h <= 4)
+                    {
+                        StaticRAM.vram[addr] = data;
+                    }
+                    else if (h == 6)
+                    {
+                        StaticRAM.vram[addr] = CPU.cpu.regs.mdr;
+                    }
+                    else
+                    {
+                        //no write
+                    }
+                }
+                else if (v < (!overscan() ? 225 : 240))
+                {
+                    //no write
+                }
+                else if (v == (!overscan() ? 225 : 240))
+                {
+                    if (h <= 4)
+                    {
+                        //no write
+                    }
+                    else
+                    {
+                        StaticRAM.vram[addr] = data;
+                    }
+                }
+                else
+                {
+                    StaticRAM.vram[addr] = data;
+                }
+            }
+        }
 
-        public void cgram_mmio_write(ushort addr, byte data) { throw new NotImplementedException(); }
+        public byte oam_mmio_read(ushort addr)
+        {
+            addr &= 0x03ff;
+            if (Convert.ToBoolean(addr & 0x0200))
+            {
+                addr &= 0x021f;
+            }
+            byte data;
+
+            if (regs.display_disabled == true)
+            {
+                data = StaticRAM.oam[addr];
+            }
+            else
+            {
+                if (CPU.cpu.PPUCounter.vcounter() < (!overscan() ? 225 : 240))
+                {
+                    data = StaticRAM.oam[regs.ioamaddr];
+                }
+                else
+                {
+                    data = StaticRAM.oam[addr];
+                }
+            }
+
+            return data;
+        }
+
+        public void oam_mmio_write(ushort addr, byte data)
+        {
+            addr &= 0x03ff;
+            if (Convert.ToBoolean(addr & 0x0200))
+            {
+                addr &= 0x021f;
+            }
+
+            sprite_list_valid = false;
+
+            if (regs.display_disabled == true)
+            {
+                StaticRAM.oam[addr] = data;
+                update_sprite_list(addr, data);
+            }
+            else
+            {
+                if (CPU.cpu.PPUCounter.vcounter() < (!overscan() ? 225 : 240))
+                {
+                    StaticRAM.oam[regs.ioamaddr] = data;
+                    update_sprite_list(regs.ioamaddr, data);
+                }
+                else
+                {
+                    StaticRAM.oam[addr] = data;
+                    update_sprite_list(addr, data);
+                }
+            }
+        }
+
+        public byte cgram_mmio_read(ushort addr)
+        {
+            addr &= 0x01ff;
+            byte data;
+
+            if (Convert.ToBoolean(1) || regs.display_disabled == true)
+            {
+                data = StaticRAM.cgram[addr];
+            }
+            else
+            {
+                ushort v = CPU.cpu.PPUCounter.vcounter();
+                ushort h = CPU.cpu.PPUCounter.vcounter();
+                if (v < (!overscan() ? 225 : 240) && h >= 128 && h < 1096)
+                {
+                    data = (byte)(StaticRAM.cgram[regs.icgramaddr] & 0x7f);
+                }
+                else
+                {
+                    data = StaticRAM.cgram[addr];
+                }
+            }
+
+            if (Convert.ToBoolean(addr & 1))
+            {
+                data &= 0x7f;
+            }
+            return data;
+        }
+
+        public void cgram_mmio_write(ushort addr, byte data)
+        {
+            addr &= 0x01ff;
+            if (Convert.ToBoolean(addr & 1))
+            {
+                data &= 0x7f;
+            }
+
+            if (Convert.ToBoolean(1) || regs.display_disabled == true)
+            {
+                StaticRAM.cgram[addr] = data;
+            }
+            else
+            {
+                ushort v = CPU.cpu.PPUCounter.vcounter();
+                ushort h = CPU.cpu.PPUCounter.vcounter();
+                if (v < (!overscan() ? 225 : 240) && h >= 128 && h < 1096)
+                {
+                    StaticRAM.cgram[regs.icgramaddr] = (byte)(data & 0x7f);
+                }
+                else
+                {
+                    StaticRAM.cgram[addr] = data;
+                }
+            }
+        }
 
         public Regs regs = new Regs();
 
-        public void mmio_w2100(byte value) { throw new NotImplementedException(); }  //INIDISP
+        public void mmio_w2100(byte value)
+        {
+            if (regs.display_disabled == true && CPU.cpu.PPUCounter.vcounter() == (!overscan() ? 225 : 240))
+            {
+                regs.oam_addr = (ushort)(regs.oam_baseaddr << 1);
+                regs.oam_firstsprite = (byte)((regs.oam_priority == false) ? 0 : (regs.oam_addr >> 2) & 127);
+            }
 
-        public void mmio_w2101(byte value) { throw new NotImplementedException(); }  //OBSEL
+            regs.display_disabled = !!Convert.ToBoolean(value & 0x80);
+            regs.display_brightness = (byte)(value & 15);
+        }  //INIDISP
 
-        public void mmio_w2102(byte value) { throw new NotImplementedException(); }  //OAMADDL
+        public void mmio_w2101(byte value)
+        {
+            regs.oam_basesize = (byte)((value >> 5) & 7);
+            regs.oam_nameselect = (byte)((value >> 3) & 3);
+            regs.oam_tdaddr = (ushort)((value & 3) << 14);
+        }  //OBSEL
 
-        public void mmio_w2103(byte value) { throw new NotImplementedException(); }  //OAMADDH
+        public void mmio_w2102(byte data)
+        {
+            regs.oam_baseaddr = (ushort)((regs.oam_baseaddr & ~0xff) | (data << 0));
+            regs.oam_baseaddr &= 0x01ff;
+            regs.oam_addr = (ushort)(regs.oam_baseaddr << 1);
+            regs.oam_firstsprite = (byte)((regs.oam_priority == false) ? 0 : (regs.oam_addr >> 2) & 127);
+        }  //OAMADDL
 
-        public void mmio_w2104(byte value) { throw new NotImplementedException(); }  //OAMDATA
+        public void mmio_w2103(byte data)
+        {
+            regs.oam_priority = !!Convert.ToBoolean(data & 0x80);
+            regs.oam_baseaddr = (ushort)((regs.oam_baseaddr & 0xff) | (data << 8));
+            regs.oam_baseaddr &= 0x01ff;
+            regs.oam_addr = (ushort)(regs.oam_baseaddr << 1);
+            regs.oam_firstsprite = (byte)((regs.oam_priority == false) ? 0 : (regs.oam_addr >> 2) & 127);
+        }  //OAMADDH
 
-        public void mmio_w2105(byte value) { throw new NotImplementedException(); }  //BGMODE
+        public void mmio_w2104(byte data)
+        {
+            if (Convert.ToBoolean(regs.oam_addr & 0x0200))
+            {
+                oam_mmio_write(regs.oam_addr, data);
+            }
+            else if ((regs.oam_addr & 1) == 0)
+            {
+                regs.oam_latchdata = data;
+            }
+            else
+            {
+                oam_mmio_write((ushort)((regs.oam_addr & ~1) + 0), regs.oam_latchdata);
+                oam_mmio_write((ushort)((regs.oam_addr & ~1) + 1), data);
+            }
 
-        public void mmio_w2106(byte value) { throw new NotImplementedException(); }  //MOSAIC
+            regs.oam_addr++;
+            regs.oam_addr &= 0x03ff;
+            regs.oam_firstsprite = (byte)((regs.oam_priority == false) ? 0 : (regs.oam_addr >> 2) & 127);
+        }  //OAMDATA
 
-        public void mmio_w2107(byte value) { throw new NotImplementedException(); }  //BG1SC
+        public void mmio_w2105(byte value)
+        {
+            regs.bg_tilesize[(int)ID.BG4] = !!Convert.ToBoolean(value & 0x80);
+            regs.bg_tilesize[(int)ID.BG3] = !!Convert.ToBoolean(value & 0x40);
+            regs.bg_tilesize[(int)ID.BG2] = !!Convert.ToBoolean(value & 0x20);
+            regs.bg_tilesize[(int)ID.BG1] = !!Convert.ToBoolean(value & 0x10);
+            regs.bg3_priority = !!Convert.ToBoolean(value & 0x08);
+            regs.bg_mode = (byte)(value & 7);
+        }  //BGMODE
 
-        public void mmio_w2108(byte value) { throw new NotImplementedException(); }  //BG2SC
+        public void mmio_w2106(byte value)
+        {
+            regs.mosaic_size = (byte)((value >> 4) & 15);
+            regs.mosaic_enabled[(int)ID.BG4] = !!Convert.ToBoolean(value & 0x08);
+            regs.mosaic_enabled[(int)ID.BG3] = !!Convert.ToBoolean(value & 0x04);
+            regs.mosaic_enabled[(int)ID.BG2] = !!Convert.ToBoolean(value & 0x02);
+            regs.mosaic_enabled[(int)ID.BG1] = !!Convert.ToBoolean(value & 0x01);
+        }  //MOSAIC
 
-        public void mmio_w2109(byte value) { throw new NotImplementedException(); }  //BG3SC
+        public void mmio_w2107(byte value)
+        {
+            regs.bg_scaddr[(int)ID.BG1] = (ushort)((value & 0x7c) << 9);
+            regs.bg_scsize[(int)ID.BG1] = (byte)(value & 3);
+        }  //BG1SC
 
-        public void mmio_w210a(byte value) { throw new NotImplementedException(); }  //BG4SC
+        public void mmio_w2108(byte value)
+        {
+            regs.bg_scaddr[(int)ID.BG2] = (ushort)((value & 0x7c) << 9);
+            regs.bg_scsize[(int)ID.BG2] = (byte)(value & 3);
+        }  //BG2SC
 
-        public void mmio_w210b(byte value) { throw new NotImplementedException(); }  //BG12NBA
+        public void mmio_w2109(byte value)
+        {
+            regs.bg_scaddr[(int)ID.BG3] = (ushort)((value & 0x7c) << 9);
+            regs.bg_scsize[(int)ID.BG3] = (byte)(value & 3);
+        }  //BG3SC
 
-        public void mmio_w210c(byte value) { throw new NotImplementedException(); }  //BG34NBA
+        public void mmio_w210a(byte value)
+        {
+            regs.bg_scaddr[(int)ID.BG4] = (ushort)((value & 0x7c) << 9);
+            regs.bg_scsize[(int)ID.BG4] = (byte)(value & 3);
+        }  //BG4SC
 
-        public void mmio_w210d(byte value) { throw new NotImplementedException(); }  //BG1HOFS
+        public void mmio_w210b(byte value)
+        {
+            regs.bg_tdaddr[(int)ID.BG1] = (ushort)((value & 0x07) << 13);
+            regs.bg_tdaddr[(int)ID.BG2] = (ushort)((value & 0x70) << 9);
+        }  //BG12NBA
 
-        public void mmio_w210e(byte value) { throw new NotImplementedException(); }  //BG1VOFS
+        public void mmio_w210c(byte value)
+        {
+            regs.bg_tdaddr[(int)ID.BG3] = (ushort)((value & 0x07) << 13);
+            regs.bg_tdaddr[(int)ID.BG4] = (ushort)((value & 0x70) << 9);
+        }  //BG34NBA
 
-        public void mmio_w210f(byte value) { throw new NotImplementedException(); }  //BG2HOFS
+        public void mmio_w210d(byte value)
+        {
+            regs.m7_hofs = (ushort)((value << 8) | regs.m7_latch);
+            regs.m7_latch = value;
 
-        public void mmio_w2110(byte value) { throw new NotImplementedException(); }  //BG2VOFS
+            regs.bg_hofs[(int)ID.BG1] = (ushort)((value << 8) | (regs.bg_ofslatch & ~7) | ((regs.bg_hofs[(int)ID.BG1] >> 8) & 7));
+            regs.bg_ofslatch = value;
+        }  //BG1HOFS
 
-        public void mmio_w2111(byte value) { throw new NotImplementedException(); }  //BG3HOFS
+        public void mmio_w210e(byte value)
+        {
+            regs.m7_vofs = (ushort)((value << 8) | regs.m7_latch);
+            regs.m7_latch = value;
 
-        public void mmio_w2112(byte value) { throw new NotImplementedException(); }  //BG3VOFS
+            regs.bg_vofs[(int)ID.BG1] = (ushort)((value << 8) | (regs.bg_ofslatch));
+            regs.bg_ofslatch = value;
+        }  //BG1VOFS
 
-        public void mmio_w2113(byte value) { throw new NotImplementedException(); }  //BG4HOFS
+        public void mmio_w210f(byte value)
+        {
+            regs.bg_hofs[(int)ID.BG2] = (ushort)((value << 8) | (regs.bg_ofslatch & ~7) | ((regs.bg_hofs[(int)ID.BG2] >> 8) & 7));
+            regs.bg_ofslatch = value;
+        }  //BG2HOFS
 
-        public void mmio_w2114(byte value) { throw new NotImplementedException(); }  //BG4VOFS
+        public void mmio_w2110(byte value)
+        {
+            regs.bg_vofs[(int)ID.BG2] = (ushort)((value << 8) | (regs.bg_ofslatch));
+            regs.bg_ofslatch = value;
+        }  //BG2VOFS
 
-        public void mmio_w2115(byte value) { throw new NotImplementedException(); }  //VMAIN
+        public void mmio_w2111(byte value)
+        {
+            regs.bg_hofs[(int)ID.BG3] = (ushort)((value << 8) | (regs.bg_ofslatch & ~7) | ((regs.bg_hofs[(int)ID.BG3] >> 8) & 7));
+            regs.bg_ofslatch = value;
+        }  //BG3HOFS
 
-        public void mmio_w2116(byte value) { throw new NotImplementedException(); }  //VMADDL
+        public void mmio_w2112(byte value)
+        {
+            regs.bg_vofs[(int)ID.BG3] = (ushort)((value << 8) | (regs.bg_ofslatch));
+            regs.bg_ofslatch = value;
+        }  //BG3VOFS
 
-        public void mmio_w2117(byte value) { throw new NotImplementedException(); }  //VMADDH
+        public void mmio_w2113(byte value)
+        {
+            regs.bg_hofs[(int)ID.BG4] = (ushort)((value << 8) | (regs.bg_ofslatch & ~7) | ((regs.bg_hofs[(int)ID.BG4] >> 8) & 7));
+            regs.bg_ofslatch = value;
+        }  //BG4HOFS
 
-        public void mmio_w2118(byte value) { throw new NotImplementedException(); }  //VMDATAL
+        public void mmio_w2114(byte value)
+        {
+            regs.bg_vofs[(int)ID.BG4] = (ushort)((value << 8) | (regs.bg_ofslatch));
+            regs.bg_ofslatch = value;
+        }  //BG4VOFS
 
-        public void mmio_w2119(byte value) { throw new NotImplementedException(); }  //VMDATAH
+        public void mmio_w2115(byte value)
+        {
+            regs.vram_incmode = !!Convert.ToBoolean(value & 0x80);
+            regs.vram_mapping = (byte)((value >> 2) & 3);
+            switch (value & 3)
+            {
+                case 0:
+                    regs.vram_incsize = 1;
+                    break;
+                case 1:
+                    regs.vram_incsize = 32;
+                    break;
+                case 2:
+                    regs.vram_incsize = 128;
+                    break;
+                case 3:
+                    regs.vram_incsize = 128;
+                    break;
+            }
+        }  //VMAIN
 
-        public void mmio_w211a(byte value) { throw new NotImplementedException(); }  //M7SEL
+        public void mmio_w2116(byte value)
+        {
+            regs.vram_addr = (ushort)((regs.vram_addr & 0xff00) | value);
+            ushort addr = get_vram_address();
+            regs.vram_readbuffer = vram_mmio_read((ushort)(addr + 0));
+            regs.vram_readbuffer |= (ushort)(vram_mmio_read((ushort)(addr + 1)) << 8);
+        }  //VMADDL
+
+        public void mmio_w2117(byte value)
+        {
+            regs.vram_addr = (ushort)((value << 8) | (regs.vram_addr & 0x00ff));
+            ushort addr = get_vram_address();
+            regs.vram_readbuffer = vram_mmio_read((ushort)(addr + 0));
+            regs.vram_readbuffer |= (ushort)(vram_mmio_read((ushort)(addr + 1)) << 8);
+        }  //VMADDH
+
+        public void mmio_w2118(byte value)
+        {
+            ushort addr = get_vram_address();
+            vram_mmio_write(addr, value);
+            bg_tiledata_state[(int)Tile.T2BIT][(addr >> 4)] = 1;
+            bg_tiledata_state[(int)Tile.T4BIT][(addr >> 5)] = 1;
+            bg_tiledata_state[(int)Tile.T8BIT][(addr >> 6)] = 1;
+
+            if (regs.vram_incmode == Convert.ToBoolean(0))
+            {
+                regs.vram_addr += regs.vram_incsize;
+            }
+        }  //VMDATAL
+
+        public void mmio_w2119(byte value)
+        {
+            ushort addr = (ushort)(get_vram_address() + 1);
+            vram_mmio_write(addr, value);
+            bg_tiledata_state[(int)Tile.T2BIT][(addr >> 4)] = 1;
+            bg_tiledata_state[(int)Tile.T4BIT][(addr >> 5)] = 1;
+            bg_tiledata_state[(int)Tile.T8BIT][(addr >> 6)] = 1;
+
+            if (regs.vram_incmode == Convert.ToBoolean(1))
+            {
+                regs.vram_addr += regs.vram_incsize;
+            }
+        }  //VMDATAH
+
+        public void mmio_w211a(byte value)
+        {
+            regs.mode7_repeat = (byte)((value >> 6) & 3);
+            regs.mode7_vflip = !!Convert.ToBoolean(value & 0x02);
+            regs.mode7_hflip = !!Convert.ToBoolean(value & 0x01);
+        }  //M7SEL
 
         public void mmio_w211b(byte value) { throw new NotImplementedException(); }  //M7A
 
@@ -176,33 +574,98 @@ namespace Snes
 
         public void mmio_write(uint addr, byte data) { throw new NotImplementedException(); }
 
-        public void latch_counters() { throw new NotImplementedException(); }
+        public void latch_counters()
+        {
+            regs.hcounter = CPU.cpu.PPUCounter.hdot();
+            regs.vcounter = CPU.cpu.PPUCounter.vcounter();
+            regs.counters_latched = true;
+        }
 
         //render.cpp
-        public void render_line_mode0() { throw new NotImplementedException(); }
+        public void render_line_mode0()
+        {
+            render_line_bg(0, (uint)ID.BG1, (uint)ColorDepth.D4, 8, 11);
+            render_line_bg(0, (uint)ID.BG2, (uint)ColorDepth.D4, 7, 10);
+            render_line_bg(0, (uint)ID.BG3, (uint)ColorDepth.D4, 2, 5);
+            render_line_bg(0, (uint)ID.BG4, (uint)ColorDepth.D4, 1, 4);
+            render_line_oam(3, 6, 9, 12);
+        }
 
-        public void render_line_mode1() { throw new NotImplementedException(); }
+        public void render_line_mode1()
+        {
+            if (regs.bg3_priority)
+            {
+                render_line_bg(1, (uint)ID.BG1, (uint)ColorDepth.D16, 5, 8);
+                render_line_bg(1, (uint)ID.BG2, (uint)ColorDepth.D16, 4, 7);
+                render_line_bg(1, (uint)ID.BG3, (uint)ColorDepth.D4, 1, 10);
+                render_line_oam(2, 3, 6, 9);
+            }
+            else
+            {
+                render_line_bg(1, (uint)ID.BG1, (uint)ColorDepth.D16, 6, 9);
+                render_line_bg(1, (uint)ID.BG2, (uint)ColorDepth.D16, 5, 8);
+                render_line_bg(1, (uint)ID.BG3, (uint)ColorDepth.D4, 1, 3);
+                render_line_oam(2, 4, 7, 10);
+            }
+        }
 
-        public void render_line_mode2() { throw new NotImplementedException(); }
+        public void render_line_mode2()
+        {
+            render_line_bg(2, (uint)ID.BG1, (uint)ColorDepth.D16, 3, 7);
+            render_line_bg(2, (uint)ID.BG2, (uint)ColorDepth.D16, 1, 5);
+            render_line_oam(2, 4, 6, 8);
+        }
 
-        public void render_line_mode3() { throw new NotImplementedException(); }
+        public void render_line_mode3()
+        {
+            render_line_bg(3, (uint)ID.BG1, (uint)ColorDepth.D256, 3, 7);
+            render_line_bg(3, (uint)ID.BG2, (uint)ColorDepth.D16, 1, 5);
+            render_line_oam(2, 4, 6, 8);
+        }
 
-        public void render_line_mode4() { throw new NotImplementedException(); }
+        public void render_line_mode4()
+        {
+            render_line_bg(4, (uint)ID.BG1, (uint)ColorDepth.D256, 3, 7);
+            render_line_bg(4, (uint)ID.BG2, (uint)ColorDepth.D4, 1, 5);
+            render_line_oam(2, 4, 6, 8);
+        }
 
-        public void render_line_mode5() { throw new NotImplementedException(); }
+        public void render_line_mode5()
+        {
+            render_line_bg(5, (uint)ID.BG1, (uint)ColorDepth.D16, 3, 7);
+            render_line_bg(5, (uint)ID.BG2, (uint)ColorDepth.D4, 1, 5);
+            render_line_oam(2, 4, 6, 8);
+        }
 
-        public void render_line_mode6() { throw new NotImplementedException(); }
+        public void render_line_mode6()
+        {
+            render_line_bg(6, (uint)ID.BG1, (uint)ColorDepth.D16, 2, 5);
+            render_line_oam(1, 3, 4, 6);
+        }
 
-        public void render_line_mode7() { throw new NotImplementedException(); }
+        public void render_line_mode7()
+        {
+            if (regs.mode7_extbg == false)
+            {
+                render_line_mode7((uint)ID.BG1, 2, 2);
+                render_line_oam(1, 3, 4, 5);
+            }
+            else
+            {
+                render_line_mode7((uint)ID.BG1, 3, 3);
+                render_line_mode7((uint)ID.BG2, 1, 5);
+                render_line_oam(2, 4, 6, 7);
+            }
+        }
 
         //cache.cpp
-        public enum COLORDEPTH { COLORDEPTH_4 = 0, COLORDEPTH_16 = 1, COLORDEPTH_256 = 2 };
-        public enum TILE { TILE_2BIT = 0, TILE_4BIT = 1, TILE_8BIT = 2 };
+        public enum ColorDepth { D4 = 0, D16 = 1, D256 = 2 };
+        public enum Tile { T2BIT = 0, T4BIT = 1, T8BIT = 2 };
 
         public Pixel[] pixel_cache = new Pixel[256];
 
         public byte[] bg_tiledata = new byte[3];
-        public byte[] bg_tiledata_state = new byte[3];  //0 = valid, 1 = dirty
+        public byte[][] bg_tiledata_state = new byte[3][];  //0 = valid, 1 = dirty
 
         public void render_bg_tile(uint color_depth, ushort tile_num) { throw new NotImplementedException(); }
 
@@ -297,7 +760,7 @@ namespace Snes
 
         public enum Region { NTSC = 0, PAL = 1 };
         public enum ID { BG1 = 0, BG2 = 1, BG3 = 2, BG4 = 3, OAM = 4, BACK = 5, COL = 5 };
-        public enum SC { SC_32x32 = 0, SC_64x32 = 1, SC_32x64 = 2, SC_64x64 = 3 };
+        public enum SC { S32x32 = 0, S64x32 = 1, S32x64 = 2, S64x64 = 3 };
 
         public Display display = new Display();
 
@@ -493,10 +956,10 @@ namespace Snes
             regs.bg_scaddr[(int)ID.BG2] = 0x0000;
             regs.bg_scaddr[(int)ID.BG3] = 0x0000;
             regs.bg_scaddr[(int)ID.BG4] = 0x0000;
-            regs.bg_scsize[(int)ID.BG1] = (byte)SC.SC_32x32;
-            regs.bg_scsize[(int)ID.BG2] = (byte)SC.SC_32x32;
-            regs.bg_scsize[(int)ID.BG3] = (byte)SC.SC_32x32;
-            regs.bg_scsize[(int)ID.BG4] = (byte)SC.SC_32x32;
+            regs.bg_scsize[(int)ID.BG1] = (byte)SC.S32x32;
+            regs.bg_scsize[(int)ID.BG2] = (byte)SC.S32x32;
+            regs.bg_scsize[(int)ID.BG3] = (byte)SC.S32x32;
+            regs.bg_scsize[(int)ID.BG4] = (byte)SC.S32x32;
 
             //$210b-$210c
             regs.bg_tdaddr[(int)ID.BG1] = 0x0000;

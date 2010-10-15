@@ -55,7 +55,7 @@ namespace SnesBox
             }
         }
 
-        public void SetControllerPortDevice(int port, SnesDevice device)
+        public void SetControllerPortDevice(int port, LibSnes.SnesDevice device)
         {
             if (port < 1 || port > 2)
             {
