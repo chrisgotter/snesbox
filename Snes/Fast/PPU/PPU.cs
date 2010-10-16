@@ -496,83 +496,590 @@ namespace Snes
             regs.mode7_hflip = !!Convert.ToBoolean(value & 0x01);
         }  //M7SEL
 
-        public void mmio_w211b(byte value) { throw new NotImplementedException(); }  //M7A
+        public void mmio_w211b(byte value)
+        {
+            regs.m7a = (ushort)((value << 8) | regs.m7_latch);
+            regs.m7_latch = value;
+        }  //M7A
 
-        public void mmio_w211c(byte value) { throw new NotImplementedException(); }  //M7B
+        public void mmio_w211c(byte value)
+        {
+            regs.m7b = (ushort)((value << 8) | regs.m7_latch);
+            regs.m7_latch = value;
+        }  //M7B
 
-        public void mmio_w211d(byte value) { throw new NotImplementedException(); }  //M7C
+        public void mmio_w211d(byte value)
+        {
+            regs.m7c = (ushort)((value << 8) | regs.m7_latch);
+            regs.m7_latch = value;
+        }  //M7C
 
-        public void mmio_w211e(byte value) { throw new NotImplementedException(); }  //M7D
+        public void mmio_w211e(byte value)
+        {
+            regs.m7d = (ushort)((value << 8) | regs.m7_latch);
+            regs.m7_latch = value;
+        }  //M7D
 
-        public void mmio_w211f(byte value) { throw new NotImplementedException(); }  //M7X
+        public void mmio_w211f(byte value)
+        {
+            regs.m7x = (ushort)((value << 8) | regs.m7_latch);
+            regs.m7_latch = value;
+        }  //M7X
 
-        public void mmio_w2120(byte value) { throw new NotImplementedException(); }  //M7Y
+        public void mmio_w2120(byte value)
+        {
+            regs.m7y = (ushort)((value << 8) | regs.m7_latch);
+            regs.m7_latch = value;
+        }  //M7Y
 
-        public void mmio_w2121(byte value) { throw new NotImplementedException(); }  //CGADD
+        public void mmio_w2121(byte value)
+        {
+            regs.cgram_addr = (ushort)(value << 1);
+        }  //CGADD
 
-        public void mmio_w2122(byte value) { throw new NotImplementedException(); }  //CGDATA
+        public void mmio_w2122(byte value)
+        {
+            if (!Convert.ToBoolean(regs.cgram_addr & 1))
+            {
+                regs.cgram_latchdata = value;
+            }
+            else
+            {
+                cgram_mmio_write((ushort)(regs.cgram_addr & 0x01fe), regs.cgram_latchdata);
+                cgram_mmio_write((ushort)((regs.cgram_addr & 0x01fe) + 1), (byte)(value & 0x7f));
+            }
+            regs.cgram_addr++;
+            regs.cgram_addr &= 0x01ff;
+        }  //CGDATA
 
-        public void mmio_w2123(byte value) { throw new NotImplementedException(); }  //W12SEL
+        public void mmio_w2123(byte value)
+        {
+            regs.window2_enabled[(int)ID.BG2] = !!Convert.ToBoolean(value & 0x80);
+            regs.window2_invert[(int)ID.BG2] = !!Convert.ToBoolean(value & 0x40);
+            regs.window1_enabled[(int)ID.BG2] = !!Convert.ToBoolean(value & 0x20);
+            regs.window1_invert[(int)ID.BG2] = !!Convert.ToBoolean(value & 0x10);
+            regs.window2_enabled[(int)ID.BG1] = !!Convert.ToBoolean(value & 0x08);
+            regs.window2_invert[(int)ID.BG1] = !!Convert.ToBoolean(value & 0x04);
+            regs.window1_enabled[(int)ID.BG1] = !!Convert.ToBoolean(value & 0x02);
+            regs.window1_invert[(int)ID.BG1] = !!Convert.ToBoolean(value & 0x01);
+        }  //W12SEL
 
-        public void mmio_w2124(byte value) { throw new NotImplementedException(); }  //W34SEL
+        public void mmio_w2124(byte value)
+        {
+            regs.window2_enabled[(int)ID.BG4] = !!Convert.ToBoolean(value & 0x80);
+            regs.window2_invert[(int)ID.BG4] = !!Convert.ToBoolean(value & 0x40);
+            regs.window1_enabled[(int)ID.BG4] = !!Convert.ToBoolean(value & 0x20);
+            regs.window1_invert[(int)ID.BG4] = !!Convert.ToBoolean(value & 0x10);
+            regs.window2_enabled[(int)ID.BG3] = !!Convert.ToBoolean(value & 0x08);
+            regs.window2_invert[(int)ID.BG3] = !!Convert.ToBoolean(value & 0x04);
+            regs.window1_enabled[(int)ID.BG3] = !!Convert.ToBoolean(value & 0x02);
+            regs.window1_invert[(int)ID.BG3] = !!Convert.ToBoolean(value & 0x01);
+        }  //W34SEL
 
-        public void mmio_w2125(byte value) { throw new NotImplementedException(); }  //WOBJSEL
+        public void mmio_w2125(byte value)
+        {
+            regs.window2_enabled[(int)ID.COL] = !!Convert.ToBoolean(value & 0x80);
+            regs.window2_invert[(int)ID.COL] = !!Convert.ToBoolean(value & 0x40);
+            regs.window1_enabled[(int)ID.COL] = !!Convert.ToBoolean(value & 0x20);
+            regs.window1_invert[(int)ID.COL] = !!Convert.ToBoolean(value & 0x10);
+            regs.window2_enabled[(int)ID.OAM] = !!Convert.ToBoolean(value & 0x08);
+            regs.window2_invert[(int)ID.OAM] = !!Convert.ToBoolean(value & 0x04);
+            regs.window1_enabled[(int)ID.OAM] = !!Convert.ToBoolean(value & 0x02);
+            regs.window1_invert[(int)ID.OAM] = !!Convert.ToBoolean(value & 0x01);
+        }  //WOBJSEL
 
-        public void mmio_w2126(byte value) { throw new NotImplementedException(); }  //WH0
+        public void mmio_w2126(byte value)
+        {
+            regs.window1_left = value;
+        }  //WH0
 
-        public void mmio_w2127(byte value) { throw new NotImplementedException(); }  //WH1
+        public void mmio_w2127(byte value)
+        {
+            regs.window1_right = value;
+        }  //WH1
 
-        public void mmio_w2128(byte value) { throw new NotImplementedException(); }  //WH2
+        public void mmio_w2128(byte value)
+        {
+            regs.window2_left = value;
+        }  //WH2
 
-        public void mmio_w2129(byte value) { throw new NotImplementedException(); }  //WH3
+        public void mmio_w2129(byte value)
+        {
+            regs.window2_right = value;
+        }  //WH3
 
-        public void mmio_w212a(byte value) { throw new NotImplementedException(); }  //WBGLOG
+        public void mmio_w212a(byte value)
+        {
+            regs.window_mask[(int)ID.BG4] = (byte)((value >> 6) & 3);
+            regs.window_mask[(int)ID.BG3] = (byte)((value >> 4) & 3);
+            regs.window_mask[(int)ID.BG2] = (byte)((value >> 2) & 3);
+            regs.window_mask[(int)ID.BG1] = (byte)((value) & 3);
+        }  //WBGLOG
 
-        public void mmio_w212b(byte value) { throw new NotImplementedException(); }  //WOBJLOG
+        public void mmio_w212b(byte value)
+        {
+            regs.window_mask[(int)ID.COL] = (byte)((value >> 2) & 3);
+            regs.window_mask[(int)ID.OAM] = (byte)((value) & 3);
+        }  //WOBJLOG
 
-        public void mmio_w212c(byte value) { throw new NotImplementedException(); }  //TM
+        public void mmio_w212c(byte value)
+        {
+            regs.bg_enabled[(int)ID.OAM] = !!Convert.ToBoolean(value & 0x10);
+            regs.bg_enabled[(int)ID.BG4] = !!Convert.ToBoolean(value & 0x08);
+            regs.bg_enabled[(int)ID.BG3] = !!Convert.ToBoolean(value & 0x04);
+            regs.bg_enabled[(int)ID.BG2] = !!Convert.ToBoolean(value & 0x02);
+            regs.bg_enabled[(int)ID.BG1] = !!Convert.ToBoolean(value & 0x01);
+        }  //TM
 
-        public void mmio_w212d(byte value) { throw new NotImplementedException(); }  //TS
+        public void mmio_w212d(byte value)
+        {
+            regs.bgsub_enabled[(int)ID.OAM] = !!Convert.ToBoolean(value & 0x10);
+            regs.bgsub_enabled[(int)ID.BG4] = !!Convert.ToBoolean(value & 0x08);
+            regs.bgsub_enabled[(int)ID.BG3] = !!Convert.ToBoolean(value & 0x04);
+            regs.bgsub_enabled[(int)ID.BG2] = !!Convert.ToBoolean(value & 0x02);
+            regs.bgsub_enabled[(int)ID.BG1] = !!Convert.ToBoolean(value & 0x01);
+        }  //TS
 
-        public void mmio_w212e(byte value) { throw new NotImplementedException(); }  //TMW
+        public void mmio_w212e(byte value)
+        {
+            regs.window_enabled[(int)ID.OAM] = !!Convert.ToBoolean(value & 0x10);
+            regs.window_enabled[(int)ID.BG4] = !!Convert.ToBoolean(value & 0x08);
+            regs.window_enabled[(int)ID.BG3] = !!Convert.ToBoolean(value & 0x04);
+            regs.window_enabled[(int)ID.BG2] = !!Convert.ToBoolean(value & 0x02);
+            regs.window_enabled[(int)ID.BG1] = !!Convert.ToBoolean(value & 0x01);
+        }  //TMW
 
-        public void mmio_w212f(byte value) { throw new NotImplementedException(); }  //TSW
+        public void mmio_w212f(byte value)
+        {
+            regs.sub_window_enabled[(int)ID.OAM] = !!Convert.ToBoolean(value & 0x10);
+            regs.sub_window_enabled[(int)ID.BG4] = !!Convert.ToBoolean(value & 0x08);
+            regs.sub_window_enabled[(int)ID.BG3] = !!Convert.ToBoolean(value & 0x04);
+            regs.sub_window_enabled[(int)ID.BG2] = !!Convert.ToBoolean(value & 0x02);
+            regs.sub_window_enabled[(int)ID.BG1] = !!Convert.ToBoolean(value & 0x01);
+        }  //TSW
 
-        public void mmio_w2130(byte value) { throw new NotImplementedException(); }  //CGWSEL
+        public void mmio_w2130(byte value)
+        {
+            regs.color_mask = (byte)((value >> 6) & 3);
+            regs.colorsub_mask = (byte)((value >> 4) & 3);
+            regs.addsub_mode = !!Convert.ToBoolean(value & 0x02);
+            regs.direct_color = !!Convert.ToBoolean(value & 0x01);
+        }  //CGWSEL
 
-        public void mmio_w2131(byte value) { throw new NotImplementedException(); }  //CGADDSUB
+        public void mmio_w2131(byte value)
+        {
+            regs.color_mode = !!Convert.ToBoolean(value & 0x80);
+            regs.color_halve = !!Convert.ToBoolean(value & 0x40);
+            regs.color_enabled[(int)ID.BACK] = !!Convert.ToBoolean(value & 0x20);
+            regs.color_enabled[(int)ID.OAM] = !!Convert.ToBoolean(value & 0x10);
+            regs.color_enabled[(int)ID.BG4] = !!Convert.ToBoolean(value & 0x08);
+            regs.color_enabled[(int)ID.BG3] = !!Convert.ToBoolean(value & 0x04);
+            regs.color_enabled[(int)ID.BG2] = !!Convert.ToBoolean(value & 0x02);
+            regs.color_enabled[(int)ID.BG1] = !!Convert.ToBoolean(value & 0x01);
+        }  //CGADDSUB
 
-        public void mmio_w2132(byte value) { throw new NotImplementedException(); }  //COLDATA
+        public void mmio_w2132(byte value)
+        {
+            if (Convert.ToBoolean(value & 0x80))
+            {
+                regs.color_b = (byte)(value & 0x1f);
+            }
+            if (Convert.ToBoolean(value & 0x40))
+            {
+                regs.color_g = (byte)(value & 0x1f);
+            }
+            if (Convert.ToBoolean(value & 0x20))
+            {
+                regs.color_r = (byte)(value & 0x1f);
+            }
 
-        public void mmio_w2133(byte value) { throw new NotImplementedException(); }  //SETINI
+            regs.color_rgb = (ushort)((regs.color_r)
+                           | (regs.color_g << 5)
+                           | (regs.color_b << 10));
+        }  //COLDATA
 
-        public byte mmio_r2134() { throw new NotImplementedException(); }  //MPYL
+        public void mmio_w2133(byte value)
+        {
+            regs.mode7_extbg = !!Convert.ToBoolean(value & 0x40);
+            regs.pseudo_hires = !!Convert.ToBoolean(value & 0x08);
+            regs.overscan = !!Convert.ToBoolean(value & 0x04);
+            regs.oam_interlace = !!Convert.ToBoolean(value & 0x02);
+            regs.interlace = !!Convert.ToBoolean(value & 0x01);
 
-        public byte mmio_r2135() { throw new NotImplementedException(); }  //MPYM
+            display.overscan = regs.overscan;
+            sprite_list_valid = false;
+        }  //SETINI
 
-        public byte mmio_r2136() { throw new NotImplementedException(); }  //MPYH
+        public byte mmio_r2134()
+        {
+            uint r;
+            r = (uint)((short)regs.m7a * (sbyte)(regs.m7b >> 8));
+            regs.ppu1_mdr = (byte)r;
+            return regs.ppu1_mdr;
+        }  //MPYL
 
-        public byte mmio_r2137() { throw new NotImplementedException(); }  //SLHV
+        public byte mmio_r2135()
+        {
+            uint r;
+            r = (uint)((short)regs.m7a * (sbyte)(regs.m7b >> 8));
+            regs.ppu1_mdr = (byte)(r >> 8);
+            return regs.ppu1_mdr;
+        }  //MPYM
 
-        public byte mmio_r2138() { throw new NotImplementedException(); }  //OAMDATAREAD
+        public byte mmio_r2136()
+        {
+            uint r;
+            r = (uint)((short)regs.m7a * (sbyte)(regs.m7b >> 8));
+            regs.ppu1_mdr = (byte)(r >> 16);
+            return regs.ppu1_mdr;
+        }  //MPYH
 
-        public byte mmio_r2139() { throw new NotImplementedException(); }  //VMDATALREAD
+        public byte mmio_r2137()
+        {
+            if (Convert.ToBoolean(CPU.cpu.pio() & 0x80))
+            {
+                latch_counters();
+            }
+            return CPU.cpu.regs.mdr;
+        }  //SLHV
 
-        public byte mmio_r213a() { throw new NotImplementedException(); }  //VMDATAHREAD
+        public byte mmio_r2138()
+        {
+            regs.ppu1_mdr = oam_mmio_read(regs.oam_addr);
 
-        public byte mmio_r213b() { throw new NotImplementedException(); }  //CGDATAREAD
+            regs.oam_addr++;
+            regs.oam_addr &= 0x03ff;
+            regs.oam_firstsprite = (byte)((regs.oam_priority == false) ? 0 : (regs.oam_addr >> 2) & 127);
 
-        public byte mmio_r213c() { throw new NotImplementedException(); }  //OPHCT
+            return regs.ppu1_mdr;
+        }  //OAMDATAREAD
 
-        public byte mmio_r213d() { throw new NotImplementedException(); }  //OPVCT
+        public byte mmio_r2139()
+        {
+            ushort addr = get_vram_address();
+            regs.ppu1_mdr = (byte)regs.vram_readbuffer;
+            if (regs.vram_incmode == Convert.ToBoolean(0))
+            {
+                addr &= 0xfffe;
+                regs.vram_readbuffer = vram_mmio_read((ushort)(addr + 0));
+                regs.vram_readbuffer |= (ushort)(vram_mmio_read((ushort)(addr + 1)) << 8);
+                regs.vram_addr += regs.vram_incsize;
+            }
+            return regs.ppu1_mdr;
+        }  //VMDATALREAD
 
-        public byte mmio_r213e() { throw new NotImplementedException(); }  //STAT77
+        public byte mmio_r213a()
+        {
+            ushort addr = (ushort)(get_vram_address() + 1);
+            regs.ppu1_mdr = (byte)(regs.vram_readbuffer >> 8);
+            if (regs.vram_incmode == Convert.ToBoolean(1))
+            {
+                addr &= 0xfffe;
+                regs.vram_readbuffer = vram_mmio_read((ushort)(addr + 0));
+                regs.vram_readbuffer |= (ushort)(vram_mmio_read((ushort)(addr + 1)) << 8);
+                regs.vram_addr += regs.vram_incsize;
+            }
+            return regs.ppu1_mdr;
+        }  //VMDATAHREAD
 
-        public byte mmio_r213f() { throw new NotImplementedException(); }  //STAT78
+        public byte mmio_r213b()
+        {
+            if (!Convert.ToBoolean(regs.cgram_addr & 1))
+            {
+                regs.ppu2_mdr = (byte)(cgram_mmio_read(regs.cgram_addr) & 0xff);
+            }
+            else
+            {
+                regs.ppu2_mdr &= 0x80;
+                regs.ppu2_mdr |= (byte)(cgram_mmio_read(regs.cgram_addr) & 0x7f);
+            }
+            regs.cgram_addr++;
+            regs.cgram_addr &= 0x01ff;
+            return regs.ppu2_mdr;
+        }  //CGDATAREAD
 
-        public byte mmio_read(uint addr) { throw new NotImplementedException(); }
+        public byte mmio_r213c()
+        {
+            if (!regs.latch_hcounter)
+            {
+                regs.ppu2_mdr = (byte)(regs.hcounter & 0xff);
+            }
+            else
+            {
+                regs.ppu2_mdr &= 0xfe;
+                regs.ppu2_mdr |= (byte)((regs.hcounter >> 8) & 1);
+            }
+            regs.latch_hcounter ^= Convert.ToBoolean(1);
+            return regs.ppu2_mdr;
+        }  //OPHCT
 
-        public void mmio_write(uint addr, byte data) { throw new NotImplementedException(); }
+        public byte mmio_r213d()
+        {
+            if (!regs.latch_vcounter)
+            {
+                regs.ppu2_mdr = (byte)(regs.vcounter & 0xff);
+            }
+            else
+            {
+                regs.ppu2_mdr &= 0xfe;
+                regs.ppu2_mdr |= (byte)((regs.vcounter >> 8) & 1);
+            }
+            regs.latch_vcounter ^= Convert.ToBoolean(1);
+            return regs.ppu2_mdr;
+        }  //OPVCT
+
+        public byte mmio_r213e()
+        {
+            byte r = 0x00;
+            r |= (byte)((regs.time_over) ? 0x80 : 0x00);
+            r |= (byte)((regs.range_over) ? 0x40 : 0x00);
+            r |= (byte)((regs.ppu1_mdr & 0x10));
+            r |= (byte)((ppu1_version & 0x0f));
+            regs.ppu1_mdr = r;
+            return regs.ppu1_mdr;
+        }  //STAT77
+
+        public byte mmio_r213f()
+        {
+            byte r = 0x00;
+            regs.latch_hcounter = Convert.ToBoolean(0);
+            regs.latch_vcounter = Convert.ToBoolean(0);
+
+            r |= (byte)(Convert.ToUInt32(CPU.cpu.PPUCounter.field()) << 7);
+            if (!Convert.ToBoolean(CPU.cpu.pio() & 0x80))
+            {
+                r |= 0x40;
+            }
+            else if (regs.counters_latched == true)
+            {
+                r |= 0x40;
+                regs.counters_latched = false;
+            }
+            r |= (byte)((regs.ppu2_mdr & 0x20));
+            r |= (byte)((region << 4)); //0 = NTSC, 1 = PAL
+            r |= (byte)((ppu2_version & 0x0f));
+            regs.ppu2_mdr = r;
+            return regs.ppu2_mdr;
+        }  //STAT78
+
+        public byte mmio_read(uint addr)
+        {
+            CPU.cpu.synchronize_ppu();
+
+            switch (addr & 0xffff)
+            {
+                case 0x2104:
+                case 0x2105:
+                case 0x2106:
+                case 0x2108:
+                case 0x2109:
+                case 0x210a:
+                case 0x2114:
+                case 0x2115:
+                case 0x2116:
+                case 0x2118:
+                case 0x2119:
+                case 0x211a:
+                case 0x2124:
+                case 0x2125:
+                case 0x2126:
+                case 0x2128:
+                case 0x2129:
+                case 0x212a:
+                    return regs.ppu1_mdr;
+                case 0x2134:
+                    return mmio_r2134();  //MPYL
+                case 0x2135:
+                    return mmio_r2135();  //MPYM
+                case 0x2136:
+                    return mmio_r2136();  //MPYH
+                case 0x2137:
+                    return mmio_r2137();  //SLHV
+                case 0x2138:
+                    return mmio_r2138();  //OAMDATAREAD
+                case 0x2139:
+                    return mmio_r2139();  //VMDATALREAD
+                case 0x213a:
+                    return mmio_r213a();  //VMDATAHREAD
+                case 0x213b:
+                    return mmio_r213b();  //CGDATAREAD
+                case 0x213c:
+                    return mmio_r213c();  //OPHCT
+                case 0x213d:
+                    return mmio_r213d();  //OPVCT
+                case 0x213e:
+                    return mmio_r213e();  //STAT77
+                case 0x213f:
+                    return mmio_r213f();  //STAT78
+            }
+
+            return CPU.cpu.regs.mdr;
+        }
+
+        public void mmio_write(uint addr, byte data)
+        {
+            CPU.cpu.synchronize_ppu();
+
+            switch (addr & 0xffff)
+            {
+                case 0x2100:
+                    mmio_w2100(data); 
+                    return;  //INIDISP
+                case 0x2101:
+                    mmio_w2101(data); 
+                    return;  //OBSEL
+                case 0x2102:
+                    mmio_w2102(data);
+                    return;  //OAMADDL
+                case 0x2103:
+                    mmio_w2103(data);
+                    return;  //OAMADDH
+                case 0x2104:
+                    mmio_w2104(data);
+                    return;  //OAMDATA
+                case 0x2105:
+                    mmio_w2105(data);
+                    return;  //(int)ID.BGMODE
+                case 0x2106:
+                    mmio_w2106(data); 
+                    return;  //MOSAIC
+                case 0x2107:
+                    mmio_w2107(data); 
+                    return;  //(int)ID.BG1SC
+                case 0x2108: 
+                    mmio_w2108(data); 
+                    return;  //(int)ID.BG2SC
+                case 0x2109: 
+                    mmio_w2109(data);
+                    return;  //(int)ID.BG3SC
+                case 0x210a: 
+                    mmio_w210a(data);
+                    return;  //(int)ID.BG4SC
+                case 0x210b: 
+                    mmio_w210b(data);
+                    return;  //(int)ID.BG12NBA
+                case 0x210c:
+                    mmio_w210c(data);
+                    return;  //(int)ID.BG34NBA
+                case 0x210d: 
+                    mmio_w210d(data);
+                    return;  //(int)ID.BG1HOFS
+                case 0x210e:
+                    mmio_w210e(data); 
+                    return;  //(int)ID.BG1VOFS
+                case 0x210f:
+                    mmio_w210f(data);
+                    return;  //(int)ID.BG2HOFS
+                case 0x2110: 
+                    mmio_w2110(data);
+                    return;  //(int)ID.BG2VOFS
+                case 0x2111: 
+                    mmio_w2111(data); 
+                    return;  //(int)ID.BG3HOFS
+                case 0x2112:
+                    mmio_w2112(data); 
+                    return;  //(int)ID.BG3VOFS
+                case 0x2113:
+                    mmio_w2113(data); 
+                    return;  //(int)ID.BG4HOFS
+                case 0x2114:
+                    mmio_w2114(data);
+                    return;  //(int)ID.BG4VOFS
+                case 0x2115:
+                    mmio_w2115(data);
+                    return;  //VMAIN
+                case 0x2116:
+                    mmio_w2116(data); 
+                    return;  //VMADDL
+                case 0x2117: 
+                    mmio_w2117(data); 
+                    return;  //VMADDH
+                case 0x2118:
+                    mmio_w2118(data); 
+                    return;  //VMDATAL
+                case 0x2119: 
+                    mmio_w2119(data);
+                    return;  //VMDATAH
+                case 0x211a: 
+                    mmio_w211a(data); 
+                    return;  //M7SEL
+                case 0x211b:
+                    mmio_w211b(data); 
+                    return;  //M7A
+                case 0x211c:
+                    mmio_w211c(data); 
+                    return;  //M7B
+                case 0x211d:
+                    mmio_w211d(data); 
+                    return;  //M7C
+                case 0x211e:
+                    mmio_w211e(data); 
+                    return;  //M7D
+                case 0x211f:
+                    mmio_w211f(data); 
+                    return;  //M7X
+                case 0x2120:
+                    mmio_w2120(data); 
+                    return;  //M7Y
+                case 0x2121:
+                    mmio_w2121(data); 
+                    return;  //CGADD
+                case 0x2122:
+                    mmio_w2122(data);
+                    return;  //CGDATA
+                case 0x2123:
+                    mmio_w2123(data); 
+                    return;  //W12SEL
+                case 0x2124:
+                    mmio_w2124(data); 
+                    return;  //W34SEL
+                case 0x2125:
+                    mmio_w2125(data);
+                    return;  //WOBJSEL
+                case 0x2126: 
+                    mmio_w2126(data);
+                    return;  //WH0
+                case 0x2127: 
+                    mmio_w2127(data); 
+                    return;  //WH1
+                case 0x2128:
+                    mmio_w2128(data);
+                    return;  //WH2
+                case 0x2129:
+                    mmio_w2129(data);
+                    return;  //WH3
+                case 0x212a:
+                    mmio_w212a(data);
+                    return;  //W(int)ID.BGLOG
+                case 0x212b:
+                    mmio_w212b(data); 
+                    return;  //WOBJLOG
+                case 0x212c: 
+                    mmio_w212c(data); 
+                    return;  //TM
+                case 0x212d: 
+                    mmio_w212d(data); 
+                    return;  //TS
+                case 0x212e:
+                    mmio_w212e(data);
+                    return;  //TMW
+                case 0x212f:
+                    mmio_w212f(data);
+                    return;  //TSW
+                case 0x2130:
+                    mmio_w2130(data);
+                    return;  //CGWSEL
+                case 0x2131:
+                    mmio_w2131(data);
+                    return;  //CGADDSUB
+                case 0x2132:
+                    mmio_w2132(data);
+                    return;  //COLDATA
+                case 0x2133:
+                    mmio_w2133(data); 
+                    return;  //SETINI
+            }
+        }
 
         public void latch_counters()
         {
