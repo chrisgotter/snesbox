@@ -10,5 +10,13 @@ namespace Nall
             lhs = rhs;
             rhs = temp;
         }
+
+        public static void InstantiateArrayElements<T>(T[] array) where T : new()
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = new T();
+            }
+        }
     }
 }

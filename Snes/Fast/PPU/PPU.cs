@@ -2671,7 +2671,7 @@ namespace Snes
             display.overscan = false;
             regs.scanlines = 224;
 
-            Array.Clear(sprite_list, 0, sprite_list.Length);
+            Utility.InstantiateArrayElements(sprite_list);
             sprite_list_valid = false;
 
             //open bus support
@@ -2933,8 +2933,16 @@ namespace Snes
             s.array(oam_line_pri, 256, "oam_line_pri");
         }
 
+
+
         public PPU()
         {
+            Utility.InstantiateArrayElements(pixel_cache);
+            Utility.InstantiateArrayElements(window);
+            Utility.InstantiateArrayElements(bg_info);
+            Utility.InstantiateArrayElements(sprite_list);
+            Utility.InstantiateArrayElements(oam_tilelist);
+
             //TODO: remove this hack
             surface = new ushort[1024 * 1024];
             output = new ArraySegment<ushort>(surface, 16 * 512, surface.Length - (16 * 512));

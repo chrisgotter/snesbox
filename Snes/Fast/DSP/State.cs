@@ -1,5 +1,6 @@
 ﻿#if FAST_DSP
 using System;
+using Nall;
 
 namespace Snes
 {
@@ -65,6 +66,11 @@ namespace Snes
             public int mute_mask;
             public ArraySegment<short> _out;
             public short[] extra = new short[extra_size];
+
+            public State()
+            {
+                Utility.InstantiateArrayElements(voices);
+            }
         }
     }
 }

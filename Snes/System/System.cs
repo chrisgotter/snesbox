@@ -58,27 +58,6 @@ namespace Snes
             _stateFileCount++;
         }
 
-        public static void WriteStateToFile(ushort[] array)
-        {
-            var file = global::System.IO.File.Create(@"..\..\..\..\..\states\SnesBox\" + _stateFileCount + ".bst");
-            foreach (var element in array)
-            {
-                var bytes = BitConverter.GetBytes(element);
-                file.Write(bytes, 0, bytes.Length);
-            }
-            file.Close();
-            _stateFileCount++;
-        }
-
-        public static void WriteStateToFile(int array)
-        {
-            var file = global::System.IO.File.Create(@"..\..\..\..\..\states\SnesBox\" + _stateFileCount + ".bst");
-            var bytes = BitConverter.GetBytes(array);
-            file.Write(bytes, 0, bytes.Length);
-            file.Close();
-            _stateFileCount++;
-        }
-
         public void init(Interface interface_)
         {
             inter = interface_;

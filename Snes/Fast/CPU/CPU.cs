@@ -577,7 +577,7 @@ namespace Snes
             PPUCounter.serialize(s);
 
             queue.serialize(s);
-            s.array(port_data);
+            s.array(port_data, "port_data");
 
             for (uint i = 0; i < 8; i++)
             {
@@ -655,6 +655,8 @@ namespace Snes
 
         public CPU()
         {
+            Utility.InstantiateArrayElements(channel);
+
             queue = new PriorityQueue(512, this.queue_event);
             PPUCounter.Scanline = this.scanline;
         }

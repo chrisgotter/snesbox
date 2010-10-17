@@ -81,23 +81,23 @@ namespace Snes
         public void serialize(Serializer s)
         {
             Processor.serialize(s);
-            s.array(samplebuffer);
+            s.array(samplebuffer, "samplebuffer");
 
             byte[] state = new byte[SPCDSP.state_size];
             MemoryStream p = new MemoryStream(state);
             if (s.mode() == Serializer.Mode.Save)
             {
                 spc_dsp.copy_state(p, dsp_state_save);
-                s.array(state);
+                s.array(state, "state");
             }
             else if (s.mode() == Serializer.Mode.Load)
             {
-                s.array(state);
+                s.array(state, "state");
                 spc_dsp.copy_state(p, dsp_state_load);
             }
             else
             {
-                s.array(state);
+                s.array(state, "state");
             }
         }
 
