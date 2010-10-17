@@ -1,5 +1,6 @@
 ﻿#if FAST_PPU
 using System;
+using System.Linq;
 using Nall;
 
 namespace Snes
@@ -21,10 +22,10 @@ namespace Snes
                 Libco.Switch(CPU.cpu.Processor.thread);
             }
 #else
-            while(clock >= 0) 
-            {
-                cpu.enter();
-            }
+			while(clock >= 0) 
+			{
+				cpu.enter();
+			}
 #endif
         }
 
@@ -923,10 +924,10 @@ namespace Snes
             switch (addr & 0xffff)
             {
                 case 0x2100:
-                    mmio_w2100(data); 
+                    mmio_w2100(data);
                     return;  //INIDISP
                 case 0x2101:
-                    mmio_w2101(data); 
+                    mmio_w2101(data);
                     return;  //OBSEL
                 case 0x2102:
                     mmio_w2102(data);
@@ -941,46 +942,46 @@ namespace Snes
                     mmio_w2105(data);
                     return;  //(int)ID.BGMODE
                 case 0x2106:
-                    mmio_w2106(data); 
+                    mmio_w2106(data);
                     return;  //MOSAIC
                 case 0x2107:
-                    mmio_w2107(data); 
+                    mmio_w2107(data);
                     return;  //(int)ID.BG1SC
-                case 0x2108: 
-                    mmio_w2108(data); 
+                case 0x2108:
+                    mmio_w2108(data);
                     return;  //(int)ID.BG2SC
-                case 0x2109: 
+                case 0x2109:
                     mmio_w2109(data);
                     return;  //(int)ID.BG3SC
-                case 0x210a: 
+                case 0x210a:
                     mmio_w210a(data);
                     return;  //(int)ID.BG4SC
-                case 0x210b: 
+                case 0x210b:
                     mmio_w210b(data);
                     return;  //(int)ID.BG12NBA
                 case 0x210c:
                     mmio_w210c(data);
                     return;  //(int)ID.BG34NBA
-                case 0x210d: 
+                case 0x210d:
                     mmio_w210d(data);
                     return;  //(int)ID.BG1HOFS
                 case 0x210e:
-                    mmio_w210e(data); 
+                    mmio_w210e(data);
                     return;  //(int)ID.BG1VOFS
                 case 0x210f:
                     mmio_w210f(data);
                     return;  //(int)ID.BG2HOFS
-                case 0x2110: 
+                case 0x2110:
                     mmio_w2110(data);
                     return;  //(int)ID.BG2VOFS
-                case 0x2111: 
-                    mmio_w2111(data); 
+                case 0x2111:
+                    mmio_w2111(data);
                     return;  //(int)ID.BG3HOFS
                 case 0x2112:
-                    mmio_w2112(data); 
+                    mmio_w2112(data);
                     return;  //(int)ID.BG3VOFS
                 case 0x2113:
-                    mmio_w2113(data); 
+                    mmio_w2113(data);
                     return;  //(int)ID.BG4HOFS
                 case 0x2114:
                     mmio_w2114(data);
@@ -989,58 +990,58 @@ namespace Snes
                     mmio_w2115(data);
                     return;  //VMAIN
                 case 0x2116:
-                    mmio_w2116(data); 
+                    mmio_w2116(data);
                     return;  //VMADDL
-                case 0x2117: 
-                    mmio_w2117(data); 
+                case 0x2117:
+                    mmio_w2117(data);
                     return;  //VMADDH
                 case 0x2118:
-                    mmio_w2118(data); 
+                    mmio_w2118(data);
                     return;  //VMDATAL
-                case 0x2119: 
+                case 0x2119:
                     mmio_w2119(data);
                     return;  //VMDATAH
-                case 0x211a: 
-                    mmio_w211a(data); 
+                case 0x211a:
+                    mmio_w211a(data);
                     return;  //M7SEL
                 case 0x211b:
-                    mmio_w211b(data); 
+                    mmio_w211b(data);
                     return;  //M7A
                 case 0x211c:
-                    mmio_w211c(data); 
+                    mmio_w211c(data);
                     return;  //M7B
                 case 0x211d:
-                    mmio_w211d(data); 
+                    mmio_w211d(data);
                     return;  //M7C
                 case 0x211e:
-                    mmio_w211e(data); 
+                    mmio_w211e(data);
                     return;  //M7D
                 case 0x211f:
-                    mmio_w211f(data); 
+                    mmio_w211f(data);
                     return;  //M7X
                 case 0x2120:
-                    mmio_w2120(data); 
+                    mmio_w2120(data);
                     return;  //M7Y
                 case 0x2121:
-                    mmio_w2121(data); 
+                    mmio_w2121(data);
                     return;  //CGADD
                 case 0x2122:
                     mmio_w2122(data);
                     return;  //CGDATA
                 case 0x2123:
-                    mmio_w2123(data); 
+                    mmio_w2123(data);
                     return;  //W12SEL
                 case 0x2124:
-                    mmio_w2124(data); 
+                    mmio_w2124(data);
                     return;  //W34SEL
                 case 0x2125:
                     mmio_w2125(data);
                     return;  //WOBJSEL
-                case 0x2126: 
+                case 0x2126:
                     mmio_w2126(data);
                     return;  //WH0
-                case 0x2127: 
-                    mmio_w2127(data); 
+                case 0x2127:
+                    mmio_w2127(data);
                     return;  //WH1
                 case 0x2128:
                     mmio_w2128(data);
@@ -1052,13 +1053,13 @@ namespace Snes
                     mmio_w212a(data);
                     return;  //W(int)ID.BGLOG
                 case 0x212b:
-                    mmio_w212b(data); 
+                    mmio_w212b(data);
                     return;  //WOBJLOG
-                case 0x212c: 
-                    mmio_w212c(data); 
+                case 0x212c:
+                    mmio_w212c(data);
                     return;  //TM
-                case 0x212d: 
-                    mmio_w212d(data); 
+                case 0x212d:
+                    mmio_w212d(data);
                     return;  //TS
                 case 0x212e:
                     mmio_w212e(data);
@@ -1076,7 +1077,7 @@ namespace Snes
                     mmio_w2132(data);
                     return;  //COLDATA
                 case 0x2133:
-                    mmio_w2133(data); 
+                    mmio_w2133(data);
                     return;  //SETINI
             }
         }
@@ -1171,34 +1172,556 @@ namespace Snes
 
         public Pixel[] pixel_cache = new Pixel[256];
 
-        public byte[] bg_tiledata = new byte[3];
+        public byte[][] bg_tiledata = new byte[3][];
         public byte[][] bg_tiledata_state = new byte[3][];  //0 = valid, 1 = dirty
 
-        public void render_bg_tile(uint color_depth, ushort tile_num) { throw new NotImplementedException(); }
+        private void render_bg_tile_line_2bpp(byte mask, ref ArraySegment<byte> dest, ref byte col, byte d0, byte d1)
+        {
+            col = (byte)(Bit.ToBit((uint)(d0 & mask)) << 0);
+            col += (byte)(Bit.ToBit((uint)(d1 & mask)) << 1);
+            dest.Array[dest.Offset] = col;
+            dest = new ArraySegment<byte>(dest.Array, dest.Offset + 1, dest.Count - 1);
+        }
 
-        public void flush_pixel_cache() { throw new NotImplementedException(); }
+        private void render_bg_tile_line_4bpp(byte mask, ref ArraySegment<byte> dest, ref byte col, byte d0, byte d1, byte d2, byte d3)
+        {
+            col = (byte)(Bit.ToBit((uint)(d0 & mask)) << 0);
+            col += (byte)(Bit.ToBit((uint)(d1 & mask)) << 1);
+            col += (byte)(Bit.ToBit((uint)(d2 & mask)) << 2);
+            col += (byte)(Bit.ToBit((uint)(d3 & mask)) << 3);
+            dest.Array[dest.Offset] = col;
+            dest = new ArraySegment<byte>(dest.Array, dest.Offset + 1, dest.Count - 1);
+        }
 
-        public void alloc_tiledata_cache() { throw new NotImplementedException(); }
+        private void render_bg_tile_line_8bpp(byte mask, ref ArraySegment<byte> dest, ref byte col, byte d0, byte d1, byte d2, byte d3, byte d4, byte d5, byte d6, byte d7)
+        {
+            col = (byte)(Bit.ToBit((uint)(d0 & mask)) << 0);
+            col += (byte)(Bit.ToBit((uint)(d1 & mask)) << 1);
+            col += (byte)(Bit.ToBit((uint)(d2 & mask)) << 2);
+            col += (byte)(Bit.ToBit((uint)(d3 & mask)) << 3);
+            col += (byte)(Bit.ToBit((uint)(d4 & mask)) << 4);
+            col += (byte)(Bit.ToBit((uint)(d5 & mask)) << 5);
+            col += (byte)(Bit.ToBit((uint)(d6 & mask)) << 6);
+            col += (byte)(Bit.ToBit((uint)(d7 & mask)) << 7);
+            dest.Array[dest.Offset] = col;
+            dest = new ArraySegment<byte>(dest.Array, dest.Offset + 1, dest.Count - 1);
+        }
 
-        public void flush_tiledata_cache() { throw new NotImplementedException(); }
+        public void render_bg_tile(uint color_depth, ushort tile_num)
+        {
+            byte col = 0, d0, d1, d2, d3, d4, d5, d6, d7;
 
-        public void free_tiledata_cache() { throw new NotImplementedException(); }
+            if (color_depth == (uint)ColorDepth.D4)
+            {
+                ArraySegment<byte> dest = new ArraySegment<byte>(bg_tiledata[(int)Tile.T2BIT], tile_num * 64, bg_tiledata[(int)Tile.T2BIT].Length - tile_num * 64);
+                uint pos = (uint)(tile_num * 16);
+                uint y = 8;
+                while (Convert.ToBoolean(y--))
+                {
+                    d0 = StaticRAM.vram[pos];
+                    d1 = StaticRAM.vram[pos + 1];
+                    render_bg_tile_line_2bpp(0x80, ref dest, ref col, d0, d1);
+                    render_bg_tile_line_2bpp(0x40, ref dest, ref col, d0, d1);
+                    render_bg_tile_line_2bpp(0x20, ref dest, ref col, d0, d1);
+                    render_bg_tile_line_2bpp(0x10, ref dest, ref col, d0, d1);
+                    render_bg_tile_line_2bpp(0x08, ref dest, ref col, d0, d1);
+                    render_bg_tile_line_2bpp(0x04, ref dest, ref col, d0, d1);
+                    render_bg_tile_line_2bpp(0x02, ref dest, ref col, d0, d1);
+                    render_bg_tile_line_2bpp(0x01, ref dest, ref col, d0, d1);
+                    pos += 2;
+                }
+                bg_tiledata_state[(int)Tile.T2BIT][tile_num] = 0;
+            }
+
+            if (color_depth == (uint)ColorDepth.D16)
+            {
+                ArraySegment<byte> dest = new ArraySegment<byte>(bg_tiledata[(int)Tile.T4BIT], tile_num * 64, bg_tiledata[(int)Tile.T4BIT].Length - tile_num * 64);
+                uint pos = (uint)(tile_num * 32);
+                uint y = 8;
+                while (Convert.ToBoolean(y--))
+                {
+                    d0 = StaticRAM.vram[pos];
+                    d1 = StaticRAM.vram[pos + 1];
+                    d2 = StaticRAM.vram[pos + 16];
+                    d3 = StaticRAM.vram[pos + 17];
+                    render_bg_tile_line_4bpp(0x80, ref dest, ref col, d0, d1, d2, d3);
+                    render_bg_tile_line_4bpp(0x40, ref dest, ref col, d0, d1, d2, d3);
+                    render_bg_tile_line_4bpp(0x20, ref dest, ref col, d0, d1, d2, d3);
+                    render_bg_tile_line_4bpp(0x10, ref dest, ref col, d0, d1, d2, d3);
+                    render_bg_tile_line_4bpp(0x08, ref dest, ref col, d0, d1, d2, d3);
+                    render_bg_tile_line_4bpp(0x04, ref dest, ref col, d0, d1, d2, d3);
+                    render_bg_tile_line_4bpp(0x02, ref dest, ref col, d0, d1, d2, d3);
+                    render_bg_tile_line_4bpp(0x01, ref dest, ref col, d0, d1, d2, d3);
+                    pos += 2;
+                }
+                bg_tiledata_state[(int)Tile.T4BIT][tile_num] = 0;
+            }
+
+            if (color_depth == (uint)ColorDepth.D256)
+            {
+                ArraySegment<byte> dest = new ArraySegment<byte>(bg_tiledata[(int)Tile.T8BIT], tile_num * 64, bg_tiledata[(int)Tile.T8BIT].Length - tile_num * 64);
+                uint pos = (uint)(tile_num * 64);
+                uint y = 8;
+                while (Convert.ToBoolean(y--))
+                {
+                    d0 = StaticRAM.vram[pos];
+                    d1 = StaticRAM.vram[pos + 1];
+                    d2 = StaticRAM.vram[pos + 16];
+                    d3 = StaticRAM.vram[pos + 17];
+                    d4 = StaticRAM.vram[pos + 32];
+                    d5 = StaticRAM.vram[pos + 33];
+                    d6 = StaticRAM.vram[pos + 48];
+                    d7 = StaticRAM.vram[pos + 49];
+                    render_bg_tile_line_8bpp(0x80, ref dest, ref col, d0, d1, d2, d3, d4, d5, d6, d7);
+                    render_bg_tile_line_8bpp(0x40, ref dest, ref col, d0, d1, d2, d3, d4, d5, d6, d7);
+                    render_bg_tile_line_8bpp(0x20, ref dest, ref col, d0, d1, d2, d3, d4, d5, d6, d7);
+                    render_bg_tile_line_8bpp(0x10, ref dest, ref col, d0, d1, d2, d3, d4, d5, d6, d7);
+                    render_bg_tile_line_8bpp(0x08, ref dest, ref col, d0, d1, d2, d3, d4, d5, d6, d7);
+                    render_bg_tile_line_8bpp(0x04, ref dest, ref col, d0, d1, d2, d3, d4, d5, d6, d7);
+                    render_bg_tile_line_8bpp(0x02, ref dest, ref col, d0, d1, d2, d3, d4, d5, d6, d7);
+                    render_bg_tile_line_8bpp(0x01, ref dest, ref col, d0, d1, d2, d3, d4, d5, d6, d7);
+                    pos += 2;
+                }
+                bg_tiledata_state[(int)Tile.T8BIT][tile_num] = 0;
+            }
+        }
+
+        public void flush_pixel_cache()
+        {
+            ushort main = get_palette(0);
+            ushort sub = (regs.pseudo_hires || regs.bg_mode == 5 || regs.bg_mode == 6)
+                        ? main
+                        : regs.color_rgb;
+
+            uint i = 255;
+            do
+            {
+                pixel_cache[i].src_main = main;
+                pixel_cache[i].src_sub = sub;
+                pixel_cache[i].bg_main = (int)ID.BACK;
+                pixel_cache[i].bg_sub = (int)ID.BACK;
+                pixel_cache[i].ce_main = Convert.ToByte(false);
+                pixel_cache[i].ce_sub = Convert.ToByte(false);
+                pixel_cache[i].pri_main = 0;
+                pixel_cache[i].pri_sub = 0;
+            }
+            while (Convert.ToBoolean(i--));
+        }
+
+        public void alloc_tiledata_cache()
+        {
+            bg_tiledata[(int)Tile.T2BIT] = new byte[262144];
+            bg_tiledata[(int)Tile.T4BIT] = new byte[131072];
+            bg_tiledata[(int)Tile.T8BIT] = new byte[65536];
+            bg_tiledata_state[(int)Tile.T2BIT] = new byte[4096];
+            bg_tiledata_state[(int)Tile.T4BIT] = new byte[2048];
+            bg_tiledata_state[(int)Tile.T8BIT] = new byte[1024];
+        }
+
+        public void flush_tiledata_cache()
+        {
+            for (uint i = 0; i < 4096; i++)
+            {
+                bg_tiledata_state[(int)Tile.T2BIT][i] = 1;
+            }
+            for (uint i = 0; i < 2048; i++)
+            {
+                bg_tiledata_state[(int)Tile.T4BIT][i] = 1;
+            }
+            for (uint i = 0; i < 1024; i++)
+            {
+                bg_tiledata_state[(int)Tile.T8BIT][i] = 1;
+            }
+        }
 
         //windows.cpp
         public Window[] window = new Window[6];
 
-        public void build_window_table(byte bg, bool mainscreen) { throw new NotImplementedException(); }
+        public void build_window_table(byte bg, bool screen)
+        {
+            bool set = Convert.ToBoolean(1), clr = Convert.ToBoolean(0);
+            byte[] table = (screen == Convert.ToBoolean(0) ? window[bg].main : window[bg].sub);
 
-        public void build_window_tables(byte bg) { throw new NotImplementedException(); }
+            if (bg != (byte)ID.COL)
+            {
+                if (screen == Convert.ToBoolean(0) && regs.window_enabled[bg] == false)
+                {
+                    Array.Clear(table, 0, 256);
+                    return;
+                }
+                if (screen == Convert.ToBoolean(1) && regs.sub_window_enabled[bg] == false)
+                {
+                    Array.Clear(table, 0, 256);
+                    return;
+                }
+            }
+            else
+            {
+                switch (screen == Convert.ToBoolean(0) ? regs.color_mask : regs.colorsub_mask)
+                {
+                    case 0:
+                        table = Enumerable.Repeat<byte>(1, 256).ToArray();
+                        return;  //always
+                    case 3:
+                        Array.Clear(table, 0, 256);
+                        return;  //never
+                    case 1:
+                        set = Convert.ToBoolean(1); clr = Convert.ToBoolean(0);
+                        break;        //inside window only
+                    case 2:
+                        set = Convert.ToBoolean(0); clr = Convert.ToBoolean(1);
+                        break;        //outside window only
+                }
+            }
+
+            ushort window1_left = regs.window1_left;
+            ushort window1_right = regs.window1_right;
+            ushort window2_left = regs.window2_left;
+            ushort window2_right = regs.window2_right;
+
+            if (regs.window1_enabled[bg] == false && regs.window2_enabled[bg] == false)
+            {
+                table = Enumerable.Repeat<byte>(Convert.ToByte(clr), 256).ToArray();
+                return;
+            }
+
+            if (regs.window1_enabled[bg] == true && regs.window2_enabled[bg] == false)
+            {
+                if (regs.window1_invert[bg] == true)
+                {
+                    set ^= clr ^= set ^= clr;
+                }
+                for (uint x = 0; x < 256; x++)
+                {
+                    table[x] = Convert.ToByte((x >= window1_left && x <= window1_right) ? set : clr);
+                }
+                return;
+            }
+
+            if (regs.window1_enabled[bg] == false && regs.window2_enabled[bg] == true)
+            {
+                if (regs.window2_invert[bg] == true)
+                {
+                    set ^= clr ^= set ^= clr;
+                }
+                for (uint x = 0; x < 256; x++)
+                {
+                    table[x] = Convert.ToByte((x >= window2_left && x <= window2_right) ? set : clr);
+                }
+                return;
+            }
+
+            for (uint x = 0; x < 256; x++)
+            {
+                bool w1_mask = (x >= window1_left && x <= window1_right) ^ regs.window1_invert[bg];
+                bool w2_mask = (x >= window2_left && x <= window2_right) ^ regs.window2_invert[bg];
+
+                switch (regs.window_mask[bg])
+                {
+                    case 0:
+                        table[x] = Convert.ToByte((w1_mask | w2_mask) == Convert.ToBoolean(1) ? set : clr);
+                        break;  //or
+                    case 1:
+                        table[x] = Convert.ToByte((w1_mask & w2_mask) == Convert.ToBoolean(1) ? set : clr);
+                        break;  //and
+                    case 2:
+                        table[x] = Convert.ToByte((w1_mask ^ w2_mask) == Convert.ToBoolean(1) ? set : clr);
+                        break;  //xor
+                    case 3:
+                        table[x] = Convert.ToByte((w1_mask ^ w2_mask) == Convert.ToBoolean(0) ? set : clr);
+                        break;  //xnor
+                }
+            }
+        }
+
+        public void build_window_tables(byte bg)
+        {
+            build_window_table(bg, Convert.ToBoolean(0));
+            build_window_table(bg, Convert.ToBoolean(1));
+        }
 
         //bg.cpp
         public BackgroundInfo[] bg_info = new BackgroundInfo[4];
 
-        public void update_bg_info() { throw new NotImplementedException(); }
+        public void update_bg_info()
+        {
+            uint hires = Convert.ToUInt32(regs.bg_mode == 5 || regs.bg_mode == 6);
+            uint width = (!Convert.ToBoolean(hires) ? 256U : 512U);
 
-        public ushort bg_get_tile(uint bg, ushort x, ushort y) { throw new NotImplementedException(); }
+            for (uint bg = 0; bg < 4; bg++)
+            {
+                bg_info[bg].th = (ushort)(regs.bg_tilesize[bg] ? 4 : 3);
+                bg_info[bg].tw = (ushort)(Convert.ToBoolean(hires) ? 4 : bg_info[bg].th);
 
-        public void render_line_bg(uint mode, uint bg, uint color_depth, byte pri0_pos, byte pri1_pos) { throw new NotImplementedException(); }
+                bg_info[bg].mx = (ushort)(bg_info[bg].th == 4 ? (width << 1) : width);
+                bg_info[bg].my = bg_info[bg].mx;
+                if (Convert.ToBoolean(regs.bg_scsize[bg] & 0x01))
+                {
+                    bg_info[bg].mx <<= 1;
+                }
+                if (Convert.ToBoolean(regs.bg_scsize[bg] & 0x02))
+                {
+                    bg_info[bg].my <<= 1;
+                }
+                bg_info[bg].mx--;
+                bg_info[bg].my--;
+
+                bg_info[bg].scy = (ushort)(Convert.ToBoolean(regs.bg_scsize[bg] & 0x02) ? (32 << 5) : 0);
+                bg_info[bg].scx = (ushort)(Convert.ToBoolean(regs.bg_scsize[bg] & 0x01) ? (32 << 5) : 0);
+                if (regs.bg_scsize[bg] == 3)
+                {
+                    bg_info[bg].scy <<= 1;
+                }
+            }
+        }
+
+        public ushort bg_get_tile(uint bg, ushort x, ushort y)
+        {
+            x = (ushort)((x & bg_info[bg].mx) >> bg_info[bg].tw);
+            y = (ushort)((y & bg_info[bg].my) >> bg_info[bg].th);
+
+            ushort pos = (ushort)(((y & 0x1f) << 5) + (x & 0x1f));
+            if (Convert.ToBoolean(y & 0x20))
+            {
+                pos += bg_info[bg].scy;
+            }
+            if (Convert.ToBoolean(x & 0x20))
+            {
+                pos += bg_info[bg].scx;
+            }
+
+            ushort addr = (ushort)(regs.bg_scaddr[bg] + (pos << 1));
+            return (ushort)(StaticRAM.vram[addr] + (StaticRAM.vram[(uint)(addr + 1)] << 8));
+        }
+
+        private void setpixel_main(uint x, ushort tile_pri, uint bg, ushort col)
+        {
+            if (pixel_cache[x].pri_main < tile_pri)
+            {
+                pixel_cache[x].pri_main = (byte)tile_pri;
+                pixel_cache[x].bg_main = (byte)bg;
+                pixel_cache[x].src_main = col;
+                pixel_cache[x].ce_main = Convert.ToByte(false);
+            }
+        }
+
+        private void setpixel_sub(uint x, ushort tile_pri, uint bg, ushort col)
+        {
+            if (pixel_cache[x].pri_sub < tile_pri)
+            {
+                pixel_cache[x].pri_sub = (byte)tile_pri;
+                pixel_cache[x].bg_sub = (byte)bg;
+                pixel_cache[x].src_sub = col;
+                pixel_cache[x].ce_sub = Convert.ToByte(false);
+            }
+        }
+
+        public void render_line_bg(uint mode, uint bg, uint color_depth, byte pri0_pos, byte pri1_pos)
+        {
+            if (regs.bg_enabled[bg] == false && regs.bgsub_enabled[bg] == false)
+            {
+                return;
+            }
+
+            bool bg_enabled = regs.bg_enabled[bg];
+            bool bgsub_enabled = regs.bgsub_enabled[bg];
+
+            ushort opt_valid_bit = (ushort)((bg == (uint)ID.BG1) ? 0x2000 : (bg == (uint)ID.BG2) ? 0x4000 : 0x0000);
+            byte bgpal_index = (byte)((mode == 0 ? (bg << 5) : 0));
+
+            byte pal_size = (byte)(2 << (int)color_depth);       //<<2 (*4), <<4 (*16), <<8 (*256)
+            ushort tile_mask = (ushort)(0x0fff >> (int)color_depth);  //0x0fff, 0x07ff, 0x03ff
+            //4 + color_depth = >>(4-6) -- / {16, 32, 64 } bytes/tile
+            //index is a tile number count to add to base tile number
+            uint tiledata_index = (uint)(regs.bg_tdaddr[bg] >> (int)(4 + color_depth));
+
+            byte[] bg_td = bg_tiledata[color_depth];
+            byte[] bg_td_state = bg_tiledata_state[color_depth];
+
+            byte tile_width = (byte)bg_info[bg].tw;
+            byte tile_height = (byte)bg_info[bg].th;
+            ushort mask_x = bg_info[bg].mx;  //screen width  mask
+            ushort mask_y = bg_info[bg].my;  //screen height mask
+
+            ushort y = regs.bg_y[bg];
+            ushort hscroll = regs.bg_hofs[bg];
+            ushort vscroll = regs.bg_vofs[bg];
+
+            uint hires = Convert.ToUInt32(mode == 5 || mode == 6);
+            uint width = (uint)(!Convert.ToBoolean(hires) ? 256 : 512);
+
+            if (Convert.ToBoolean(hires))
+            {
+                hscroll <<= 1;
+                if (regs.interlace)
+                {
+                    y = (ushort)((y << 1) + Convert.ToUInt32(PPUCounter.field()));
+                }
+            }
+
+            ushort hval = 0, vval = 0;
+            ushort tile_pri = 0, tile_num;
+            byte pal_index = 0, pal_num = 0;
+            ushort hoffset, voffset, opt_x, col;
+            bool mirror_x = false, mirror_y;
+
+            ArraySegment<byte> tile_ptr = new ArraySegment<byte>();
+            ushort[] mtable = mosaic_table[regs.mosaic_enabled[bg] ? regs.mosaic_size : 0];
+            bool is_opt_mode = (mode == 2 || mode == 4 || mode == 6);
+            bool is_direct_color_mode = (regs.direct_color == true && bg == (uint)ID.BG1 && (mode == 3 || mode == 4));
+
+            build_window_tables((byte)bg);
+            byte[] wt_main = window[bg].main;
+            byte[] wt_sub = window[bg].sub;
+
+            ushort prev_x = 0xffff, prev_y = 0xffff, prev_optx = 0xffff;
+            for (ushort x = 0; x < width; x++)
+            {
+                hoffset = (ushort)(mtable[x] + hscroll);
+                voffset = (ushort)(y + vscroll);
+
+                if (is_opt_mode)
+                {
+                    opt_x = (ushort)(x + (hscroll & 7));
+
+                    //tile 0 is unaffected by OPT mode...
+                    if (opt_x >= 8)
+                    {
+                        //cache tile data in hval, vval if possible
+                        if ((opt_x >> 3) != (prev_optx >> 3))
+                        {
+                            prev_optx = opt_x;
+
+                            hval = bg_get_tile((uint)ID.BG3, (ushort)((opt_x - 8) + (regs.bg_hofs[(int)ID.BG3] & ~7)), regs.bg_vofs[(int)ID.BG3]);
+                            if (mode != 4)
+                            {
+                                vval = bg_get_tile((uint)ID.BG3, (ushort)((opt_x - 8) + (regs.bg_hofs[(int)ID.BG3] & ~7)), (ushort)(regs.bg_vofs[(int)ID.BG3] + 8));
+                            }
+                        }
+
+                        if (mode == 4)
+                        {
+                            if (Convert.ToBoolean(hval & opt_valid_bit))
+                            {
+                                if (!Convert.ToBoolean(hval & 0x8000))
+                                {
+                                    hoffset = (ushort)(opt_x + (hval & ~7));
+                                }
+                                else
+                                {
+                                    voffset = (ushort)(y + hval);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (Convert.ToBoolean(hval & opt_valid_bit))
+                            {
+                                hoffset = (ushort)(opt_x + (hval & ~7));
+                            }
+                            if (Convert.ToBoolean(vval & opt_valid_bit))
+                            {
+                                voffset = (ushort)(y + vval);
+                            }
+                        }
+                    }
+                }
+
+                hoffset &= mask_x;
+                voffset &= mask_y;
+
+                if ((hoffset >> 3) != prev_x || (voffset >> 3) != prev_y)
+                {
+                    prev_x = (ushort)(hoffset >> 3);
+                    prev_y = (ushort)(voffset >> 3);
+
+                    tile_num = bg_get_tile(bg, hoffset, voffset);  //format = vhopppcc cccccccc
+                    mirror_y = Convert.ToBoolean(tile_num & 0x8000);
+                    mirror_x = Convert.ToBoolean(tile_num & 0x4000);
+                    tile_pri = Convert.ToBoolean(tile_num & 0x2000) ? pri1_pos : pri0_pos;
+                    pal_num = (byte)((tile_num >> 10) & 7);
+                    pal_index = (byte)(bgpal_index + (pal_num << pal_size));
+
+                    if (tile_width == 4)
+                    {  //16x16 horizontal tile mirroring
+                        if (Convert.ToBoolean(hoffset & 8) != mirror_x)
+                        {
+                            tile_num++;
+                        }
+                    }
+
+                    if (tile_height == 4)
+                    {  //16x16 vertical tile mirroring
+                        if (Convert.ToBoolean(voffset & 8) != mirror_y)
+                        {
+                            tile_num += 16;
+                        }
+                    }
+
+                    tile_num &= 0x03ff;
+                    tile_num += (ushort)tiledata_index;
+                    tile_num &= tile_mask;
+
+                    if (bg_td_state[tile_num] == 1)
+                    {
+                        render_bg_tile(color_depth, tile_num);
+                    }
+
+                    if (mirror_y)
+                    {
+                        voffset ^= 7;  //invert y tile pos
+                    }
+                    tile_ptr = new ArraySegment<byte>(bg_td, (tile_num * 64) + ((voffset & 7) * 8), bg_td.Length - ((tile_num * 64) + ((voffset & 7) * 8)));
+                }
+
+                if (mirror_x)
+                {
+                    hoffset ^= 7;  //invert x tile pos
+                }
+                col = tile_ptr.Array[tile_ptr.Offset + (hoffset & 7)];
+                if (Convert.ToBoolean(col))
+                {
+                    if (is_direct_color_mode)
+                    {
+                        col = get_direct_color(pal_num, (byte)col);
+                    }
+                    else
+                    {
+                        col = get_palette((byte)(col + pal_index));
+                    }
+
+                    if (!Convert.ToBoolean(hires))
+                    {
+                        if (bg_enabled == true && !Convert.ToBoolean(wt_main[x]))
+                        {
+                            setpixel_main(x, tile_pri, bg, col);
+                        }
+                        if (bgsub_enabled == true && !Convert.ToBoolean(wt_sub[x]))
+                        {
+                            setpixel_sub(x, tile_pri, bg, col);
+                        }
+                    }
+                    else
+                    {
+                        int hx = x >> 1;
+                        if (Convert.ToBoolean(x & 1))
+                        {
+                            if (bg_enabled == true && !Convert.ToBoolean(wt_main[hx]))
+                            {
+                                setpixel_main((uint)hx, tile_pri, bg, col);
+                            }
+                        }
+                        else
+                        {
+                            if (bgsub_enabled == true && !Convert.ToBoolean(wt_sub[hx]))
+                            {
+                                setpixel_sub((uint)hx, tile_pri, bg, col);
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         //oam.cpp
         public SpriteItem[] sprite_list = new SpriteItem[128];
@@ -1211,38 +1734,499 @@ namespace Snes
         public const int OAM_PRI_NONE = 4;
         public byte[] oam_line_pal = new byte[256], oam_line_pri = new byte[256];
 
-        public void update_sprite_list(uint addr, byte data) { throw new NotImplementedException(); }
+        public void update_sprite_list(uint addr, byte data)
+        {
+            if (addr < 0x0200)
+            {
+                uint i = addr >> 2;
+                switch (addr & 3)
+                {
+                    case 0:
+                        sprite_list[i].x = (ushort)((sprite_list[i].x & 0x0100) | data);
+                        break;
+                    case 1:
+                        sprite_list[i].y = (ushort)((data + 1) & 0xff);
+                        break;
+                    case 2:
+                        sprite_list[i].character = data;
+                        break;
+                    case 3:
+                        sprite_list[i].vflip = Convert.ToBoolean(data & 0x80);
+                        sprite_list[i].hflip = Convert.ToBoolean(data & 0x40);
+                        sprite_list[i].priority = (byte)((data >> 4) & 3);
+                        sprite_list[i].palette = (byte)((data >> 1) & 7);
+                        sprite_list[i].use_nameselect = Convert.ToBoolean(data & 0x01);
+                        break;
+                }
+            }
+            else
+            {
+                uint i = (addr & 0x1f) << 2;
+                sprite_list[i + 0].x = (ushort)(((data & 0x01) << 8) | (sprite_list[i + 0].x & 0xff));
+                sprite_list[i + 0].size = Convert.ToBoolean(data & 0x02);
+                sprite_list[i + 1].x = (ushort)(((data & 0x04) << 6) | (sprite_list[i + 1].x & 0xff));
+                sprite_list[i + 1].size = Convert.ToBoolean(data & 0x08);
+                sprite_list[i + 2].x = (ushort)(((data & 0x10) << 4) | (sprite_list[i + 2].x & 0xff));
+                sprite_list[i + 2].size = Convert.ToBoolean(data & 0x20);
+                sprite_list[i + 3].x = (ushort)(((data & 0x40) << 2) | (sprite_list[i + 3].x & 0xff));
+                sprite_list[i + 3].size = Convert.ToBoolean(data & 0x80);
+            }
+        }
 
-        public void build_sprite_list() { throw new NotImplementedException(); }
+        public void build_sprite_list()
+        {
+            if (sprite_list_valid == true)
+            {
+                return;
+            }
+            sprite_list_valid = true;
 
-        public bool is_sprite_on_scanline() { throw new NotImplementedException(); }
+            for (uint i = 0; i < 128; i++)
+            {
+                bool size = sprite_list[i].size;
 
-        public void load_oam_tiles() { throw new NotImplementedException(); }
+                switch (cache.oam_basesize)
+                {
+                    case 0: sprite_list[i].width = (!size) ? (byte)8 : (byte)16;
+                        sprite_list[i].height = (!size) ? (byte)8 : (byte)16;
+                        break;
+                    case 1: sprite_list[i].width = (!size) ? (byte)8 : (byte)32;
+                        sprite_list[i].height = (!size) ? (byte)8 : (byte)32;
+                        break;
+                    case 2: sprite_list[i].width = (!size) ? (byte)8 : (byte)64;
+                        sprite_list[i].height = (!size) ? (byte)8 : (byte)64;
+                        break;
+                    case 3: sprite_list[i].width = (!size) ? (byte)16 : (byte)32;
+                        sprite_list[i].height = (!size) ? (byte)16 : (byte)32;
+                        break;
+                    case 4: sprite_list[i].width = (!size) ? (byte)16 : (byte)64;
+                        sprite_list[i].height = (!size) ? (byte)16 : (byte)64;
+                        break;
+                    case 5: sprite_list[i].width = (!size) ? (byte)32 : (byte)64;
+                        sprite_list[i].height = (!size) ? (byte)32 : (byte)64;
+                        break;
+                    case 6: sprite_list[i].width = (!size) ? (byte)16 : (byte)32;
+                        sprite_list[i].height = (!size) ? (byte)32 : (byte)64;
+                        if (regs.oam_interlace && !size)
+                        {
+                            sprite_list[i].height = 16;
+                        }
+                        //32x64 height is not affected by oam_interlace setting
+                        break;
+                    case 7: sprite_list[i].width = (!size) ? (byte)16 : (byte)32;
+                        sprite_list[i].height = (!size) ? (byte)32 : (byte)32;
+                        if (regs.oam_interlace && !size)
+                        {
+                            sprite_list[i].height = 16;
+                        }
+                        break;
+                }
+            }
+        }
 
-        public void render_oam_tile(int tile_num) { throw new NotImplementedException(); }
+        public bool is_sprite_on_scanline()
+        {   //if sprite is entirely offscreen and doesn't wrap around to the left side of the screen,
+            //then it is not counted. this *should* be 256, and not 255, even though dot 256 is offscreen.
+            SpriteItem spr = sprite_list[active_sprite];
+            if (spr.x > 256 && (spr.x + spr.width - 1) < 512)
+            {
+                return false;
+            }
 
-        public void render_line_oam_rto() { throw new NotImplementedException(); }
+            int spr_height = (regs.oam_interlace == false) ? (spr.height) : (spr.height >> 1);
+            if (line >= spr.y && line < (spr.y + spr_height))
+            {
+                return true;
+            }
+            if ((spr.y + spr_height) >= 256 && line < ((spr.y + spr_height) & 255))
+            {
+                return true;
+            }
+            return false;
+        }
 
-        public void render_line_oam(byte pri0_pos, byte pri1_pos, byte pri2_pos, byte pri3_pos) { throw new NotImplementedException(); }
+        public void load_oam_tiles()
+        {
+            SpriteItem spr = sprite_list[active_sprite];
+            ushort tile_width = (ushort)(spr.width >> 3);
+            int x = spr.x;
+            int y = (int)((line - spr.y) & 0xff);
+            if (regs.oam_interlace == true)
+            {
+                y <<= 1;
+            }
 
-        //mode7.cpp
-        public void render_line_mode7(uint bg, byte pri0_pos, byte pri1_pos) { throw new NotImplementedException(); }
+            if (spr.vflip == true)
+            {
+                if (spr.width == spr.height)
+                {
+                    y = (spr.height - 1) - y;
+                }
+                else
+                {
+                    y = (y < spr.width) ? ((spr.width - 1) - y) : (spr.width + ((spr.width - 1) - (y - spr.width)));
+                }
+            }
 
-        //addsub.cpp
-        public ushort addsub(uint x, uint y, bool halve) { throw new NotImplementedException(); }
+            if (regs.oam_interlace == true)
+            {
+                y = (spr.vflip == false) ? (y + Convert.ToInt32(PPUCounter.field())) : (y - Convert.ToInt32(PPUCounter.field()));
+            }
 
-        //line.cpp
-        public ushort get_palette(byte index) { throw new NotImplementedException(); }
+            x &= 511;
+            y &= 255;
 
-        public ushort get_direct_color(byte p, byte t) { throw new NotImplementedException(); }
+            ushort tdaddr = cache.oam_tdaddr;
+            ushort chrx = (ushort)((spr.character) & 15);
+            ushort chry = (ushort)((spr.character >> 4) & 15);
+            if (spr.use_nameselect == true)
+            {
+                tdaddr += (ushort)((256 * 32) + (cache.oam_nameselect << 13));
+            }
+            chry += (ushort)(y >> 3);
+            chry &= 15;
+            chry <<= 4;
 
-        public ushort get_pixel_normal(uint x) { throw new NotImplementedException(); }
+            for (uint tx = 0; tx < tile_width; tx++)
+            {
+                uint sx = (uint)((x + (tx << 3)) & 511);
+                //ignore sprites that are offscreen, x==256 is a special case that loads all tiles in OBJ
+                if (x != 256 && sx >= 256 && (sx + 7) < 512)
+                {
+                    continue;
+                }
 
-        public ushort get_pixel_swap(uint x) { throw new NotImplementedException(); }
+                if (regs.oam_tilecount++ >= 34)
+                {
+                    break;
+                }
+                uint n = (uint)(regs.oam_tilecount - 1);
+                oam_tilelist[n].x = (ushort)sx;
+                oam_tilelist[n].y = (ushort)y;
+                oam_tilelist[n].pri = spr.priority;
+                oam_tilelist[n].pal = (ushort)(128 + (spr.palette << 4));
+                oam_tilelist[n].hflip = spr.hflip;
 
-        public void render_line_output() { throw new NotImplementedException(); }
+                uint mx = (uint)((spr.hflip == false) ? tx : ((tile_width - 1) - tx));
+                uint pos = tdaddr + ((chry + ((chrx + mx) & 15)) << 5);
+                oam_tilelist[n].tile = (ushort)((pos >> 5) & 0x07ff);
+            }
+        }
 
-        public void render_line_clear() { throw new NotImplementedException(); }
+        public void render_oam_tile(int tile_num)
+        {
+            OamTileItem t = oam_tilelist[tile_num];
+            byte[] oam_td = bg_tiledata[(int)ColorDepth.D16];
+            byte[] oam_td_state = bg_tiledata_state[(int)ColorDepth.D16];
+
+            if (oam_td_state[t.tile] == 1)
+            {
+                render_bg_tile((uint)ColorDepth.D16, t.tile);
+            }
+
+            uint sx = t.x;
+            ArraySegment<byte> tile_ptr = new ArraySegment<byte>(oam_td, (t.tile << 6) + ((t.y & 7) << 3), oam_td.Length - ((t.tile << 6) + ((t.y & 7) << 3)));
+            for (uint x = 0; x < 8; x++)
+            {
+                sx &= 511;
+                if (sx < 256)
+                {
+                    uint col = tile_ptr.Array[tile_ptr.Offset + ((t.hflip == false) ? x : (7 - x))];
+                    if (Convert.ToBoolean(col))
+                    {
+                        col += t.pal;
+                        oam_line_pal[sx] = (byte)col;
+                        oam_line_pri[sx] = (byte)t.pri;
+                    }
+                }
+                sx++;
+            }
+        }
+
+        public void render_line_oam_rto()
+        {
+            build_sprite_list();
+
+            regs.oam_itemcount = 0;
+            regs.oam_tilecount = 0;
+            oam_line_pri = Enumerable.Repeat<byte>(OAM_PRI_NONE, 256).ToArray();
+            oam_itemlist = Enumerable.Repeat<byte>(0xff, 32).ToArray();
+            for (int s = 0; s < 34; s++)
+            {
+                oam_tilelist[s].tile = 0xffff;
+            }
+
+            for (int s = 0; s < 128; s++)
+            {
+                active_sprite = (uint)((s + regs.oam_firstsprite) & 127);
+                if (is_sprite_on_scanline() == false) continue;
+                if (regs.oam_itemcount++ >= 32) break;
+                oam_itemlist[regs.oam_itemcount - 1] = (byte)((s + regs.oam_firstsprite) & 127);
+            }
+
+            if (regs.oam_itemcount > 0 && oam_itemlist[regs.oam_itemcount - 1] != 0xff)
+            {
+                regs.ioamaddr = (ushort)(0x0200 + (oam_itemlist[regs.oam_itemcount - 1] >> 2));
+            }
+
+            for (int s = 31; s >= 0; s--)
+            {
+                if (oam_itemlist[s] == 0xff) continue;
+                active_sprite = oam_itemlist[s];
+                load_oam_tiles();
+            }
+
+            regs.time_over |= (regs.oam_tilecount > 34);
+            regs.range_over |= (regs.oam_itemcount > 32);
+        }
+
+        private void setpixel_main(int x, uint pri)
+        {
+            if (pixel_cache[x].pri_main < pri)
+            {
+                pixel_cache[x].pri_main = (byte)pri;
+                pixel_cache[x].bg_main = (byte)ID.OAM;
+                pixel_cache[x].src_main = get_palette(oam_line_pal[x]);
+                pixel_cache[x].ce_main = Convert.ToByte(oam_line_pal[x] < 192);
+            }
+        }
+        private void setpixel_sub(int x, uint pri)
+        {
+            if (pixel_cache[x].pri_sub < pri)
+            {
+                pixel_cache[x].pri_sub = (byte)pri;
+                pixel_cache[x].bg_sub = (byte)ID.OAM;
+                pixel_cache[x].src_sub = get_palette(oam_line_pal[x]);
+                pixel_cache[x].ce_sub = Convert.ToByte(oam_line_pal[x] < 192);
+            }
+        }
+
+        public void render_line_oam(byte pri0_pos, byte pri1_pos, byte pri2_pos, byte pri3_pos)
+        {
+            if (regs.bg_enabled[(int)ID.OAM] == false && regs.bgsub_enabled[(int)ID.OAM] == false)
+            {
+                return;
+            }
+
+            for (uint s = 0; s < 34; s++)
+            {
+                if (oam_tilelist[s].tile == 0xffff)
+                {
+                    continue;
+                }
+                render_oam_tile((int)s);
+            }
+
+            bool bg_enabled = regs.bg_enabled[(int)ID.OAM];
+            bool bgsub_enabled = regs.bgsub_enabled[(int)ID.OAM];
+
+            build_window_tables((byte)ID.OAM);
+            byte[] wt_main = window[(int)ID.OAM].main;
+            byte[] wt_sub = window[(int)ID.OAM].sub;
+
+            uint[] pri_tbl = { pri0_pos, pri1_pos, pri2_pos, pri3_pos };
+            for (int x = 0; x < 256; x++)
+            {
+                if (oam_line_pri[x] == OAM_PRI_NONE)
+                {
+                    continue;
+                }
+
+                uint pri = pri_tbl[oam_line_pri[x]];
+                if (bg_enabled == true && !Convert.ToBoolean(wt_main[x]))
+                {
+                    setpixel_main(x, pri);
+                }
+                if (bgsub_enabled == true && !Convert.ToBoolean(wt_sub[x]))
+                {
+                    setpixel_sub(x, pri);
+                }
+            }
+        }
+
+        public void render_line_mode7(uint bg, byte pri0_pos, byte pri1_pos)
+        {
+            if (regs.mode7_extbg == false)
+            {
+                render_line_mode7((uint)ID.BG1, 2, 2);
+                render_line_oam(1, 3, 4, 5);
+            }
+            else
+            {
+                render_line_mode7((uint)ID.BG1, 3, 3);
+                render_line_mode7((uint)ID.BG1, 1, 5);
+                render_line_oam(2, 4, 6, 7);
+            }
+        }
+
+        public ushort addsub(uint x, uint y, bool halve)
+        {
+            if (!regs.color_mode)
+            {
+                if (!halve)
+                {
+                    uint sum = x + y;
+                    uint carry = (sum - ((x ^ y) & 0x0421)) & 0x8420;
+                    return (ushort)((sum - carry) | (carry - (carry >> 5)));
+                }
+                else
+                {
+                    return (ushort)((x + y - ((x ^ y) & 0x0421)) >> 1);
+                }
+            }
+            else
+            {
+                uint diff = x - y + 0x8420;
+                uint borrow = (diff - ((x ^ y) & 0x8420)) & 0x8420;
+                if (!halve)
+                {
+                    return (ushort)((diff - borrow) & (borrow - (borrow >> 5)));
+                }
+                else
+                {
+                    return (ushort)((((diff - borrow) & (borrow - (borrow >> 5))) & 0x7bde) >> 1);
+                }
+            }
+        }
+
+        public ushort get_palette(byte index)
+        {
+            uint addr = (uint)(index << 1);
+            return (ushort)(StaticRAM.cgram[addr] + (StaticRAM.cgram[addr + 1] << 8));
+        }
+
+        public ushort get_direct_color(byte p, byte t)
+        {
+            return (ushort)(((t & 7) << 2) | ((p & 1) << 1) |
+                (((t >> 3) & 7) << 7) | (((p >> 1) & 1) << 6) |
+                ((t >> 6) << 13) | ((p >> 2) << 12));
+        }
+
+        public ushort get_pixel_normal(uint x)
+        {
+            Pixel p = pixel_cache[x];
+            ushort src_main, src_sub;
+            byte bg_sub;
+            src_main = p.src_main;
+
+            if (!regs.addsub_mode)
+            {
+                bg_sub = (byte)ID.BACK;
+                src_sub = regs.color_rgb;
+            }
+            else
+            {
+                bg_sub = p.bg_sub;
+                src_sub = p.src_sub;
+            }
+
+            if (!Convert.ToBoolean(window[(int)ID.COL].main[x]))
+            {
+                if (!Convert.ToBoolean(window[(int)ID.COL].sub[x]))
+                {
+                    return 0x0000;
+                }
+                src_main = 0x0000;
+            }
+
+            if (!Convert.ToBoolean(p.ce_main) && regs.color_enabled[p.bg_main] && Convert.ToBoolean(window[(int)ID.COL].sub[x]))
+            {
+                bool halve = false;
+                if (regs.color_halve && Convert.ToBoolean(window[(int)ID.COL].main[x]))
+                {
+                    if (regs.addsub_mode && bg_sub == (byte)ID.BACK) ;
+                    else
+                    {
+                        halve = true;
+                    }
+                }
+                return addsub(src_main, src_sub, halve);
+            }
+
+            return src_main;
+        }
+
+        public ushort get_pixel_swap(uint x)
+        {
+            Pixel p = pixel_cache[x];
+            ushort src_main, src_sub;
+            byte bg_sub;
+            src_main = p.src_sub;
+
+            if (!regs.addsub_mode)
+            {
+                bg_sub = (byte)ID.BACK;
+                src_sub = regs.color_rgb;
+            }
+            else
+            {
+                bg_sub = p.bg_main;
+                src_sub = p.src_main;
+            }
+
+            if (!Convert.ToBoolean(window[(int)ID.COL].main[x]))
+            {
+                if (!Convert.ToBoolean(window[(int)ID.COL].sub[x]))
+                {
+                    return 0x0000;
+                }
+                src_main = 0x0000;
+            }
+
+            if (!Convert.ToBoolean(p.ce_sub) && regs.color_enabled[p.bg_sub] && Convert.ToBoolean(window[(int)ID.COL].sub[x]))
+            {
+                bool halve = false;
+                if (regs.color_halve && Convert.ToBoolean(window[(int)ID.COL].main[x]))
+                {
+                    if (regs.addsub_mode && bg_sub == (byte)ID.BACK) ;
+                    else
+                    {
+                        halve = true;
+                    }
+                }
+                return addsub(src_main, src_sub, halve);
+            }
+
+            return src_main;
+        }
+
+        public void render_line_output()
+        {
+            ArraySegment<ushort> ptr = new ArraySegment<ushort>(output.Array, (int)(output.Offset + ((line * 1024) + ((interlace() && PPUCounter.field()) ? 512 : 0))), (int)(output.Count - ((line * 1024) + ((interlace() && PPUCounter.field()) ? 512 : 0))));
+            ushort[] luma = light_table[regs.display_brightness];
+            ushort curr, prev;
+
+            int ptr_offset = 0;
+            if (!regs.pseudo_hires && regs.bg_mode != 5 && regs.bg_mode != 6)
+            {
+                for (uint x = 0; x < 256; x++)
+                {
+                    curr = luma[get_pixel_normal(x)];
+                    ptr.Array[ptr.Offset + ptr_offset++] = curr;
+                }
+            }
+            else
+            {
+                prev = 0;
+                for (uint x = 0; x < 256; x++)
+                {
+                    curr = luma[get_pixel_swap(x)];
+                    ptr.Array[ptr.Offset + ptr_offset++] = (ushort)((prev + curr - ((prev ^ curr) & 0x0421)) >> 1);
+                    prev = curr;
+
+                    curr = luma[get_pixel_normal(x)];
+                    ptr.Array[ptr.Offset + ptr_offset++] = (ushort)((prev + curr - ((prev ^ curr) & 0x0421)) >> 1);
+                    prev = curr;
+                }
+            }
+        }
+
+        public void render_line_clear()
+        {
+            ArraySegment<ushort> ptr = new ArraySegment<ushort>(output.Array, (int)(output.Offset + ((line * 1024) + ((interlace() && PPUCounter.field()) ? 512 : 0))), (int)(output.Count - ((line * 1024) + ((interlace() && PPUCounter.field()) ? 512 : 0))));
+            ushort width = (ushort)((!regs.pseudo_hires && regs.bg_mode != 5 && regs.bg_mode != 6) ? 256 : 512);
+            Array.Clear(ptr.Array, ptr.Offset, width * 2);
+        }
 
         public ushort[] surface;
         public ArraySegment<ushort> output;
@@ -1273,18 +2257,66 @@ namespace Snes
 
         public Cache cache = new Cache();
 
-        public bool interlace() { throw new NotImplementedException(); }
+        public bool interlace()
+        {
+            return display.interlace;
+        }
 
-        public bool overscan() { throw new NotImplementedException(); }
+        public bool overscan()
+        {
+            return display.overscan;
+        }
 
-        public bool hires() { throw new NotImplementedException(); }
+        public bool hires()
+        {
+            return (regs.pseudo_hires || regs.bg_mode == 5 || regs.bg_mode == 6);
+        }
 
-        public ushort[,] light_table = new ushort[16, 32768];
-        public ushort[,] mosaic_table = new ushort[16, 4096];
+        public ushort[][] light_table = new ushort[16][];
+        public ushort[][] mosaic_table = new ushort[16][];
 
-        public void render_line() { throw new NotImplementedException(); }
+        public void render_line()
+        {
+            if (regs.display_disabled == true)
+            {
+                render_line_clear();
+                return;
+            }
 
-        public void update_oam_status() { throw new NotImplementedException(); }
+            flush_pixel_cache();
+            build_window_tables((byte)ID.COL);
+            update_bg_info();
+
+            switch (regs.bg_mode)
+            {
+                case 0:
+                    render_line_mode0();
+                    break;
+                case 1:
+                    render_line_mode1();
+                    break;
+                case 2:
+                    render_line_mode2();
+                    break;
+                case 3:
+                    render_line_mode3();
+                    break;
+                case 4:
+                    render_line_mode4();
+                    break;
+                case 5:
+                    render_line_mode5();
+                    break;
+                case 6:
+                    render_line_mode6();
+                    break;
+                case 7:
+                    render_line_mode7();
+                    break;
+            }
+
+            render_line_output();
+        }
 
         //required functions
         public void scanline()
@@ -1653,7 +2685,253 @@ namespace Snes
             regs.bg_y[3] = 0;
         }
 
-        public void serialize(Serializer s) { throw new NotImplementedException(); }
+        public void serialize(Serializer s)
+        {
+            Processor.serialize(s);
+            PPUCounter.serialize(s);
+
+            s.integer(ppu1_version, "ppu1_version");
+            s.integer(ppu2_version, "ppu2_version");
+
+            s.integer(region, "region");
+            s.integer(line, "line");
+
+            s.integer(display.interlace, "display.interlace");
+            s.integer(display.overscan, "display.overscan");
+
+            s.integer(cache.oam_basesize, "cache.oam_basesize");
+            s.integer(cache.oam_nameselect, "cache.oam_nameselect");
+            s.integer(cache.oam_tdaddr, "cache.oam_tdaddr");
+
+            s.integer(regs.ppu1_mdr, "regs.ppu1_mdr");
+            s.integer(regs.ppu2_mdr, "regs.ppu2_mdr");
+            for (uint n = 0; n < 4; n++)
+            {
+                s.integer(regs.bg_y[n], "regs.bg_y[n]");
+            }
+
+            s.integer(regs.ioamaddr, "regs.ioamaddr");
+            s.integer(regs.icgramaddr, "regs.icgramaddr");
+
+            s.integer(regs.display_disabled, "regs.display_disabled");
+            s.integer(regs.display_brightness, "regs.display_brightness");
+
+            s.integer(regs.oam_basesize, "regs.oam_basesize");
+            s.integer(regs.oam_nameselect, "regs.oam_nameselect");
+            s.integer(regs.oam_tdaddr, "regs.oam_tdaddr");
+
+            s.integer(regs.oam_baseaddr, "regs.oam_baseaddr");
+            s.integer(regs.oam_addr, "regs.oam_addr");
+            s.integer(regs.oam_priority, "regs.oam_priority");
+            s.integer(regs.oam_firstsprite, "regs.oam_firstsprite");
+
+            s.integer(regs.oam_latchdata, "regs.oam_latchdata");
+
+            for (uint n = 0; n < 4; n++)
+            {
+                s.integer(regs.bg_tilesize[n], "regs.bg_tilesize[n]");
+            }
+            s.integer(regs.bg3_priority, "regs.bg3_priority");
+            s.integer(regs.bg_mode, "regs.bg_mode");
+
+            s.integer(regs.mosaic_size, "regs.mosaic_size");
+            for (uint n = 0; n < 4; n++)
+            {
+                s.integer(regs.mosaic_enabled[n], "regs.mosaic_enabled[n]");
+            }
+            s.integer(regs.mosaic_countdown, "regs.mosaic_countdown");
+
+            for (uint n = 0; n < 4; n++)
+            {
+                s.integer(regs.bg_scaddr[n], "regs.bg_scaddr[n]");
+            }
+            for (uint n = 0; n < 4; n++)
+            {
+                s.integer(regs.bg_scsize[n], "regs.bg_scsize[n]");
+            }
+
+            for (uint n = 0; n < 4; n++)
+            {
+                s.integer(regs.bg_tdaddr[n], "regs.bg_tdaddr[n]");
+            }
+
+            s.integer(regs.bg_ofslatch, "regs.bg_ofslatch");
+            s.integer(regs.m7_hofs, "regs.m7_hofs");
+            s.integer(regs.m7_vofs, "regs.m7_vofs");
+            for (uint n = 0; n < 4; n++)
+            {
+                s.integer(regs.bg_hofs[n], "regs.bg_hofs[n]");
+            }
+            for (uint n = 0; n < 4; n++)
+            {
+                s.integer(regs.bg_vofs[n], "regs.bg_vofs[n]");
+            }
+
+            s.integer(regs.vram_incmode, "regs.vram_incmode");
+            s.integer(regs.vram_mapping, "regs.vram_mapping");
+            s.integer(regs.vram_incsize, "regs.vram_incsize");
+
+            s.integer(regs.vram_addr, "regs.vram_addr");
+
+            s.integer(regs.mode7_repeat, "regs.mode7_repeat");
+            s.integer(regs.mode7_vflip, "regs.mode7_vflip");
+            s.integer(regs.mode7_hflip, "regs.mode7_hflip");
+
+            s.integer(regs.m7_latch, "regs.m7_latch");
+            s.integer(regs.m7a, "regs.m7a");
+            s.integer(regs.m7b, "regs.m7b");
+            s.integer(regs.m7c, "regs.m7c");
+            s.integer(regs.m7d, "regs.m7d");
+            s.integer(regs.m7x, "regs.m7x");
+            s.integer(regs.m7y, "regs.m7y");
+
+            s.integer(regs.cgram_addr, "regs.cgram_addr");
+
+            s.integer(regs.cgram_latchdata, "regs.cgram_latchdata");
+
+            for (uint n = 0; n < 6; n++)
+            {
+                s.integer(regs.window1_enabled[n], "regs.window1_enabled[n]");
+            }
+            for (uint n = 0; n < 6; n++)
+            {
+                s.integer(regs.window1_invert[n], "regs.window1_invert[n]");
+            }
+            for (uint n = 0; n < 6; n++)
+            {
+                s.integer(regs.window2_enabled[n], "regs.window2_enabled[n]");
+            }
+            for (uint n = 0; n < 6; n++)
+            {
+                s.integer(regs.window2_invert[n], "regs.window2_invert[n]");
+            }
+
+            s.integer(regs.window1_left, "regs.window1_left");
+            s.integer(regs.window1_right, "regs.window1_right");
+            s.integer(regs.window2_left, "regs.window2_left");
+            s.integer(regs.window2_right, "regs.window2_right");
+
+            for (uint n = 0; n < 6; n++)
+            {
+                s.integer(regs.window_mask[n], "regs.window_mask[n]");
+            }
+            for (uint n = 0; n < 5; n++)
+            {
+                s.integer(regs.bg_enabled[n], "regs.bg_enabled[n]");
+            }
+            for (uint n = 0; n < 5; n++)
+            {
+                s.integer(regs.bgsub_enabled[n], "regs.bgsub_enabled[n]");
+            }
+            for (uint n = 0; n < 5; n++)
+            {
+                s.integer(regs.window_enabled[n], "regs.window_enabled[n]");
+            }
+            for (uint n = 0; n < 5; n++)
+            {
+                s.integer(regs.sub_window_enabled[n], "regs.sub_window_enabled[n]");
+            }
+
+            s.integer(regs.color_mask, "regs.color_mask");
+            s.integer(regs.colorsub_mask, "regs.colorsub_mask");
+            s.integer(regs.addsub_mode, "regs.addsub_mode");
+            s.integer(regs.direct_color, "regs.direct_color");
+
+            s.integer(regs.color_mode, "regs.color_mode");
+            s.integer(regs.color_halve, "regs.color_halve");
+            for (uint n = 0; n < 6; n++)
+            {
+                s.integer(regs.color_enabled[n], "regs.color_enabled[n]");
+            }
+
+            s.integer(regs.color_r, "regs.color_r");
+            s.integer(regs.color_g, "regs.color_g");
+            s.integer(regs.color_b, "regs.color_b");
+            s.integer(regs.color_rgb, "regs.color_rgb");
+
+            s.integer(regs.mode7_extbg, "regs.mode7_extbg");
+            s.integer(regs.pseudo_hires, "regs.pseudo_hires");
+            s.integer(regs.overscan, "regs.overscan");
+            s.integer(regs.scanlines, "regs.scanlines");
+            s.integer(regs.oam_interlace, "regs.oam_interlace");
+            s.integer(regs.interlace, "regs.interlace");
+
+            s.integer(regs.hcounter, "regs.hcounter");
+            s.integer(regs.vcounter, "regs.vcounter");
+            s.integer(regs.latch_hcounter, "regs.latch_hcounter");
+            s.integer(regs.latch_vcounter, "regs.latch_vcounter");
+            s.integer(regs.counters_latched, "regs.counters_latched");
+
+            s.integer(regs.vram_readbuffer, "regs.vram_readbuffer");
+
+            s.integer(regs.time_over, "regs.time_over");
+            s.integer(regs.range_over, "regs.range_over");
+            s.integer(regs.oam_itemcount, "regs.oam_itemcount");
+            s.integer(regs.oam_tilecount, "regs.oam_tilecount");
+
+            for (uint n = 0; n < 256; n++)
+            {
+                s.integer(pixel_cache[n].src_main, "pixel_cache[n].src_main");
+                s.integer(pixel_cache[n].src_sub, "pixel_cache[n].src_sub");
+                s.integer(pixel_cache[n].bg_main, "pixel_cache[n].bg_main");
+                s.integer(pixel_cache[n].bg_sub, "pixel_cache[n].bg_sub");
+                s.integer(pixel_cache[n].ce_main, "pixel_cache[n].ce_main");
+                s.integer(pixel_cache[n].ce_sub, "pixel_cache[n].ce_sub");
+                s.integer(pixel_cache[n].pri_main, "pixel_cache[n].pri_main");
+                s.integer(pixel_cache[n].pri_sub, "pixel_cache[n].pri_sub");
+            }
+
+            //better to just take a small speed hit than store all of bg_tiledata[3][] ...
+            flush_tiledata_cache();
+
+            for (uint n = 0; n < 6; n++)
+            {
+                s.array(window[n].main, 256, "window[n].main");
+                s.array(window[n].sub, 256, "window[n].sub");
+            }
+
+            for (uint n = 0; n < 4; n++)
+            {
+                s.integer(bg_info[n].tw, "bg_info[n].tw");
+                s.integer(bg_info[n].th, "bg_info[n].th");
+                s.integer(bg_info[n].mx, "bg_info[n].mx");
+                s.integer(bg_info[n].my, "bg_info[n].my");
+                s.integer(bg_info[n].scx, "bg_info[n].scx");
+                s.integer(bg_info[n].scy, "bg_info[n].scy");
+            }
+
+            for (uint n = 0; n < 128; n++)
+            {
+                s.integer(sprite_list[n].width, "sprite_list[n].width");
+                s.integer(sprite_list[n].height, "sprite_list[n].height");
+                s.integer(sprite_list[n].x, "sprite_list[n].x");
+                s.integer(sprite_list[n].y, "sprite_list[n].y");
+                s.integer(sprite_list[n].character, "sprite_list[n].character");
+                s.integer(sprite_list[n].use_nameselect, "sprite_list[n].use_nameselect");
+                s.integer(sprite_list[n].vflip, "sprite_list[n].vflip");
+                s.integer(sprite_list[n].hflip, "sprite_list[n].hflip");
+                s.integer(sprite_list[n].palette, "sprite_list[n].palette");
+                s.integer(sprite_list[n].priority, "sprite_list[n].priority");
+                s.integer(sprite_list[n].size, "sprite_list[n].size");
+            }
+            s.integer(sprite_list_valid, "sprite_list_valid");
+            s.integer(active_sprite, "active_sprite");
+
+            s.array(oam_itemlist, 32, "oam_itemlist");
+
+            for (uint n = 0; n < 34; n++)
+            {
+                s.integer(oam_tilelist[n].x, "oam_tilelist[n].x");
+                s.integer(oam_tilelist[n].y, "oam_tilelist[n].y");
+                s.integer(oam_tilelist[n].pri, "oam_tilelist[n].pri");
+                s.integer(oam_tilelist[n].pal, "oam_tilelist[n].pal");
+                s.integer(oam_tilelist[n].tile, "oam_tilelist[n].tile");
+                s.integer(oam_tilelist[n].hflip, "oam_tilelist[n].hflip");
+            }
+
+            s.array(oam_line_pal, 256, "oam_line_pal");
+            s.array(oam_line_pri, 256, "oam_line_pri");
+        }
 
         public PPU()
         {
@@ -1665,14 +2943,16 @@ namespace Snes
 
             for (uint l = 0; l < 16; l++)
             {
+                mosaic_table[l] = new ushort[4096];
                 for (uint i = 0; i < 4096; i++)
                 {
-                    mosaic_table[l, i] = (ushort)((i / (l + 1)) * (l + 1));
+                    mosaic_table[l][i] = (ushort)((i / (l + 1)) * (l + 1));
                 }
             }
 
             for (uint l = 0; l < 16; l++)
             {
+                light_table[l] = new ushort[32768];
                 for (uint r = 0; r < 32; r++)
                 {
                     for (uint g = 0; g < 32; g++)
@@ -1683,7 +2963,7 @@ namespace Snes
                             uint ar = (uint)(luma * r + 0.5);
                             uint ag = (uint)(luma * g + 0.5);
                             uint ab = (uint)(luma * b + 0.5);
-                            light_table[l, (r << 10) + (g << 5) + b] = (ushort)((ab << 10) + (ag << 5) + ar);
+                            light_table[l][(r << 10) + (g << 5) + b] = (ushort)((ab << 10) + (ag << 5) + ar);
                         }
                     }
                 }
