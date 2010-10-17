@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Nall;
 
 namespace Snes
 {
@@ -19,10 +19,7 @@ namespace Snes
 
             public Regs()
             {
-                for (int i = 0; i < r.Length; i++)
-                {
-                    r[i] = new Reg16();
-                }
+                Utility.InstantiateArrayElements(r);
 
                 a = r[0];
                 x = r[1];

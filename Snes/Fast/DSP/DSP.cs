@@ -19,6 +19,7 @@ namespace Snes
 #if THREADED
             if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
+                System.WriteStateToFile();
                 Libco.Switch(SMP.smp.Processor.thread);
             }
 #else
@@ -84,7 +85,8 @@ namespace Snes
             s.array(samplebuffer, "samplebuffer");
 
             byte[] state = new byte[SPCDSP.state_size];
-            MemoryStream p = new MemoryStream(state);
+            MemoryStream p = new MemoryStream();
+            p.Write(state, 0, state.Length);
             if (s.mode() == Serializer.Mode.Save)
             {
                 spc_dsp.copy_state(p, dsp_state_save);

@@ -70,6 +70,10 @@ namespace Snes
             public State()
             {
                 Utility.InstantiateArrayElements(voices);
+                for (int i = 0; i < echo_hist.Length; i++)
+                {
+                    echo_hist[i] = new int[2];
+                }
             }
         }
     }

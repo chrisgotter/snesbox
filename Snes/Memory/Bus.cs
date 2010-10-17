@@ -176,10 +176,7 @@ namespace Snes
 
         public Bus()
         {
-            for (int i = 0; i < page.Length; i++)
-            {
-                page[i] = new Page();
-            }
+            Utility.InstantiateArrayElements(page);
         }
 
         private void map_reset()

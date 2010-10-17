@@ -423,7 +423,10 @@ namespace Snes
                 }
             }
             m.echo_hist_pos = new ArraySegment<int[]>(m.echo_hist, 0, m.echo_hist.Length);
-            Array.Copy(m.echo_hist, m.echo_hist[echo_hist_size], echo_hist_size * m.echo_hist[0].Length);
+            for (int i = 0; i < echo_hist_size; i++)
+            {
+                Array.Copy(m.echo_hist[i], m.echo_hist[echo_hist_size + i], m.echo_hist[i].Length);
+            }
 
             // Misc
             copier.SPCCopy(sizeof(byte), m.every_other_sample);

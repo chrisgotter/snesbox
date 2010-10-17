@@ -19,6 +19,7 @@ namespace Snes
         public void enter()
         {
             host_thread = Libco.Active();
+            System.WriteStateToFile();
             Libco.Switch(thread);
         }
 
@@ -26,6 +27,7 @@ namespace Snes
         {
             exit_reason = reason;
             thread = Libco.Active();
+            System.WriteStateToFile();
             Libco.Switch(host_thread);
         }
 

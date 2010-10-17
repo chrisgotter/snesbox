@@ -22,9 +22,9 @@ namespace Snes
 
         public int copy_int(int state, int size)
         {
-            byte[] s = new byte[2];
+            byte[] s = BitConverter.GetBytes((ushort)state);
             func(buf, s, (uint)size);
-            return BitConverter.ToInt32(s, 0);
+            return BitConverter.ToUInt16(s, 0);
         }
 
         public void skip(int count)
@@ -54,7 +54,7 @@ namespace Snes
 
         public void SPCCopy(int size, object state)
         {
-            state = copy_int((int)state, size);
+            state = copy_int(Convert.ToInt32(state), size);
         }
     }
 }

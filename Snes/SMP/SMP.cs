@@ -18,6 +18,7 @@ namespace Snes
 #if THREADED
             if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
+                System.WriteStateToFile();
                 Libco.Switch(CPU.cpu.Processor.thread);
             }
 #else
@@ -33,6 +34,7 @@ namespace Snes
 #if THREADED
             if (DSP.dsp.Processor.clock < 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
+                System.WriteStateToFile();
                 Libco.Switch(DSP.dsp.Processor.thread);
             }
 #else

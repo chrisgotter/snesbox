@@ -1,4 +1,5 @@
 ﻿using System;
+using Nall;
 
 namespace Snes
 {
@@ -529,10 +530,7 @@ namespace Snes
 
         public Input()
         {
-            for (int i = 0; i < port.Length; i++)
-            {
-                port[i] = new Port();
-            }
+            Utility.InstantiateArrayElements(port);
         }
     }
 }
