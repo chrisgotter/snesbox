@@ -82,7 +82,7 @@ namespace Nall
             for (uint n = 0; n < heapcapacity; n++)
             {
                 s.integer(heap[n].counter, "heap[n].counter");
-                s.integer(heap[n].Event, "heap[n].Event");
+                s.integer(heap[n].Event, "heap[n].event");
             }
         }
 

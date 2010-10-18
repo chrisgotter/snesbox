@@ -583,7 +583,7 @@ namespace Snes
                 s.integer(channel[i].source_addr, "channel[i].source_addr");
                 s.integer(channel[i].source_bank, "channel[i].source_bank");
 
-                s.integer(channel[i].union.transfer_size, "channel[i].union.transfer_size");
+                s.integer(channel[i].union.transfer_size, "channel[i].transfer_size");
 
                 s.integer(channel[i].indirect_bank, "channel[i].indirect_bank");
                 s.integer(channel[i].hdma_addr, "channel[i].hdma_addr");

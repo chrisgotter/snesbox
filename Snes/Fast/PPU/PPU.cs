@@ -2803,7 +2803,7 @@ namespace Snes
             }
             for (uint n = 0; n < 6; n++)
             {
-                s.integer(regs.window1_invert[n], "regs.window1_invert[n]");
+                s.integer(regs.window1_invert[n], "regs.window1_invert [n]");
             }
             for (uint n = 0; n < 6; n++)
             {
@@ -2811,7 +2811,7 @@ namespace Snes
             }
             for (uint n = 0; n < 6; n++)
             {
-                s.integer(regs.window2_invert[n], "regs.window2_invert[n]");
+                s.integer(regs.window2_invert[n], "regs.window2_invert [n]");
             }
 
             s.integer(regs.window1_left, "regs.window1_left");

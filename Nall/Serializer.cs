@@ -120,6 +120,53 @@ namespace Nall
             }
         }
 
+        public void integer(short value, string name)
+        {
+            if (imode == Mode.Save)
+            {
+                for (uint n = 0; n < name.Length; n++)
+                {
+                    idata[isize++] = (byte)name[(int)n];
+                }
+                idata[isize++] = (byte)':';
+                idata[isize++] = (byte)' ';
+            }
+            else if (imode == Mode.Size)
+            {
+                isize += (uint)name.Length + 3;
+            }
+
+            integer(value);
+            if (imode == Mode.Save)
+            {
+                idata[isize++] = (byte)'\n';
+            }
+        }
+
+        public void integer(short value)
+        {
+            uint size = sizeof(short);
+            if (imode == Mode.Save)
+            {
+                for (uint n = 0; n < size; n++)
+                {
+                    idata[isize++] = (byte)(value >> (int)(n << 3));
+                }
+            }
+            else if (imode == Mode.Load)
+            {
+                value = 0;
+                for (uint n = 0; n < size; n++)
+                {
+                    value |= (short)(idata[isize++] << (int)(n << 3));
+                }
+            }
+            else if (imode == Mode.Size)
+            {
+                isize += size;
+            }
+        }
+
         public void integer(ushort value, string name)
         {
             if (imode == Mode.Save)
