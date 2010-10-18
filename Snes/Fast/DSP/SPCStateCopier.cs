@@ -1,5 +1,6 @@
 ﻿#if FAST_DSP
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Snes
@@ -15,7 +16,7 @@ namespace Snes
             buf = p;
         }
 
-        public void copy(object state, uint size)
+        public void copy(byte[] state, uint size)
         {
             func(buf, state, size);
         }
@@ -54,7 +55,8 @@ namespace Snes
 
         public void SPCCopy(int size, object state)
         {
-            state = copy_int(Convert.ToInt32(state), size);
+            var state_ = copy_int(Convert.ToInt32(state), size);
+            Debug.Assert(Convert.ToInt32(state) == state_);
         }
     }
 }

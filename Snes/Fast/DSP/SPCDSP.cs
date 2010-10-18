@@ -7,7 +7,7 @@ namespace Snes
 {
     partial class SPCDSP
     {
-        public delegate void DSPCopyFunction(Stream io, object state, uint size);
+        public delegate void DSPCopyFunction(Stream io, byte[] state, uint size);
 
         // Setup
 
@@ -28,23 +28,23 @@ namespace Snes
             reset();
 
 #if DEBUG
-			unchecked
-			{
-				// be sure this sign-extends
-				Debug.Assert((short)0x8000 == -0x8000);
+            unchecked
+            {
+                // be sure this sign-extends
+                Debug.Assert((short)0x8000 == -0x8000);
 
-				// be sure right shift preserves sign
-				Debug.Assert((-1 >> 1) == -1);
+                // be sure right shift preserves sign
+                Debug.Assert((-1 >> 1) == -1);
 
-				// check clamp macro
-				int i;
-				i = +0x8000;
-				Clamp16(ref i);
-				Debug.Assert(i == +0x7FFF);
-				i = -0x8001;
-				Clamp16(ref i);
-				Debug.Assert(i == -0x8000);
-			}
+                // check clamp macro
+                int i;
+                i = +0x8000;
+                Clamp16(ref i);
+                Debug.Assert(i == +0x7FFF);
+                i = -0x8001;
+                Clamp16(ref i);
+                Debug.Assert(i == -0x8000);
+            }
 #endif
         }
 

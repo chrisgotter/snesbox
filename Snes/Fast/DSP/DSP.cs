@@ -1,6 +1,5 @@
 ﻿#if FAST_DSP
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using Nall;
 
 namespace Snes
@@ -62,14 +61,14 @@ namespace Snes
             spc_dsp.set_output(samplebuffer, 8192);
         }
 
-        public static void dsp_state_save(Stream _out, object _in, uint size)
+        public static void dsp_state_save(Stream _out, byte[] _in, uint size)
         {
-            new BinaryFormatter().Serialize(_out, _in);
+            _out.Write(_in, 0, (int)size);
         }
 
-        public static void dsp_state_load(Stream _in, object _out, uint size)
+        public static void dsp_state_load(Stream _in, byte[] _out, uint size)
         {
-            _out = new BinaryFormatter().Deserialize(_in);
+            _in.Read(_out, 0, (int)size);
         }
 
         public void serialize(Serializer s)
@@ -79,15 +78,16 @@ namespace Snes
 
             byte[] state = new byte[SPCDSP.state_size];
             MemoryStream p = new MemoryStream();
-            p.Write(state, 0, state.Length);
             if (s.mode() == Serializer.Mode.Save)
             {
                 spc_dsp.copy_state(p, dsp_state_save);
+                p.Read(state, 0, state.Length);
                 s.array(state, "state");
             }
             else if (s.mode() == Serializer.Mode.Load)
             {
                 s.array(state, "state");
+                p.Write(state, 0, state.Length);
                 spc_dsp.copy_state(p, dsp_state_load);
             }
             else
