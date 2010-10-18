@@ -1953,19 +1953,33 @@ namespace Snes
             for (int s = 0; s < 128; s++)
             {
                 active_sprite = (uint)((s + regs.oam_firstsprite) & 127);
-                if (is_sprite_on_scanline() == false) continue;
-                if (regs.oam_itemcount++ >= 32) break;
+                if (is_sprite_on_scanline() == false)
+                {
+                    continue;
+                }
+                if (regs.oam_itemcount++ >= 32)
+                {
+                    break;
+                }
                 oam_itemlist[regs.oam_itemcount - 1] = (byte)((s + regs.oam_firstsprite) & 127);
             }
 
-            if (regs.oam_itemcount > 0 && oam_itemlist[regs.oam_itemcount - 1] != 0xff)
+            //TODO: remove this hack
+            if (regs.oam_itemcount > 0 && (regs.oam_itemcount > oam_itemlist.Length))
+            {
+                regs.ioamaddr = (ushort)(0x0200 + (0 >> 2));
+            }
+            else if (regs.oam_itemcount > 0 && oam_itemlist[regs.oam_itemcount - 1] != 0xff)
             {
                 regs.ioamaddr = (ushort)(0x0200 + (oam_itemlist[regs.oam_itemcount - 1] >> 2));
             }
 
             for (int s = 31; s >= 0; s--)
             {
-                if (oam_itemlist[s] == 0xff) continue;
+                if (oam_itemlist[s] == 0xff)
+                {
+                    continue;
+                }
                 active_sprite = oam_itemlist[s];
                 load_oam_tiles();
             }
@@ -2128,7 +2142,7 @@ namespace Snes
                 bool halve = false;
                 if (regs.color_halve && Convert.ToBoolean(window[(int)ID.COL].main[x]))
                 {
-                    if (regs.addsub_mode && bg_sub == (byte)ID.BACK) ;
+                    if (regs.addsub_mode && bg_sub == (byte)ID.BACK) { }
                     else
                     {
                         halve = true;
@@ -2172,7 +2186,7 @@ namespace Snes
                 bool halve = false;
                 if (regs.color_halve && Convert.ToBoolean(window[(int)ID.COL].main[x]))
                 {
-                    if (regs.addsub_mode && bg_sub == (byte)ID.BACK) ;
+                    if (regs.addsub_mode && bg_sub == (byte)ID.BACK) { }
                     else
                     {
                         halve = true;
