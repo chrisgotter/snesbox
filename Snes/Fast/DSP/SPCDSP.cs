@@ -120,11 +120,6 @@ namespace Snes
             }
         }
 
-        public void V(string clock, int voice)
-        {
-            this.GetType().GetMethod("voice_" + clock).Invoke(this, new object[] { new ArraySegment<Voice>(m.voices, voice, m.voices.Length - voice) });
-        }
-
         public bool Phase(int n, int clocks_remain)
         {
             return Convert.ToBoolean(n) && !Convert.ToBoolean(--clocks_remain);
@@ -143,146 +138,146 @@ namespace Snes
                 case 0:
                     if (Phase(0, clocks_remain))
                         break;
-                    V("V5", 0);
-                    V("V2", 1);
+                    voice_V5(new ArraySegment<Voice>(m.voices, 0, m.voices.Length - 0));
+                    voice_V2(new ArraySegment<Voice>(m.voices, 1, m.voices.Length - 1));
                     goto case 1;
                 case 1:
                     if (Phase(1, clocks_remain))
                         break;
-                    V("V6", 0);
-                    V("V3", 1);
+                    voice_V6(new ArraySegment<Voice>(m.voices, 0, m.voices.Length - 0));
+                    voice_V3(new ArraySegment<Voice>(m.voices, 1, m.voices.Length - 1));
                     goto case 2;
                 case 2:
                     if (Phase(2, clocks_remain))
                         break;
-                    V("V7_V4_V1", 0);
+                    voice_V7_V4_V1(new ArraySegment<Voice>(m.voices, 0, m.voices.Length - 0));
                     goto case 3;
                 case 3:
                     if (Phase(3, clocks_remain))
                         break;
-                    V("V8_V5_V2", 0);
+                    voice_V8_V5_V2(new ArraySegment<Voice>(m.voices, 0, m.voices.Length - 0));
                     goto case 4;
                 case 4:
                     if (Phase(4, clocks_remain))
                         break;
-                    V("V9_V6_V3", 0);
+                    voice_V9_V6_V3(new ArraySegment<Voice>(m.voices, 0, m.voices.Length - 0));
                     goto case 5;
                 case 5:
                     if (Phase(5, clocks_remain))
                         break;
-                    V("V7_V4_V1", 1);
+                    voice_V7_V4_V1(new ArraySegment<Voice>(m.voices, 1, m.voices.Length - 1));
                     goto case 6;
                 case 6:
                     if (Phase(6, clocks_remain))
                         break;
-                    V("V8_V5_V2", 1);
+                    voice_V8_V5_V2(new ArraySegment<Voice>(m.voices, 1, m.voices.Length - 1));
                     goto case 7;
                 case 7:
                     if (Phase(7, clocks_remain))
                         break;
-                    V("V9_V6_V3", 1);
+                    voice_V9_V6_V3(new ArraySegment<Voice>(m.voices, 1, m.voices.Length - 1));
                     goto case 8;
                 case 8:
                     if (Phase(8, clocks_remain))
                         break;
-                    V("V7_V4_V1", 2);
+                    voice_V7_V4_V1(new ArraySegment<Voice>(m.voices, 2, m.voices.Length - 2));
                     goto case 9;
                 case 9:
                     if (Phase(9, clocks_remain))
                         break;
-                    V("V8_V5_V2", 2);
+                    voice_V8_V5_V2(new ArraySegment<Voice>(m.voices, 2, m.voices.Length - 2));
                     goto case 10;
                 case 10:
                     if (Phase(10, clocks_remain))
                         break;
-                    V("V9_V6_V3", 2);
+                    voice_V9_V6_V3(new ArraySegment<Voice>(m.voices, 2, m.voices.Length - 2));
                     goto case 11;
                 case 11:
                     if (Phase(11, clocks_remain))
                         break;
-                    V("V7_V4_V1", 3);
+                    voice_V7_V4_V1(new ArraySegment<Voice>(m.voices, 3, m.voices.Length - 3));
                     goto case 12;
                 case 12:
                     if (Phase(12, clocks_remain))
                         break;
-                    V("V8_V5_V2", 3);
+                    voice_V8_V5_V2(new ArraySegment<Voice>(m.voices, 3, m.voices.Length - 3));
                     goto case 13;
                 case 13:
                     if (Phase(13, clocks_remain))
                         break;
-                    V("V9_V6_V3", 3);
+                    voice_V9_V6_V3(new ArraySegment<Voice>(m.voices, 3, m.voices.Length - 3));
                     goto case 14;
                 case 14:
                     if (Phase(14, clocks_remain))
                         break;
-                    V("V7_V4_V1", 4);
+                    voice_V7_V4_V1(new ArraySegment<Voice>(m.voices, 4, m.voices.Length - 4));
                     goto case 15;
                 case 15:
                     if (Phase(15, clocks_remain))
                         break;
-                    V("V8_V5_V2", 4);
+                    voice_V8_V5_V2(new ArraySegment<Voice>(m.voices, 4, m.voices.Length - 4));
                     goto case 16;
                 case 16:
                     if (Phase(16, clocks_remain))
                         break;
-                    V("V9_V6_V3", 4);
+                    voice_V9_V6_V3(new ArraySegment<Voice>(m.voices, 4, m.voices.Length - 4));
                     goto case 17;
                 case 17:
                     if (Phase(17, clocks_remain))
                         break;
-                    V("V1", 0);
-                    V("V7", 5);
-                    V("V4", 6);
+                    voice_V1(new ArraySegment<Voice>(m.voices, 0, m.voices.Length - 0));
+                    voice_V7(new ArraySegment<Voice>(m.voices, 5, m.voices.Length - 5));
+                    voice_V4(new ArraySegment<Voice>(m.voices, 6, m.voices.Length - 6));
                     goto case 18;
                 case 18:
                     if (Phase(18, clocks_remain))
                         break;
-                    V("V8_V5_V2", 5);
+                    voice_V8_V5_V2(new ArraySegment<Voice>(m.voices, 5, m.voices.Length - 5));
                     goto case 19;
                 case 19:
                     if (Phase(19, clocks_remain))
                         break;
-                    V("V9_V6_V3", 5);
+                    voice_V9_V6_V3(new ArraySegment<Voice>(m.voices, 5, m.voices.Length - 5));
                     goto case 20;
                 case 20:
                     if (Phase(20, clocks_remain))
                         break;
-                    V("V1", 1);
-                    V("V7", 6);
-                    V("V4", 7);
+                    voice_V1(new ArraySegment<Voice>(m.voices, 1, m.voices.Length - 1));
+                    voice_V7(new ArraySegment<Voice>(m.voices, 6, m.voices.Length - 6));
+                    voice_V4(new ArraySegment<Voice>(m.voices, 7, m.voices.Length - 7));
                     goto case 21;
                 case 21:
                     if (Phase(21, clocks_remain))
                         break;
-                    V("V8", 6);
-                    V("V5", 7);
-                    V("V2", 0);  /* t_brr_next_addr order dependency */
+                    voice_V8(new ArraySegment<Voice>(m.voices, 6, m.voices.Length - 6));
+                    voice_V5(new ArraySegment<Voice>(m.voices, 7, m.voices.Length - 7));
+                    voice_V2(new ArraySegment<Voice>(m.voices, 0, m.voices.Length - 0));
                     goto case 22;
                 case 22:
                     if (Phase(22, clocks_remain))
                         break;
-                    V("V3a", 0);
-                    V("V9", 6);
-                    V("V6", 7);
+                    voice_V3a(new ArraySegment<Voice>(m.voices, 0, m.voices.Length - 0));
+                    voice_V9(new ArraySegment<Voice>(m.voices, 6, m.voices.Length - 6));
+                    voice_V6(new ArraySegment<Voice>(m.voices, 7, m.voices.Length - 7));
                     echo_22();
                     goto case 23;
                 case 23:
                     if (Phase(23, clocks_remain))
                         break;
-                    V("V7", 7);
+                    voice_V7(new ArraySegment<Voice>(m.voices, 7, m.voices.Length - 7));
                     echo_23();
                     goto case 24;
                 case 24:
                     if (Phase(24, clocks_remain))
                         break;
-                    V("V8", 7);
+                    voice_V8(new ArraySegment<Voice>(m.voices, 7, m.voices.Length - 7));
                     echo_24();
                     goto case 25;
                 case 25:
                     if (Phase(25, clocks_remain))
                         break;
-                    V("V3b", 0);
-                    V("V9", 7);
+                    voice_V3b(new ArraySegment<Voice>(m.voices, 0, m.voices.Length - 0));
+                    voice_V9(new ArraySegment<Voice>(m.voices, 7, m.voices.Length - 7));
                     echo_25();
                     goto case 26;
                 case 26:
@@ -312,14 +307,14 @@ namespace Snes
                     if (Phase(30, clocks_remain))
                         break;
                     misc_30();
-                    V("V3c", 0);
+                    voice_V3c(new ArraySegment<Voice>(m.voices, 0, m.voices.Length - 0));
                     echo_30();
                     goto case 31;
                 case 31:
                     if (Phase(31, clocks_remain))
                         break;
-                    V("V4", 0);
-                    V("V1", 2);
+                    voice_V4(new ArraySegment<Voice>(m.voices, 0, m.voices.Length - 0));
+                    voice_V1(new ArraySegment<Voice>(m.voices, 2, m.voices.Length - 2));
 
                     if (Convert.ToBoolean(--clocks_remain))
                     {
