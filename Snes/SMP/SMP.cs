@@ -15,23 +15,16 @@ namespace Snes
 
         public void synchronize_cpu()
         {
-#if THREADED
             if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
                 System.WriteStateToFile();
                 Libco.Switch(CPU.cpu.Processor.thread);
             }
-#else
-            while (Processor.clock >= 0)
-            {
-                CPU.cpu.enter();
-            }
-#endif
         }
 
         public void synchronize_dsp()
         {
-#if THREADED
+#if !FAST_DSP
             if (DSP.dsp.Processor.clock < 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
                 System.WriteStateToFile();

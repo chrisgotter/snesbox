@@ -16,18 +16,11 @@ namespace Snes
 
         public void synchronize_cpu()
         {
-#if THREADED
             if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
                 System.WriteStateToFile();
                 Libco.Switch(CPU.cpu.Processor.thread);
             }
-#else
-			while(clock >= 0) 
-			{
-				cpu.enter();
-			}
-#endif
         }
 
         public ushort get_vram_address()

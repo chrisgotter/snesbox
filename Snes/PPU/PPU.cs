@@ -15,17 +15,10 @@ namespace Snes
 
         public void synchronize_cpu()
         {
-#if THREADED
             if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
                 Libco.Switch(CPU.cpu.Processor.thread);
             }
-#else
-            while (Processor.clock >= 0)
-            {
-                CPU.cpu.enter();
-            }
-#endif
         }
 
         public void latch_counters()

@@ -16,17 +16,10 @@ namespace Snes
 
         public void synchronize_smp()
         {
-#if THREADED
             if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
                 Libco.Switch(SMP.smp.Processor.thread);
             }
-#else
-            while (Processor.clock >= 0)
-            {
-                SMP.smp.enter();
-            }
-#endif
         }
 
         public byte read(byte addr)

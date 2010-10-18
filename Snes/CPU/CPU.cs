@@ -24,32 +24,18 @@ namespace Snes
 
         public void synchronize_smp()
         {
-#if THREADED
             if (SMP.smp.Processor.clock < 0)
             {
                 Libco.Switch(SMP.smp.Processor.thread);
             }
-#else
-            while (SMP.smp.Processor.clock < 0)
-            {
-                SMP.smp.enter();
-            }
-#endif
         }
 
         public void synchronize_ppu()
         {
-#if THREADED
             if (PPU.ppu.Processor.clock < 0)
             {
                 Libco.Switch(PPU.ppu.Processor.thread);
             }
-#else
-            while (PPU.ppu.Processor.clock < 0)
-            {
-                PPU.ppu.enter();
-            }
-#endif
         }
 
         public void synchronize_coprocessor()
