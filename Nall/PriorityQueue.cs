@@ -90,8 +90,15 @@ namespace Nall
         {
             if (ReferenceEquals(callback_, null))
             {
-                callback_ = priority_queue_nocallback;
+                callback = priority_queue_nocallback;
             }
+            else
+            {
+                callback = callback_;
+            }
+            heap = new Heap[size];
+            heapcapacity = size;
+            reset();
         }
 
         private Callback callback;
@@ -107,6 +114,9 @@ namespace Nall
         Heap[] heap;
 
         //return true if x is greater than or equal to y
-        private bool gte(uint x, uint y) { throw new NotImplementedException(); }
+        private bool gte(uint x, uint y)
+        {
+            return x - y < (uint.MaxValue >> 1);
+        }
     }
 }
