@@ -373,7 +373,7 @@ namespace Snes
             SPCStateCopier copier = new SPCStateCopier(io, copy);
 
             // DSP registers
-            copier.copy(m.regs, register_count);
+            copier.copy(m.regs, register_count, "m.regs");
 
             // Internal state
 
@@ -386,23 +386,23 @@ namespace Snes
                 for (int j = 0; j < brr_buf_size; j++)
                 {
                     int s = v.buf[j];
-                    copier.SPCCopy(sizeof(short), s);
+                    copier.SPCCopy(sizeof(short), s, "s");
                     v.buf[j] = v.buf[j + brr_buf_size] = s;
                 }
 
-                copier.SPCCopy(sizeof(ushort), v.interp_pos);
-                copier.SPCCopy(sizeof(ushort), v.brr_addr);
-                copier.SPCCopy(sizeof(ushort), v.env);
-                copier.SPCCopy(sizeof(short), v.hidden_env);
-                copier.SPCCopy(sizeof(byte), v.buf_pos);
-                copier.SPCCopy(sizeof(byte), v.brr_offset);
-                copier.SPCCopy(sizeof(byte), v.kon_delay);
+                copier.SPCCopy(sizeof(ushort), v.interp_pos, "v->interp_pos");
+                copier.SPCCopy(sizeof(ushort), v.brr_addr, "v->brr_addr");
+                copier.SPCCopy(sizeof(ushort), v.env, "v->env");
+                copier.SPCCopy(sizeof(short), v.hidden_env, "v->hidden_env");
+                copier.SPCCopy(sizeof(byte), v.buf_pos, "v->buf_pos");
+                copier.SPCCopy(sizeof(byte), v.brr_offset, "v->brr_offset");
+                copier.SPCCopy(sizeof(byte), v.kon_delay, "v->kon_delay");
                 {
                     int mode = (int)v.env_mode;
-                    copier.SPCCopy(sizeof(byte), mode);
+                    copier.SPCCopy(sizeof(byte), mode, "m");
                     v.env_mode = (EnvMode)mode;
                 }
-                copier.SPCCopy(sizeof(byte), v.t_envx_out);
+                copier.SPCCopy(sizeof(byte), v.t_envx_out, "v->t_envx_out");
 
                 copier.extra();
             }
@@ -413,7 +413,7 @@ namespace Snes
                 for (int j = 0; j < 2; j++)
                 {
                     int s = m.echo_hist[i][j];
-                    copier.SPCCopy(sizeof(short), s);
+                    copier.SPCCopy(sizeof(short), s, "s");
                     m.echo_hist[i][j] = s; // write back at offset 0
                 }
             }
@@ -424,46 +424,46 @@ namespace Snes
             }
 
             // Misc
-            copier.SPCCopy(sizeof(byte), m.every_other_sample);
-            copier.SPCCopy(sizeof(byte), m.kon);
+            copier.SPCCopy(sizeof(byte), m.every_other_sample, "m.every_other_sample");
+            copier.SPCCopy(sizeof(byte), m.kon, "m.kon");
 
-            copier.SPCCopy(sizeof(ushort), m.noise);
-            copier.SPCCopy(sizeof(ushort), m.counter);
-            copier.SPCCopy(sizeof(ushort), m.echo_offset);
-            copier.SPCCopy(sizeof(ushort), m.echo_length);
-            copier.SPCCopy(sizeof(byte), m.phase);
+            copier.SPCCopy(sizeof(ushort), m.noise, "m.noise");
+            copier.SPCCopy(sizeof(ushort), m.counter, "m.counter");
+            copier.SPCCopy(sizeof(ushort), m.echo_offset, "m.echo_offset");
+            copier.SPCCopy(sizeof(ushort), m.echo_length, "m.echo_length");
+            copier.SPCCopy(sizeof(byte), m.phase, "m.phase");
 
-            copier.SPCCopy(sizeof(byte), m.new_kon);
-            copier.SPCCopy(sizeof(byte), m.endx_buf);
-            copier.SPCCopy(sizeof(byte), m.envx_buf);
-            copier.SPCCopy(sizeof(byte), m.outx_buf);
+            copier.SPCCopy(sizeof(byte), m.new_kon, "m.new_kon");
+            copier.SPCCopy(sizeof(byte), m.endx_buf, "m.endx_buf");
+            copier.SPCCopy(sizeof(byte), m.envx_buf, "m.envx_buf");
+            copier.SPCCopy(sizeof(byte), m.outx_buf, "m.outx_buf");
 
-            copier.SPCCopy(sizeof(byte), m.t_pmon);
-            copier.SPCCopy(sizeof(byte), m.t_non);
-            copier.SPCCopy(sizeof(byte), m.t_eon);
-            copier.SPCCopy(sizeof(byte), m.t_dir);
-            copier.SPCCopy(sizeof(byte), m.t_koff);
+            copier.SPCCopy(sizeof(byte), m.t_pmon, "m.t_pmon");
+            copier.SPCCopy(sizeof(byte), m.t_non, "m.t_non");
+            copier.SPCCopy(sizeof(byte), m.t_eon, "m.t_eon");
+            copier.SPCCopy(sizeof(byte), m.t_dir, "m.t_dir");
+            copier.SPCCopy(sizeof(byte), m.t_koff, "m.t_koff");
 
-            copier.SPCCopy(sizeof(ushort), m.t_brr_next_addr);
-            copier.SPCCopy(sizeof(byte), m.t_adsr0);
-            copier.SPCCopy(sizeof(byte), m.t_brr_header);
-            copier.SPCCopy(sizeof(byte), m.t_brr_byte);
-            copier.SPCCopy(sizeof(byte), m.t_srcn);
-            copier.SPCCopy(sizeof(byte), m.t_esa);
-            copier.SPCCopy(sizeof(byte), m.t_echo_enabled);
+            copier.SPCCopy(sizeof(ushort), m.t_brr_next_addr, "m.t_brr_next_addr");
+            copier.SPCCopy(sizeof(byte), m.t_adsr0, "m.t_adsr0");
+            copier.SPCCopy(sizeof(byte), m.t_brr_header, "m.t_brr_header");
+            copier.SPCCopy(sizeof(byte), m.t_brr_byte, "m.t_brr_byte");
+            copier.SPCCopy(sizeof(byte), m.t_srcn, "m.t_srcn");
+            copier.SPCCopy(sizeof(byte), m.t_esa, "m.t_esa");
+            copier.SPCCopy(sizeof(byte), m.t_echo_enabled, "m.t_echo_enabled");
 
-            copier.SPCCopy(sizeof(short), m.t_main_out[0]);
-            copier.SPCCopy(sizeof(short), m.t_main_out[1]);
-            copier.SPCCopy(sizeof(short), m.t_echo_out[0]);
-            copier.SPCCopy(sizeof(short), m.t_echo_out[1]);
-            copier.SPCCopy(sizeof(short), m.t_echo_in[0]);
-            copier.SPCCopy(sizeof(short), m.t_echo_in[1]);
+            copier.SPCCopy(sizeof(short), m.t_main_out[0], "m.t_main_out [0]");
+            copier.SPCCopy(sizeof(short), m.t_main_out[1], "m.t_main_out [1]");
+            copier.SPCCopy(sizeof(short), m.t_echo_out[0], "m.t_echo_out [0]");
+            copier.SPCCopy(sizeof(short), m.t_echo_out[1], "m.t_echo_out [1]");
+            copier.SPCCopy(sizeof(short), m.t_echo_in[0], "m.t_echo_in [0]");
+            copier.SPCCopy(sizeof(short), m.t_echo_in[1], "m.t_echo_in [1]");
 
-            copier.SPCCopy(sizeof(ushort), m.t_dir_addr);
-            copier.SPCCopy(sizeof(ushort), m.t_pitch);
-            copier.SPCCopy(sizeof(short), m.t_output);
-            copier.SPCCopy(sizeof(ushort), m.t_echo_ptr);
-            copier.SPCCopy(sizeof(byte), m.t_looped);
+            copier.SPCCopy(sizeof(ushort), m.t_dir_addr, "m.t_dir_addr");
+            copier.SPCCopy(sizeof(ushort), m.t_pitch, "m.t_pitch");
+            copier.SPCCopy(sizeof(short), m.t_output, "m.t_output");
+            copier.SPCCopy(sizeof(ushort), m.t_echo_ptr, "m.t_echo_ptr");
+            copier.SPCCopy(sizeof(byte), m.t_looped, "m.t_looped");
 
             copier.extra();
         }

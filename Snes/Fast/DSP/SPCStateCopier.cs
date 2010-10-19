@@ -1,7 +1,9 @@
 ﻿#if FAST_DSP
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 
 namespace Snes
 {
@@ -16,16 +18,44 @@ namespace Snes
             buf = p;
         }
 
-        public void copy(byte[] state, uint size)
+        public void copy(byte[] state, uint size, string name)
         {
-            func(buf, state, size);
+            name += ": ";
+            var nameBytes = new UTF8Encoding().GetBytes(name);
+            var list = new List<byte>();
+            list.AddRange(nameBytes);
+            list.AddRange(state);
+            list.AddRange(new byte[] { (byte)'\n' });
+            func(buf, list.ToArray(), (uint)list.ToArray().Length);
         }
 
-        public int copy_int(int state, int size)
+        public int copy_int(int state, int size, string name)
         {
-            byte[] s = BitConverter.GetBytes((ushort)state);
-            func(buf, s, (uint)size);
-            return BitConverter.ToUInt16(s, 0);
+            byte[] s;
+            if (size < 2)
+            {
+                s = new byte[1];
+                s[0] = (byte)state;
+            }
+            else
+            {
+                s = BitConverter.GetBytes(size == 1 ? (byte)state : (ushort)state);
+            }
+            name += ": ";
+            var nameBytes = new UTF8Encoding().GetBytes(name);
+            var list = new List<byte>();
+            list.AddRange(nameBytes);
+            list.AddRange(s);
+            list.AddRange(new byte[] { (byte)'\n' });
+            func(buf, list.ToArray(), (uint)list.ToArray().Length);
+            if (size < 2)
+            {
+                return s[0];
+            }
+            else
+            {
+                return BitConverter.ToUInt16(s, 0);
+            }
         }
 
         public void skip(int count)
@@ -49,13 +79,13 @@ namespace Snes
         public void extra()
         {
             int n = 0;
-            SPCCopy(sizeof(byte), n);
+            SPCCopy(sizeof(byte), n, "n");
             skip(n);
         }
 
-        public void SPCCopy(int size, object state)
+        public void SPCCopy(int size, object state, string name)
         {
-            var state_ = copy_int(Convert.ToInt32(state), size);
+            var state_ = copy_int(Convert.ToInt32(state), size, name);
             Debug.Assert(Convert.ToInt32(state) == state_);
         }
     }

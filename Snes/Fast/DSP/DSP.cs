@@ -76,18 +76,20 @@ namespace Snes
             Processor.serialize(s);
             s.array(samplebuffer, "samplebuffer");
 
-            byte[] state = new byte[SPCDSP.state_size];
+            byte[] state = new byte[5000];
             MemoryStream p = new MemoryStream();
             if (s.mode() == Serializer.Mode.Save)
             {
                 spc_dsp.copy_state(p, dsp_state_save);
-                p.Read(state, 0, state.Length);
-                s.array(state, "state");
+                p.Position = 0;
+                p.Read(state, 0, (int)p.Length);
+                s.array(state, (uint)p.Length, "state");
             }
             else if (s.mode() == Serializer.Mode.Load)
             {
                 s.array(state, "state");
                 p.Write(state, 0, state.Length);
+                p.Position = 0;
                 spc_dsp.copy_state(p, dsp_state_load);
             }
             else
