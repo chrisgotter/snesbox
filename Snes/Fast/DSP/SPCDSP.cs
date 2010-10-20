@@ -406,6 +406,7 @@ namespace Snes
             {
                 for (int j = 0; j < 2; j++)
                 {
+                    //TODO: bsnes uses echo_hist_pos here, is this a bug?
                     int s = m.echo_hist[i][j];
                     copier.SPCCopy(sizeof(short), s, "s");
                     m.echo_hist[i][j] = s; // write back at offset 0
@@ -996,7 +997,7 @@ namespace Snes
 
         private void echo_read(int ch)
         {
-            int s = (short)m.ram[m.t_echo_ptr + ch * 2];
+            int s = BitConverter.ToInt16(m.ram, m.t_echo_ptr + ch * 2);
             // second copy simplifies wrap-around handling
             m.echo_hist_pos.Array[m.echo_hist_pos.Offset + 0][ch] = m.echo_hist_pos.Array[m.echo_hist_pos.Offset + 8][ch] = s >> 1;
         }
