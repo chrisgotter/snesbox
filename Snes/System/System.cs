@@ -26,7 +26,6 @@ namespace Snes
 
         public void runtosave()
         {
-#if THREADED
             Scheduler.scheduler.sync = Scheduler.SynchronizeMode.CPU;
             runthreadtosave();
 
@@ -36,6 +35,7 @@ namespace Snes
             Scheduler.scheduler.thread = PPU.ppu.Processor.thread;
             runthreadtosave();
 
+#if !FAST_DSP
             Scheduler.scheduler.thread = DSP.dsp.Processor.thread;
             runthreadtosave();
 #endif
@@ -51,10 +51,13 @@ namespace Snes
         public static int _stateFileCount = 0;
         public static void WriteStateToFile()
         {
+            //if (_stateFileCount >= 1)
+            //{
             Serializer s = system.serialize();
             var file = global::System.IO.File.Create(@"..\..\..\..\..\states\SnesBox\" + _stateFileCount + ".bst");
             file.Write(s.data(), 0, (int)s.size());
             file.Close();
+            //}
             _stateFileCount++;
         }
 
