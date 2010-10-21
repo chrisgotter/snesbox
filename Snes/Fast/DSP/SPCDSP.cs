@@ -1030,7 +1030,10 @@ namespace Snes
             {
                 m.echo_hist_pos = new ArraySegment<int[]>(m.echo_hist, 0, m.echo_hist.Length);
             }
-            m.echo_hist_pos = new ArraySegment<int[]>(m.echo_hist_pos.Array, m.echo_hist_pos.Offset + 1, m.echo_hist_pos.Count - 1);
+            else
+            {
+                m.echo_hist_pos = new ArraySegment<int[]>(m.echo_hist_pos.Array, m.echo_hist_pos.Offset + 1, m.echo_hist_pos.Count - 1);
+            }
 
             m.t_echo_ptr = (m.t_esa * 0x100 + m.echo_offset) & 0xFFFF;
             echo_read(0);
