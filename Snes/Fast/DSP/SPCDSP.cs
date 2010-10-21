@@ -799,7 +799,7 @@ namespace Snes
             {
                 entry = new ArraySegment<byte>(entry.Array, entry.Offset + 2, entry.Count - 2);
             }
-            m.t_brr_next_addr = (ushort)(entry.Array[entry.Offset]);
+            m.t_brr_next_addr = BitConverter.ToUInt16(entry.Array, entry.Offset);
 
             m.t_adsr0 = v.Array[v.Offset].regs.Array[v.Array[v.Offset].regs.Offset + (int)VoiceReg.adsr0];
 
