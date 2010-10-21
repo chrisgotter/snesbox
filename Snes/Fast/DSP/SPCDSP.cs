@@ -381,7 +381,7 @@ namespace Snes
                 {
                     int s = v.buf[j];
                     copier.SPCCopy(sizeof(short), s, "s");
-                    v.buf[j] = v.buf[j + brr_buf_size] = s;
+                    //v.buf[j] = v.buf[j + brr_buf_size] = s;
                 }
 
                 copier.SPCCopy(sizeof(ushort), v.interp_pos, "v->interp_pos");
@@ -394,7 +394,7 @@ namespace Snes
                 {
                     int mode = (int)v.env_mode;
                     copier.SPCCopy(sizeof(byte), mode, "m");
-                    v.env_mode = (EnvMode)mode;
+                    //v.env_mode = (EnvMode)mode;
                 }
                 copier.SPCCopy(sizeof(byte), v.t_envx_out, "v->t_envx_out");
 
@@ -409,14 +409,14 @@ namespace Snes
                     //TODO: bsnes uses echo_hist_pos here, is this a bug?
                     int s = m.echo_hist[i][j];
                     copier.SPCCopy(sizeof(short), s, "s");
-                    m.echo_hist[i][j] = s; // write back at offset 0
+                    //m.echo_hist[i][j] = s; // write back at offset 0
                 }
             }
-            m.echo_hist_pos = new ArraySegment<int[]>(m.echo_hist, 0, m.echo_hist.Length);
-            for (int i = 0; i < echo_hist_size; i++)
-            {
-                Array.Copy(m.echo_hist[i], m.echo_hist[echo_hist_size + i], m.echo_hist[i].Length);
-            }
+            //m.echo_hist_pos = new ArraySegment<int[]>(m.echo_hist, 0, m.echo_hist.Length);
+            //for (int i = 0; i < echo_hist_size; i++)
+            //{
+            //    Array.Copy(m.echo_hist[i], m.echo_hist[echo_hist_size + i], m.echo_hist[i].Length);
+            //}
 
             // Misc
             copier.SPCCopy(sizeof(byte), m.every_other_sample, "m.every_other_sample");
