@@ -567,7 +567,7 @@ namespace Snes
             ArraySegment<short> fwd = new ArraySegment<short>(gauss, 255 - offset, gauss.Length - (255 - offset));
             ArraySegment<short> rev = new ArraySegment<short>(gauss, offset, gauss.Length - offset); // mirror left half of gaussian
 
-            ArraySegment<int> _in = new ArraySegment<int>(v.buf, (v.interp_pos >> 12) + v.buf_pos, v.buf.Length - (v.interp_pos >> 12) + v.buf_pos);
+            ArraySegment<int> _in = new ArraySegment<int>(v.buf, (v.interp_pos >> 12) + v.buf_pos, v.buf.Length - ((v.interp_pos >> 12) + v.buf_pos));
             int _out;
             _out = (fwd.Array[fwd.Offset + 0] * _in.Array[_in.Offset + 0]) >> 11;
             _out += (fwd.Array[fwd.Offset + 256] * _in.Array[_in.Offset + 1]) >> 11;

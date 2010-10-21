@@ -18,7 +18,6 @@ namespace Snes
         {
             if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
-                System.WriteStateToFile();
                 Libco.Switch(CPU.cpu.Processor.thread);
             }
         }

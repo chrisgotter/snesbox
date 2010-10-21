@@ -17,7 +17,6 @@ namespace Snes
         {
             if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
-                System.WriteStateToFile();
                 Libco.Switch(CPU.cpu.Processor.thread);
             }
         }
@@ -27,7 +26,6 @@ namespace Snes
 #if !FAST_DSP
             if (DSP.dsp.Processor.clock < 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
-                System.WriteStateToFile();
                 Libco.Switch(DSP.dsp.Processor.thread);
             }
 #else
