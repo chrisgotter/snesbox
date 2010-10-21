@@ -1354,8 +1354,7 @@ namespace Snes
                 switch (screen == Convert.ToBoolean(0) ? regs.color_mask : regs.colorsub_mask)
                 {
                     case 0:
-                        var always = Enumerable.Repeat<byte>(1, 256).ToArray();
-                        Array.Copy(always, table, table.Length);
+                        Array.Copy(Enumerable.Repeat<byte>(1, 256).ToArray(), table, table.Length);
                         return;  //always
                     case 3:
                         Array.Clear(table, 0, 256);
@@ -1376,8 +1375,7 @@ namespace Snes
 
             if (regs.window1_enabled[bg] == false && regs.window2_enabled[bg] == false)
             {
-                var clrArray = Enumerable.Repeat<byte>(Convert.ToByte(clr), 256).ToArray();
-                Array.Copy(clrArray, table, table.Length);
+                Array.Copy(Enumerable.Repeat<byte>(Convert.ToByte(clr), 256).ToArray(), table, table.Length);
                 return;
             }
 
