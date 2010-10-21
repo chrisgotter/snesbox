@@ -14,6 +14,7 @@ namespace SnesBox
         Snes _snes = new Snes();
         Texture2D _videoFrame;
         DynamicSoundEffectInstance _audioFrame;
+        FrameRateComponent _frameRate;
 
         public SnesBoxGame()
         {
@@ -21,6 +22,8 @@ namespace SnesBox
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 600;
+            _frameRate = new FrameRateComponent(this);
+            Components.Add(_frameRate);
         }
 
         protected override void Initialize()
@@ -49,6 +52,7 @@ namespace SnesBox
         protected override void Update(GameTime gameTime)
         {
             _snes.RunToFrame();
+            Window.Title = string.Format("{0:##} FPS", _frameRate.FrameRate);
 
             base.Update(gameTime);
         }
