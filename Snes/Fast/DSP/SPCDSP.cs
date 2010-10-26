@@ -50,15 +50,15 @@ namespace Snes
 
         // Sets destination for output samples. If out is NULL or out_size is 0,
         // doesn't generate any.
-        public void set_output(short[] _out, int out_size)
+        public void set_output(short[] _out, int size)
         {
-            Debug.Assert((out_size & 1) == 0); // must be even
+            Debug.Assert((size & 1) == 0); // must be even
             if (ReferenceEquals(_out, null))
             {
                 _out = m.extra;
-                out_size = extra_size;
+                size = extra_size;
             }
-            m._out = new ArraySegment<short>(_out, 0, out_size);
+            m._out = new ArraySegment<short>(_out, 0, size);
         }
 
         // Number of samples written to output since it was last set, always
@@ -1100,18 +1100,19 @@ namespace Snes
             m.t_echo_out[1] = r & ~1;
         }
 
-        private void WRITE_SAMPLES(int l, int r, ArraySegment<short> _out)
+        private void WRITE_SAMPLES(int l, int r, ref ArraySegment<short> _out)
         {
             _out.Array[_out.Offset + 0] = (short)l;
             _out.Array[_out.Offset + 1] = (short)r;
             _out = new ArraySegment<short>(_out.Array, _out.Offset + 2, _out.Count - 2);
-            if (_out.Offset + 2 >= m._out.Array.Length)
+            if (_out.Offset >= m._out.Array.Length)
             {
-                //TODO: fix these asserts
-                //Debug.Assert(_out.Offset == m._out.Array.Length);
-                //Debug.Assert(m._out.Offset != m.extra[extra_size] ||
-                //    (m.extra <= m.out_begin && m.extra < &m.extra[extra_size]));
+                Debug.Assert(_out.Offset == m._out.Array.Length);
+                //TODO: fix this assert
+                //Debug.Assert(m._out.Array.Length != m.extra[extra_size] ||
+                //    (m.extra <= m.out_begin && m.extra < m.extra[extra_size]));
                 _out = new ArraySegment<short>(m.extra, 0, m.extra.Length);
+                //TODO: determine what's really happening here in bsnes code
                 m._out = new ArraySegment<short>(m.extra, extra_size, m.extra.Length - extra_size);
             }
         }
@@ -1136,7 +1137,7 @@ namespace Snes
 		SPC_DSP_OUT_HOOK( l, r );
 #else
             var _out = m._out;
-            WRITE_SAMPLES(l, r, _out);
+            WRITE_SAMPLES(l, r, ref _out);
             m._out = _out;
 #endif
         }
