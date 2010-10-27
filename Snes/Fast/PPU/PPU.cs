@@ -2051,18 +2051,163 @@ namespace Snes
             }
         }
 
+        private int CLIP(int x)
+        {
+            return Convert.ToBoolean((x) & 0x2000) ? ((x) | ~0x03ff) : ((x) & 0x03ff);
+        }
+
         public void render_line_mode7(uint bg, byte pri0_pos, byte pri1_pos)
         {
-            if (regs.mode7_extbg == false)
+            if (regs.bg_enabled[bg] == false && regs.bgsub_enabled[bg] == false)
             {
-                render_line_mode7((uint)ID.BG1, 2, 2);
-                render_line_oam(1, 3, 4, 5);
+                return;
+            }
+
+            int px, py;
+            int tx, ty, tile, palette = 0;
+
+            int a = Bit.sclip(16, cache.m7a);
+            int b = Bit.sclip(16, cache.m7b);
+            int c = Bit.sclip(16, cache.m7c);
+            int d = Bit.sclip(16, cache.m7d);
+
+            int cx = Bit.sclip(13, cache.m7x);
+            int cy = Bit.sclip(13, cache.m7y);
+            int hofs = Bit.sclip(13, cache.m7_hofs);
+            int vofs = Bit.sclip(13, cache.m7_vofs);
+
+            int _pri, _x;
+            bool _bg_enabled = regs.bg_enabled[bg];
+            bool _bgsub_enabled = regs.bgsub_enabled[bg];
+
+            build_window_tables((byte)bg);
+            byte[] wt_main = window[bg].main;
+            byte[] wt_sub = window[bg].sub;
+
+            int y = (int)(regs.mode7_vflip == false ? line : 255 - line);
+
+            ushort[] mtable_x, mtable_y;
+            if (bg == (uint)ID.BG1)
+            {
+                mtable_x = (ushort[])mosaic_table[(regs.mosaic_enabled[(int)ID.BG1] == true) ? regs.mosaic_size : 0];
+                mtable_y = (ushort[])mosaic_table[(regs.mosaic_enabled[(int)ID.BG1] == true) ? regs.mosaic_size : 0];
             }
             else
+            {  //bg == BG2
+                //Mode7 EXTBG BG2 uses BG1 mosaic enable to control vertical mosaic,
+                //and BG2 mosaic enable to control horizontal mosaic...
+                mtable_x = (ushort[])mosaic_table[(regs.mosaic_enabled[(int)ID.BG2] == true) ? regs.mosaic_size : 0];
+                mtable_y = (ushort[])mosaic_table[(regs.mosaic_enabled[(int)ID.BG1] == true) ? regs.mosaic_size : 0];
+            }
+
+            int psx = ((a * CLIP(hofs - cx)) & ~63) + ((b * CLIP(vofs - cy)) & ~63) + ((b * mtable_y[y]) & ~63) + (cx << 8);
+            int psy = ((c * CLIP(hofs - cx)) & ~63) + ((d * CLIP(vofs - cy)) & ~63) + ((d * mtable_y[y]) & ~63) + (cy << 8);
+            for (int x = 0; x < 256; x++)
             {
-                render_line_mode7((uint)ID.BG1, 3, 3);
-                render_line_mode7((uint)ID.BG1, 1, 5);
-                render_line_oam(2, 4, 6, 7);
+                px = psx + (a * mtable_x[x]);
+                py = psy + (c * mtable_x[x]);
+
+                //mask floating-point bits (low 8 bits)
+                px >>= 8;
+                py >>= 8;
+
+                switch (regs.mode7_repeat)
+                {
+                    case 0:    //screen repetition outside of screen area
+                    case 1:
+                        {  //same as case 0
+                            px &= 1023;
+                            py &= 1023;
+                            tx = ((px >> 3) & 127);
+                            ty = ((py >> 3) & 127);
+                            tile = StaticRAM.vram[(uint)((ty * 128 + tx) << 1)];
+                            palette = StaticRAM.vram[(uint)((((tile << 6) + ((py & 7) << 3) + (px & 7)) << 1) + 1)];
+                        } 
+                        break;
+                    case 2:
+                        {  //palette color 0 outside of screen area
+                            if (px < 0 || px > 1023 || py < 0 || py > 1023)
+                            {
+                                palette = 0;
+                            }
+                            else
+                            {
+                                px &= 1023;
+                                py &= 1023;
+                                tx = ((px >> 3) & 127);
+                                ty = ((py >> 3) & 127);
+                                tile = StaticRAM.vram[(uint)((ty * 128 + tx) << 1)];
+                                palette = StaticRAM.vram[(uint)((((tile << 6) + ((py & 7) << 3) + (px & 7)) << 1) + 1)];
+                            }
+                        } 
+                        break;
+                    case 3:
+                        {  //character 0 repetition outside of screen area
+                            if (px < 0 || px > 1023 || py < 0 || py > 1023)
+                            {
+                                tile = 0;
+                            }
+                            else
+                            {
+                                px &= 1023;
+                                py &= 1023;
+                                tx = ((px >> 3) & 127);
+                                ty = ((py >> 3) & 127);
+                                tile = StaticRAM.vram[(uint)((ty * 128 + tx) << 1)];
+                            }
+                            palette = StaticRAM.vram[(uint)((((tile << 6) + ((py & 7) << 3) + (px & 7)) << 1) + 1)];
+                        } 
+                        break;
+                }
+
+                if (bg == (uint)ID.BG1)
+                {
+                    _pri = pri0_pos;
+                }
+                else
+                {
+                    _pri = Convert.ToBoolean(palette >> 7) ? pri1_pos : pri0_pos;
+                    palette &= 0x7f;
+                }
+
+                if (!Convert.ToBoolean(palette))
+                {
+                    continue;
+                }
+
+                _x = (regs.mode7_hflip == false) ? (x) : (255 - x);
+
+                uint col;
+                if (regs.direct_color == true && bg == (uint)ID.BG1)
+                {
+                    //direct color mode does not apply to bg2, as it is only 128 colors...
+                    col = get_direct_color(0, (byte)palette);
+                }
+                else
+                {
+                    col = get_palette((byte)palette);
+                }
+
+                if (regs.bg_enabled[bg] == true && !Convert.ToBoolean(wt_main[_x]))
+                {
+                    if (pixel_cache[_x].pri_main < _pri)
+                    {
+                        pixel_cache[_x].pri_main = (byte)_pri;
+                        pixel_cache[_x].bg_main = (byte)bg;
+                        pixel_cache[_x].src_main = (ushort)col;
+                        pixel_cache[_x].ce_main = Convert.ToByte(false);
+                    }
+                }
+                if (regs.bgsub_enabled[bg] == true && !Convert.ToBoolean(wt_sub[_x]))
+                {
+                    if (pixel_cache[_x].pri_sub < _pri)
+                    {
+                        pixel_cache[_x].pri_sub = (byte)_pri;
+                        pixel_cache[_x].bg_sub = (byte)bg;
+                        pixel_cache[_x].src_sub = (ushort)col;
+                        pixel_cache[_x].ce_sub = Convert.ToByte(false);
+                    }
+                }
             }
         }
 

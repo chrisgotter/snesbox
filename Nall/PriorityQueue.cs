@@ -55,9 +55,18 @@ namespace Nall
             while (true)
             {
                 uint child = (parent << 1) + 1;
-                if (child >= heapsize) break;
-                if (child + 1 < heapsize && gte(heap[child].counter, heap[child + 1].counter)) child++;
-                if (gte(heap[child].counter, counter)) break;
+                if (child >= heapsize)
+                {
+                    break;
+                }
+                if (child + 1 < heapsize && gte(heap[child].counter, heap[child + 1].counter))
+                {
+                    child++;
+                }
+                if (gte(heap[child].counter, counter))
+                {
+                    break;
+                }
 
                 heap[parent].counter = heap[child].counter;
                 heap[parent].Event = heap[child].Event;
