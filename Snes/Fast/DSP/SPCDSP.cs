@@ -1014,7 +1014,7 @@ namespace Snes
         {
             if (!Convert.ToBoolean(m.t_echo_enabled & 0x20))
             {
-                m.ram[m.t_echo_ptr + ch * 2] = (byte)m.t_echo_out[ch];
+                Array.Copy(BitConverter.GetBytes((ushort)m.t_echo_out[ch]), 0, m.ram, m.t_echo_ptr + ch * 2, 2);
             }
             m.t_echo_out[ch] = 0;
         }
