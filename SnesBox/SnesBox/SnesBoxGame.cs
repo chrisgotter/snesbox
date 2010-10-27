@@ -12,9 +12,13 @@ namespace SnesBox
         SpriteBatch spriteBatch;
 
         Snes _snes = new Snes();
-        Texture2D _videoFrame;
-        DynamicSoundEffectInstance _audioFrame;
         FrameRateComponent _frameRate;
+
+        Texture2D _videoFrame;
+        Color[] _videoBuffer;
+        Rectangle _videoRect;
+
+        DynamicSoundEffectInstance _audioFrame;
 
         public SnesBoxGame()
         {
@@ -22,6 +26,7 @@ namespace SnesBox
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 600;
+
             _frameRate = new FrameRateComponent(this);
             Components.Add(_frameRate);
         }
@@ -33,6 +38,9 @@ namespace SnesBox
 
             _snes.VideoUpdated += new VideoUpdatedEventHandler(Snes_VideoUpdated);
             _snes.AudioUpdated += new AudioUpdatedEventHandler(Snes_AudioUpdated);
+
+            _videoFrame = new Texture2D(GraphicsDevice, 512, 512, false, SurfaceFormat.Color);
+            _videoBuffer = new Color[512 * 512];
 
             base.Initialize();
         }
@@ -61,7 +69,7 @@ namespace SnesBox
         {
             var vp = GraphicsDevice.Viewport;
             spriteBatch.Begin();
-            spriteBatch.Draw(_videoFrame, new Rectangle(0, 0, vp.Width, vp.Height), Color.White);
+            spriteBatch.Draw(_videoFrame, new Rectangle(0, 0, vp.Width, vp.Height), _videoRect, Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
@@ -89,17 +97,9 @@ namespace SnesBox
 
         void Snes_VideoUpdated(object sender, VideoUpdatedEventArgs e)
         {
-            if (ReferenceEquals(_videoFrame, null))
-            {
-                _videoFrame = new Texture2D(GraphicsDevice, e.Width, e.Height, false, SurfaceFormat.Color);
-            }
-
-            var videoBuffer = new uint[e.Width * e.Height];
             bool interlace = (e.Height >= 240);
             uint pitch = interlace ? 1024U : 2048U;
             pitch >>= 1;
-
-            _videoFrame.GetData<uint>(videoBuffer);
 
             for (int y = 0; y < e.Height; y++)
             {
@@ -116,12 +116,13 @@ namespace SnesBox
                     var blue = (byte)(b + b / 35);
                     var alpha = (byte)255;
 
-                    videoBuffer[y * e.Width + x] = new Color() { R = red, G = green, B = blue, A = alpha }.PackedValue;
+                    _videoBuffer[y * _videoFrame.Width + x] = new Color() { R = red, G = green, B = blue, A = alpha };
                 }
             }
 
             GraphicsDevice.Textures[0] = null;
-            _videoFrame.SetData<uint>(videoBuffer);
+            _videoFrame.SetData<Color>(_videoBuffer);
+            _videoRect = new Rectangle(0, 0, e.Width, e.Height);
         }
     }
 }
