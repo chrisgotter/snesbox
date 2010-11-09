@@ -1,5 +1,6 @@
 ﻿#if FAST_CPU
 using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using Nall;
 
@@ -22,30 +23,30 @@ namespace Snes
             }
         }
 
-        public void synchronize_smp()
+        public IEnumerable synchronize_smp()
         {
             if (SMP.smp.Processor.clock < 0)
             {
-                Libco.Switch(SMP.smp.Processor.thread);
+                yield return SMP.smp.Processor.thread;
             }
         }
 
-        public void synchronize_ppu()
+        public IEnumerable synchronize_ppu()
         {
             if (PPU.ppu.Processor.clock < 0)
             {
-                Libco.Switch(PPU.ppu.Processor.thread);
+                yield return PPU.ppu.Processor.thread;
             }
         }
 
-        public void synchronize_coprocessor()
+        public IEnumerable synchronize_coprocessor()
         {
             for (uint i = 0; i < coprocessors.Count; i++)
             {
                 IProcessor chip = coprocessors[(int)i];
                 if (chip.Processor.clock < 0)
                 {
-                    Libco.Switch(chip.Processor.thread);
+                    yield return chip.Processor.thread;
                 }
             }
         }
@@ -75,95 +76,115 @@ namespace Snes
             port_data[port & 3] = data;
         }
 
-        public byte mmio_read(uint addr)
+        public IEnumerable mmio_read(uint addr, Result result)
         {
             if ((addr & 0xffc0) == 0x2140)
             {
-                synchronize_smp();
-                return SMP.smp.port_read(new uint2(addr & 3));
+                foreach (var e in synchronize_smp())
+                {
+                    yield return e;
+                };
+                result.Value = SMP.smp.port_read(new uint2(addr & 3));
+                yield break;
             }
 
             switch (addr & 0xffff)
             {
                 case 0x2180:
                     {
-                        byte result = Bus.bus.read(new uint24(0x7e0000 | status.wram_addr));
+                        foreach (var e in Bus.bus.read(new uint24(0x7e0000 | status.wram_addr), result))
+                        {
+                            yield return e;
+                        };
                         status.wram_addr = (status.wram_addr + 1) & 0x01ffff;
-                        return result;
+                        yield break;
                     }
                 case 0x4016:
                     {
-                        byte result = (byte)(regs.mdr & 0xfc);
-                        result |= (byte)(Input.input.port_read(Convert.ToBoolean(0)) & 3);
-                        return result;
+                        result.Value = (byte)(regs.mdr & 0xfc);
+                        result.Value |= (byte)(Input.input.port_read(Convert.ToBoolean(0)) & 3);
+                        yield break;
                     }
                 case 0x4017:
                     {
-                        byte result = (byte)((regs.mdr & 0xe0) | 0x1c);
-                        result |= (byte)(Input.input.port_read(Convert.ToBoolean(1)) & 3);
-                        return result;
+                        result.Value = (byte)((regs.mdr & 0xe0) | 0x1c);
+                        result.Value |= (byte)(Input.input.port_read(Convert.ToBoolean(1)) & 3);
+                        yield break;
                     }
                 case 0x4210:
                     {
-                        byte result = (byte)(regs.mdr & 0x70);
-                        result |= (byte)(Convert.ToInt32(status.nmi_line) << 7);
-                        result |= 0x02;  //CPU revision
+                        result.Value = (byte)(regs.mdr & 0x70);
+                        result.Value |= (byte)(Convert.ToInt32(status.nmi_line) << 7);
+                        result.Value |= 0x02;  //CPU revision
                         status.nmi_line = false;
-                        return result;
+                        yield break;
                     }
                 case 0x4211:
                     {
-                        byte result = (byte)(regs.mdr & 0x7f);
-                        result |= (byte)(Convert.ToInt32(status.irq_line) << 7);
+                        result.Value = (byte)(regs.mdr & 0x7f);
+                        result.Value |= (byte)(Convert.ToInt32(status.irq_line) << 7);
                         status.irq_line = false;
-                        return result;
+                        yield break;
                     }
                 case 0x4212:
                     {
-                        byte result = (byte)(regs.mdr & 0x3e);
+                        result.Value = (byte)(regs.mdr & 0x3e);
                         uint vbstart = PPU.ppu.overscan() == false ? 225U : 240U;
 
                         if (PPUCounter.vcounter() >= vbstart && PPUCounter.vcounter() <= vbstart + 2)
                         {
-                            result |= 0x01;
+                            result.Value |= 0x01;
                         }
                         if (PPUCounter.hcounter() <= 2 || PPUCounter.hcounter() >= 1096)
                         {
-                            result |= 0x40;
+                            result.Value |= 0x40;
                         }
                         if (PPUCounter.vcounter() >= vbstart)
                         {
-                            result |= 0x80;
+                            result.Value |= 0x80;
                         }
 
-                        return result;
+                        yield break;
                     }
                 case 0x4213:
-                    return status.pio;
+                    result.Value = status.pio;
+                    yield break;
                 case 0x4214:
-                    return (byte)(status.rddiv >> 0);
+                    result.Value = (byte)(status.rddiv >> 0);
+                    yield break;
                 case 0x4215:
-                    return (byte)(status.rddiv >> 8);
+                    result.Value = (byte)(status.rddiv >> 8);
+                    yield break;
                 case 0x4216:
-                    return (byte)(status.rdmpy >> 0);
+                    result.Value = (byte)(status.rdmpy >> 0);
+                    yield break;
                 case 0x4217:
-                    return (byte)(status.rdmpy >> 8);
+                    result.Value = (byte)(status.rdmpy >> 8);
+                    yield break;
                 case 0x4218:
-                    return status.joy1l;
+                    result.Value = status.joy1l;
+                    yield break;
                 case 0x4219:
-                    return status.joy1h;
+                    result.Value = status.joy1h;
+                    yield break;
                 case 0x421a:
-                    return status.joy2l;
+                    result.Value = status.joy2l;
+                    yield break;
                 case 0x421b:
-                    return status.joy2h;
+                    result.Value = status.joy2h;
+                    yield break;
                 case 0x421c:
-                    return status.joy3l;
+                    result.Value = status.joy3l;
+                    yield break;
                 case 0x421d:
-                    return status.joy3h;
+                    result.Value = status.joy3h;
+                    yield break;
                 case 0x421e:
-                    return status.joy4l;
+                    result.Value = status.joy4l;
+                    yield break;
                 case 0x421f:
-                    return status.joy4h;
+                    result.Value = status.joy4h;
+                    yield break;
             }
 
             if ((addr & 0xff80) == 0x4300)
@@ -173,74 +194,92 @@ namespace Snes
                 {
                     case 0x4300:
                         {
-                            return (byte)((Convert.ToInt32(channel[i].direction) << 7)
+                            result.Value = (byte)((Convert.ToInt32(channel[i].direction) << 7)
                                  | (Convert.ToInt32(channel[i].indirect) << 6)
                                  | (Convert.ToInt32(channel[i].unused) << 5)
                                  | (Convert.ToInt32(channel[i].reverse_transfer) << 4)
                                  | (Convert.ToInt32(channel[i].fixed_transfer) << 3)
                                  | (channel[i].transfer_mode << 0));
+                            yield break;
                         }
 
                     case 0x4301:
-                        return channel[i].dest_addr;
+                        result.Value = channel[i].dest_addr;
+                        yield break;
                     case 0x4302:
-                        return (byte)(channel[i].source_addr >> 0);
+                        result.Value = (byte)(channel[i].source_addr >> 0);
+                        yield break;
                     case 0x4303:
-                        return (byte)(channel[i].source_addr >> 8);
+                        result.Value = (byte)(channel[i].source_addr >> 8);
+                        yield break;
                     case 0x4304:
-                        return channel[i].source_bank;
+                        result.Value = channel[i].source_bank;
+                        yield break;
                     case 0x4305:
-                        return (byte)(channel[i].union.transfer_size >> 0);
+                        result.Value = (byte)(channel[i].union.transfer_size >> 0);
+                        yield break;
                     case 0x4306:
-                        return (byte)(channel[i].union.transfer_size >> 8);
+                        result.Value = (byte)(channel[i].union.transfer_size >> 8);
+                        yield break;
                     case 0x4307:
-                        return channel[i].indirect_bank;
+                        result.Value = channel[i].indirect_bank;
+                        yield break;
                     case 0x4308:
-                        return (byte)(channel[i].hdma_addr >> 0);
+                        result.Value = (byte)(channel[i].hdma_addr >> 0);
+                        yield break;
                     case 0x4309:
-                        return (byte)(channel[i].hdma_addr >> 8);
+                        result.Value = (byte)(channel[i].hdma_addr >> 8);
+                        yield break;
                     case 0x430a:
-                        return channel[i].line_counter;
+                        result.Value = channel[i].line_counter;
+                        yield break;
                     case 0x430b:
                     case 0x430f:
-                        return channel[i].unknown;
+                        result.Value = channel[i].unknown;
+                        yield break;
                 }
             }
 
-            return regs.mdr;
+            result.Value = regs.mdr;
         }
 
-        public void mmio_write(uint addr, byte data)
+        public IEnumerable mmio_write(uint addr, byte data)
         {
             if ((addr & 0xffc0) == 0x2140)
             {
-                synchronize_smp();
+                foreach (var e in synchronize_smp())
+                {
+                    yield return e;
+                };
                 port_write((byte)(addr & 3), data);
-                return;
+                yield break;
             }
 
             switch (addr & 0xffff)
             {
                 case 0x2180:
                     {
-                        Bus.bus.write(new uint24(0x7e0000 | status.wram_addr), data);
+                        foreach (var e in Bus.bus.write(new uint24(0x7e0000 | status.wram_addr), data))
+                        {
+                            yield return e;
+                        };
                         status.wram_addr = (status.wram_addr + 1) & 0x01ffff;
-                        return;
+                        yield break;
                     }
                 case 0x2181:
                     {
                         status.wram_addr = (status.wram_addr & 0x01ff00) | (uint)(data << 0);
-                        return;
+                        yield break;
                     }
                 case 0x2182:
                     {
                         status.wram_addr = (status.wram_addr & 0x0100ff) | (uint)(data << 8);
-                        return;
+                        yield break;
                     }
                 case 0x2183:
                     {
                         status.wram_addr = (status.wram_addr & 0x00ffff) | (uint)((data & 1) << 16);
-                        return;
+                        yield break;
                     }
                 case 0x4016:
                     {
@@ -251,7 +290,7 @@ namespace Snes
                         {
                             Input.input.poll();
                         }
-                        return;
+                        yield break;
                     }
                 case 0x4200:
                     {
@@ -281,7 +320,7 @@ namespace Snes
                         }
 
                         status.irq_lock = true;
-                        return;
+                        yield break;
                     }
                 case 0x4201:
                     {
@@ -295,50 +334,50 @@ namespace Snes
                 case 0x4202:
                     {
                         status.wrmpya = data;
-                        return;
+                        yield break;
                     }
                 case 0x4203:
                     {
                         status.wrmpyb = data;
                         status.rdmpy = (ushort)(status.wrmpya * status.wrmpyb);
-                        return;
+                        yield break;
                     }
                 case 0x4204:
                     {
                         status.wrdiva = (ushort)((status.wrdiva & 0xff00) | (data << 0));
-                        return;
+                        yield break;
                     }
                 case 0x4205:
                     {
                         status.wrdiva = (ushort)((data << 8) | (status.wrdiva & 0x00ff));
-                        return;
+                        yield break;
                     }
                 case 0x4206:
                     {
                         status.wrdivb = data;
                         status.rddiv = (ushort)(Convert.ToBoolean(status.wrdivb) ? status.wrdiva / status.wrdivb : 0xffff);
                         status.rdmpy = (ushort)(Convert.ToBoolean(status.wrdivb) ? status.wrdiva % status.wrdivb : status.wrdiva);
-                        return;
+                        yield break;
                     }
                 case 0x4207:
                     {
                         status.htime = (ushort)((status.htime & 0x0100) | (data << 0));
-                        return;
+                        yield break;
                     }
                 case 0x4208:
                     {
                         status.htime = (ushort)(((data & 1) << 8) | (status.htime & 0x00ff));
-                        return;
+                        yield break;
                     }
                 case 0x4209:
                     {
                         status.vtime = (ushort)((status.vtime & 0x0100) | (data << 0));
-                        return;
+                        yield break;
                     }
                 case 0x420a:
                     {
                         status.vtime = (ushort)(((data & 1) << 8) | (status.vtime & 0x00ff));
-                        return;
+                        yield break;
                     }
                 case 0x420b:
                     {
@@ -348,9 +387,12 @@ namespace Snes
                         }
                         if (Convert.ToBoolean(data))
                         {
-                            dma_run();
+                            foreach (var e in dma_run())
+                            {
+                                yield return e;
+                            };
                         }
-                        return;
+                        yield break;
                     }
                 case 0x420c:
                     {
@@ -358,12 +400,12 @@ namespace Snes
                         {
                             channel[i].hdma_enabled = Convert.ToBoolean(data & (1 << (int)i));
                         }
-                        return;
+                        yield break;
                     }
                 case 0x420d:
                     {
                         status.rom_speed = Convert.ToBoolean(data & 1) ? 6U : 8U;
-                        return;
+                        yield break;
                     }
             }
 
@@ -380,125 +422,153 @@ namespace Snes
                             channel[i].reverse_transfer = Convert.ToBoolean(data & 0x10);
                             channel[i].fixed_transfer = Convert.ToBoolean(data & 0x08);
                             channel[i].transfer_mode = (byte)(data & 0x07);
-                            return;
+                            yield break;
                         }
                     case 0x4301:
                         {
                             channel[i].dest_addr = data;
-                            return;
+                            yield break;
                         }
                     case 0x4302:
                         {
                             channel[i].source_addr = (ushort)((channel[i].source_addr & 0xff00) | (data << 0));
-                            return;
+                            yield break;
                         }
                     case 0x4303:
                         {
                             channel[i].source_addr = (ushort)((data << 8) | (channel[i].source_addr & 0x00ff));
-                            return;
+                            yield break;
                         }
                     case 0x4304:
                         {
                             channel[i].source_bank = data;
-                            return;
+                            yield break;
                         }
                     case 0x4305:
                         {
                             channel[i].union.transfer_size = (ushort)((channel[i].union.transfer_size & 0xff00) | (data << 0));
-                            return;
+                            yield break;
                         }
                     case 0x4306:
                         {
                             channel[i].union.transfer_size = (ushort)((data << 8) | (channel[i].union.transfer_size & 0x00ff));
-                            return;
+                            yield break;
                         }
                     case 0x4307:
                         {
                             channel[i].indirect_bank = data;
-                            return;
+                            yield break;
                         }
                     case 0x4308:
                         {
                             channel[i].hdma_addr = (ushort)((channel[i].hdma_addr & 0xff00) | (data << 0));
-                            return;
+                            yield break;
                         }
                     case 0x4309:
                         {
                             channel[i].hdma_addr = (ushort)((data << 8) | (channel[i].hdma_addr & 0x00ff));
-                            return;
+                            yield break;
                         }
                     case 0x430a:
                         {
                             channel[i].line_counter = data;
-                            return;
+                            yield break;
                         }
                     case 0x430b:
                     case 0x430f:
                         {
                             channel[i].unknown = data;
-                            return;
+                            yield break;
                         }
                 }
             }
         }
 
-        public override void op_io()
+        public override IEnumerable op_io()
         {
-            add_clocks(6);
+            foreach (var e in add_clocks(6))
+            {
+                yield return e;
+            };
         }
 
-        public override byte op_read(uint addr)
+        public override IEnumerable op_read(uint addr, Result result)
         {
-            regs.mdr = Bus.bus.read(new uint24(addr));
-            add_clocks(speed(addr));
-            return regs.mdr;
+            foreach (var e in Bus.bus.read(new uint24(addr), result))
+            {
+                yield return e;
+            };
+            regs.mdr = result.Value;
+            foreach (var e in add_clocks(speed(addr)))
+            {
+                yield return e;
+            };
+            result.Value = regs.mdr;
         }
 
-        public override void op_write(uint addr, byte data)
+        public override IEnumerable op_write(uint addr, byte data)
         {
-            add_clocks(speed(addr));
-            Bus.bus.write(new uint24(addr), regs.mdr = data);
+            foreach (var e in add_clocks(speed(addr)))
+            {
+                yield return e;
+            };
+            foreach (var e in Bus.bus.write(new uint24(addr), regs.mdr = data))
+            {
+                yield return e;
+            };
         }
 
-        public void enter()
+        public IEnumerable enter()
         {
             while (true)
             {
                 if (Scheduler.scheduler.sync == Scheduler.SynchronizeMode.CPU)
                 {
                     Scheduler.scheduler.sync = Scheduler.SynchronizeMode.All;
-                    Scheduler.scheduler.exit(Scheduler.ExitReason.SynchronizeEvent);
+                    yield return Scheduler.ExitReason.SynchronizeEvent;
                 }
 
                 if (status.nmi_pending)
                 {
                     status.nmi_pending = false;
-                    op_irq((ushort)(regs.e == false ? 0xffea : 0xfffa));
+                    foreach (var e in op_irq((ushort)(regs.e == false ? 0xffea : 0xfffa)))
+                    {
+                        yield return e;
+                    };
                 }
 
                 if (status.irq_pending)
                 {
                     status.irq_pending = false;
-                    op_irq((ushort)(regs.e == false ? 0xffee : 0xfffe));
+                    foreach (var e in op_irq((ushort)(regs.e == false ? 0xffee : 0xfffe)))
+                    {
+                        yield return e;
+                    };
                 }
 
-                op_step();
+                foreach (var e in op_step())
+                {
+                    yield return e;
+                };
             }
         }
 
-        public void power()
+        public IEnumerable power()
         {
             regs.a.Assign(0x0000);
             regs.x.Assign(0x0000);
             regs.y.Assign(0x0000);
             regs.s.Assign(0x01ff);
 
-            reset();
+            foreach (var e in reset())
+            {
+                yield return e;
+            };
         }
 
-        public void reset()
+        public IEnumerable reset()
         {
-            Processor.create("CPU", Enter, System.system.cpu_frequency);
+            Processor.create(enter(), System.system.cpu_frequency);
             coprocessors.Clear();
             PPUCounter.reset();
 
@@ -514,8 +584,16 @@ namespace Snes
             regs.wai = false;
             update_table();
 
-            regs.pc.l = Bus.bus.read(new uint24(0xfffc));
-            regs.pc.h = Bus.bus.read(new uint24(0xfffd));
+            foreach (var e in Bus.bus.read(new uint24(0xfffc), _result))
+            {
+                yield return e;
+            };
+            regs.pc.l = _result.Value;
+            foreach (var e in Bus.bus.read(new uint24(0xfffd), _result))
+            {
+                yield return e;
+            };
+            regs.pc.h = _result.Value;
             regs.pc.b = 0x00;
 
             status.nmi_valid = false;
@@ -646,33 +724,60 @@ namespace Snes
             PPUCounter.Scanline = this.scanline;
         }
 
-        //cpu
-        private static void Enter()
+        private IEnumerable op_step()
         {
-            cpu.enter();
+            foreach (var e in op_readpc(_result))
+            {
+                yield return e;
+            };
+            foreach (var e in opcode_table.Array[opcode_table.Offset + _result.Value].Invoke())
+            {
+                yield return e;
+            };
         }
 
-        private void op_step()
+        private IEnumerable op_irq(ushort vector)
         {
-            opcode_table.Array[opcode_table.Offset + op_readpc()].Invoke();
-        }
-
-        private void op_irq(ushort vector)
-        {
-            op_read(regs.pc.d);
-            op_io();
+            foreach (var e in op_read(regs.pc.d, _result))
+            {
+                yield return e;
+            };
+            foreach (var e in op_io())
+            {
+                yield return e;
+            };
             if (!regs.e)
             {
-                op_writestack(regs.pc.b);
+                foreach (var e in op_writestack(regs.pc.b))
+                {
+                    yield return e;
+                };
             }
-            op_writestack(regs.pc.h);
-            op_writestack(regs.pc.l);
-            op_writestack(regs.e ? (byte)((uint)regs.p & ~0x10) : (byte)regs.p);
-            rd.l = op_read(vector + 0U);
+            foreach (var e in op_writestack(regs.pc.h))
+            {
+                yield return e;
+            };
+            foreach (var e in op_writestack(regs.pc.l))
+            {
+                yield return e;
+            };
+            foreach (var e in op_writestack(regs.e ? (byte)((uint)regs.p & ~0x10) : (byte)regs.p))
+            {
+                yield return e;
+            };
+            foreach (var e in op_read(vector + 0U, _result))
+            {
+                yield return e;
+            };
+            rd.l = _result.Value;
             regs.pc.b = 0x00;
             regs.p.i = Convert.ToBoolean(1);
             regs.p.d = Convert.ToBoolean(0);
-            rd.h = op_read(vector + 1U);
+            foreach (var e in op_read(vector + 1U, _result))
+            {
+                yield return e;
+            };
+            rd.h = _result.Value;
             regs.pc.w = rd.w;
         }
 
@@ -681,24 +786,30 @@ namespace Snes
 
         private PriorityQueue queue;
 
-        private void queue_event(uint id)
+        private IEnumerable queue_event(uint id)
         {
             switch ((QueueEvent)id)
             {
                 case QueueEvent.DramRefresh:
                     {
-                        add_clocks(40);
-                        return;
+                        foreach (var e in add_clocks(40))
+                        {
+                            yield return e;
+                        };
+                        yield break;
                     }
                 case QueueEvent.HdmaRun:
                     {
-                        hdma_run();
-                        return;
+                        foreach (var e in hdma_run())
+                        {
+                            yield return e;
+                        };
+                        yield break;
                     }
                 case QueueEvent.ControllerLatch:
                     {
                         PPU.ppu.latch_counters();
-                        return;
+                        yield break;
                     }
             }
         }
@@ -726,7 +837,7 @@ namespace Snes
             }
         }
 
-        private void add_clocks(uint clocks)
+        private IEnumerable add_clocks(uint clocks)
         {
             if (status.hirq_enabled)
             {
@@ -783,21 +894,42 @@ namespace Snes
                 status.irq_valid = false;
             }
 
-            PPUCounter.tick(clocks);
-            queue.tick(clocks);
+            foreach (var e in PPUCounter.tick(clocks))
+            {
+                yield return e;
+            };
+            foreach (var e in queue.tick(clocks))
+            {
+                yield return e;
+            };
             step(clocks);
         }
 
-        private void scanline()
+        private IEnumerable scanline()
         {
-            synchronize_smp();
-            synchronize_ppu();
-            synchronize_coprocessor();
-            System.system.scanline();
+            foreach (var e in synchronize_smp())
+            {
+                yield return e;
+            };
+            foreach (var e in synchronize_ppu())
+            {
+                yield return e;
+            };
+            foreach (var e in synchronize_coprocessor())
+            {
+                yield return e;
+            };
+            foreach (var e in System.system.scanline())
+            {
+                yield return e;
+            };
 
             if (PPUCounter.vcounter() == 0)
             {
-                hdma_init();
+                foreach (var e in hdma_init())
+                {
+                    yield return e;
+                };
             }
 
             queue.enqueue(534, (uint)QueueEvent.DramRefresh);
@@ -914,36 +1046,68 @@ namespace Snes
             return true;
         }
 
-        private byte dma_read(uint abus)
+        private IEnumerable dma_read(uint abus, Result result)
         {
             if (dma_addr_valid(abus) == false)
             {
-                return 0x00;
+                result.Value = 0x00;
+                yield break;
             }
-            return Bus.bus.read(new uint24(abus));
+            foreach (var e in Bus.bus.read(new uint24(abus), result))
+            {
+                yield return e;
+            };
         }
 
-        private void dma_write(bool valid, uint addr, byte data)
+        private IEnumerable dma_write(bool valid, uint addr, byte data)
         {
             if (valid)
             {
-                Bus.bus.write(new uint24(addr), data);
+                foreach (var e in Bus.bus.write(new uint24(addr), data))
+                {
+                    yield return e;
+                };
             }
         }
 
-        private void dma_transfer(bool direction, byte bbus, uint abus)
+        private IEnumerable dma_transfer(bool direction, byte bbus, uint abus)
         {
             if (Convert.ToInt32(direction) == 0)
             {
-                byte data = dma_read(abus);
-                add_clocks(8);
-                dma_write(dma_transfer_valid(bbus, abus), (uint)(0x2100 | bbus), data);
+                foreach (var e in dma_read(abus, _result))
+                {
+                    yield return e;
+                };
+                foreach (var e in add_clocks(8))
+                {
+                    yield return e;
+                };
+                foreach (var e in dma_write(dma_transfer_valid(bbus, abus), (uint)(0x2100 | bbus), _result.Value))
+                {
+                    yield return e;
+                };
             }
             else
             {
-                byte data = dma_transfer_valid(bbus, abus) ? Bus.bus.read(new uint24((uint)(0x2100 | bbus))) : (byte)0x00;
-                add_clocks(8);
-                dma_write(dma_addr_valid(abus), abus, data);
+                if (dma_transfer_valid(bbus, abus))
+                {
+                    foreach (var e in Bus.bus.read(new uint24((uint)(0x2100 | bbus)), _result))
+                    {
+                        yield return e;
+                    };
+                }
+                else
+                {
+                    _result.Value = (byte)0x00;
+                }
+                foreach (var e in add_clocks(8))
+                {
+                    yield return e;
+                };
+                foreach (var e in dma_write(dma_addr_valid(abus), abus, _result.Value))
+                {
+                    yield return e;
+                };
             }
         }
 
@@ -1000,9 +1164,12 @@ namespace Snes
             return (uint)((channel[i].indirect_bank << 16) | (channel[i].union.indirect_addr++));
         }
 
-        private void dma_run()
+        private IEnumerable dma_run()
         {
-            add_clocks(16);
+            foreach (var e in add_clocks(16))
+            {
+                yield return e;
+            };
 
             for (uint i = 0; i < 8; i++)
             {
@@ -1010,12 +1177,18 @@ namespace Snes
                 {
                     continue;
                 }
-                add_clocks(8);
+                foreach (var e in add_clocks(8))
+                {
+                    yield return e;
+                };
 
                 uint index = 0;
                 do
                 {
-                    dma_transfer(channel[i].direction, dma_bbus(i, index++), dma_addr(i));
+                    foreach (var e in dma_transfer(channel[i].direction, dma_bbus(i, index++), dma_addr(i)))
+                    {
+                        yield return e;
+                    };
                 }
                 while (channel[i].dma_enabled && Convert.ToBoolean(--channel[i].union.transfer_size));
 
@@ -1037,32 +1210,53 @@ namespace Snes
             return false;
         }
 
-        private void hdma_update(uint i)
+        private IEnumerable hdma_update(uint i)
         {
             if ((channel[i].line_counter & 0x7f) == 0)
             {
-                channel[i].line_counter = dma_read(hdma_addr(i));
+                foreach (var e in dma_read(hdma_addr(i), _result))
+                {
+                    yield return e;
+                };
+                channel[i].line_counter = _result.Value;
                 channel[i].hdma_completed = (channel[i].line_counter == 0);
                 channel[i].hdma_do_transfer = !channel[i].hdma_completed;
-                add_clocks(8);
+                foreach (var e in add_clocks(8))
+                {
+                    yield return e;
+                };
 
                 if (channel[i].indirect)
                 {
-                    channel[i].union.indirect_addr = (ushort)(dma_read(hdma_addr(i)) << 8);
-                    add_clocks(8);
+                    foreach (var e in dma_read(hdma_addr(i), _result))
+                    {
+                        yield return e;
+                    };
+                    channel[i].union.indirect_addr = (ushort)(_result.Value << 8);
+                    foreach (var e in add_clocks(8))
+                    {
+                        yield return e;
+                    };
 
                     //emulating this glitch causes a slight slowdown; only enable if needed
                     //if(!channel[i].hdma_completed || hdma_active_after(i)) {
                     channel[i].union.indirect_addr >>= 8;
-                    channel[i].union.indirect_addr |= (ushort)(dma_read(hdma_addr(i)) << 8);
-                    add_clocks(8);
+                    foreach (var e in dma_read(hdma_addr(i), _result))
+                    {
+                        yield return e;
+                    };
+                    channel[i].union.indirect_addr |= (ushort)(_result.Value << 8);
+                    foreach (var e in add_clocks(8))
+                    {
+                        yield return e;
+                    };
                     //}
                 }
             }
         }
 
         private static readonly uint[] transfer_length = { 1, 2, 2, 4, 4, 4, 2, 4 };
-        private void hdma_run()
+        private IEnumerable hdma_run()
         {
             uint channels = 0;
             for (uint i = 0; i < 8; i++)
@@ -1074,10 +1268,13 @@ namespace Snes
             }
             if (channels == 0)
             {
-                return;
+                yield break;
             }
 
-            add_clocks(16);
+            foreach (var e in add_clocks(16))
+            {
+                yield return e;
+            };
             for (uint i = 0; i < 8; i++)
             {
                 if (channel[i].hdma_enabled == false || channel[i].hdma_completed == true)
@@ -1092,7 +1289,10 @@ namespace Snes
                     for (uint index = 0; index < length; index++)
                     {
                         uint addr = channel[i].indirect == false ? hdma_addr(i) : hdma_iaddr(i);
-                        dma_transfer(channel[i].direction, dma_bbus(i, index), addr);
+                        foreach (var e in dma_transfer(channel[i].direction, dma_bbus(i, index), addr))
+                        {
+                            yield return e;
+                        };
                     }
                 }
             }
@@ -1106,13 +1306,16 @@ namespace Snes
 
                 channel[i].line_counter--;
                 channel[i].hdma_do_transfer = Convert.ToBoolean(channel[i].line_counter & 0x80);
-                hdma_update(i);
+                foreach (var e in hdma_update(i))
+                {
+                    yield return e;
+                };
             }
 
             status.irq_lock = true;
         }
 
-        private void hdma_init()
+        private IEnumerable hdma_init()
         {
             uint channels = 0;
             for (uint i = 0; i < 8; i++)
@@ -1126,10 +1329,13 @@ namespace Snes
             }
             if (channels == 0)
             {
-                return;
+                yield break;
             }
 
-            add_clocks(16);
+            foreach (var e in add_clocks(16))
+            {
+                yield return e;
+            };
             for (uint i = 0; i < 8; i++)
             {
                 if (!channel[i].hdma_enabled)
@@ -1140,7 +1346,10 @@ namespace Snes
 
                 channel[i].hdma_addr = channel[i].source_addr;
                 channel[i].line_counter = 0;
-                hdma_update(i);
+                foreach (var e in hdma_update(i))
+                {
+                    yield return e;
+                };
             }
 
             status.irq_lock = true;

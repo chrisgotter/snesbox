@@ -95,12 +95,12 @@ namespace Snes
 
         public static void snes_power()
         {
-            System.system.power();
+            foreach (var e in System.system.power()) { }
         }
 
         public static void snes_reset()
         {
-            System.system.reset();
+            foreach (var e in System.system.reset()) { }
         }
 
         public static void snes_run()
@@ -153,7 +153,7 @@ namespace Snes
             }
             string xmlrom = (!ReferenceEquals(rom_xml, null)) ? new UTF8Encoding().GetString(rom_xml) : new SnesInformation(rom_data, rom_size).xml_memory_map;
             Cartridge.cartridge.load(Cartridge.Mode.Normal, new string[] { xmlrom });
-            System.system.power();
+            foreach (var e in System.system.power()) { }
             return true;
         }
 
@@ -171,7 +171,7 @@ namespace Snes
             }
             string xmlbsx = (!ReferenceEquals(bsx_xml, null)) ? new UTF8Encoding().GetString(bsx_xml) : new SnesInformation(bsx_data, bsx_size).xml_memory_map;
             Cartridge.cartridge.load(Cartridge.Mode.BsxSlotted, new string[] { xmlrom, xmlbsx });
-            System.system.power();
+            foreach (var e in System.system.power()) { }
             return true;
         }
 
@@ -189,7 +189,7 @@ namespace Snes
             }
             string xmlbsx = (!ReferenceEquals(bsx_xml, null)) ? new UTF8Encoding().GetString(bsx_xml) : new SnesInformation(bsx_data, bsx_size).xml_memory_map;
             Cartridge.cartridge.load(Cartridge.Mode.Bsx, new string[] { xmlrom, xmlbsx });
-            System.system.power();
+            foreach (var e in System.system.power()) { }
             return true;
         }
 
@@ -212,7 +212,7 @@ namespace Snes
             }
             string xmlstb = (!ReferenceEquals(stb_xml, null)) ? new UTF8Encoding().GetString(stb_xml) : new SnesInformation(stb_data, stb_size).xml_memory_map;
             Cartridge.cartridge.load(Cartridge.Mode.SufamiTurbo, new string[] { xmlrom, xmlsta, xmlstb });
-            System.system.power();
+            foreach (var e in System.system.power()) { }
             return true;
         }
 
@@ -230,7 +230,7 @@ namespace Snes
             }
             string xmldmg = (!ReferenceEquals(dmg_xml, null)) ? new UTF8Encoding().GetString(dmg_xml) : new SnesInformation(dmg_data, dmg_size).xml_memory_map;
             Cartridge.cartridge.load(Cartridge.Mode.SuperGameBoy, new string[] { xmlrom, xmldmg });
-            System.system.power();
+            foreach (var e in System.system.power()) { }
             return true;
         }
 

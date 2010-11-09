@@ -1,4 +1,5 @@
 ﻿#if FAST_DSP
+using System.Collections;
 using System.IO;
 using Nall;
 
@@ -13,11 +14,11 @@ namespace Snes
             Processor.clock += clocks;
         }
 
-        public void synchronize_smp()
+        public IEnumerable synchronize_smp()
         {
             if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
-                Libco.Switch(SMP.smp.Processor.thread);
+                yield return SMP.smp.Processor.thread;
             }
         }
 

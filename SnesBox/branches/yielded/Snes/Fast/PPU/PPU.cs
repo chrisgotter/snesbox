@@ -1,5 +1,6 @@
 ﻿#if FAST_PPU
 using System;
+using System.Collections;
 using System.Linq;
 using Nall;
 
@@ -14,11 +15,11 @@ namespace Snes
             Processor.clock += clocks;
         }
 
-        public void synchronize_cpu()
+        public IEnumerable synchronize_cpu()
         {
             if (Processor.clock >= 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
-                Libco.Switch(CPU.cpu.Processor.thread);
+                yield return CPU.cpu.Processor.thread;
             }
         }
 
@@ -856,9 +857,12 @@ namespace Snes
             return regs.ppu2_mdr;
         }  //STAT78
 
-        public byte mmio_read(uint addr)
+        public IEnumerable mmio_read(uint addr, Result result)
         {
-            CPU.cpu.synchronize_ppu();
+            foreach (var e in CPU.cpu.synchronize_ppu())
+            {
+                yield return e;
+            };
 
             switch (addr & 0xffff)
             {
@@ -880,198 +884,214 @@ namespace Snes
                 case 0x2128:
                 case 0x2129:
                 case 0x212a:
-                    return regs.ppu1_mdr;
+                    result.Value = regs.ppu1_mdr;
+                    yield break;
                 case 0x2134:
-                    return mmio_r2134();  //MPYL
+                    result.Value = mmio_r2134();  //MPYL
+                    yield break;
                 case 0x2135:
-                    return mmio_r2135();  //MPYM
+                    result.Value = mmio_r2135();  //MPYM
+                    yield break;
                 case 0x2136:
-                    return mmio_r2136();  //MPYH
+                    result.Value = mmio_r2136();  //MPYH
+                    yield break;
                 case 0x2137:
-                    return mmio_r2137();  //SLHV
+                    result.Value = mmio_r2137();  //SLHV
+                    yield break;
                 case 0x2138:
-                    return mmio_r2138();  //OAMDATAREAD
+                    result.Value = mmio_r2138();  //OAMDATAREAD
+                    yield break;
                 case 0x2139:
-                    return mmio_r2139();  //VMDATALREAD
+                    result.Value = mmio_r2139();  //VMDATALREAD
+                    yield break;
                 case 0x213a:
-                    return mmio_r213a();  //VMDATAHREAD
+                    result.Value = mmio_r213a();  //VMDATAHREAD
+                    yield break;
                 case 0x213b:
-                    return mmio_r213b();  //CGDATAREAD
+                    result.Value = mmio_r213b();  //CGDATAREAD
+                    yield break;
                 case 0x213c:
-                    return mmio_r213c();  //OPHCT
+                    result.Value = mmio_r213c();  //OPHCT
+                    yield break;
                 case 0x213d:
-                    return mmio_r213d();  //OPVCT
+                    result.Value = mmio_r213d();  //OPVCT
+                    yield break;
                 case 0x213e:
-                    return mmio_r213e();  //STAT77
+                    result.Value = mmio_r213e();  //STAT77
+                    yield break;
                 case 0x213f:
-                    return mmio_r213f();  //STAT78
+                    result.Value = mmio_r213f();  //STAT78
+                    yield break;
             }
 
-            return CPU.cpu.regs.mdr;
+            result.Value = CPU.cpu.regs.mdr;
         }
 
-        public void mmio_write(uint addr, byte data)
+        public IEnumerable mmio_write(uint addr, byte data)
         {
-            CPU.cpu.synchronize_ppu();
+            foreach (var e in CPU.cpu.synchronize_ppu())
+            {
+                yield return e;
+            };
 
             switch (addr & 0xffff)
             {
                 case 0x2100:
                     mmio_w2100(data);
-                    return;  //INIDISP
+                    yield break;  //INIDISP
                 case 0x2101:
                     mmio_w2101(data);
-                    return;  //OBSEL
+                    yield break;  //OBSEL
                 case 0x2102:
                     mmio_w2102(data);
-                    return;  //OAMADDL
+                    yield break;  //OAMADDL
                 case 0x2103:
                     mmio_w2103(data);
-                    return;  //OAMADDH
+                    yield break;  //OAMADDH
                 case 0x2104:
                     mmio_w2104(data);
-                    return;  //OAMDATA
+                    yield break;  //OAMDATA
                 case 0x2105:
                     mmio_w2105(data);
-                    return;  //(int)ID.BGMODE
+                    yield break;  //(int)ID.BGMODE
                 case 0x2106:
                     mmio_w2106(data);
-                    return;  //MOSAIC
+                    yield break;  //MOSAIC
                 case 0x2107:
                     mmio_w2107(data);
-                    return;  //(int)ID.BG1SC
+                    yield break;  //(int)ID.BG1SC
                 case 0x2108:
                     mmio_w2108(data);
-                    return;  //(int)ID.BG2SC
+                    yield break;  //(int)ID.BG2SC
                 case 0x2109:
                     mmio_w2109(data);
-                    return;  //(int)ID.BG3SC
+                    yield break;  //(int)ID.BG3SC
                 case 0x210a:
                     mmio_w210a(data);
-                    return;  //(int)ID.BG4SC
+                    yield break;  //(int)ID.BG4SC
                 case 0x210b:
                     mmio_w210b(data);
-                    return;  //(int)ID.BG12NBA
+                    yield break;  //(int)ID.BG12NBA
                 case 0x210c:
                     mmio_w210c(data);
-                    return;  //(int)ID.BG34NBA
+                    yield break;  //(int)ID.BG34NBA
                 case 0x210d:
                     mmio_w210d(data);
-                    return;  //(int)ID.BG1HOFS
+                    yield break;  //(int)ID.BG1HOFS
                 case 0x210e:
                     mmio_w210e(data);
-                    return;  //(int)ID.BG1VOFS
+                    yield break;  //(int)ID.BG1VOFS
                 case 0x210f:
                     mmio_w210f(data);
-                    return;  //(int)ID.BG2HOFS
+                    yield break;  //(int)ID.BG2HOFS
                 case 0x2110:
                     mmio_w2110(data);
-                    return;  //(int)ID.BG2VOFS
+                    yield break;  //(int)ID.BG2VOFS
                 case 0x2111:
                     mmio_w2111(data);
-                    return;  //(int)ID.BG3HOFS
+                    yield break;  //(int)ID.BG3HOFS
                 case 0x2112:
                     mmio_w2112(data);
-                    return;  //(int)ID.BG3VOFS
+                    yield break;  //(int)ID.BG3VOFS
                 case 0x2113:
                     mmio_w2113(data);
-                    return;  //(int)ID.BG4HOFS
+                    yield break;  //(int)ID.BG4HOFS
                 case 0x2114:
                     mmio_w2114(data);
-                    return;  //(int)ID.BG4VOFS
+                    yield break;  //(int)ID.BG4VOFS
                 case 0x2115:
                     mmio_w2115(data);
-                    return;  //VMAIN
+                    yield break;  //VMAIN
                 case 0x2116:
                     mmio_w2116(data);
-                    return;  //VMADDL
+                    yield break;  //VMADDL
                 case 0x2117:
                     mmio_w2117(data);
-                    return;  //VMADDH
+                    yield break;  //VMADDH
                 case 0x2118:
                     mmio_w2118(data);
-                    return;  //VMDATAL
+                    yield break;  //VMDATAL
                 case 0x2119:
                     mmio_w2119(data);
-                    return;  //VMDATAH
+                    yield break;  //VMDATAH
                 case 0x211a:
                     mmio_w211a(data);
-                    return;  //M7SEL
+                    yield break;  //M7SEL
                 case 0x211b:
                     mmio_w211b(data);
-                    return;  //M7A
+                    yield break;  //M7A
                 case 0x211c:
                     mmio_w211c(data);
-                    return;  //M7B
+                    yield break;  //M7B
                 case 0x211d:
                     mmio_w211d(data);
-                    return;  //M7C
+                    yield break;  //M7C
                 case 0x211e:
                     mmio_w211e(data);
-                    return;  //M7D
+                    yield break;  //M7D
                 case 0x211f:
                     mmio_w211f(data);
-                    return;  //M7X
+                    yield break;  //M7X
                 case 0x2120:
                     mmio_w2120(data);
-                    return;  //M7Y
+                    yield break;  //M7Y
                 case 0x2121:
                     mmio_w2121(data);
-                    return;  //CGADD
+                    yield break;  //CGADD
                 case 0x2122:
                     mmio_w2122(data);
-                    return;  //CGDATA
+                    yield break;  //CGDATA
                 case 0x2123:
                     mmio_w2123(data);
-                    return;  //W12SEL
+                    yield break;  //W12SEL
                 case 0x2124:
                     mmio_w2124(data);
-                    return;  //W34SEL
+                    yield break;  //W34SEL
                 case 0x2125:
                     mmio_w2125(data);
-                    return;  //WOBJSEL
+                    yield break;  //WOBJSEL
                 case 0x2126:
                     mmio_w2126(data);
-                    return;  //WH0
+                    yield break;  //WH0
                 case 0x2127:
                     mmio_w2127(data);
-                    return;  //WH1
+                    yield break;  //WH1
                 case 0x2128:
                     mmio_w2128(data);
-                    return;  //WH2
+                    yield break;  //WH2
                 case 0x2129:
                     mmio_w2129(data);
-                    return;  //WH3
+                    yield break;  //WH3
                 case 0x212a:
                     mmio_w212a(data);
-                    return;  //W(int)ID.BGLOG
+                    yield break;  //W(int)ID.BGLOG
                 case 0x212b:
                     mmio_w212b(data);
-                    return;  //WOBJLOG
+                    yield break;  //WOBJLOG
                 case 0x212c:
                     mmio_w212c(data);
-                    return;  //TM
+                    yield break;  //TM
                 case 0x212d:
                     mmio_w212d(data);
-                    return;  //TS
+                    yield break;  //TS
                 case 0x212e:
                     mmio_w212e(data);
-                    return;  //TMW
+                    yield break;  //TMW
                 case 0x212f:
                     mmio_w212f(data);
-                    return;  //TSW
+                    yield break;  //TSW
                 case 0x2130:
                     mmio_w2130(data);
-                    return;  //CGWSEL
+                    yield break;  //CGWSEL
                 case 0x2131:
                     mmio_w2131(data);
-                    return;  //CGADDSUB
+                    yield break;  //CGADDSUB
                 case 0x2132:
                     mmio_w2132(data);
-                    return;  //COLDATA
+                    yield break;  //COLDATA
                 case 0x2133:
                     mmio_w2133(data);
-                    return;  //SETINI
+                    yield break;  //SETINI
             }
         }
 
@@ -2122,7 +2142,7 @@ namespace Snes
                             ty = ((py >> 3) & 127);
                             tile = StaticRAM.vram[(uint)((ty * 128 + tx) << 1)];
                             palette = StaticRAM.vram[(uint)((((tile << 6) + ((py & 7) << 3) + (px & 7)) << 1) + 1)];
-                        } 
+                        }
                         break;
                     case 2:
                         {  //palette color 0 outside of screen area
@@ -2139,7 +2159,7 @@ namespace Snes
                                 tile = StaticRAM.vram[(uint)((ty * 128 + tx) << 1)];
                                 palette = StaticRAM.vram[(uint)((((tile << 6) + ((py & 7) << 3) + (px & 7)) << 1) + 1)];
                             }
-                        } 
+                        }
                         break;
                     case 3:
                         {  //character 0 repetition outside of screen area
@@ -2156,7 +2176,7 @@ namespace Snes
                                 tile = StaticRAM.vram[(uint)((ty * 128 + tx) << 1)];
                             }
                             palette = StaticRAM.vram[(uint)((((tile << 6) + ((py & 7) << 3) + (px & 7)) << 1) + 1)];
-                        } 
+                        }
                         break;
                 }
 
@@ -2386,16 +2406,17 @@ namespace Snes
         public byte ppu1_version;
         public byte ppu2_version;
 
-        public static void Enter()
+        public IEnumerable add_clocks(uint clocks)
         {
-            PPU.ppu.enter();
-        }
-
-        public void add_clocks(uint clocks)
-        {
-            PPUCounter.tick(clocks);
+            foreach (var e in PPUCounter.tick(clocks))
+            {
+                yield return e;
+            };
             step(clocks);
-            synchronize_cpu();
+            foreach (var e in synchronize_cpu())
+            {
+                yield return e;
+            };
         }
 
         public byte region;
@@ -2531,18 +2552,21 @@ namespace Snes
             }
         }
 
-        public void enter()
+        public IEnumerable enter()
         {
             while (true)
             {
                 if (Scheduler.scheduler.sync == Scheduler.SynchronizeMode.All)
                 {
-                    Scheduler.scheduler.exit(Scheduler.ExitReason.SynchronizeEvent);
+                    yield return Scheduler.ExitReason.SynchronizeEvent;
                 }
 
                 //H =    0 (initialize)
                 scanline();
-                add_clocks(10);
+                foreach (var e in add_clocks(10))
+                {
+                    yield return e;
+                };
 
                 //H =   10 (cache mode7 registers + OAM address reset)
                 cache.m7_hofs = regs.m7_hofs;
@@ -2561,11 +2585,17 @@ namespace Snes
                         regs.oam_firstsprite = (regs.oam_priority == false) ? (byte)0 : (byte)((regs.oam_addr >> 2) & 127);
                     }
                 }
-                add_clocks(502);
+                foreach (var e in add_clocks(502))
+                {
+                    yield return e;
+                };
 
                 //H =  512 (render)
                 render_scanline();
-                add_clocks(640);
+                foreach (var e in add_clocks(640))
+                {
+                    yield return e;
+                };
 
                 //H = 1152 (cache OBSEL)
                 if (cache.oam_basesize != regs.oam_basesize)
@@ -2575,7 +2605,10 @@ namespace Snes
                 }
                 cache.oam_nameselect = regs.oam_nameselect;
                 cache.oam_tdaddr = regs.oam_tdaddr;
-                add_clocks(PPUCounter.lineclocks() - 1152U);  //seek to start of next scanline
+                foreach (var e in add_clocks(PPUCounter.lineclocks() - 1152U))
+                {
+                    yield return e;
+                };  //seek to start of next scanline
 
             }
         }
@@ -2810,7 +2843,7 @@ namespace Snes
 
         public void reset()
         {
-            Processor.create("PPU", Enter, System.system.cpu_frequency);
+            Processor.create(enter(), System.system.cpu_frequency);
             PPUCounter.reset();
             Array.Clear(surface, 0, surface.Length);
 
