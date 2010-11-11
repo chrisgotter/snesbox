@@ -8,10 +8,10 @@ namespace Snes
     {
         public enum SnesPort { ONE = 0, TWO = 1 }
         public enum SnesDevice { NONE = 0, JOYPAD = 1, MULTITAP = 2, MOUSE = 3, SUPER_SCOPE = 4, JUSTIFIER = 5, JUSTIFIERS = 6 }
-        public enum SnesDeviceIdJoypad { B = 0, Y = 1, SELECT = 2, START = 3, UP = 4, DOWN = 5, LEFT = 6, RIGHT = 7, A = 8, X = 9, L = 10, R = 11 }
-        public enum SnesDeviceIdMouse { X = 0, Y = 1, LEFT = 2, RIGHT = 3 }
-        public enum SnesDeviceIdSuperScope { X = 0, Y = 1, TRIGGER = 2, CURSOR = 3, TURBO = 4, PAUSE = 5 }
-        public enum SnesDeviceIdJustifier { X = 0, Y = 1, TRIGGER = 2, START = 3 }
+        public enum SnesDeviceIdJoypad { B = 1 << 0, Y = 1 << 1, SELECT = 1 << 2, START = 1 << 3, UP = 1 << 4, DOWN = 1 << 5, LEFT = 1 << 6, RIGHT = 1 << 7, A = 1 << 8, X = 1 << 9, L = 1 << 10, R = 1 << 11 }
+        public enum SnesDeviceIdMouse { X = 1 << 0, Y = 1 << 1, LEFT = 1 << 2, RIGHT = 1 << 3 }
+        public enum SnesDeviceIdSuperScope { X = 1 << 0, Y = 1 << 1, TRIGGER = 1 << 2, CURSOR = 1 << 3, TURBO = 1 << 4, PAUSE = 1 << 5 }
+        public enum SnesDeviceIdJustifier { X = 1 << 0, Y = 1 << 1, TRIGGER = 1 << 2, START = 1 << 3 }
         public enum SnesRegion { NTSC = 0, PAL = 1 }
         public enum SnesMemory { CARTRIDGE_RAM = 0, CARTRIDGE_RTC = 1, BSX_RAM = 2, BSX_PRAM = 3, SUFAMI_TURBO_A_RAM = 4, SUFAMI_TURBO_B_RAM = 5, GAME_BOY_RAM = 6, GAME_BOY_RTC = 7 }
 

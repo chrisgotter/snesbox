@@ -9,7 +9,9 @@ namespace SnesBox
     {
         public static readonly int VersionMajor;
         public static readonly int VersionMinor;
-        static Collection<uint> audio_buffer = new Collection<uint>();
+        private static Collection<uint> audio_buffer = new Collection<uint>();
+        private static volatile ushort[] input_buttons = new ushort[8];
+        private static volatile int[] input_coords = new int[8];
 
         static Snes()
         {
@@ -28,6 +30,21 @@ namespace SnesBox
             LibSnes.snes_init();
             LibSnes.snes_audio_sample += new LibSnes.SnesAudioSample(LibSnes_snes_audio_sample);
             LibSnes.snes_video_refresh += new LibSnes.SnesVideoRefresh(LibSnes_snes_video_refresh);
+            LibSnes.snes_input_state += new LibSnes.SnesInputState(LibSnes_snes_input_state);
+        }
+
+        short LibSnes_snes_input_state(bool port, uint device, uint index, uint id)
+        {
+            int i = (int)((port ? 1 : 0) * 4 + index);
+
+            if (device >= (uint)LibSnes.SnesDevice.MOUSE && id <= 1)
+            {
+                return (short)(input_coords[i] >> (int)(id * 16));
+            }
+            else
+            {
+                return Convert.ToInt16((input_buttons[i] & (1 << (int)id)) != 0);
+            }
         }
 
         void LibSnes_snes_video_refresh(ArraySegment<ushort> data, uint width, uint height)
@@ -83,6 +100,32 @@ namespace SnesBox
         public void Reset()
         {
             LibSnes.snes_reset();
+        }
+
+        public void SetInputState(int port, int index, int buttonStates, int x, int y)
+        {
+            if (port < 1 || port > 2) { throw new ArgumentOutOfRangeException("port"); }
+
+            LibSnes.SnesDeviceIdJoypad leftRight = LibSnes.SnesDeviceIdJoypad.LEFT | LibSnes.SnesDeviceIdJoypad.RIGHT;
+            if ((buttonStates & (int)leftRight) == (int)(leftRight))
+            {
+                buttonStates &= (int)~leftRight;
+            }
+
+            LibSnes.SnesDeviceIdJoypad upDown = LibSnes.SnesDeviceIdJoypad.UP | LibSnes.SnesDeviceIdJoypad.DOWN;
+            if ((buttonStates & (int)upDown) == (int)upDown)
+            {
+                buttonStates &= (int)~upDown;
+            }
+
+            SetInputState((uint)(port - 1), (uint)index, (ushort)buttonStates, (int)(((ushort)y << 16) | (ushort)x));
+        }
+
+        void SetInputState(uint port, uint index, ushort buttons, int coords)
+        {
+            int i = (int)(port * 4 + index);
+            input_buttons[i] = buttons;
+            input_coords[i] = coords;
         }
 
         public void LoadCartridge(Cartridge cartridge)
