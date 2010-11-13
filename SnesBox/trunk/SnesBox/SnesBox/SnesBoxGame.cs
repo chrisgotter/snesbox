@@ -11,6 +11,7 @@ namespace SnesBox
 {
     public class SnesBoxGame : Microsoft.Xna.Framework.Game
     {
+        enum Filters { None, HQ2X }
         GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
 
@@ -21,6 +22,7 @@ namespace SnesBox
         Texture2D _videoFrame;
         Color[] _videoBuffer;
         Rectangle _videoRect;
+        Dictionary<Filters, Effect> _effects = new Dictionary<Filters, Effect>();
 
         DynamicSoundEffectInstance _audioFrame;
 
@@ -30,6 +32,7 @@ namespace SnesBox
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = 800;
             _graphics.PreferredBackBufferHeight = 600;
+            _graphics.IsFullScreen = true;
 
             _frameRate = new FrameRateComponent(this);
             Components.Add(_frameRate);
@@ -67,6 +70,18 @@ namespace SnesBox
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            var viewport = GraphicsDevice.Viewport;
+            var projection = Matrix.CreateOrthographicOffCenter(0, viewport.Width, viewport.Height, 0, 0, 1);
+            var halfPixelOffset = Matrix.CreateTranslation(-0.5f, -0.5f, 0);
+
+            foreach (var effectType in Enum.GetValues(typeof(Filters)))
+            {
+                var effect = Content.Load<Effect>(@"Content\" + effectType.ToString());
+                effect.Parameters["MatrixTransform"].SetValue(halfPixelOffset * projection);
+                effect.Parameters["TextureSize"].SetValue(new Vector2(_videoFrame.Width, _videoFrame.Height));
+                _effects.Add((Filters)effectType, effect);
+            }
+
             using (FileStream fs = new FileStream("SMW.smc", FileMode.Open))
             {
                 var rom = new byte[fs.Length];
@@ -89,7 +104,8 @@ namespace SnesBox
         protected override void Draw(GameTime gameTime)
         {
             var vp = GraphicsDevice.Viewport;
-            _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+
+            _spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, _effects[Filters.HQ2X]);
             _graphics.GraphicsDevice.SamplerStates[0] = new SamplerState() { Filter = TextureFilter.Point };
             _spriteBatch.Draw(_videoFrame, new Rectangle(0, 0, vp.Width, vp.Height), _videoRect, Color.White);
             _spriteBatch.End();
