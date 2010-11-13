@@ -3,9 +3,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Snes;
 
-namespace SnesBox
+namespace SnesBox.Console
 {
-    class Snes
+    class SuperNintendo
     {
         public static readonly int VersionMajor;
         public static readonly int VersionMinor;
@@ -13,7 +13,7 @@ namespace SnesBox
         private static volatile ushort[] input_buttons = new ushort[8];
         private static volatile int[] input_coords = new int[8];
 
-        static Snes()
+        static SuperNintendo()
         {
             VersionMajor = (int)LibSnes.snes_library_revision_major();
             VersionMinor = (int)LibSnes.snes_library_revision_minor();
@@ -23,7 +23,7 @@ namespace SnesBox
         public event VideoUpdatedEventHandler VideoUpdated;
         public event AudioUpdatedEventHandler AudioUpdated;
 
-        public Snes()
+        public SuperNintendo()
         {
             _cartridge = null;
 

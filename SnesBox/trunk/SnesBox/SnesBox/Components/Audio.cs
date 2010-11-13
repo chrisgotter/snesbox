@@ -1,14 +1,15 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
+using SnesBox.Console;
 
-namespace SnesBox
+namespace SnesBox.Components
 {
     class Audio : GameComponent
     {
         DynamicSoundEffectInstance _audioFrame;
 
-        public Audio(Game game, Snes snes)
+        public Audio(Game game, SuperNintendo snes)
             : base(game)
         {
             _audioFrame = new DynamicSoundEffectInstance(32040, AudioChannels.Stereo);

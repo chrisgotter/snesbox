@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 using Snes;
 
-namespace SnesBox
+namespace SnesBox.Console
 {
     static class Input
     {

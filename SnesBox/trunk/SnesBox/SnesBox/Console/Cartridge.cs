@@ -1,7 +1,7 @@
 ﻿using System;
 using Snes;
 
-namespace SnesBox
+namespace SnesBox.Console
 {
     public abstract class Cartridge
     {
@@ -23,7 +23,7 @@ namespace SnesBox
         public byte[] RomData { get { return _romData; } set { _romData = value; } }
         public string RomXml { get { return _romXml; } set { _romXml = value; } }
 
-        internal abstract void Load(Snes snes);
+        internal abstract void Load(SuperNintendo snes);
         internal abstract void Refresh();
     }
 
@@ -35,7 +35,7 @@ namespace SnesBox
         public byte[] Sram { get { return _sram; } set { _sram = value; } }
         public byte[] Rtc { get { return _rtc; } set { _rtc = value; } }
 
-        internal override void Load(Snes snes)
+        internal override void Load(SuperNintendo snes)
         {
             LibSnes.snes_load_cartridge_normal(MakeUtf8Array(_romXml), _romData, (uint)_romData.Length);
         }
@@ -54,7 +54,7 @@ namespace SnesBox
         public byte[] BsxData { get { return _bsxData; } set { _bsxData = value; } }
         public string BsxXml { get { return _bsxXml; } set { _bsxXml = value; } }
 
-        internal override void Load(Snes snes)
+        internal override void Load(SuperNintendo snes)
         {
             throw new NotImplementedException();
         }
@@ -79,7 +79,7 @@ namespace SnesBox
         public byte[] Ram { get { return _ram; } set { _ram = value; } }
         public byte[] Pram { get { return _pram; } set { _pram = value; } }
 
-        internal override void Load(Snes snes)
+        internal override void Load(SuperNintendo snes)
         {
             throw new NotImplementedException();
         }
@@ -108,7 +108,7 @@ namespace SnesBox
         public byte[] StARam { get { return _stARam; } set { _stARam = value; } }
         public byte[] StBRam { get { return _stBRam; } set { _stBRam = value; } }
 
-        internal override void Load(Snes snes)
+        internal override void Load(SuperNintendo snes)
         {
             throw new NotImplementedException();
         }
@@ -133,7 +133,7 @@ namespace SnesBox
         public byte[] GbRam { get { return _gbRam; } set { _gbRam = value; } }
         public byte[] GbRtc { get { return _gbRtc; } set { _gbRtc = value; } }
 
-        internal override void Load(Snes snes)
+        internal override void Load(SuperNintendo snes)
         {
             throw new NotImplementedException();
         }

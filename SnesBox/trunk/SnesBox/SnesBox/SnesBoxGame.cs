@@ -2,13 +2,15 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Snes;
+using SnesBox.Components;
+using SnesBox.Console;
 
 namespace SnesBox
 {
     public class SnesBoxGame : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager _graphics;
-        Snes _snes = new Snes();
+        SuperNintendo _snes = new SuperNintendo();
 
         public SnesBoxGame()
         {
@@ -26,17 +28,14 @@ namespace SnesBox
         {
             _snes.SetControllerPortDevice(1, LibSnes.SnesDevice.JOYPAD);
 
-            base.Initialize();
-        }
-
-        protected override void LoadContent()
-        {
             using (var fs = new FileStream("SMW.smc", FileMode.Open))
             {
                 var rom = new byte[fs.Length];
                 fs.Read(rom, 0, (int)fs.Length);
                 _snes.LoadCartridge(new NormalCartridge() { RomData = rom });
             }
+
+            base.Initialize();
         }
 
         protected override void Update(GameTime gameTime)
@@ -47,7 +46,13 @@ namespace SnesBox
 
             var frameRate = (IFrameRateService)Services.GetService(typeof(IFrameRateService));
             Window.Title = string.Format("{0:##} FPS", frameRate.FPS);
+
             base.Update(gameTime);
+        }
+
+        protected override void OnExiting(object sender, System.EventArgs args)
+        {
+            base.OnExiting(sender, args);
         }
     }
 }

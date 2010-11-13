@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 
-namespace SnesBox
+namespace SnesBox.Components
 {
     public interface IFrameRateService
     {
@@ -32,7 +32,6 @@ namespace SnesBox
                 _frameCounter = 0;
             }
         }
-
 
         public override void Draw(GameTime gameTime)
         {

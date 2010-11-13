@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SnesBox.Console;
 
-namespace SnesBox
+namespace SnesBox.Components
 {
     class Video : DrawableGameComponent
     {
@@ -16,7 +17,7 @@ namespace SnesBox
 
         private SpriteBatch SpriteBatch { get; set; }
 
-        public Video(Game game, Snes snes)
+        public Video(Game game, SuperNintendo snes)
             : base(game)
         {
             snes.VideoUpdated += new VideoUpdatedEventHandler(OnVideoUpdated);

@@ -6,7 +6,7 @@ namespace SnesBox
     {
         static void Main(string[] args)
         {
-            using (SnesBoxGame game = new SnesBoxGame())
+            using (var game = new SnesBoxGame())
             {
                 game.Run();
             }

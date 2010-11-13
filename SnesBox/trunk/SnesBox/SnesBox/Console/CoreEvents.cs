@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SnesBox
+namespace SnesBox.Console
 {
     public class AudioUpdatedEventArgs : EventArgs
     {
