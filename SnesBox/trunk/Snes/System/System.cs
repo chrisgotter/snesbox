@@ -90,6 +90,9 @@ namespace Snes
             Video.video.init();
             Audio.audio.init();
             Input.input.init();
+
+            Input.input.port_set_device(Convert.ToBoolean(0), Configuration.config.controller_port1);
+            Input.input.port_set_device(Convert.ToBoolean(1), Configuration.config.controller_port2);
         }
 
         public void term()
@@ -327,8 +330,6 @@ namespace Snes
 
             Scheduler.scheduler.init();
 
-            Input.input.port_set_device(Convert.ToBoolean(0), Configuration.config.controller_port1);
-            Input.input.port_set_device(Convert.ToBoolean(1), Configuration.config.controller_port2);
             Input.input.update();
         }
 

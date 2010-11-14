@@ -19,7 +19,8 @@ namespace Snes
             throw new NotImplementedException();
         }
 
-        public byte latch { get; private set; }
+        public bool data1 { get; private set; }
+        public bool data2 { get; private set; }
 
         public void add_clocks(uint clocks) { throw new NotImplementedException(); }
         public byte read() { throw new NotImplementedException(); }

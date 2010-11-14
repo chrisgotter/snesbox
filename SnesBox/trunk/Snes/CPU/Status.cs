@@ -76,8 +76,8 @@ namespace Snes
             public byte wrdivb;
 
             //$4207-$420a
-            public uint10 hirq_pos = new uint10();
-            public uint10 virq_pos = new uint10();
+            public uint9 hirq_pos = new uint9();
+            public uint9 virq_pos = new uint9();
 
             //$420d
             public uint rom_speed;

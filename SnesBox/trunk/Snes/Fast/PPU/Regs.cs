@@ -12,11 +12,11 @@ namespace Snes
             public ushort[] bg_y = new ushort[4];
 
             //internal state
-            public ushort ioamaddr;
-            public ushort icgramaddr;
+            public ushort oam_iaddr;
+            public ushort cgram_iaddr;
 
             //$2100
-            public bool display_disabled;
+            public bool display_disable;
             public byte display_brightness;
 
             //$2101

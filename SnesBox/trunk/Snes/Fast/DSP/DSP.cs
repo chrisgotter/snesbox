@@ -60,6 +60,20 @@ namespace Snes
             spc_dsp.set_output(samplebuffer, 8192);
         }
 
+        public void channel_enable(uint channel, bool enable)
+        {
+            channel_enabled[channel & 7] = enable;
+            uint mask = 0;
+            for (uint i = 0; i < 8; i++)
+            {
+                if (channel_enabled[i] == false)
+                {
+                    mask |= (uint)(1 << (int)i);
+                }
+            }
+            spc_dsp.mute_voices((int)mask);
+        }
+
         public static void dsp_state_save(Stream _out, byte[] _in, uint size)
         {
             _out.Write(_in, 0, (int)size);
@@ -102,8 +116,17 @@ namespace Snes
             return false;
         }
 
+        public DSP()
+        {
+            for (uint i = 0; i < 8; i++)
+            {
+                channel_enabled[i] = true;
+            }
+        }
+
         private SPCDSP spc_dsp = new SPCDSP();
         private short[] samplebuffer = new short[8192];
+        bool[] channel_enabled = new bool[8];
 
         private Processor _processor = new Processor();
         public Processor Processor

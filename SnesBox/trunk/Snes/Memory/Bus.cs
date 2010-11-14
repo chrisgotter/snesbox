@@ -128,13 +128,13 @@ namespace Snes
                 }
             }
 #endif
-            Page p = page[addr >> 8];
+            Page p = page[(uint)addr >> 8];
             return p.access.read(p.offset + (uint)addr);
         }
 
         public void write(uint24 addr, byte data)
         {
-            Page p = page[addr >> 8];
+            Page p = page[(uint)addr >> 8];
             p.access.write(p.offset + (uint)addr, data);
         }
 

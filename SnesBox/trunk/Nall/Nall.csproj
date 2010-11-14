@@ -110,6 +110,7 @@
     <Compile Include="uint2.cs" />
     <Compile Include="uint24.cs" />
     <Compile Include="uint3.cs" />
+    <Compile Include="uint9.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

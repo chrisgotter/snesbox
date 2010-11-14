@@ -46,7 +46,7 @@ namespace Snes
         {
             byte data;
 
-            if (regs.display_disabled == true)
+            if (regs.display_disable == true)
             {
                 data = StaticRAM.vram[addr];
             }
@@ -90,7 +90,7 @@ namespace Snes
 
         public void vram_mmio_write(ushort addr, byte data)
         {
-            if (regs.display_disabled == true)
+            if (regs.display_disable == true)
             {
                 StaticRAM.vram[addr] = data;
             }
@@ -144,7 +144,7 @@ namespace Snes
             }
             byte data;
 
-            if (regs.display_disabled == true)
+            if (regs.display_disable == true)
             {
                 data = StaticRAM.oam[addr];
             }
@@ -152,7 +152,7 @@ namespace Snes
             {
                 if (CPU.cpu.PPUCounter.vcounter() < (!overscan() ? 225 : 240))
                 {
-                    data = StaticRAM.oam[regs.ioamaddr];
+                    data = StaticRAM.oam[regs.oam_iaddr];
                 }
                 else
                 {
@@ -173,7 +173,7 @@ namespace Snes
 
             sprite_list_valid = false;
 
-            if (regs.display_disabled == true)
+            if (regs.display_disable == true)
             {
                 StaticRAM.oam[addr] = data;
                 update_sprite_list(addr, data);
@@ -182,8 +182,8 @@ namespace Snes
             {
                 if (CPU.cpu.PPUCounter.vcounter() < (!overscan() ? 225 : 240))
                 {
-                    StaticRAM.oam[regs.ioamaddr] = data;
-                    update_sprite_list(regs.ioamaddr, data);
+                    StaticRAM.oam[regs.oam_iaddr] = data;
+                    update_sprite_list(regs.oam_iaddr, data);
                 }
                 else
                 {
@@ -198,7 +198,7 @@ namespace Snes
             addr &= 0x01ff;
             byte data;
 
-            if (Convert.ToBoolean(1) || regs.display_disabled == true)
+            if (Convert.ToBoolean(1) || regs.display_disable == true)
             {
                 data = StaticRAM.cgram[addr];
             }
@@ -208,7 +208,7 @@ namespace Snes
                 ushort h = CPU.cpu.PPUCounter.vcounter();
                 if (v < (!overscan() ? 225 : 240) && h >= 128 && h < 1096)
                 {
-                    data = (byte)(StaticRAM.cgram[regs.icgramaddr] & 0x7f);
+                    data = (byte)(StaticRAM.cgram[regs.cgram_iaddr] & 0x7f);
                 }
                 else
                 {
@@ -231,7 +231,7 @@ namespace Snes
                 data &= 0x7f;
             }
 
-            if (Convert.ToBoolean(1) || regs.display_disabled == true)
+            if (Convert.ToBoolean(1) || regs.display_disable == true)
             {
                 StaticRAM.cgram[addr] = data;
             }
@@ -241,7 +241,7 @@ namespace Snes
                 ushort h = CPU.cpu.PPUCounter.vcounter();
                 if (v < (!overscan() ? 225 : 240) && h >= 128 && h < 1096)
                 {
-                    StaticRAM.cgram[regs.icgramaddr] = (byte)(data & 0x7f);
+                    StaticRAM.cgram[regs.cgram_iaddr] = (byte)(data & 0x7f);
                 }
                 else
                 {
@@ -254,13 +254,13 @@ namespace Snes
 
         public void mmio_w2100(byte value)
         {
-            if (regs.display_disabled == true && CPU.cpu.PPUCounter.vcounter() == (!overscan() ? 225 : 240))
+            if (regs.display_disable == true && CPU.cpu.PPUCounter.vcounter() == (!overscan() ? 225 : 240))
             {
                 regs.oam_addr = (ushort)(regs.oam_baseaddr << 1);
                 regs.oam_firstsprite = (byte)((regs.oam_priority == false) ? 0 : (regs.oam_addr >> 2) & 127);
             }
 
-            regs.display_disabled = !!Convert.ToBoolean(value & 0x80);
+            regs.display_disable = !!Convert.ToBoolean(value & 0x80);
             regs.display_brightness = (byte)(value & 15);
         }  //INIDISP
 
@@ -290,15 +290,16 @@ namespace Snes
 
         public void mmio_w2104(byte data)
         {
+            if ((regs.oam_addr & 1) == 0)
+            {
+                regs.oam_latchdata = data;
+            }
+
             if (Convert.ToBoolean(regs.oam_addr & 0x0200))
             {
                 oam_mmio_write(regs.oam_addr, data);
             }
-            else if ((regs.oam_addr & 1) == 0)
-            {
-                regs.oam_latchdata = data;
-            }
-            else
+            else if ((regs.oam_addr & 1) == 1)
             {
                 oam_mmio_write((ushort)((regs.oam_addr & ~1) + 0), regs.oam_latchdata);
                 oam_mmio_write((ushort)((regs.oam_addr & ~1) + 1), data);
@@ -1511,6 +1512,19 @@ namespace Snes
 
         public void render_line_bg(uint mode, uint bg, uint color_depth, byte pri0_pos, byte pri1_pos)
         {
+            if (layer_enabled[bg, 0] == false)
+            {
+                pri0_pos = 0;
+            }
+            if (layer_enabled[bg, 1] == false)
+            {
+                pri1_pos = 0;
+            }
+            if (pri0_pos + pri1_pos == 0)
+            {
+                return;
+            }
+
             if (regs.bg_enabled[bg] == false && regs.bgsub_enabled[bg] == false)
             {
                 return;
@@ -1966,11 +1980,11 @@ namespace Snes
             //TODO: remove this hack
             if (regs.oam_itemcount > 0 && (regs.oam_itemcount > oam_itemlist.Length))
             {
-                regs.ioamaddr = (ushort)(0x0200 + (0 >> 2));
+                regs.oam_iaddr = (ushort)(0x0200 + (0 >> 2));
             }
             else if (regs.oam_itemcount > 0 && oam_itemlist[regs.oam_itemcount - 1] != 0xff)
             {
-                regs.ioamaddr = (ushort)(0x0200 + (oam_itemlist[regs.oam_itemcount - 1] >> 2));
+                regs.oam_iaddr = (ushort)(0x0200 + (oam_itemlist[regs.oam_itemcount - 1] >> 2));
             }
 
             for (int s = 31; s >= 0; s--)
@@ -2010,6 +2024,27 @@ namespace Snes
 
         public void render_line_oam(byte pri0_pos, byte pri1_pos, byte pri2_pos, byte pri3_pos)
         {
+            if (layer_enabled[(int)ID.OAM, 0] == false)
+            {
+                pri0_pos = 0;
+            }
+            if (layer_enabled[(int)ID.OAM, 1] == false)
+            {
+                pri1_pos = 0;
+            }
+            if (layer_enabled[(int)ID.OAM, 2] == false)
+            {
+                pri2_pos = 0;
+            }
+            if (layer_enabled[(int)ID.OAM, 3] == false)
+            {
+                pri3_pos = 0;
+            }
+            if (pri0_pos + pri1_pos + pri2_pos + pri3_pos == 0)
+            {
+                return;
+            }
+
             if (regs.bg_enabled[(int)ID.OAM] == false && regs.bgsub_enabled[(int)ID.OAM] == false)
             {
                 return;
@@ -2058,6 +2093,19 @@ namespace Snes
 
         public void render_line_mode7(uint bg, byte pri0_pos, byte pri1_pos)
         {
+            if (layer_enabled[bg, 0] == false)
+            {
+                pri0_pos = 0;
+            }
+            if (layer_enabled[bg, 1] == false)
+            {
+                pri1_pos = 0;
+            }
+            if (pri0_pos + pri1_pos == 0)
+            {
+                return;
+            }
+
             if (regs.bg_enabled[bg] == false && regs.bgsub_enabled[bg] == false)
             {
                 return;
@@ -2122,11 +2170,11 @@ namespace Snes
                             ty = ((py >> 3) & 127);
                             tile = StaticRAM.vram[(uint)((ty * 128 + tx) << 1)];
                             palette = StaticRAM.vram[(uint)((((tile << 6) + ((py & 7) << 3) + (px & 7)) << 1) + 1)];
-                        } 
+                        }
                         break;
                     case 2:
                         {  //palette color 0 outside of screen area
-                            if (px < 0 || px > 1023 || py < 0 || py > 1023)
+                            if (Convert.ToBoolean((px | py) & ~1023))
                             {
                                 palette = 0;
                             }
@@ -2139,11 +2187,11 @@ namespace Snes
                                 tile = StaticRAM.vram[(uint)((ty * 128 + tx) << 1)];
                                 palette = StaticRAM.vram[(uint)((((tile << 6) + ((py & 7) << 3) + (px & 7)) << 1) + 1)];
                             }
-                        } 
+                        }
                         break;
                     case 3:
                         {  //character 0 repetition outside of screen area
-                            if (px < 0 || px > 1023 || py < 0 || py > 1023)
+                            if (Convert.ToBoolean((px | py) & ~1023))
                             {
                                 tile = 0;
                             }
@@ -2156,7 +2204,7 @@ namespace Snes
                                 tile = StaticRAM.vram[(uint)((ty * 128 + tx) << 1)];
                             }
                             palette = StaticRAM.vram[(uint)((((tile << 6) + ((py & 7) << 3) + (px & 7)) << 1) + 1)];
-                        } 
+                        }
                         break;
                 }
 
@@ -2429,7 +2477,7 @@ namespace Snes
 
         public void render_line()
         {
-            if (regs.display_disabled == true)
+            if (regs.display_disable == true)
             {
                 render_line_clear();
                 return;
@@ -2515,6 +2563,10 @@ namespace Snes
         {
             if (line >= 1 && line < (!overscan() ? 225 : 240))
             {
+                if (Convert.ToBoolean(framecounter))
+                {
+                    return;
+                }
                 render_line_oam_rto();
                 render_line();
             }
@@ -2529,6 +2581,8 @@ namespace Snes
                 display.interlace = regs.interlace;
                 regs.scanlines = (regs.overscan == false) ? (ushort)224 : (ushort)239;
             }
+
+            framecounter = (frameskip == 0 ? 0 : (framecounter + 1) % frameskip);
         }
 
         public void enter()
@@ -2555,7 +2609,7 @@ namespace Snes
                 cache.m7y = regs.m7y;
                 if (PPUCounter.vcounter() == (!overscan() ? 225 : 240))
                 {
-                    if (regs.display_disabled == false)
+                    if (regs.display_disable == false)
                     {
                         regs.oam_addr = (ushort)(regs.oam_baseaddr << 1);
                         regs.oam_firstsprite = (regs.oam_priority == false) ? (byte)0 : (byte)((regs.oam_addr >> 2) & 127);
@@ -2601,11 +2655,11 @@ namespace Snes
 
             region = (byte)(System.system.region == System.Region.NTSC ? 0 : 1);  //0 = NTSC, 1 = PAL
 
-            regs.ioamaddr = 0x0000;
-            regs.icgramaddr = 0x01ff;
+            regs.oam_iaddr = 0x0000;
+            regs.cgram_iaddr = 0x01ff;
 
             //$2100
-            regs.display_disabled = true;
+            regs.display_disable = true;
             regs.display_brightness = 15;
 
             //$2101
@@ -2817,7 +2871,7 @@ namespace Snes
             frame();
 
             //$2100
-            regs.display_disabled = true;
+            regs.display_disable = true;
 
             display.interlace = false;
             display.overscan = false;
@@ -2835,6 +2889,35 @@ namespace Snes
             regs.bg_y[1] = 0;
             regs.bg_y[2] = 0;
             regs.bg_y[3] = 0;
+        }
+
+        public bool[,] layer_enabled = new bool[5, 4];
+        public uint frameskip;
+        public uint framecounter;
+
+        public void layer_enable(uint layer, uint priority, bool enable)
+        {
+            switch (layer * 4 + priority)
+            {
+                case 0: layer_enabled[(int)ID.BG1, 0] = enable; break;
+                case 1: layer_enabled[(int)ID.BG1, 1] = enable; break;
+                case 4: layer_enabled[(int)ID.BG2, 0] = enable; break;
+                case 5: layer_enabled[(int)ID.BG2, 1] = enable; break;
+                case 8: layer_enabled[(int)ID.BG3, 0] = enable; break;
+                case 9: layer_enabled[(int)ID.BG3, 1] = enable; break;
+                case 12: layer_enabled[(int)ID.BG4, 0] = enable; break;
+                case 13: layer_enabled[(int)ID.BG4, 1] = enable; break;
+                case 16: layer_enabled[(int)ID.OAM, 0] = enable; break;
+                case 17: layer_enabled[(int)ID.OAM, 1] = enable; break;
+                case 18: layer_enabled[(int)ID.OAM, 2] = enable; break;
+                case 19: layer_enabled[(int)ID.OAM, 3] = enable; break;
+            }
+        }
+
+        public void set_frameskip(uint frameskip)
+        {
+            this.frameskip = frameskip;
+            framecounter = 0;
         }
 
         public void serialize(Serializer s)
@@ -2862,10 +2945,10 @@ namespace Snes
                 s.integer(regs.bg_y[n], "regs.bg_y[n]");
             }
 
-            s.integer(regs.ioamaddr, "regs.ioamaddr");
-            s.integer(regs.icgramaddr, "regs.icgramaddr");
+            s.integer(regs.oam_iaddr, "regs.ioamaddr");
+            s.integer(regs.cgram_iaddr, "regs.icgramaddr");
 
-            s.integer(regs.display_disabled, "regs.display_disabled");
+            s.integer(regs.display_disable, "regs.display_disabled");
             s.integer(regs.display_brightness, "regs.display_brightness");
 
             s.integer(regs.oam_basesize, "regs.oam_basesize");
@@ -3128,6 +3211,21 @@ namespace Snes
                     }
                 }
             }
+
+            layer_enabled[(int)ID.BG1, 0] = true;
+            layer_enabled[(int)ID.BG1, 1] = true;
+            layer_enabled[(int)ID.BG2, 0] = true;
+            layer_enabled[(int)ID.BG2, 1] = true;
+            layer_enabled[(int)ID.BG3, 0] = true;
+            layer_enabled[(int)ID.BG3, 1] = true;
+            layer_enabled[(int)ID.BG4, 0] = true;
+            layer_enabled[(int)ID.BG4, 1] = true;
+            layer_enabled[(int)ID.OAM, 0] = true;
+            layer_enabled[(int)ID.OAM, 1] = true;
+            layer_enabled[(int)ID.OAM, 2] = true;
+            layer_enabled[(int)ID.OAM, 3] = true;
+            frameskip = 0;
+            framecounter = 0;
         }
 
         private PPUCounter _ppuCounter = new PPUCounter();

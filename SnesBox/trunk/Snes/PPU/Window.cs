@@ -9,18 +9,24 @@ namespace Snes
         private partial class Window
         {
             public PPU self;
-            public T t = new T();
             public Regs regs = new Regs();
             public Output output = new Output();
 
+            uint x;
+            bool one;
+            bool two;
+
             public void scanline()
             {
-                t.x = 0;
+                x = 0;
             }
 
             public void run()
             {
                 bool main, sub;
+                one = (x >= regs.one_left && x <= regs.one_right);
+                two = (x >= regs.two_left && x <= regs.two_right);
+                x++;
 
                 test(
                     out main, out sub,
@@ -136,13 +142,10 @@ namespace Snes
 
                 output.main.color_enable = main;
                 output.sub.color_enable = sub;
-
-                t.x++;
             }
 
             public void reset()
             {
-                t.x = 0;
                 regs.bg1_one_enable = false;
                 regs.bg1_one_invert = false;
                 regs.bg1_two_enable = false;
@@ -191,12 +194,14 @@ namespace Snes
                 regs.col_sub_mask = 0;
                 output.main.color_enable = Convert.ToBoolean(0);
                 output.sub.color_enable = Convert.ToBoolean(0);
+
+                x = 0;
+                one = Convert.ToBoolean(0);
+                two = Convert.ToBoolean(0);
             }
 
             public void serialize(Serializer s)
             {
-                s.integer(t.x, "t.x");
-
                 s.integer(regs.bg1_one_enable, "regs.bg1_one_enable");
                 s.integer(regs.bg1_one_invert, "regs.bg1_one_invert");
                 s.integer(regs.bg1_two_enable, "regs.bg1_two_enable");
@@ -255,6 +260,10 @@ namespace Snes
 
                 s.integer(output.main.color_enable, "output.main.color_enable");
                 s.integer(output.sub.color_enable, "output.sub.color_enable");
+
+                s.integer(x, "x");
+                s.integer(one, "one");
+                s.integer(two, "two");
             }
 
             public Window(PPU self_)
@@ -264,7 +273,8 @@ namespace Snes
 
             private void test(out bool main, out bool sub, bool one_enable, bool one_invert, bool two_enable, bool two_invert, byte mask, bool main_enable, bool sub_enable)
             {
-                uint x = t.x;
+                bool one = this.one ^ one_invert;
+                bool two = this.two ^ two_invert;
                 bool output = false;
 
                 if (one_enable == false && two_enable == false)
@@ -273,16 +283,14 @@ namespace Snes
                 }
                 else if (one_enable == true && two_enable == false)
                 {
-                    output = (x >= regs.one_left && x <= regs.one_right) ^ one_invert;
+                    output = one;
                 }
                 else if (one_enable == false && two_enable == true)
                 {
-                    output = (x >= regs.two_left && x <= regs.two_right) ^ two_invert;
+                    output = two;
                 }
                 else
                 {
-                    bool one = (x >= regs.one_left && x <= regs.one_right) ^ one_invert;
-                    bool two = (x >= regs.two_left && x <= regs.two_right) ^ two_invert;
                     switch (mask)
                     {
                         case 0:

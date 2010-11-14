@@ -27,7 +27,7 @@ namespace Snes
 
         public static uint snes_library_revision_minor()
         {
-            return 0;
+            return 1;
         }
 
         public static event SnesVideoRefresh snes_video_refresh = null;
@@ -79,6 +79,11 @@ namespace Snes
         public static void snes_set_controller_port_device(bool port, uint device)
         {
             Input.input.port_set_device(port, (Input.Device)device);
+        }
+
+        public static void snes_set_cartridge_basename(string basename)
+        {
+            Cartridge.cartridge.basename = basename;
         }
 
         public static void snes_init()

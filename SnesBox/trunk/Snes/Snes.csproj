@@ -235,7 +235,6 @@
     <Compile Include="PPU\SpriteItem.cs" />
     <Compile Include="PPU\State.cs" />
     <Compile Include="PPU\Status.cs" />
-    <Compile Include="PPU\T.cs" />
     <Compile Include="PPU\TileItem.cs" />
     <Compile Include="PPU\Window.cs" />
     <Compile Include="Processor.cs" />

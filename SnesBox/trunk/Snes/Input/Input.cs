@@ -17,7 +17,7 @@ namespace Snes
         {
             if (Cartridge.cartridge.has_serial && Convert.ToInt32(portnumber) == 1)
             {
-                return Serial.serial.latch;
+                return (byte)((Convert.ToUInt32(Serial.serial.data2) << 1) | (Convert.ToUInt32(Serial.serial.data1) << 0));
             }
 
             Port p = port[Convert.ToInt32(portnumber)];

@@ -57,7 +57,7 @@ namespace Snes
 
         public bool joylatch()
         {
-            return Convert.ToBoolean(0);
+            return status.joypad_strobe_latch;
         }
 
         public override bool interrupt_pending()
