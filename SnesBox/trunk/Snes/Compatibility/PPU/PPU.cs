@@ -1,4 +1,4 @@
-﻿#if COMPATIBILITY || PERFORMANCE
+﻿#if COMPATIBILITY
 using System;
 using System.Linq;
 using Nall;

@@ -1,4 +1,4 @@
-﻿
+﻿#if ACCURACY || COMPATIBILITY
 namespace Snes
 {
     partial class PPU
@@ -10,3 +10,4 @@ namespace Snes
         }
     }
 }
+#endif

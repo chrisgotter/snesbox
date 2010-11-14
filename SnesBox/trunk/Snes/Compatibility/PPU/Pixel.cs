@@ -1,4 +1,4 @@
-﻿#if COMPATIBILITY || PERFORMANCE
+﻿#if COMPATIBILITY
 namespace Snes
 {
     partial class PPU
