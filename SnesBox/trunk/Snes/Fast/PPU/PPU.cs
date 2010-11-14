@@ -2533,7 +2533,7 @@ namespace Snes
 
         public void enter()
         {
-            while (true)
+            while (Libco.Alive)
             {
                 if (Scheduler.scheduler.sync == Scheduler.SynchronizeMode.All)
                 {

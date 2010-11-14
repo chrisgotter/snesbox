@@ -332,6 +332,11 @@ namespace Snes
             Input.input.update();
         }
 
+        public void shutdown()
+        {
+            Libco.Kill();
+        }
+
         public void reset()
         {
             Bus.bus.reset();

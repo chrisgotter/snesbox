@@ -1,10 +1,21 @@
-﻿using System.Threading;
+﻿using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace Nall
 {
     public static class Libco
     {
+        public static bool _alive = true;
+        public static bool Alive
+        {
+            get
+            {
+                return _alive;
+            }
+        }
+
         private static Thread _active;
+        private static Collection<Thread> _threads = new Collection<Thread>();
 
         public static Thread Active()
         {
@@ -24,19 +35,30 @@ namespace Nall
 
             size += 256; /* allocate additional space for storage */
             size &= ~15; /* align stack to 16-byte boundary */
-            return new Thread(entrypoint, size) { Name = name };
+            var thread = new Thread(entrypoint, size) { Name = name };
+            _threads.Add(thread);
+            return thread;
         }
 
-        public static void Delete(Thread handle)
+        public static void Delete(Thread thread)
         {
-            handle.Abort();
-            handle = null;
+            thread.Abort();
+            thread = null;
         }
 
-        public static void Switch(Thread handle)
+        public static void Kill()
+        {
+            _alive = false;
+            foreach (var thread in _threads)
+            {
+                thread.Resume();
+            }
+        }
+
+        public static void Switch(Thread thread)
         {
             var previous = _active;
-            _active = handle;
+            _active = thread;
             if (_active.ThreadState == ThreadState.Unstarted)
             {
                 _active.Start();

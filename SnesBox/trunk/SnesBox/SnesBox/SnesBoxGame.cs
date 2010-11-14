@@ -27,6 +27,7 @@ namespace SnesBox
         protected override void Initialize()
         {
             _snes.SetControllerPortDevice(1, LibSnes.SnesDevice.JOYPAD);
+            _snes.SetControllerPortDevice(2, LibSnes.SnesDevice.JOYPAD);
 
             using (var fs = new FileStream("SMW.smc", FileMode.Open))
             {
@@ -40,8 +41,8 @@ namespace SnesBox
 
         protected override void Update(GameTime gameTime)
         {
-            var buttonStates = Input.ParseInput(GamePad.GetState(PlayerIndex.One));
-            _snes.SetInputState(1, 0, (int)buttonStates, 0, 0);
+            _snes.SetInputState(1, 0, (int)Input.ParseInput(GamePad.GetState(PlayerIndex.One)), 0, 0);
+            _snes.SetInputState(2, 0, (int)Input.ParseInput(GamePad.GetState(PlayerIndex.Two)), 0, 0);
             _snes.RunToFrame();
 
             var frameRate = (IFrameRateService)Services.GetService(typeof(IFrameRateService));
@@ -52,6 +53,8 @@ namespace SnesBox
 
         protected override void OnExiting(object sender, System.EventArgs args)
         {
+            _snes.Shutdown();
+
             base.OnExiting(sender, args);
         }
     }
