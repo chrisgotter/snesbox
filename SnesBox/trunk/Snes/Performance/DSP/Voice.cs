@@ -1,4 +1,4 @@
-﻿#if FAST_DSP
+﻿#if COMPATIBILITY || PERFORMANCE
 using System;
 
 namespace Snes

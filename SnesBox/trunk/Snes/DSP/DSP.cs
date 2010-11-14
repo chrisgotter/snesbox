@@ -1,6 +1,5 @@
-﻿#if !FAST_DSP
+﻿#if ACCURACY
 using System;
-using System.Diagnostics;
 using Nall;
 
 namespace Snes

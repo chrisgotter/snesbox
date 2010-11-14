@@ -1,4 +1,4 @@
-﻿#if FAST_CPU
+﻿#if PERFORMANCE
 using System.Runtime.InteropServices;
 
 namespace Snes

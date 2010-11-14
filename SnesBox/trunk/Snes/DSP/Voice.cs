@@ -1,4 +1,4 @@
-﻿#if !FAST_DSP
+﻿#if ACCURACY
 using Nall;
 
 namespace Snes

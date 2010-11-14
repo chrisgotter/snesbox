@@ -35,7 +35,7 @@ namespace Snes
             Scheduler.scheduler.thread = PPU.ppu.Processor.thread;
             runthreadtosave();
 
-#if !FAST_DSP
+#if ACCURACY
             Scheduler.scheduler.thread = DSP.dsp.Processor.thread;
             runthreadtosave();
 #endif

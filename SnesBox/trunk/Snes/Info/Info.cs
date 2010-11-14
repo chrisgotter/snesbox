@@ -7,9 +7,9 @@ namespace Snes
         public const string Version = "072";
         public const uint SerializerVersion = 14;
         public const string Profile =
-#if (FAST_CPU && FAST_DSP && FAST_PPU)
+#if PERFORMANCE
  "Performance";
-#elif (FAST_DSP && FAST_PPU)
+#elif COMPATIBILITY
  "Compatibility";
 #else
  "Accuracy";

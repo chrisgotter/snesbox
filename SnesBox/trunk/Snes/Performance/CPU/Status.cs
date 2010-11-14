@@ -1,4 +1,4 @@
-﻿#if FAST_CPU
+﻿#if PERFORMANCE
 namespace Snes
 {
     partial class CPU

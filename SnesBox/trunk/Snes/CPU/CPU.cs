@@ -1,4 +1,4 @@
-﻿#if !FAST_CPU
+﻿#if ACCURACY || COMPATIBILITY
 using System;
 using System.Collections.ObjectModel;
 using Nall;

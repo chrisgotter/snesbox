@@ -1,4 +1,4 @@
-﻿#if !FAST_PPU
+﻿#if ACCURACY
 using System;
 using Nall;
 
@@ -1374,7 +1374,7 @@ namespace Snes
             bg1.scanline();
             bg2.scanline();
             bg3.scanline();
-            bg4.scanline(); 
+            bg4.scanline();
             oam.scanline();
             window.scanline();
             screen.scanline();

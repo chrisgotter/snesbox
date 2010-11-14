@@ -1,4 +1,4 @@
-﻿#if FAST_CPU
+﻿#if PERFORMANCE
 using System;
 using System.Collections.ObjectModel;
 using Nall;

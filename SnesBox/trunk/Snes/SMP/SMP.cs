@@ -23,7 +23,7 @@ namespace Snes
 
         public void synchronize_dsp()
         {
-#if !FAST_DSP
+#if ACCURACY
             if (DSP.dsp.Processor.clock < 0 && Scheduler.scheduler.sync != Scheduler.SynchronizeMode.All)
             {
                 Libco.Switch(DSP.dsp.Processor.thread);
@@ -236,7 +236,7 @@ namespace Snes
                     case 0xf7:
                         {  //CPUIO3
                             synchronize_cpu();
-#if FAST_CPU
+#if PERFORMANCE
                             r = CPU.cpu.port_read((byte)addr);
 #else
                             r = CPU.cpu.port_read(new uint2(addr));
@@ -324,7 +324,7 @@ namespace Snes
                                 synchronize_cpu();
                                 if (Convert.ToBoolean(data & 0x20))
                                 {
-#if FAST_CPU
+#if PERFORMANCE
                                     CPU.cpu.port_write(2, 0x00);
                                     CPU.cpu.port_write(3, 0x00);
 #else
@@ -334,7 +334,7 @@ namespace Snes
                                 }
                                 if (Convert.ToBoolean(data & 0x10))
                                 {
-#if FAST_CPU
+#if PERFORMANCE
                                     CPU.cpu.port_write(0, 0x00);
                                     CPU.cpu.port_write(1, 0x00);
 #else

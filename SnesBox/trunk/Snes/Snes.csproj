@@ -19,7 +19,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Accuracy|x86'">
     <OutputPath>bin\x86\Accuracy\</OutputPath>
-    <DefineConstants>TRACE;WINDOWS, CHEAT_SYSTEM</DefineConstants>
+    <DefineConstants>TRACE;WINDOWS, CHEAT_SYSTEM, ACCURACY</DefineConstants>
     <Optimize>true</Optimize>
     <NoStdLib>true</NoStdLib>
     <DebugType>pdbonly</DebugType>
@@ -38,7 +38,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Compatibility|x86'">
     <OutputPath>bin\x86\Compatibility\</OutputPath>
-    <DefineConstants>TRACE;WINDOWS, CHEAT_SYSTEM, FAST_DSP, FAST_PPU</DefineConstants>
+    <DefineConstants>TRACE;WINDOWS, CHEAT_SYSTEM, COMPATIBILITY</DefineConstants>
     <Optimize>true</Optimize>
     <NoStdLib>true</NoStdLib>
     <DebugType>pdbonly</DebugType>
@@ -57,7 +57,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Performance|x86'">
     <OutputPath>bin\x86\Performance\</OutputPath>
-    <DefineConstants>TRACE;WINDOWS, CHEAT_SYSTEM, FAST_CPU, FAST_DSP, FAST_PPU</DefineConstants>
+    <DefineConstants>TRACE;WINDOWS, CHEAT_SYSTEM, PERFORMANCE</DefineConstants>
     <Optimize>true</Optimize>
     <NoStdLib>true</NoStdLib>
     <DebugType>pdbonly</DebugType>

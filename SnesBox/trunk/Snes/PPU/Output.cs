@@ -1,4 +1,4 @@
-﻿#if !FAST_PPU
+﻿#if ACCURACY
 namespace Snes
 {
     partial class PPU

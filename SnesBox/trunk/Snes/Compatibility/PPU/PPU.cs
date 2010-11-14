@@ -1,4 +1,4 @@
-﻿#if FAST_PPU
+﻿#if COMPATIBILITY || PERFORMANCE
 using System;
 using System.Linq;
 using Nall;
