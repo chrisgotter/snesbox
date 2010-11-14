@@ -452,13 +452,13 @@ namespace Snes
 
         private void mmio_w2104(byte data)
         {
-            bool latch = Convert.ToBoolean(regs.oam_addr & 1);
+            bool latch = Convert.ToBoolean((uint)(regs.oam_addr & 1));
             uint10 addr = regs.oam_addr++;
             if (regs.display_disable == false && PPUCounter.vcounter() < (!regs.overscan ? 225 : 240))
             {
                 addr = regs.oam_iaddr;
             }
-            if (Convert.ToBoolean(addr & 0x0200))
+            if (Convert.ToBoolean((uint)(addr & 0x0200)))
             {
                 addr &= 0x021f;
             }
@@ -467,7 +467,7 @@ namespace Snes
             {
                 regs.oam_latchdata = data;
             }
-            if (Convert.ToBoolean(addr & 0x0200))
+            if (Convert.ToBoolean((uint)(addr & 0x0200)))
             {
                 oam.update((uint)addr, data);
             }
@@ -698,7 +698,7 @@ namespace Snes
 
         private void mmio_w2122(byte data)
         {
-            bool latch = Convert.ToBoolean(regs.cgram_addr & 1);
+            bool latch = Convert.ToBoolean((uint)(regs.cgram_addr & 1));
             uint9 addr = regs.cgram_addr++;
             if (regs.display_disable == false && PPUCounter.vcounter() > 0 && PPUCounter.vcounter() < (!regs.overscan ? 225 : 240) && PPUCounter.hcounter() >= 88 && PPUCounter.hcounter() < 1096)
             {
