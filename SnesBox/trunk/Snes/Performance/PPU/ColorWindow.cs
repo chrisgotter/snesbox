@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if PERFORMANCE
+using System;
 using System.Linq;
 using Nall;
 
@@ -116,3 +117,4 @@ namespace Snes
         }
     }
 }
+#endif

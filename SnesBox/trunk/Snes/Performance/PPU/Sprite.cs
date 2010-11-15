@@ -238,7 +238,8 @@ namespace Snes
                     }
 
                     var t = tilelist[i];
-                    ArraySegment<byte> tiledata = new ArraySegment<byte>(self.cache.tile_4bpp(t.tile), (int)((t.y & 7) << 3), (int)(self.cache.tile_4bpp(t.tile).Length - ((t.y & 7) << 3)));
+                    ArraySegment<byte> tiledata = self.cache.tile_4bpp(t.tile);
+                    tiledata = new ArraySegment<byte>(tiledata.Array, tiledata.Offset + (int)((t.y & 7) << 3), tiledata.Count - (int)((t.y & 7) << 3));
                     uint sx = t.x;
                     for (uint x = 0; x < 8; x++)
                     {

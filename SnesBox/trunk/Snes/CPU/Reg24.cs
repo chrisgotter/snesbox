@@ -11,42 +11,18 @@ namespace Snes
             [FieldOffset(0)]
             public uint d;
 
-#if BIG_ENDIAN
-            [FieldOffset(2)]
-#else
             [FieldOffset(0)]
-#endif
             public ushort w;
-#if BIG_ENDIAN
-            [FieldOffset(0)]
-#else
             [FieldOffset(2)]
-#endif
             public ushort wh;
 
-#if BIG_ENDIAN
-            [FieldOffset(3)]
-#else
             [FieldOffset(0)]
-#endif
             public byte l;
-#if BIG_ENDIAN
-            [FieldOffset(2)]
-#else
             [FieldOffset(1)]
-#endif
             public byte h;
-#if BIG_ENDIAN
-            [FieldOffset(1)]
-#else
             [FieldOffset(2)]
-#endif
             public byte b;
-#if BIG_ENDIAN
-            [FieldOffset(0)]
-#else
             [FieldOffset(3)]
-#endif
             public byte bh;
 
             public static explicit operator uint(Reg24 reg24)
