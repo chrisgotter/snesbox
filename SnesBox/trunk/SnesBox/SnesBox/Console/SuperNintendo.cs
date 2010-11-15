@@ -102,11 +102,6 @@ namespace SnesBox.Console
             LibSnes.snes_reset();
         }
 
-        public void Shutdown()
-        {
-            LibSnes.snes_shutdown();
-        }
-
         public void SetInputState(int port, int index, int buttonStates, int x, int y)
         {
             if (port < 1 || port > 2)

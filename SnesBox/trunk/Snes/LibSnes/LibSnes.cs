@@ -103,11 +103,6 @@ namespace Snes
             System.system.power();
         }
 
-        public static void snes_shutdown()
-        {
-            System.system.shutdown();
-        }
-
         public static void snes_reset()
         {
             System.system.reset();

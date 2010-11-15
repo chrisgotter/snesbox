@@ -50,12 +50,5 @@ namespace SnesBox
 
             base.Update(gameTime);
         }
-
-        protected override void OnExiting(object sender, System.EventArgs args)
-        {
-            _snes.Shutdown();
-
-            base.OnExiting(sender, args);
-        }
     }
 }

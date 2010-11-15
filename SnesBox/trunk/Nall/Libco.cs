@@ -5,17 +5,7 @@ namespace Nall
 {
     public static class Libco
     {
-        public static bool _alive = true;
-        public static bool Alive
-        {
-            get
-            {
-                return _alive;
-            }
-        }
-
         private static Thread _active;
-        private static Collection<Thread> _threads = new Collection<Thread>();
 
         public static Thread Active()
         {
@@ -35,24 +25,13 @@ namespace Nall
 
             size += 256; /* allocate additional space for storage */
             size &= ~15; /* align stack to 16-byte boundary */
-            var thread = new Thread(entrypoint, size) { Name = name };
-            _threads.Add(thread);
-            return thread;
+            return new Thread(entrypoint, size) { Name = name };
         }
 
         public static void Delete(Thread thread)
         {
             thread.Abort();
             thread = null;
-        }
-
-        public static void Kill()
-        {
-            _alive = false;
-            foreach (var thread in _threads)
-            {
-                thread.Resume();
-            }
         }
 
         public static void Switch(Thread thread)

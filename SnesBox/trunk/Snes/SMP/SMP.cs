@@ -48,7 +48,7 @@ namespace Snes
 
         public void enter()
         {
-            while (Libco.Alive)
+            while (true)
             {
                 if (Scheduler.scheduler.sync == Scheduler.SynchronizeMode.All)
                 {
