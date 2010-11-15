@@ -30,7 +30,7 @@ namespace Snes
                     output = main;
                     if (main_enable == false)
                     {
-                        Array.Copy(Enumerable.Repeat(0, 256).ToArray(), output, 256);
+                        Array.Copy(Enumerable.Repeat((byte)0, 256).ToArray(), output, 256);
                         return;
                     }
                 }
@@ -39,14 +39,14 @@ namespace Snes
                     output = sub;
                     if (sub_enable == false)
                     {
-                        Array.Copy(Enumerable.Repeat(0, 256).ToArray(), output, 256);
+                        Array.Copy(Enumerable.Repeat((byte)0, 256).ToArray(), output, 256);
                         return;
                     }
                 }
 
                 if (one_enable == false && two_enable == false)
                 {
-                    Array.Copy(Enumerable.Repeat(0, 256).ToArray(), output, 256);
+                    Array.Copy(Enumerable.Repeat((byte)0, 256).ToArray(), output, 256);
                     return;
                 }
 

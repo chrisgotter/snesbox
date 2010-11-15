@@ -30,16 +30,18 @@ namespace Snes
                 switch (screen == Convert.ToBoolean(0) ? main_mask : sub_mask)
                 {
                     case 0:
-                        Array.Copy(Enumerable.Repeat(1, 256).ToArray(), output, 256);
+                        Array.Copy(Enumerable.Repeat((byte)1, 256).ToArray(), output, 256);
                         return; //always
                     case 1:
-                        set = Convert.ToBoolean(1); clr = Convert.ToBoolean(0);
+                        set = Convert.ToBoolean(1); 
+                        clr = Convert.ToBoolean(0);
                         break; //inside window only
                     case 2:
-                        set = Convert.ToBoolean(0); clr = Convert.ToBoolean(1);
+                        set = Convert.ToBoolean(0);
+                        clr = Convert.ToBoolean(1);
                         break; //outside window only
                     case 3:
-                        Array.Copy(Enumerable.Repeat(0, 256).ToArray(), output, 256);
+                        Array.Copy(Enumerable.Repeat((byte)0, 256).ToArray(), output, 256);
                         return; //never
                 }
 

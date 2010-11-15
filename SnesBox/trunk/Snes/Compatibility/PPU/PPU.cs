@@ -1360,10 +1360,12 @@ namespace Snes
                         Array.Clear(table, 0, 256);
                         return;  //never
                     case 1:
-                        set = Convert.ToBoolean(1); clr = Convert.ToBoolean(0);
+                        set = Convert.ToBoolean(1);
+                        clr = Convert.ToBoolean(0);
                         break;        //inside window only
                     case 2:
-                        set = Convert.ToBoolean(0); clr = Convert.ToBoolean(1);
+                        set = Convert.ToBoolean(0);
+                        clr = Convert.ToBoolean(1);
                         break;        //outside window only
                 }
             }
@@ -2899,18 +2901,42 @@ namespace Snes
         {
             switch (layer * 4 + priority)
             {
-                case 0: layer_enabled[(int)ID.BG1, 0] = enable; break;
-                case 1: layer_enabled[(int)ID.BG1, 1] = enable; break;
-                case 4: layer_enabled[(int)ID.BG2, 0] = enable; break;
-                case 5: layer_enabled[(int)ID.BG2, 1] = enable; break;
-                case 8: layer_enabled[(int)ID.BG3, 0] = enable; break;
-                case 9: layer_enabled[(int)ID.BG3, 1] = enable; break;
-                case 12: layer_enabled[(int)ID.BG4, 0] = enable; break;
-                case 13: layer_enabled[(int)ID.BG4, 1] = enable; break;
-                case 16: layer_enabled[(int)ID.OAM, 0] = enable; break;
-                case 17: layer_enabled[(int)ID.OAM, 1] = enable; break;
-                case 18: layer_enabled[(int)ID.OAM, 2] = enable; break;
-                case 19: layer_enabled[(int)ID.OAM, 3] = enable; break;
+                case 0:
+                    layer_enabled[(int)ID.BG1, 0] = enable;
+                    break;
+                case 1:
+                    layer_enabled[(int)ID.BG1, 1] = enable;
+                    break;
+                case 4:
+                    layer_enabled[(int)ID.BG2, 0] = enable;
+                    break;
+                case 5:
+                    layer_enabled[(int)ID.BG2, 1] = enable;
+                    break;
+                case 8:
+                    layer_enabled[(int)ID.BG3, 0] = enable;
+                    break;
+                case 9:
+                    layer_enabled[(int)ID.BG3, 1] = enable;
+                    break;
+                case 12:
+                    layer_enabled[(int)ID.BG4, 0] = enable;
+                    break;
+                case 13:
+                    layer_enabled[(int)ID.BG4, 1] = enable;
+                    break;
+                case 16:
+                    layer_enabled[(int)ID.OAM, 0] = enable;
+                    break;
+                case 17:
+                    layer_enabled[(int)ID.OAM, 1] = enable;
+                    break;
+                case 18:
+                    layer_enabled[(int)ID.OAM, 2] = enable;
+                    break;
+                case 19:
+                    layer_enabled[(int)ID.OAM, 3] = enable;
+                    break;
             }
         }
 

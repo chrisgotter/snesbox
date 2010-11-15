@@ -254,7 +254,7 @@ namespace Snes
 
         private ushort[] surface;
         public ArraySegment<ushort> output;
-        private Regs regs;
+        private Regs regs = new Regs();
 
         private ushort get_vram_addr()
         {
@@ -840,10 +840,18 @@ namespace Snes
                         regs.vram_mapping = (uint)((data >> 2) & 3);
                         switch (data & 3)
                         {
-                            case 0: regs.vram_incsize = 1; break;
-                            case 1: regs.vram_incsize = 32; break;
-                            case 2: regs.vram_incsize = 128; break;
-                            case 3: regs.vram_incsize = 128; break;
+                            case 0:
+                                regs.vram_incsize = 1;
+                                break;
+                            case 1: 
+                                regs.vram_incsize = 32; 
+                                break;
+                            case 2: 
+                                regs.vram_incsize = 128;
+                                break;
+                            case 3:
+                                regs.vram_incsize = 128; 
+                                break;
                         }
                         return;
                     }
@@ -1316,7 +1324,7 @@ namespace Snes
         private Background bg4;
         private Sprite oam;
         private Screen screen;
-        private Display display;
+        private Display display = new Display();
 
         private static void Enter()
         {

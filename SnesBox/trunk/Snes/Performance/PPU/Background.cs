@@ -16,7 +16,7 @@ namespace Snes
             public bool priority0_enable;
             public bool priority1_enable;
 
-            public Regs regs;
+            public Regs regs = new Regs();
 
             public ushort[][] mosaic_table;
 
@@ -41,7 +41,7 @@ namespace Snes
             public uint mosaic_vcounter;
             public uint mosaic_voffset;
 
-            public LayerWindow window;
+            public LayerWindow window = new LayerWindow();
 
             public uint get_tile(uint hoffset, uint voffset)
             {
@@ -441,7 +441,45 @@ namespace Snes
                 }
             }
 
-            public void serialize(Serializer s) { throw new NotImplementedException(); }
+            public void serialize(Serializer s)
+            {
+                s.integer(regs.mode, "regs.mode");
+                s.integer(regs.priority0, "regs.priority0");
+                s.integer(regs.priority1, "regs.priority1");
+
+                s.integer(regs.tile_size, "regs.tile_size");
+                s.integer(regs.mosaic, "regs.mosaic");
+
+                s.integer(regs.screen_addr, "regs.screen_addr");
+                s.integer(regs.screen_size, "regs.screen_size");
+                s.integer(regs.tiledata_addr, "regs.tiledata_addr");
+
+                s.integer(regs.hoffset, "regs.hoffset");
+                s.integer(regs.voffset, "regs.voffset");
+
+                s.integer(regs.main_enable, "regs.main_enable");
+                s.integer(regs.sub_enable, "regs.sub_enable");
+
+                s.integer(hires, "hires");
+                s.integer(width, "width");
+
+                s.integer(tile_width, "tile_width");
+                s.integer(tile_height, "tile_height");
+
+                s.integer(mask_x, "mask_x");
+                s.integer(mask_y, "mask_y");
+
+                s.integer(scx, "scx");
+                s.integer(scy, "scy");
+
+                s.integer(hscroll, "hscroll");
+                s.integer(vscroll, "vscroll");
+
+                s.integer(mosaic_vcounter, "mosaic_vcounter");
+                s.integer(mosaic_voffset, "mosaic_voffset");
+
+                window.serialize(s);
+            }
 
             public Background(PPU self, uint id)
             {

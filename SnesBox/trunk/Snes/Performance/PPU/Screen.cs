@@ -9,10 +9,10 @@ namespace Snes
     {
         private partial class Screen
         {
-            public Regs regs;
-            public Output output;
+            public Regs regs = new Regs();
+            public Output output = new Output();
 
-            public ColorWindow window;
+            public ColorWindow window = new ColorWindow();
             public ushort[][] light_table;
 
             public uint get_palette(uint color)
@@ -85,7 +85,7 @@ namespace Snes
                 {
                     data = new ArraySegment<ushort>(data.Array, data.Offset + 512, data.Count - 512);
                 }
-                Array.Copy(Enumerable.Repeat(0, (int)(self.display.width << 1)).ToArray(), 0, data.Array, data.Offset, (int)(self.display.width << 1));
+                Array.Copy(Enumerable.Repeat((ushort)0, (int)(self.display.width << 1)).ToArray(), 0, data.Array, data.Offset, (int)(self.display.width << 1));
             }
 
             public ushort get_pixel_main(uint x)
@@ -113,7 +113,10 @@ namespace Snes
                     bool halve = false;
                     if (regs.color_halve && Convert.ToBoolean(window.main[x]))
                     {
-                        if (!regs.addsub_mode || sub.source != 6) halve = true;
+                        if (!regs.addsub_mode || sub.source != 6)
+                        {
+                            halve = true;
+                        }
                     }
                     return addsub(main.color, sub.color, halve);
                 }
@@ -146,7 +149,10 @@ namespace Snes
                     bool halve = false;
                     if (regs.color_halve && Convert.ToBoolean(window.main[x]))
                     {
-                        if (!regs.addsub_mode || sub.source != 6) halve = true;
+                        if (!regs.addsub_mode || sub.source != 6)
+                        {
+                            halve = true;
+                        }
                     }
                     return addsub(main.color, sub.color, halve);
                 }

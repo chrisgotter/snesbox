@@ -109,7 +109,10 @@ namespace SnesBox.Console
 
         public void SetInputState(int port, int index, int buttonStates, int x, int y)
         {
-            if (port < 1 || port > 2) { throw new ArgumentOutOfRangeException("port"); }
+            if (port < 1 || port > 2)
+            {
+                throw new ArgumentOutOfRangeException("port");
+            }
 
             LibSnes.SnesDeviceIdJoypad leftRight = LibSnes.SnesDeviceIdJoypad.LEFT | LibSnes.SnesDeviceIdJoypad.RIGHT;
             if ((buttonStates & (int)leftRight) == (int)(leftRight))

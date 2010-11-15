@@ -16,7 +16,7 @@ namespace Snes
                 color = Bit.ToBit(d0 & mask) << 0;
                 color |= Bit.ToBit(d1 & mask) << 1;
                 output.Array[output.Offset] = (byte)color;
-                output = new ArraySegment<byte>(output.Array, output.Offset + 1, output.Offset - 1);
+                output = new ArraySegment<byte>(output.Array, output.Offset + 1, output.Count - 1);
             }
 
             void render_line_4(ref ArraySegment<byte> output, ref uint color, uint d0, uint d1, uint d2, uint d3, byte mask)
@@ -26,7 +26,7 @@ namespace Snes
                 color |= Bit.ToBit(d2 & mask) << 2;
                 color |= Bit.ToBit(d3 & mask) << 3;
                 output.Array[output.Offset] = (byte)color;
-                output = new ArraySegment<byte>(output.Array, output.Offset + 1, output.Offset - 1);
+                output = new ArraySegment<byte>(output.Array, output.Offset + 1, output.Count - 1);
             }
 
             void render_line_8(ref ArraySegment<byte> output, ref uint color, uint d0, uint d1, uint d2, uint d3, uint d4, uint d5, uint d6, uint d7, byte mask)
@@ -40,7 +40,7 @@ namespace Snes
                 color |= Bit.ToBit(d6 & mask) << 6;
                 color |= Bit.ToBit(d7 & mask) << 7;
                 output.Array[output.Offset] = (byte)color;
-                output = new ArraySegment<byte>(output.Array, output.Offset + 1, output.Offset - 1);
+                output = new ArraySegment<byte>(output.Array, output.Offset + 1, output.Count - 1);
             }
 
             public ArraySegment<byte> tile_2bpp(uint tile)
@@ -48,7 +48,7 @@ namespace Snes
                 if (tilevalid[0][tile] == 0)
                 {
                     tilevalid[0][tile] = 1;
-                    ArraySegment<byte> output = new ArraySegment<byte>(tiledata[0], (int)(tiledata[0].Length + (tile << 6)), (int)(tiledata[0].Length - (tile << 6)));
+                    ArraySegment<byte> output = new ArraySegment<byte>(tiledata[0], (int)(tile << 6), (int)(tiledata[0].Length - (tile << 6)));
                     uint offset = tile << 4;
                     uint y = 8;
                     uint color = default(uint), d0, d1;
@@ -67,7 +67,7 @@ namespace Snes
                         offset += 2;
                     }
                 }
-                return new ArraySegment<byte>(tiledata[0], (int)(tiledata[0].Length + (tile << 6)), (int)(tiledata[0].Length - (tile << 6)));
+                return new ArraySegment<byte>(tiledata[0], (int)(tile << 6), (int)(tiledata[0].Length - (tile << 6)));
             }
 
             public ArraySegment<byte> tile_4bpp(uint tile)
@@ -75,7 +75,7 @@ namespace Snes
                 if (tilevalid[1][tile] == 0)
                 {
                     tilevalid[1][tile] = 1;
-                    ArraySegment<byte> output = new ArraySegment<byte>(tiledata[1], (int)(tiledata[1].Length + (tile << 6)), (int)(tiledata[1].Length - (tile << 6)));
+                    ArraySegment<byte> output = new ArraySegment<byte>(tiledata[1], (int)(tile << 6), (int)(tiledata[1].Length - (tile << 6)));
                     uint offset = tile << 5;
                     uint y = 8;
                     uint color = default(uint), d0, d1, d2, d3;
@@ -96,7 +96,7 @@ namespace Snes
                         offset += 2;
                     }
                 }
-                return new ArraySegment<byte>(tiledata[1], (int)(tiledata[1].Length + (tile << 6)), (int)(tiledata[1].Length - (tile << 6)));
+                return new ArraySegment<byte>(tiledata[1], (int)(tile << 6), (int)(tiledata[1].Length - (tile << 6)));
             }
 
             public ArraySegment<byte> tile_8bpp(uint tile)
@@ -104,7 +104,7 @@ namespace Snes
                 if (tilevalid[2][tile] == 0)
                 {
                     tilevalid[2][tile] = 1;
-                    ArraySegment<byte> output = new ArraySegment<byte>(tiledata[2], (int)(tiledata[2].Length + (tile << 6)), (int)(tiledata[2].Length - (tile << 6)));
+                    ArraySegment<byte> output = new ArraySegment<byte>(tiledata[2], (int)(tile << 6), (int)(tiledata[2].Length - (tile << 6)));
                     uint offset = tile << 6;
                     uint y = 8;
                     uint color = default(uint), d0, d1, d2, d3, d4, d5, d6, d7;
@@ -129,18 +129,18 @@ namespace Snes
                         offset += 2;
                     }
                 }
-                return new ArraySegment<byte>(tiledata[2], (int)(tiledata[2].Length + (tile << 6)), (int)(tiledata[2].Length - (tile << 6)));
+                return new ArraySegment<byte>(tiledata[2], (int)(tile << 6), (int)(tiledata[2].Length - (tile << 6)));
             }
 
             public ArraySegment<byte> tile(uint bpp, uint tile)
             {
                 switch (bpp)
                 {
-                    case 0: 
+                    case 0:
                         return tile_2bpp(tile);
-                    case 1: 
+                    case 1:
                         return tile_4bpp(tile);
-                    case 2: 
+                    case 2:
                     default:
                         return tile_8bpp(tile);
                 }

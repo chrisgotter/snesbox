@@ -14,14 +14,14 @@ namespace Snes
             public bool priority2_enable;
             public bool priority3_enable;
 
-            public Regs regs;
+            public Regs regs = new Regs();
             public List[] list = new List[128];
             public bool list_valid;
 
             public byte[] itemlist = new byte[32];
             public TileList[] tilelist = new TileList[34];
-            public Output output;
-            public LayerWindow window;
+            public Output output = new Output();
+            public LayerWindow window = new LayerWindow();
 
             public void frame()
             {
@@ -130,8 +130,8 @@ namespace Snes
 
                 uint itemcount = 0;
                 uint tilecount = 0;
-                Array.Copy(Enumerable.Repeat(0xff, 256).ToArray(), output.priority, 256);
-                Array.Copy(Enumerable.Repeat(0xff, 32).ToArray(), itemlist, 32);
+                Array.Copy(Enumerable.Repeat((byte)0xff, 256).ToArray(), output.priority, 256);
+                Array.Copy(Enumerable.Repeat((byte)0xff, 32).ToArray(), itemlist, 32);
                 for (uint i = 0; i < 34; i++)
                 {
                     tilelist[i].tile = 0xffff;
@@ -358,6 +358,9 @@ namespace Snes
                 priority1_enable = true;
                 priority2_enable = true;
                 priority3_enable = true;
+
+                Utility.InstantiateArrayElements(list);
+                Utility.InstantiateArrayElements(tilelist);
             }
 
             public PPU self;
