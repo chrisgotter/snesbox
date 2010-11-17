@@ -246,8 +246,7 @@ namespace Snes
                         sx &= 511;
                         if (sx < 256)
                         {
-                            tiledata = new ArraySegment<byte>(tiledata.Array, (int)(tiledata.Offset + (t.hflip == false ? x : 7 - x)), (int)(tiledata.Count - (t.hflip == false ? x : 7 - x)));
-                            uint color = tiledata.Array[tiledata.Offset];
+                            uint color = tiledata.Array[tiledata.Offset + (t.hflip == false ? x : 7 - x)];
                             if (Convert.ToBoolean(color))
                             {
                                 color += t.palette;

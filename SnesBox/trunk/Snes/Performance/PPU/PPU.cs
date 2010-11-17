@@ -843,14 +843,14 @@ namespace Snes
                             case 0:
                                 regs.vram_incsize = 1;
                                 break;
-                            case 1: 
-                                regs.vram_incsize = 32; 
+                            case 1:
+                                regs.vram_incsize = 32;
                                 break;
-                            case 2: 
+                            case 2:
                                 regs.vram_incsize = 128;
                                 break;
                             case 3:
-                                regs.vram_incsize = 128; 
+                                regs.vram_incsize = 128;
                                 break;
                         }
                         return;
