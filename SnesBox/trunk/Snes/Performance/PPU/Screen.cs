@@ -17,7 +17,7 @@ namespace Snes
 
             public uint get_palette(uint color)
             {
-                return BitConverter.ToUInt16(StaticRAM.cgram.data(), (int)color);
+                return BitConverter.ToUInt16(StaticRAM.cgram.data(), (int)(color) * 2);
             }
 
             public uint get_direct_color(uint palette, uint tile)
