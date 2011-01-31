@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Audio\Audio.cs" />
+    <Compile Include="Audio\AudioRefreshEventArgs.cs" />
     <Compile Include="Cartridge\Mapping.cs" />
     <Compile Include="Cheat\CheatCode.cs" />
     <Compile Include="Chip\BSX\BSXBase.cs" />
@@ -197,6 +198,7 @@
     <Compile Include="DSP\DSP.cs" />
     <Compile Include="DSP\State.cs" />
     <Compile Include="DSP\Voice.cs" />
+    <Compile Include="Input\InputStateEventArgs.cs" />
     <Compile Include="Performance\CPU\Channel.cs" />
     <Compile Include="Performance\CPU\CPU.cs" />
     <Compile Include="Performance\CPU\Status.cs" />
@@ -275,6 +277,7 @@
     <Compile Include="SMP\Status.cs" />
     <Compile Include="System\System.cs" />
     <Compile Include="Video\Video.cs" />
+    <Compile Include="Video\VideoRefreshEventArgs.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

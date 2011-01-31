@@ -1,41 +1,28 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using SnesBox.Console;
+using Snes;
 
 namespace SnesBox.Components
 {
     class Audio : GameComponent
     {
-        DynamicSoundEffectInstance _audioFrame;
+        private DynamicSoundEffectInstance _audioFrame = new DynamicSoundEffectInstance(32040, AudioChannels.Stereo);
 
-        public Audio(Game game, SuperNintendo snes)
+        public Audio(Game game)
             : base(game)
         {
-            _audioFrame = new DynamicSoundEffectInstance(32040, AudioChannels.Stereo);
-            _audioFrame.Play();
-
-            snes.AudioUpdated += new AudioUpdatedEventHandler(OnAudioUpdated);
+            LibSnes.AudioRefresh += new EventHandler<AudioRefreshEventArgs>(OnAudioRefresh);
         }
 
-        void OnAudioUpdated(object sender, AudioUpdatedEventArgs e)
+        public override void Initialize()
         {
-            var audioBuffer = new byte[e.SampleCount * 4];
-            int bufferIndex = 0;
+            _audioFrame.Play();
+        }
 
-            for (int i = 0; i < e.AudioBuffer.Length; i++)
-            {
-                var samples = BitConverter.GetBytes(e.AudioBuffer[i]);
-                audioBuffer[bufferIndex++] = samples[0];
-                audioBuffer[bufferIndex++] = samples[1];
-                audioBuffer[bufferIndex++] = samples[2];
-                audioBuffer[bufferIndex++] = samples[3];
-            }
-
-            if (audioBuffer.Length > 0)
-            {
-                _audioFrame.SubmitBuffer(audioBuffer, 0, audioBuffer.Length);
-            }
+        private void OnAudioRefresh(object sender, AudioRefreshEventArgs e)
+        {
+            _audioFrame.SubmitBuffer(e.Buffer, 0, e.Buffer.Length);
         }
     }
 }

@@ -21,8 +21,10 @@ namespace SnesBox.Components
             game.Services.AddService(typeof(IFrameRateService), this);
         }
 
-        public override void Update(GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
+            _frameCounter++;
+
             _elapsedTime += gameTime.ElapsedGameTime;
 
             if (_elapsedTime > TimeSpan.FromSeconds(1))
@@ -31,11 +33,6 @@ namespace SnesBox.Components
                 _frameRate = _frameCounter;
                 _frameCounter = 0;
             }
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
-            _frameCounter++;
 
             FPS = _frameRate.ToString();
         }

@@ -1,54 +1,78 @@
 ﻿using System.IO;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using Snes;
 using SnesBox.Components;
-using SnesBox.Console;
 
 namespace SnesBox
 {
     public class SnesBoxGame : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager _graphics;
-        SuperNintendo _snes = new SuperNintendo();
+        private GraphicsDeviceManager GraphicsDeviceManager { get; set; }
+        public string CartridgePath { get; set; }
+        public bool Paused { get; set; }
+        public Filter Filter
+        {
+            get
+            {
+                var video = (IVideoService)Services.GetService(typeof(IVideoService));
+                return video.Filter;
+            }
+            set
+            {
+                var video = (IVideoService)Services.GetService(typeof(IVideoService));
+                video.Filter = value;
+            }
+        }
 
         public SnesBoxGame()
         {
-            IsFixedTimeStep = false;
-            _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = 800;
-            _graphics.PreferredBackBufferHeight = 600;
+            this.IsFixedTimeStep = false;
+            GraphicsDeviceManager = new GraphicsDeviceManager(this);
+            GraphicsDeviceManager.PreferredBackBufferWidth = 800;
+            GraphicsDeviceManager.PreferredBackBufferHeight = 600;
+            GraphicsDeviceManager.ApplyChanges();
+
+            Content.RootDirectory = "Content";
 
             Components.Add(new FrameRate(this));
-            Components.Add(new Audio(this, _snes));
-            Components.Add(new Video(this, _snes));
+            Components.Add(new Audio(this));
+            Components.Add(new Video(this));
+            Components.Add(new Input(this));
+        }
+
+        public void LoadCartridge(string cartridge)
+        {
+            using (var fs = new FileStream(cartridge, FileMode.Open))
+            {
+                var rom = new byte[fs.Length];
+                fs.Read(rom, 0, (int)fs.Length);
+                LibSnes.LoadCartridgeNormal(null, rom, (uint)rom.Length);
+            }
         }
 
         protected override void Initialize()
         {
-            _snes.SetControllerPortDevice(1, LibSnes.SnesDevice.JOYPAD);
-            _snes.SetControllerPortDevice(2, LibSnes.SnesDevice.JOYPAD);
-
-            using (var fs = new FileStream("SMW.smc", FileMode.Open))
-            {
-                var rom = new byte[fs.Length];
-                fs.Read(rom, 0, (int)fs.Length);
-                _snes.LoadCartridge(new NormalCartridge() { RomData = rom });
-            }
-
             base.Initialize();
+
+            LibSnes.Init();
+
+            if (!string.IsNullOrEmpty(CartridgePath))
+            {
+                LoadCartridge(CartridgePath);
+            }
         }
 
         protected override void Update(GameTime gameTime)
         {
-            _snes.SetInputState(1, 0, (int)Input.ParseInput(GamePad.GetState(PlayerIndex.One)), 0, 0);
-            _snes.SetInputState(2, 0, (int)Input.ParseInput(GamePad.GetState(PlayerIndex.Two)), 0, 0);
-            _snes.RunToFrame();
+            if (!Paused)
+            {
+                base.Update(gameTime);
 
-            var frameRate = (IFrameRateService)Services.GetService(typeof(IFrameRateService));
-            Window.Title = string.Format("{0:##} FPS", frameRate.FPS);
+                LibSnes.Run();
 
-            base.Update(gameTime);
+                var frameRate = (IFrameRateService)Services.GetService(typeof(IFrameRateService));
+                Window.Title = string.Format("{0:##} FPS", frameRate.FPS);
+            }
         }
     }
 }
